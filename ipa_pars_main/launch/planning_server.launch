@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+	<group ns = "ipa_pars">
+		<!-- nodes to start -->
+		
+		<node pkg="ipa_pars_main" type="planning_server.py" name="planning_server_spawner" args="$(find ipa_pars_main)/maps/testmap.png" respawn="false" output="screen"/>
+				
+	</group>
+</launch>
