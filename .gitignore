@@ -1,0 +1,12 @@
+*~
+*.pyc
+*.project
+*.pydevproject
+*.cproject
+*.settings
+*.swp
+output
+output.sas
+sas_plan
+pddl_examples
+action_interfaces

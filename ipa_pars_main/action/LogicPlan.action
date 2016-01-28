@@ -1,0 +1,11 @@
+# Define the goal
+string goal_type
+string what
+string where
+---
+# Define a result
+bool success
+---
+# Define a feedback message
+string feedback_text
+
