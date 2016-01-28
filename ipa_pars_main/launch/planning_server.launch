@@ -4,6 +4,6 @@
 		<!-- nodes to start -->
 		
 		<node pkg="ipa_pars_main" type="planning_server.py" name="planning_server_spawner" args="$(find ipa_pars_main)/maps/testmap.png" respawn="false" output="screen"/>
-				
+		<node pkg="map_analyzer" type="map_analyzer.py" name="map_analyzer_server_spawner" respawn="false" output="screen"/>			
 	</group>
 </launch>

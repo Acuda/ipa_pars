@@ -61,10 +61,15 @@ Created on Jan 28, 2016
 # If not, see <http://www.gnu.org/licenses/>.
 #
 #****************************************************************/
-import rospy
 import actionlib
+import rospy
 import sys
-import ipa_pars_main.msg
+import cv2
+from cv_bridge import CvBridge, CvBridgeError
+from ipa_pars_main.msg._LogicPlanAction import *
+
+from sensor_msgs.msg._Image import Image
+
 
 class ParsServer(object):
     _feedback = ipa_pars_main.msg.LogicPlanFeedback()
@@ -73,6 +78,19 @@ class ParsServer(object):
         rospy.loginfo("Initialize ParsServer ...")
         self._path_to_map = path_to_map
         rospy.loginfo("path_to_map: %s" % path_to_map)
+        rospy.loginfo("Reading map from disk ...")
+        self.input_map = cv2.imread(self._path_to_map, cv2.IMREAD_COLOR)
+        rospy.loginfo("converting map to sensor_msg ...")
+        self.bridge = CvBridge()
+        self.output_map = self.bridge.cv2_to_imgmsg(self.input_map, "bgr8")
+        rospy.loginfo("... done!")
+        rospy.logwarn("Waiting for map_analyzer_service_server to come available ...")
+        rospy.wait_for_service('map_analyzer_service_server')
+        rospy.logwarn("Server online!")
+        try:
+            self.serviceClient = rospy.ServiceProxy('map_analyzer_service_server', Image)
+        except rospy.ServiceException, e:
+            print "Service call failed: %s"%e
         self._as = actionlib.SimpleActionServer('pars_server', ipa_pars_main.msg.LogicPlanAction, execute_cb=self.execute_cb, auto_start=False)
         self._as.start()
         
@@ -84,9 +102,9 @@ class ParsServer(object):
         rospy.loginfo("in progress ...")
         r = rospy.Rate(1)
         # change herer TODO:
-        success = True
         #===========================
         # robot stuff here
+        success = self.sendImageToMapAnalyzerServer()
         #===========================
         
         if self._as.is_preempt_requested():
@@ -101,6 +119,11 @@ class ParsServer(object):
             rospy.loginfo("Succeeded the Logic Plan")
             self._as.set_succeeded(self._result, "good job")
             
+    def sendImageToMapAnalyzerServer(self):
+        answer = self.serviceClient(self.img_as_message)
+        print "answer"
+        print answer
+        return answer
 
 if __name__ == '__main__':
     rospy.init_node('planning_server', anonymous=False)

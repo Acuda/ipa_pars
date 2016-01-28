@@ -19,7 +19,7 @@ Created on Jan 28, 2016
 # \note
 # ROS stack name: ipa_pars
 # \note
-# ROS package name: planning_demo
+# ROS package name: map_analyzer
 #
 # \author
 # Author: Christian Ehrmann
@@ -61,47 +61,27 @@ Created on Jan 28, 2016
 # If not, see <http://www.gnu.org/licenses/>.
 #
 #****************************************************************/
-import actionlib
 import rospy
-from ipa_pars_main.msg._LogicPlanAction import *
+import cv2
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge, CvBridgeError
+import actionlib
+from map_analyzer.msg._MapAnalyzer import MapAnalyzer
 
-
-
-class PlanningDemo(object):
+class MapAnalyzerServer(object):
     def __init__(self):
-        rospy.loginfo("Initialize PlanningDemo ...")
-        self._aclient = actionlib.SimpleActionClient('pars_server', ipa_pars_main.msg.LogicPlanAction)
-        rospy.logwarn("Waiting for Action Server to come available ...")
-        self._aclient.wait_for_server()
-        rospy.logwarn("Server is online.")
+        rospy.loginfo("Initialize MapAnalyzer ...")
+        rospy.loginfo("... starting map_analyzer_service_server")
+        self.map_srvs = rospy.Service('map_analyzer_service_server', MapAnalyzer, self.handle_map_cb)
         rospy.loginfo("... finished")
         
-    def createGoal(self):
-        rospy.loginfo("Creating Goal ...")
-        goal = ipa_pars_main.msg.LogicPlanGoal()
-        goal.goal_type = "FetchAndCarry"
-        goal.what = "the-cake"
-        goal.where = "the-kitchen"
-        rospy.loginfo(goal.goal_type)
-        rospy.loginfo(goal.what)
-        rospy.loginfo(goal.where)
-        rospy.loginfo(" ... finished!")
-        return goal
-
-    def sendGoalAndWait(self):
-        goal = self.createGoal()
-        rospy.loginfo("Sending goal ...")
-        self._aclient.send_goal(goal)
-        rospy.loginfo("Waiting for result ...")
-        self._aclient.wait_for_result()
-        solution = self._aclient.get_result()
-        rospy.loginfo("Received the result:")
-        rospy.loginfo(solution)
-            
+    def handle_map_cb(self, map):
+        print "whatever"
+        
+        return ImageResponse()
+        
 if __name__ == '__main__':
-    rospy.init_node('planning_demo_client_node', anonymous=False)
-    pD = PlanningDemo()
-    try:
-        pD.sendGoalAndWait()
-    except rospy.ROSInterruptException:
-        print "program interrupted before completion"
+    rospy.init_node('map_analyzer_server_node', anonymous=False)
+    mAS = MapAnalyzerServer()
+    rospy.spin()
+        
