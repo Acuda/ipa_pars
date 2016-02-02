@@ -1,9 +1,23 @@
 <?xml version="1.0"?>
 <launch>
 	<group ns = "ipa_pars">
+
+		<!-- send parameters to paramenter server -->
+		<!--
+		<rosparam command="load" ns="room_segmentation" file="$(find ipa_room_segmentation)/ros/launch/room_segmentation_action_server_params.yaml" />
+		-->
+
 		<!-- nodes to start -->
 		
-		<node pkg="ipa_pars_main" type="planning_server.py" name="planning_server_spawner" args="$(find ipa_pars_main)/maps/testmap.png" respawn="false" output="screen"/>
-		<node pkg="map_analyzer" type="map_analyzer.py" name="map_analyzer_server_spawner" respawn="false" output="screen"/>			
+		<node pkg="ipa_pars_main" type="planning_server.py" name="planning_server_spawner" args="$(find ipa_pars_main)/maps/lab_ipa.png" respawn="false" output="screen"/>
+		<node pkg="map_analyzer" type="map_analyzer_server.py" name="map_analyzer_server_spawner" respawn="false" output="screen"/>			
+		<node pkg="map_analyzer" type="map_publisher.py" name="map_publisher_spawner" respawn="false" output="screen"/>
+		<!--
+		<node pkg="ipa_room_segmentation" type="room_segmentation_server" name="room_segmentation_server" output="screen" respawn="false" />
+		-->
+	</group>
+
+	<group ns = "room_segmentation">
+		<node pkg="ipa_room_segmentation" type="room_segmentation_server" name="room_segmentation_server" output="screen" respawn="true" respawn_delay="2"
 	</group>
 </launch>

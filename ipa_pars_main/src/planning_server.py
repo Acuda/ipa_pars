@@ -69,6 +69,8 @@ from cv_bridge import CvBridge, CvBridgeError
 from ipa_pars_main.msg._LogicPlanAction import *
 
 from sensor_msgs.msg._Image import Image
+import sensor_msgs.msg
+from map_analyzer.srv import MapAnalyzer
 
 
 class ParsServer(object):
@@ -88,7 +90,7 @@ class ParsServer(object):
         rospy.wait_for_service('map_analyzer_service_server')
         rospy.logwarn("Server online!")
         try:
-            self.serviceClient = rospy.ServiceProxy('map_analyzer_service_server', Image)
+            self.serviceClient = rospy.ServiceProxy('map_analyzer_service_server', MapAnalyzer)
         except rospy.ServiceException, e:
             print "Service call failed: %s"%e
         self._as = actionlib.SimpleActionServer('pars_server', ipa_pars_main.msg.LogicPlanAction, execute_cb=self.execute_cb, auto_start=False)
@@ -120,7 +122,22 @@ class ParsServer(object):
             self._as.set_succeeded(self._result, "good job")
             
     def sendImageToMapAnalyzerServer(self):
-        answer = self.serviceClient(self.img_as_message)
+        # TODO: add header and other meta data to message!
+        img_msg_typ = Image()
+        img_msg_typ.header.seq = 1
+        img_msg_typ.header.stamp = rospy.Time.now()
+        img_msg_typ.header.frame_id = "planning_server_frame"
+        #img_msg_typ.height = self.input_map.shape[1]
+        img_msg_typ.height = self.input_map.shape[0]
+        img_msg_typ.width = self.input_map.shape[1]
+        img_msg_typ.data = self.output_map.data
+        img_msg_typ.encoding = "rgb8"
+        byte_depth = 3
+        img_msg_typ.is_bigendian = False
+        img_msg_typ.step = img_msg_typ.width * byte_depth
+        print "This is the header i want to use"
+        print img_msg_typ.header
+        answer = self.serviceClient(img_msg_typ)
         print "answer"
         print answer
         return answer

@@ -10,12 +10,16 @@ find_package(catkin REQUIRED
 	std_msgs
 	sensor_msgs
 	actionlib
-	actionlib_msgs	
+	actionlib_msgs
+	genmsg
+	message_generation
+	roscpp
+	geometry_msgs
+	cv_bridge
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
-
+find_package(catkin REQUIRED COMPONENTS genmsg actionlib_msgs)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -105,7 +109,7 @@ find_package(catkin REQUIRED
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES map_analyzer
-#  CATKIN_DEPENDS other_catkin_pkg
+  CATKIN_DEPENDS std_msgs sensor_msgs roscpp rospy message_runtime
   DEPENDS system_lib
 )
 

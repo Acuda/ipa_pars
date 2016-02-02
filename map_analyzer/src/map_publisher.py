@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 '''
-Created on Jan 28, 2016
+Created on Feb 02, 2016
 
 @author: cme
 '''
@@ -19,14 +19,14 @@ Created on Jan 28, 2016
 # \note
 # ROS stack name: ipa_pars
 # \note
-# ROS package name: map_analyzer
+# ROS package name: map_publisher
 #
 # \author
 # Author: Christian Ehrmann
 # \author
 # Supervised by: Richard Bormann
 #
-# \date Date of creation: 01.2016
+# \date Date of creation: 02.2016
 #
 # \brief
 #
@@ -64,24 +64,45 @@ Created on Jan 28, 2016
 import rospy
 import cv2
 from sensor_msgs.msg import Image
+#from sensor_msgs.msg._Image import Image
+
+
 from cv_bridge import CvBridge, CvBridgeError
 import actionlib
-from map_analyzer.srv._MapAnalyzer import MapAnalyzer
 
-class MapAnalyzerServer(object):
+from map_analyzer.srv import MapAnalyzer
+from map_analyzer.srv._MapAnalyzer import MapAnalyzerResponse, MapAnalyzerRequest
+
+
+
+class MapPublisher(object):
     def __init__(self):
-        rospy.loginfo("Initialize MapAnalyzer ...")
-        rospy.loginfo("... starting map_analyzer_service_server")
-        self.map_srvs = rospy.Service('map_analyzer_service_server', MapAnalyzer, self.handle_map_cb)
+        rospy.loginfo("Initialize MapPublisher ...")
+        rospy.loginfo("... starting map_analyzer_publisher")
+        self.map_srvs = rospy.Service('map_publisher_server', MapAnalyzer, self.handle_map_cb)
+        self.map_img_pub = rospy.Publisher('map_status', Image, queue_size=1)
+        self.img_map = Image()
+
         rospy.loginfo("... finished")
         
-    def handle_map_cb(self, map):
-        print "whatever"
+    def handle_map_cb(self, input_map):
+        print "print recieved map header:"
+        print input_map.map.header
         
-        return ImageResponse()
+        response = MapAnalyzerResponse()
+        self.img_map = input_map.map
+        response.answer.data = "saftige Map Antwort!"
+        
+        return response
+    
+    def run(self):
+        self.map_img_pub.publish(self.img_map)
+        r = rospy.Rate(10)
+        r.sleep()
         
 if __name__ == '__main__':
-    rospy.init_node('map_analyzer_server_node', anonymous=False)
-    mAS = MapAnalyzerServer()
-    rospy.spin()
+    rospy.init_node('map_publisher_node', anonymous=False)
+    mP = MapPublisher()
+    while not rospy.is_shutdown():
+        mP.run()
         
