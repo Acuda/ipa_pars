@@ -63,9 +63,11 @@ Created on Jan 28, 2016
 #****************************************************************/
 import rospy
 import cv2
+import numpy
 import cv
 from sensor_msgs.msg import *
 from sensor_msgs.msg._Image import Image
+import color_utils_cme
 
 
 from cv_bridge import CvBridge, CvBridgeError
@@ -76,6 +78,7 @@ from map_analyzer.srv._MapAnalyzer import MapAnalyzerResponse, MapAnalyzerReques
 import ipa_room_segmentation
 from ipa_room_segmentation.msg._MapSegmentationAction import *
 from geometry_msgs.msg import Pose
+from cv2 import CV_8U
 
 
 
@@ -83,7 +86,7 @@ class MapAnalyzerServer(object):
     def __init__(self):
         rospy.loginfo("Initialize MapAnalyzer ...")
         rospy.loginfo("... starting room_segmentation_client")
-        self._roomsegclient = actionlib.SimpleActionClient('room_segmentation/room_segmentation_server', MapSegmentationAction)
+        self._roomsegclient = actionlib.SimpleActionClient('room_segmentation_server', MapSegmentationAction)
         rospy.logwarn("Waiting for Segmentation Server to come available ...")
         self._roomsegclient.wait_for_server()
         rospy.logwarn("Server is online!")
@@ -99,6 +102,7 @@ class MapAnalyzerServer(object):
             
         rospy.loginfo("generating object instances")
         self.bridge = CvBridge()
+        
         rospy.loginfo("... finished")
         
         
@@ -115,21 +119,75 @@ class MapAnalyzerServer(object):
         print "its resolution is:"
         print segmented_map_response.map_resolution
         
-        col_map = self.convertSegmentedMap(segmented_map_response)
-        answer = self.serviceMapPublisherClient(col_map)
-        print answer
+#         col_map = self.convertSegmentedMap(segmented_map_response)
+        answer2 = self.serviceMapPublisherClient(segmented_map_response.segmented_map)
+        print answer2
         
         response = MapAnalyzerResponse()
         response.answer.data = "saftige Map Antwort!"
         return response
     
     def convertSegmentedMap(self, seg_map_as_index_map):
+
+        print "*************************infromation about incoming segmented map!*********************************"
+        print "resolution:"
+        print seg_map_as_index_map.map_resolution
+        print "map_origin"
+        print seg_map_as_index_map.map_origin
+        print "RoomInformation in pixels"
+        print seg_map_as_index_map.room_information_in_pixel
+        print "RoomInformation in meter"
+        print seg_map_as_index_map.room_information_in_meter
+        print "segmented map in 32SC1"
+        print "type"
+        print type(seg_map_as_index_map.segmented_map)
+        #cvmap = cv2.cv.fromarray(seg_map_as_index_map.segmented_map)
+#         cv_img = self.bridge.imgmsg_to_cv2(seg_map_as_index_map.segmented_map, desired_encoding="passthrough").copy()
+#         cv_col_img = numpy.zeros((cv_img.shape[1], cv_img.shape[0] , 3), numpy.uint8) # BGR
+#         
+#         listOfDifColors = []
+#         for w in range (0, cv_img.shape[1], 1):
+#             for h in range(0, cv_img.shape[0], 1):
+#                 colorvalue = cv_img[h][w]
+#                 if colorvalue not in listOfDifColors:
+#                     listOfDifColors.append(colorvalue)
+#         print listOfDifColors
+#         print "colorade labes:"
+#         listOfColLab = []
+#         for lab in listOfDifColors:
+#             labcol = []
+#             labcol.append(lab)
+#             col = self.colorlist.pop()
+#             labcol.append(col)
+#             listOfColLab.append(labcol)
+#         print listOfColLab
+#         
+#         for w in range (0, cv_col_img.shape[1], 1):
+#             for h in range (0, cv_col_img.shape[0], 1):
+#                 labelnbr = cv_img[h][w]
+#                 if item in listOfColLab
+#                 colorpix = listOfColLab.
+#                 cv_col_img[h,w,:] = colorpix
+#         cv2.imshow("newimg", cv_col_img)
+#         cv2.waitKey()
+        
+        #cv_col_img = cv2.copyMakeBorder(cv_img, 5,5,5,5,cv2.BORDER_CONSTANT,value=(0,0,0))
+#         cv_img[cv_img==numpy.max(cv_img)]=10 #alle maximalwert auf -1 setzen
+#         cv2.imshow("output",cv_img)
+#         cv2.waitKey()
+#         cv2.destroyAllWindows()
+        #color = []
+        #cv_img[h,w,:] = [0,1,2] #bgr farben zuweisen zu cv_img[hoehe,breite,farbe als array]
+        
+        
+        #cv2.imshow("output", cv_img)
+        #cv2.waitKey()
+        #cvconverted = self.bridge.imgmsg_to_cv2(seg_map_as_index_map.segmented_map, "CV_32S")
         #col_map = self.bridge.imgmsg_to_cv2(seg_map, desired_encoding="passthrough")
         output_msg = MapAnalyzerRequest()
-        output_msg.map = seg_map_as_index_map
+        #output_msg.map = seg_map_as_index_map
         # convertion in room_segmentation_server Mat!
-        color_map = seg_map_as_index_map.segmented_map.clone()
-        bridge = CvBridge()
+        
         # TODO: here!
         
         print "information about my output!"
@@ -143,7 +201,7 @@ class MapAnalyzerServer(object):
     
     def useRoomSegmentation(self, in_map):
         goal = ipa_room_segmentation.msg.MapSegmentationGoal()
-        goal.input_map.header.seq = 1
+        #goal.input_map.header.seq = 1
         goal.input_map.header.stamp = rospy.Time.now()
         goal.input_map.header.frame_id = "mymapframe"
         goal.input_map = in_map.map

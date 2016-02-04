@@ -63,6 +63,7 @@ Created on Feb 02, 2016
 #****************************************************************/
 import rospy
 import cv2
+import numpy as np
 from sensor_msgs.msg import Image
 #from sensor_msgs.msg._Image import Image
 
@@ -73,7 +74,7 @@ import actionlib
 from map_analyzer.srv import MapAnalyzer
 from map_analyzer.srv._MapAnalyzer import MapAnalyzerResponse, MapAnalyzerRequest
 
-
+import color_utils_cme
 
 class MapPublisher(object):
     def __init__(self):
@@ -82,18 +83,97 @@ class MapPublisher(object):
         self.map_srvs = rospy.Service('map_publisher_server', MapAnalyzer, self.handle_map_cb)
         self.map_img_pub = rospy.Publisher('map_status', Image, queue_size=1)
         self.img_map = Image()
-
+        self.bridge = CvBridge()
+        #for image conversion:
+        self.colorlist = []
+        self.colorScale = 10
+        self.colorlist = color_utils_cme.randomColor(self.colorScale)
+        self.colorlist = color_utils_cme.shuffle_list(self.colorlist)
+        self.usedColors = []
         rospy.loginfo("... finished")
         
     def handle_map_cb(self, input_map):
         print "print recieved map header:"
         print input_map.map.header
-        
+        print "encoding"
+        print input_map.map.encoding
         response = MapAnalyzerResponse()
-        self.img_map = input_map.map
-        response.answer.data = "saftige Map Antwort!"
+        if input_map.map.encoding == "32SC1":
+            self.img_map = self.encodeImage(input_map.map)
+        else:
+            self.img_map = input_map.map
+            
+        response.answer.data = "MapPublisher received a new map!"
         
         return response
+    
+    '''
+    ###########################################################################
+    #
+    #                    image encoding format 32SC1 to BGR
+    #
+    ###########################################################################
+    #
+    #    definition of message type:
+    #
+    #    the action server need a map as a input image to segment it,
+    #    format 32SC1, room labels from 1 to N,
+    #    room with label i -> access to room_information_in_pixel[i-1]
+    # sensor_msgs/Image segmented_map
+    #    the resolution of the segmented map in [meter/cell]
+    # float32 map_resolution
+    #    the origin of the segmented map in [meter]
+    # geometry_msgs/Pose map_origin
+    #    for the following data: value in pixel can be obtained when
+    #    the value of [return_format_in_pixel] from goal definition is true
+    #    room data (min/max coordinates, center coordinates) measured in pixels
+    #    for the following data: value in meter can be obtained when the value
+    #    of [return_format_in_meter] from goal definition is true
+    # ipa_room_segmentation/RoomInformation[] room_information_in_pixel
+    #    room data (min/max coordinates, center coordinates) measured in meters
+    # ipa_room_segmentation/RoomInformation[] room_information_in_meter
+    '''
+    def encodeImage(self, img_msg):
+        cv_img = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough").copy()
+        cv_enc_img = np.zeros((cv_img.shape[0], cv_img.shape[1] , 3), np.uint8) # BGR
+        
+        listOfDifColors = []
+        for w in range (0, cv_img.shape[1], 1):
+            for h in range(0, cv_img.shape[0], 1):
+                colorvalue = cv_img[h][w]
+                if colorvalue not in listOfDifColors:
+                    listOfDifColors.append(colorvalue)
+        print listOfDifColors
+        print "colorade labes:"
+        listOfColLab = []
+        for lab in listOfDifColors:
+            labcol = []
+            labcol.append(lab)
+            if lab == 65280:
+                col = [255,255,255]
+            elif lab == 0:
+                col = [0,0,0]
+            else:
+                col = self.colorlist.pop()
+            labcol.append(col)
+            listOfColLab.append(labcol)
+        print listOfColLab
+        
+        pix_col = [255,255,255]
+        for w in range (0, cv_img.shape[1], 1):
+            for h in range (0, cv_img.shape[0], 1):
+                value = cv_img[h][w]
+                #print "listOfColLab index value:"
+                
+                for item in listOfColLab:
+                    if value == item[0]:
+                        pix_col = item[1]
+                    
+                #print listOfColLab.index(value)
+                #pix_col = listOfColLab[listOfColLab[0].index(value)][:]
+                cv_enc_img[h,w,:] = pix_col
+        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(cv_enc_img, "bgr8")
+        return cv_enc_img_msg
     
     def run(self):
         self.map_img_pub.publish(self.img_map)
