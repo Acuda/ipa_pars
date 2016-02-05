@@ -19,6 +19,14 @@
 		<node pkg="map_analyzer" type="map_analyzer_server.py" name="map_analyzer_server_spawner" respawn="false" output="screen"/>			
 		<node pkg="map_analyzer" type="map_publisher.py" name="map_publisher_spawner" respawn="false" output="screen"/>
 		
+		<node pkg="ipa_pars_main" type="planning_problem.py" name="planning_problem_spawner" args="$(find ipa_pars_main)/examples/" respawn="false" output="screen" />	
+
+		<node pkg="ipa_pars_main" type="planning_domain.py" name="planning_domain_spawner" args="$(find ipa_pars_main)/examples/" respawn="false" output="screen" />
+
+		<node pkg="ipa_pars_main" type="planning_solver.py" name="planning_solver_spawner" args="$(find ipa_pars_main)/tmp/" respawn="false" output="screen" />
+
+		<node pkg="ipa_pars_main" type="planning_execution.py" name="planning_execution_spawner" respawn="false" output="screen" />
+
 	</group>
 
 </launch>

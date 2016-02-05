@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   cmake_modules
   std_msgs
+  cob_srvs
   sensor_msgs
   actionlib
   actionlib_msgs
@@ -106,7 +107,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ipa_pars_main
-  CATKIN_DEPENDS rospy std_msgs cmake_modules sensor_msgs
+  CATKIN_DEPENDS rospy std_msgs cob_srvs cmake_modules sensor_msgs
   DEPENDS system_lib
 )
 

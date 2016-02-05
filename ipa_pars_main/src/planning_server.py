@@ -71,6 +71,7 @@ from ipa_pars_main.msg._LogicPlanAction import *
 from sensor_msgs.msg._Image import Image
 import sensor_msgs.msg
 from map_analyzer.srv import MapAnalyzer
+from cob_srvs.srv._SetString import SetString
 
 
 class ParsServer(object):
@@ -89,10 +90,32 @@ class ParsServer(object):
         rospy.logwarn("Waiting for map_analyzer_service_server to come available ...")
         rospy.wait_for_service('map_analyzer_service_server')
         rospy.logwarn("Server online!")
+        rospy.logwarn("Waiting for room_information_server to come available ...")
+        rospy.wait_for_service('room_information_server')
+        rospy.logwarn("Server online!")
+        rospy.logwarn("Waiting for planning_goal_server to come available ...")
+        rospy.wait_for_service('planning_goal_server')
+        rospy.logwarn("Server online!")
+        rospy.logwarn("Waiting for planning_domain_server to come available ...")
+        rospy.wait_for_service('planning_domain_server')
+        rospy.logwarn("Server online!")
         try:
             self.serviceClient = rospy.ServiceProxy('map_analyzer_service_server', MapAnalyzer)
         except rospy.ServiceException, e:
             print "Service call failed: %s"%e
+        try:
+            self.room_info_client = rospy.ServiceProxy('room_information_server', SetString)
+        except rospy.ServiceException, e:
+            print "Service call failed: %s"%e
+        try:
+            self.planning_goal_server = rospy.ServiceProxy('planning_goal_server', SetString)
+        except rospy.ServiceException, e:
+            print "Service call failed: %s"%e
+        try:
+            self.planning_domain_server = rospy.ServiceProxy('planning_domain_server', SetString)
+        except rospy.ServiceException, e:
+            print "Service call faield: %s"%e
+        
         self._as = actionlib.SimpleActionServer('pars_server', ipa_pars_main.msg.LogicPlanAction, execute_cb=self.execute_cb, auto_start=False)
         self._as.start()
         
@@ -107,8 +130,19 @@ class ParsServer(object):
         #===========================
         # robot stuff here
         success = self.sendImageToMapAnalyzerServer()
-        #===========================
         
+        room_informatio_text = "this is my room information"
+        answer1 = self.room_info_client(room_informatio_text)
+        print answer1
+        planning_goal_text = "this is my goal information"
+        answer2 = self.planning_goal_server(planning_goal_text)
+        print answer2
+        planning_domain_text = "this is my domain information"
+        answer3 = self.planning_domain_server(planning_domain_text)
+        print answer3
+        
+        rospy.sleep(5)
+        #===========================
         if self._as.is_preempt_requested():
             rospy.loginfo('%s: Preempted' % 'pars_server')
             success = False
