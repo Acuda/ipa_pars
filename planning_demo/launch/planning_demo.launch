@@ -6,5 +6,8 @@
 		<node pkg="map_server" type="map_server" name="demo_map_server_spawner" args="$(find planning_demo)/configs/mymap.yaml" respawn="false" output="screen"/>
 				
 		<node pkg="planning_demo" type="planning_demo.py" name="planning_demo_spawner" respawn="false" output="screen"/>
+
+		<node pkg="planning_demo" type="execution_demo.py" name="execution_demo_spawner" respawn="false" output="screen" />
+
 	</group>
 </launch>

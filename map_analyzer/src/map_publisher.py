@@ -62,7 +62,9 @@ Created on Feb 02, 2016
 #
 #****************************************************************/
 import rospy
+import roslib
 import cv2
+import sys
 import numpy as np
 from sensor_msgs.msg import Image
 #from sensor_msgs.msg._Image import Image
@@ -77,8 +79,10 @@ from map_analyzer.srv._MapAnalyzer import MapAnalyzerResponse, MapAnalyzerReques
 import color_utils_cme
 
 class MapPublisher(object):
-    def __init__(self):
+    def __init__(self, path_to_logfile):
         rospy.loginfo("Initialize MapPublisher ...")
+        self.path_to_logfile = path_to_logfile
+        rospy.loginfo(path_to_logfile)
         rospy.loginfo("... starting map_analyzer_publisher")
         self.map_srvs = rospy.Service('map_publisher_server', MapAnalyzer, self.handle_map_cb)
         self.map_img_pub = rospy.Publisher('map_status', Image, queue_size=1)
@@ -90,6 +94,7 @@ class MapPublisher(object):
         self.colorlist = color_utils_cme.randomColor(self.colorScale)
         self.colorlist = color_utils_cme.shuffle_list(self.colorlist)
         self.usedColors = []
+        self.counter = 0
         rospy.loginfo("... finished")
         
     def handle_map_cb(self, input_map):
@@ -100,8 +105,10 @@ class MapPublisher(object):
         response = MapAnalyzerResponse()
         if input_map.map.encoding == "32SC1":
             self.img_map = self.encodeImage(input_map.map)
+            self.saveLogImage(self.img_map)
         else:
             self.img_map = input_map.map
+            self.saveLogImage(self.img_map)
             
         response.answer.data = "MapPublisher received a new map!"
         
@@ -174,7 +181,22 @@ class MapPublisher(object):
                 cv_enc_img[h,w,:] = pix_col
         cv_enc_img_msg = self.bridge.cv2_to_imgmsg(cv_enc_img, "bgr8")
         return cv_enc_img_msg
-    
+
+    def saveLogImage(self, img):
+        self.counter += 1
+        path_to_logimage = self.path_to_logfile+"logimg"+str(self.counter)+".png"
+        print "++++++++++++++++++ try to save image +++++++++++++++++++++++"
+        print path_to_logimage
+        newImg = self.bridge.imgmsg_to_cv2(img, "bgr8")
+        try:
+            # write image as png [0] no compression --> [10] full compression
+            cv2.imwrite(path_to_logimage, newImg, [cv2.IMWRITE_PNG_COMPRESSION, 10])
+            print "write loginfo successful"
+        except:
+            e = sys.exc_info()[0]
+            print e
+        
+
     def run(self):
         self.map_img_pub.publish(self.img_map)
         r = rospy.Rate(10)
@@ -182,7 +204,7 @@ class MapPublisher(object):
         
 if __name__ == '__main__':
     rospy.init_node('map_publisher_node', anonymous=False)
-    mP = MapPublisher()
+    mP = MapPublisher(sys.argv[1])
     while not rospy.is_shutdown():
         mP.run()
         

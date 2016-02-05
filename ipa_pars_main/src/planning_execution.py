@@ -94,11 +94,16 @@ class PlanExecution(object):
     def handle_execution_cb(self, plan_as_text):
         print "sas_plan_info"
         print plan_as_text.data
+        
+        plan_as_list = plan_as_text.data.splitlines()
+        print "plan_as_list"
+        print plan_as_list
 
-        for lin_goal in plan_as_text.data:
+        for lin_goal in plan_as_list:
             print lin_goal
             answer = self.execution_service_client(lin_goal)
             print answer
+            
         response = SetStringResponse()
         response.success = True
         response.message = "ErrorAnswer"

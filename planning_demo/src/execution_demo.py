@@ -19,7 +19,7 @@ Created on Feb 04, 2016
 # \note
 # ROS stack name: ipa_pars
 # \note
-# ROS package name: execution_demo
+# ROS package name: planning_demo
 #
 # \author
 # Author: Christian Ehrmann
@@ -88,7 +88,11 @@ class ExecutionDemo(object):
         print goal.data
 
         response = SetStringResponse()
-        response.success = True
+        if (goal.data == " (look-at cob4-1 the-cake room-x-sq-10)"):
+            response.success = False
+        else:
+            response.success = True
+            
         response.message = "ErrorAnswer"
         
         return response
