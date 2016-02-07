@@ -18,6 +18,7 @@
 		<node pkg="ipa_pars_main" type="planning_server.py" name="planning_server_spawner" args="$(find ipa_pars_main)/maps/lab_ipa2.png" respawn="false" output="screen"/>
 		<node pkg="map_analyzer" type="map_analyzer_server.py" name="map_analyzer_server_spawner" respawn="false" output="screen"/>			
 		<node pkg="map_analyzer" type="map_publisher.py" name="map_publisher_spawner" args="$(find map_analyzer)/logs/" respawn="false" output="screen"/>
+		<node pkg="map_analyzer" type="map_tesselation.py" name="map_tesselation_spawner" respawn="false" output="screen" />
 		
 		<node pkg="ipa_pars_main" type="planning_problem.py" name="planning_problem_spawner" args="$(find ipa_pars_main)/examples/" respawn="false" output="screen" />	
 

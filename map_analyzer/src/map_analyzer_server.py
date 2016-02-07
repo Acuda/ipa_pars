@@ -99,7 +99,15 @@ class MapAnalyzerServer(object):
             self.serviceMapPublisherClient = rospy.ServiceProxy('map_publisher_server', MapAnalyzer)
         except rospy.ServiceException, e:
             print "Service call failed: %s"%e
-            
+        
+        rospy.logwarn("Waiting for map_tesselation_service_server to come available ...")
+        rospy.wait_for_service('map_tesselation_service_server')
+        rospy.logwarn("Server online!")
+        try:
+            self.serviceMapTesselationClient = rospy.ServiceProxy('map_tesselation_service_server', MapAnalyzer)
+        except rospy.ServiceException, e:
+            print "Service call failed: %s"%e
+        
         rospy.loginfo("generating object instances")
         self.bridge = CvBridge()
         
@@ -122,6 +130,10 @@ class MapAnalyzerServer(object):
 #         col_map = self.convertSegmentedMap(segmented_map_response)
         answer2 = self.serviceMapPublisherClient(segmented_map_response.segmented_map)
         print answer2
+        
+        print "send map to tesselation server"
+        answer3 = self.serviceMapTesselationClient(segmented_map_response.segmented_map)
+        print answer3
         
         response = MapAnalyzerResponse()
         response.answer.data = "saftige Map Antwort!"

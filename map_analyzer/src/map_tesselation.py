@@ -19,7 +19,7 @@ Created on Feb 04, 2016
 # \note
 # ROS stack name: ipa_pars
 # \note
-# ROS package name: map_tesselation
+# ROS package name: map_analyzer
 #
 # \author
 # Author: Christian Ehrmann
@@ -78,7 +78,15 @@ from map_analyzer.srv._MapAnalyzer import MapAnalyzerResponse, MapAnalyzerReques
 class MapTesselation(object):
     def __init__(self):
         rospy.loginfo("Initialize MapTesselation ...")
-        self.map_srvs = rospy.Service('map_tesselation_server', MapAnalyzer, self.handle_map_cb)
+        self.map_srvs = rospy.Service('map_tesselation_service_server', MapAnalyzer, self.handle_map_cb)
+        
+        rospy.logwarn("Waiting for map_publisher_service_server to come available ...")
+        rospy.wait_for_service('map_publisher_server')
+        rospy.logwarn("Server online!")
+        try:
+            self.serviceMapPublisherClient = rospy.ServiceProxy('map_publisher_server', MapAnalyzer)
+        except rospy.ServiceException, e:
+            print "Service call failed: %s"%e
         rospy.loginfo("... finished")
         
     def handle_map_cb(self, input_map):
@@ -86,16 +94,18 @@ class MapTesselation(object):
         print input_map.map.header
         print "encoding"
         print input_map.map.encoding
-        response = MapAnalyzerResponse()
-        if input_map.map.encoding == "32SC1":
-            self.img_map = self.encodeImage(input_map.map)
-        else:
-            self.img_map = input_map.map
-            
-        response.answer.data = "MapPublisher received a new map!"
+
+        output_map = input_map.map
+        answer = self.serviceMapPublisherClient(output_map)
+        print answer
         
+        response = MapAnalyzerResponse()
+        response.answer.data = "MapPublisher received a new map!"
         return response
 
+    def tesselateMap(self, map):
+        newMap = map.data
+        return newMap
 
 if __name__ == '__main__':
     rospy.init_node('map_tesselation_node', anonymous=False)
