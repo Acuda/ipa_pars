@@ -158,7 +158,6 @@ class ParsServer(object):
     def sendImageToMapAnalyzerServer(self):
         # TODO: add header and other meta data to message!
         img_msg_typ = Image()
-        img_msg_typ.header.seq = 1
         img_msg_typ.header.stamp = rospy.Time.now()
         img_msg_typ.header.frame_id = "planning_server_frame"
         #img_msg_typ.height = self.input_map.shape[1]
