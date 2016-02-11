@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 '''
-Created on Feb 04, 2016
+Created on Feb 10, 2016
 
 @author: cme
 '''
@@ -19,7 +19,7 @@ Created on Feb 04, 2016
 # \note
 # ROS stack name: ipa_pars
 # \note
-# ROS package name: planning_demo
+# ROS package name: ipa_pars_main
 #
 # \author
 # Author: Christian Ehrmann
@@ -74,31 +74,37 @@ from cob_srvs.srv._SetString import SetString
 from cob_srvs.srv._SetString import SetStringResponse
 
 
-class ExecutionDemo(object):
+class PlanningController(object):
     def __init__(self):
-        rospy.loginfo("Initialize ExecutionDemo ...")
-
-        self.execution_srv = rospy.Service('execution_demo_service_server', SetString, self.handle_execution_cb)
+        rospy.loginfo("Initialize PlanningController ...")
+        self.controller_srv = rospy.Service('planning_controller_server', SetString, self.handle_controller_cb)
         
-        rospy.loginfo("ExecutionDemo is running, waiting for new actions to execute ...")
+        rospy.logwarn("Waiting for planning_solver_domain_server to come available ...")
+        rospy.wait_for_service('planning_domain_server')
+        rospy.logwarn("Server online!")
+        try:
+            self.domain_server_client = rospy.ServiceProxy('planning_domain_server', SetString)
+        except rospy.ServiceException, e:
+            print "Service call failed: %s"%e
+        
+        rospy.loginfo("PlanningController is running, waiting for new problems to control ...")
         rospy.loginfo("... finished")
         
-    def handle_execution_cb(self, goal):
-        print "goal to execute:"
-        print goal.data
+    def handle_controller_cb(self, controller_info):
+        print "controller_info"
+        print controller_info
 
+        
+        answer = self.domain_server_client("whatever")
+        
+        print answer
         response = SetStringResponse()
-        if (goal.data == " (look-at cob4-1 the-cake room-8"):
-            response.success = False
-        else:
-            response.success = True
-            
+        response.success = True
         response.message = "ErrorAnswer"
         
         return response
-    
 
 if __name__ == '__main__':
-    rospy.init_node('execution_demo_node', anonymous=False)
-    eD = ExecutionDemo()
+    rospy.init_node('planning_controller_node', anonymous=False)
+    pC = PlanningController()
     rospy.spin()

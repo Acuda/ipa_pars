@@ -83,7 +83,9 @@ class PlanProblemClass(object):
         self.goal_srv = rospy.Service('planning_goal_server', SetString, self.handle_goal_cb)
         self.room_info = ""
         self.goal_info = ""
-        
+        self.linesAsList = ""
+        self.goal_available = False
+        self.room_info_available = False
         rospy.logwarn("Waiting for planning_solver_problem_server to come available ...")
         rospy.wait_for_service('planning_solver_problem_server')
         rospy.logwarn("Server online!")
@@ -97,11 +99,14 @@ class PlanProblemClass(object):
     def handle_info_cb(self, informations):
         print "informations"
         print informations
-        self.room_info = self.generate_debug_problem()
-        print self.room_info
-        
-        answer = self.problem_solver_client(self.room_info)
-        print answer
+        #self.room_info = self.generate_debug_problem()
+        #print self.room_info
+        self.listOfInput = informations.data.splitlines()
+        print "listOfInput"
+        print self.listOfInput
+        self.room_info_available = True
+
+
         response = SetStringResponse()
         response.success = True
         response.message = "ErrorAnswer"
@@ -139,14 +144,108 @@ class PlanProblemClass(object):
     def handle_goal_cb(self, goal):
         print "goal"
         print goal
-        
-            
+        self.goal_info = goal.data
+        self.goal_available = True
         response = SetStringResponse()
         response.success = True
         response.message = "ErrorAnswer"
         return response
+    
+    def assembleListOfObjects(self, listOfInput):
+        listOfObjects = []
+        listOfObjects.append("\n \t\t ;;; available objects")
+        listOfObjects.append("\n")
+        listOfObjects.append("\n \t\t ;;; fixed locations")
+        counter = 0
+        for lines in listOfInput:
+            
+            pddlObject = lines.split(" ")[0]
+            if counter == 0:
+                listOfObjects.append("\n\t\t "+pddlObject)
+                counter += 1
+            else:
+                listOfObjects.append(pddlObject)
+                counter += 1
+            if counter == 4:
+                counter = 0
 
+        listOfObjects.append("\n")
+        listOfObjects.append("\n \t\t ;;; movable things")
+        listOfObjects.append("\n")
+        listOfObjects.append("\n\t\t the-cake")
+        listOfObjects.append("\n\t\t cob4-1")
+        StringOfObjects = str(" ").join(map(str, listOfObjects))
+
+        return StringOfObjects
+
+    def assembleListOfTransitions(self, listOfInput):
+        listOfTransitions = []
+        for lines in listOfInput:
+            rooms = lines.split()
+            mainRoom = rooms[0]
+            listOfTransitions.append("\n \t\t ;;; transitions for "+mainRoom)
+            for room in rooms:
+                if not room == mainRoom:
+                    listOfTransitions.append("\t\t(trans "+mainRoom+" "+room+")")
+        StringOfTransitions = str("\n").join(map(str, listOfTransitions))
+        return StringOfTransitions
+    
+    def assembleProblemFileText(self, listOfInput):
+        problemName = "cob-test-problem-01"
+        domainName = "cob-test-domain-01"
+        StringOfObjects = self.assembleListOfObjects(listOfInput)
+        StringOfTransitions = self.assembleListOfTransitions(listOfInput)
+        listOfLines = []
+        #====== 1 =======
+        listOfLines.append("(define (problem "+problemName+")")
+        #====== 2 =======
+        listOfLines.append("\t(:domain "+domainName+")")
+        #====== 3 =======
+        listOfLines.append("\t(:objects "+StringOfObjects+")")
+        #====== 4 =======
+        listOfLines.append("\n")
+        #====== 5 =======
+        listOfLines.append("\t(:init  "+StringOfTransitions)
+        #====== 6 =======
+        listOfLines.append("\n\t ;;; hard coded definitions")
+        listOfLines.append("\t\t(is-robo cob4-1)")
+        listOfLines.append("\t\t(at the-cake room-9)")
+        listOfLines.append("\t\t(at cob4-1 room-1)")
+        listOfLines.append("\t)")
+        listOfLines.append("\n")
+
+        
+        return listOfLines
+    
+    def appendGoalDefinition(self, listOfLines, goal_informations):
+        print "translate the goal_informations to a goal pddl"
+        print goal_informations
+        
+        listOfLines.append("\t;;; goal definition")
+        listOfLines.append("\t(:goal (and (have cob4-1 the-cake) (at cob4-1 room-1)))")
+        listOfLines.append(")")
+        return listOfLines
+        
+
+    def run(self):
+        r = rospy.Rate(10)
+        if (self.goal_available) and (self.room_info_available):
+            if not self.goal_info == "" and not self.room_info == "":
+                linesAsList = self.assembleProblemFileText(self.listOfInput)
+                linesAsList = self.appendGoalDefinition(linesAsList, self.goal_info)
+                print "linesAsString"
+                linesAsString = ("\n").join(linesAsList)
+                print linesAsString
+                answer = self.problem_solver_client(linesAsString)
+                print answer
+                #self.goal_available = False
+                self.room_info_available = False
+        r.sleep()
+        
+        
 if __name__ == '__main__':
     rospy.init_node('planning_problem_node', anonymous=False)
     pPC = PlanProblemClass(sys.argv[1])
-    rospy.spin()
+    while not rospy.is_shutdown():
+        pPC.run()
+

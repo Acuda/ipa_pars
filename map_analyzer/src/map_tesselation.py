@@ -93,7 +93,7 @@ class MapTesselation(object):
         self.bridge = CvBridge()
         self.numbpix = 0
         # change alogrithm to one that fits best to the rooms?
-        self.squaresize = 20
+        self.squaresize = 60
         rospy.loginfo("... finished")
         
     def handle_map_cb(self, input_map):
@@ -120,41 +120,98 @@ class MapTesselation(object):
 
     def tesselateMap(self, map_img):
         newMap = map_img
+        print "deleteWhitePixel"
+        newMap = self.deleteWhitePixels(newMap)
+        print "makeListOfAreasAndPixels and delete"
+        newMap = self.makeListOfAreasAndPixels(newMap)
+        # room preparation done
+        print "room preparation done"
+        print "send to publisher"
+        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
+        
+        answer = self.serviceMapPublisherClient(cv_enc_img_msg)
+        print answer
+        print "draw squares"
+        newMap = self.createSquares(newMap)
+        print "fill squares"
+        newMap = self.fillSquares(newMap)
+        print "deleteSquaresHorizontal"
+        newMap = self.deleteSquaresHorizontal(newMap)
+        print "deleteSuqaresVertical"
+        newMap = self.deleteSquaresVertical(newMap)
+        print "mergeSmallAreas"
+        #print listOfAreasAndPix
+        #newMap = self.deleteDoubleAreas(newMap)
         #newMap = self.correctSmallAreas(map_img)
         #for list_of_mapcolors do -->
-        newMap = self.tesselateRooms(newMap, 9) # 14
-        newMap = self.createSquares(newMap)
-        newMap = self.fillSquares(newMap)
-        newMap = self.deleteSquaresVertical(newMap)
-        newMap = self.deleteSquaresHorizontal(newMap)
-        listOfSmallAreas = self.findSmallAreas(newMap)
-        newMap = self.mergeSmallAreas(newMap, listOfSmallAreas)
-        print listOfSmallAreas
+#         newMap = self.tesselateRooms(newMap, 9) # 14
+#         newMap = self.createSquares(newMap)
+#         newMap = self.fillSquares(newMap)
+#         newMap = self.deleteSquaresVertical(newMap)
+#         newMap = self.deleteSquaresHorizontal(newMap)
+#         listOfSmallAreas = self.findSmallAreas(newMap)
+#         print "listOfSmallAreas"
+#         print listOfSmallAreas
+#         newMap = self.mergeSmallAreas(newMap, listOfSmallAreas)
         
                  
         return newMap
+
+
+    def deleteWhitePixels(self, map_img):
+        for w in range (0, map_img.shape[1], 1):
+            for h in range (0, map_img.shape[0], 1):
+                if map_img[h][w] == 65280:
+                    map_img[h][w] = 0
+        return map_img
     
-    def mergeSmallAreas(self, map_img, listOfAreas):
-        newMap = map_img
-        while not (len(listOfAreas) == 0): # list empty
-            (color, pixelcount) = listOfAreas.pop()
-            print "color"
-            print color
-            print "pixelcount"
-            print pixelcount
-            if pixelcount < 450:
-                for w in range (0, newMap.shape[1], 1):
-                    for h in range (0, newMap.shape[0], 1):
-                        if newMap[h][w] == color:
-                            stackOfNeighbours = self.floodfindNeighbours(h, w, color, 1, newMap)
-                            listOfOccasions = []
-                            for item in stackOfNeighbours:
-                                listOfOccasions.append(stackOfNeighbours.count(item))
-                            newColor = stackOfNeighbours[listOfOccasions.index(max(listOfOccasions))]
-                            newMap = self.floodfill4(h, w, color, newColor, newMap)
-                
-        return newMap
+    def makeListOfAreasAndPixels(self, map_img):
+        listOfAreasAndPixels = []
+        listOfAlreadyFinished = []
+        # dont check black pixels
+        listOfAlreadyFinished.append(0)
+        map_copy = map_img.copy()
+        for w in range (0, map_copy.shape[1], 1):
+            for h in range (0, map_copy.shape[0], 1):
+                if not map_copy[h][w] in listOfAlreadyFinished:
+                    print "found region with color = %d" % map_copy[h][w]
+                    #listOfAlreadyFinished.append(map_copy[h][w])
+                    listOfAlreadyFinished.append(map_copy[h][w]+1000)
+                    pixelcounter = 0
+                    (map_copy, pixelcounter) = self.floodfill4(h, w, map_copy[h][w], map_copy[h][w]+1000, map_copy, pixelcounter)
+                    if pixelcounter < 500:
+                        print "deleting area because its too small"
+                        (map_img, pixelcounter) = self.floodfill4(h, w, map_img[h][w], 0, map_img, pixelcounter)
+                    listOfAreasAndPixels.append((map_copy[h][w], pixelcounter))
         
+        print listOfAreasAndPixels
+        return map_img
+
+#     def mergeSmallAreas(self, map_img, listOfAreas):
+#         newMap = map_img
+#         while not (len(listOfAreas) == 0): # list empty
+#             (color, pixelcount) = listOfAreas.pop()
+#             print "color"
+#             print color
+#             print "pixelcount"
+#             print pixelcount
+#             if pixelcount < 200:
+#                 for w in range (0, newMap.shape[1], 1):
+#                     for h in range (0, newMap.shape[0], 1):
+#                         if newMap[h][w] == color+1000:
+#                             stackOfNeighbours = self.floodfindNeighbours(h, w, color, 1, newMap)
+#                             print "color"
+#                             print color
+#                             print "has stack of Neighbours:"
+#                             print stackOfNeighbours
+#                             listOfOccasions = []
+#                             for item in stackOfNeighbours:
+#                                 listOfOccasions.append(stackOfNeighbours.count(item))
+#                             newColor = stackOfNeighbours[listOfOccasions.index(max(listOfOccasions))]
+#                             newMap = self.floodfill4(h, w, color, newColor, newMap)
+#                 
+#         return newMap
+#         
     def deleteSquaresVertical(self, map_img):
         newMap = map_img
         for w in range (0, newMap.shape[1], 1):
@@ -169,7 +226,7 @@ class MapTesselation(object):
                     elif not newMap[h][w-1] == 0 or newMap[h][w-1] == 65220:
                         newMap[h][w] = newMap[h][w-1]
         return newMap
-    
+#     
     def deleteSquaresHorizontal(self, map_img):
         newMap = map_img
         for w in range (0, newMap.shape[1], 1):
@@ -184,8 +241,8 @@ class MapTesselation(object):
 #                     elif not newMap[h][w-1] == 0 or newMap[h][w-1] == 65221:
 #                         newMap[h][w] = newMap[h][w-1]
         return newMap
-
-    
+# 
+#     
     def fillSquares(self, map_img):
         newMap = map_img
         color = 0
@@ -202,114 +259,115 @@ class MapTesselation(object):
                             counter += 1
                             oldValue = newMap[h][w]
                             workedOnColors.append(newValue)
-                            newMap = self.floodfill4(h, w, oldValue, newValue, newMap)
+                            pixelcounter = 0
+                            (newMap, pixelcounter) = self.floodfill4(h, w, oldValue, newValue, newMap, pixelcounter)
         return newMap
-    
+#     
     def createSquares(self, room_img):
         for w in range (0, room_img.shape[1], 1):
             for h in range (0, room_img.shape[0], self.squaresize):
                 if not room_img[h][w] == 0:
                     room_img[h][w] = 65221
-        
+         
         for w in range (0, room_img.shape[1],  self.squaresize):
             for h in range (0, room_img.shape[0], 1):
                 if not room_img[h][w] == 0:
                     room_img[h][w] = 65220
-        
+         
         return room_img
+#     
+#     def findSmallAreas(self, map_img):
+#         newMap = map_img.copy()
+#         listOfCol = []
+#         listOfArea = []
+#         workedOnColors = []
+#         listOfColAndArea = []
+#         for w in range (0, newMap.shape[1], 1):
+#             for h in range (0, newMap.shape[0], 1):
+#                 if not newMap[h][w] == 0:
+#                     if not newMap[h][w] in listOfCol:
+#                         if not newMap[h][w] in workedOnColors:
+#                             listOfCol.append(newMap[h][w])
+#                             oldValue = newMap[h][w]
+#                             newValue = oldValue + 1000
+#                             workedOnColors.append(newValue)
+#                             self.numbpix = 0
+#                             self.floodfill4(h, w, oldValue, newValue, newMap)
+#                             listOfArea.append(self.numbpix)
+#                             stack = []
+#                             stack.append(oldValue)
+#                             stack.append(self.numbpix)
+#                             listOfColAndArea.append(stack)
+#         return listOfColAndArea
+#     
+#     def correctSmallAreas(self, map_img):
+#         newMap = map_img
+#         for w in range (0, newMap.shape[1], 1):
+#             for h in range (0, newMap.shape[0], 1):
+#                 if not newMap[h][w] == 0:
+#                     if newMap[h][w] == 65280:
+#                         newMap[h][w] = 0
+#                     elif (newMap[h+1][w] == 0) and (newMap[h-1][w] == 0) and (newMap[h][w+1] == 0) and (newMap[h][w-1] == 0):
+#                         newMap[h][w] = 0
+#         listOfColorValues = self.makeListOfColorValues(newMap)
+#         colorcounter = max(listOfColorValues)
+#         print "colorcounter"
+#         print colorcounter
+#         max_perc = newMap.shape[1] * newMap.shape[0]
+#         workedOnColors = []
+#         percentagecounter = 0
+#         highestcolor = colorcounter
+#         for w in range (0, newMap.shape[1], 1):
+#             for h in range (0, newMap.shape[0], 1):
+#                 percentagecounter +=1
+#                 print percentagecounter
+#                 if not percentagecounter == 0:
+#                     print str(100 / (max_perc / (percentagecounter)))+"%"
+#                 if not newMap[h][w] == 0:
+#                     if not newMap[h][w] in workedOnColors:
+#                         workedOnColors.append(newMap[h][w])
+#                         print workedOnColors
+#                         oldColor = newMap[h][w]
+#                         self.numbpix = 0
+#                         colorcounter += 1
+#                         workedOnColors.append(colorcounter)
+#                         print "start floodfill"
+#                         print "on pixel"
+#                         print h
+#                         print w
+#                         print "oldcolor"
+#                         print oldColor
+#                         print colorcounter
+#                         newMap = self.floodfill4(h, w, oldColor, colorcounter, newMap)
+#                         if self.numbpix < 50:
+#                             print "pix is to low refill black"
+#                             newMap = self.floodfill4(h, w, colorcounter, 0, newMap)
+#         # this is possibly a bad idea. What if two regions with the same color exist?
+#         # here the second one will be deleted. However it could be the bigger one!
+#         newMap[newMap<highestcolor+1]=0
+#         return newMap
+# 
+#     def tesselateRooms(self, map_img, room_color):
+#         cv_img = map_img
+#         for w in range (0, map_img.shape[1], 1):
+#             for h in range(0, map_img.shape[0], 1):
+#                 if map_img[h][w] == room_color:
+#                     cv_img[h][w] = room_color
+#                 else:
+#                     cv_img[h][w] = 0
+#         return cv_img
+#         
+#     def makeListOfColorValues(self, map_img):
+#         listOfDifColors = []
+#         for w in range (0, map_img.shape[1], 1):
+#             for h in range(0, map_img.shape[0], 1):
+#                 colorvalue = map_img[h][w]
+#                 if colorvalue not in listOfDifColors:
+#                     listOfDifColors.append(colorvalue)
+#         print listOfDifColors
+#         return listOfDifColors
     
-    def findSmallAreas(self, map_img):
-        newMap = map_img
-        listOfCol = []
-        listOfArea = []
-        workedOnColors = []
-        listOfColAndArea = []
-        for w in range (0, newMap.shape[1], 1):
-            for h in range (0, newMap.shape[0], 1):
-                if not newMap[h][w] == 0:
-                    if not newMap[h][w] in listOfCol:
-                        if not newMap[h][w] in workedOnColors:
-                            listOfCol.append(newMap[h][w])
-                            oldValue = newMap[h][w]
-                            newValue = oldValue + 1000
-                            workedOnColors.append(newValue)
-                            self.numbpix = 0
-                            self.floodfill4(h, w, oldValue, newValue, newMap)
-                            listOfArea.append(self.numbpix)
-                            stack = []
-                            stack.append(oldValue)
-                            stack.append(self.numbpix)
-                            listOfColAndArea.append(stack)
-        return listOfColAndArea
-    
-    def correctSmallAreas(self, map_img):
-        newMap = map_img
-        for w in range (0, newMap.shape[1], 1):
-            for h in range (0, newMap.shape[0], 1):
-                if not newMap[h][w] == 0:
-                    if newMap[h][w] == 65280:
-                        newMap[h][w] = 0
-                    elif (newMap[h+1][w] == 0) and (newMap[h-1][w] == 0) and (newMap[h][w+1] == 0) and (newMap[h][w-1] == 0):
-                        newMap[h][w] = 0
-        listOfColorValues = self.makeListOfColorValues(newMap)
-        colorcounter = max(listOfColorValues)
-        print "colorcounter"
-        print colorcounter
-        max_perc = newMap.shape[1] * newMap.shape[0]
-        workedOnColors = []
-        percentagecounter = 0
-        highestcolor = colorcounter
-        for w in range (0, newMap.shape[1], 1):
-            for h in range (0, newMap.shape[0], 1):
-                percentagecounter +=1
-                print percentagecounter
-                if not percentagecounter == 0:
-                    print str(100 / (max_perc / (percentagecounter)))+"%"
-                if not newMap[h][w] == 0:
-                    if not newMap[h][w] in workedOnColors:
-                        workedOnColors.append(newMap[h][w])
-                        print workedOnColors
-                        oldColor = newMap[h][w]
-                        self.numbpix = 0
-                        colorcounter += 1
-                        workedOnColors.append(colorcounter)
-                        print "start floodfill"
-                        print "on pixel"
-                        print h
-                        print w
-                        print "oldcolor"
-                        print oldColor
-                        print colorcounter
-                        newMap = self.floodfill4(h, w, oldColor, colorcounter, newMap)
-                        if self.numbpix < 50:
-                            print "pix is to low refill black"
-                            newMap = self.floodfill4(h, w, colorcounter, 0, newMap)
-        # this is possibly a bad idea. What if two regions with the same color exist?
-        # here the second one will be deleted. However it could be the bigger one!
-        newMap[newMap<highestcolor+1]=0
-        return newMap
-
-    def tesselateRooms(self, map_img, room_color):
-        cv_img = map_img
-        for w in range (0, map_img.shape[1], 1):
-            for h in range(0, map_img.shape[0], 1):
-                if map_img[h][w] == room_color:
-                    cv_img[h][w] = room_color
-                else:
-                    cv_img[h][w] = 0
-        return cv_img
-        
-    def makeListOfColorValues(self, map_img):
-        listOfDifColors = []
-        for w in range (0, map_img.shape[1], 1):
-            for h in range(0, map_img.shape[0], 1):
-                colorvalue = map_img[h][w]
-                if colorvalue not in listOfDifColors:
-                    listOfDifColors.append(colorvalue)
-        print listOfDifColors
-        return listOfDifColors
-    
-    def floodfill4(self, x, y, oldValue, newValue, img):
+    def floodfill4(self, x, y, oldValue, newValue, img, pixelcounter):
         stack = []
         innerstack = []
         innerstack.append(x)
@@ -319,7 +377,7 @@ class MapTesselation(object):
             (x, y) = stack.pop()
             if img[x][y] == oldValue:
                 img[x][y] = newValue
-                self.numbpix += 1
+                pixelcounter += 1
                 innerstack = []
                 innerstack.append(x)
                 innerstack.append(y+1)
@@ -336,39 +394,41 @@ class MapTesselation(object):
                 innerstack.append(x-1)
                 innerstack.append(y)
                 stack.append(innerstack)
-        return img
+        return (img, pixelcounter)
     
-    def floodfindNeighbours(self, x, y, oldValue, newValue, img):
-        stackOfNeighbours = []
-        stack = []
-        innerstack = []
-        innerstack.append(x)
-        innerstack.append(y)
-        stack.append(innerstack)
-        while not (len(stack) == 0): # list empty
-            (x, y) = stack.pop()
-            if img[x][y] == oldValue:
-                img[x][y] = newValue
-                self.numbpix += 1
-                innerstack = []
-                innerstack.append(x)
-                innerstack.append(y+1)
-                stack.append(innerstack)
-                innerstack = []
-                innerstack.append(x)
-                innerstack.append(y-1)
-                stack.append(innerstack)
-                innerstack = []
-                innerstack.append(x+1)
-                innerstack.append(y)
-                stack.append(innerstack)
-                innerstack = []
-                innerstack.append(x-1)
-                innerstack.append(y)
-                stack.append(innerstack)
-            else:
-                stackOfNeighbours.append(img[x][y])
-        return stackOfNeighbours
+#     def floodfindNeighbours(self, x, y, oldValue, newValue, img):
+#         newImg = img.copy()
+#         stackOfNeighbours = []
+#         stack = []
+#         innerstack = []
+#         innerstack.append(x)
+#         innerstack.append(y)
+#         stack.append(innerstack)
+#         while not (len(stack) == 0): # list empty
+#             (x, y) = stack.pop()
+#             if img[x][y] == oldValue:
+#                 img[x][y] = newValue
+#                 self.numbpix += 1
+#                 innerstack = []
+#                 innerstack.append(x)
+#                 innerstack.append(y+1)
+#                 stack.append(innerstack)
+#                 innerstack = []
+#                 innerstack.append(x)
+#                 innerstack.append(y-1)
+#                 stack.append(innerstack)
+#                 innerstack = []
+#                 innerstack.append(x+1)
+#                 innerstack.append(y)
+#                 stack.append(innerstack)
+#                 innerstack = []
+#                 innerstack.append(x-1)
+#                 innerstack.append(y)
+#                 stack.append(innerstack)
+#             else:
+#                 if not img[x][y] == newValue:
+#                     stackOfNeighbours.append(img[x][y])
+#         return stackOfNeighbours
 
 if __name__ == '__main__':
     rospy.init_node('map_tesselation_node', anonymous=False)

@@ -179,7 +179,9 @@ class MapPublisher(object):
                 #print listOfColLab.index(value)
                 #pix_col = listOfColLab[listOfColLab[0].index(value)][:]
                 cv_enc_img[h,w,:] = pix_col
+        
         cv_enc_img_msg = self.bridge.cv2_to_imgmsg(cv_enc_img, "bgr8")
+        
         return cv_enc_img_msg
 
     def saveLogImage(self, img):

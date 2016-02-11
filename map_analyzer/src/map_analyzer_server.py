@@ -130,14 +130,63 @@ class MapAnalyzerServer(object):
 #         col_map = self.convertSegmentedMap(segmented_map_response)
         answer2 = self.serviceMapPublisherClient(segmented_map_response.segmented_map)
         print answer2
+        print "listOfTransitions after room_segmentation"
+        listOfTransitions = self.getListOfTransitions(segmented_map_response.segmented_map)
+        print "============================== List of Room transitions ========================="
+        print listOfTransitions
         
-        print "send map to tesselation server"
-        answer3 = self.serviceMapTesselationClient(segmented_map_response.segmented_map)
-        print answer3
+        #print "send map to tesselation server"
+        #answer3 = self.serviceMapTesselationClient(segmented_map_response.segmented_map)
+        #print answer3
         
         response = MapAnalyzerResponse()
-        response.answer.data = "saftige Map Antwort!"
+        response.answer.data = listOfTransitions
         return response
+    
+    def getListOfTransitions(self, map_img):
+        cv_img = self.bridge.imgmsg_to_cv2(map_img, desired_encoding="passthrough").copy()
+        cv_img[cv_img==65280]=0
+        listOfRooms = []
+        listOfRoomInformations = []
+        
+        for w in range (0, cv_img.shape[1], 1):
+            for h in range (0, cv_img.shape[0], 1):
+                if not cv_img[h][w] == 0:
+                    if not cv_img[h][w] == 65280:
+                        if not cv_img[h][w] in listOfRooms:
+                            pixelcounter = 0
+                            newValue = numpy.max(cv_img)+1
+                            oldValue = cv_img[h][w]
+                            (cv_img, pixelcounter, listOfTransitions) = self.floodfill4(h, w, oldValue, newValue, cv_img, pixelcounter)
+                            (cv_img, pixelcounter, listOfSaft) = self.floodfill4(h, w, newValue, oldValue, cv_img, pixelcounter)
+                            print "added room with number= %d" % oldValue
+                            print "this room has transitions to"
+                            print listOfTransitions
+                            listOfRooms.append(oldValue)
+                            listOfSingleTransitions = []
+                            for trans in listOfTransitions:
+                                if trans not in listOfSingleTransitions:
+                                    listOfSingleTransitions.append(trans)
+                            listOfRoomInformations.append((oldValue, listOfSingleTransitions))
+        listOfTransAsStrings = []
+        print "listOfSingleTransitions"
+        print listOfRoomInformations
+        # translate to stringlist:
+        for (rooms, transitions) in listOfRoomInformations:
+            trans_as_string = []
+            for trans in transitions:
+                trans_as_string.append("room-"+str(trans))
+            listOfTransAsStrings.append(("room-"+str(rooms) , trans_as_string))
+        
+        # translate to string:
+        stringOfTransitions = ""
+        for (room, transi) in listOfTransAsStrings:
+            stringOfTransitions += room+" "
+            for tra in transi:
+                stringOfTransitions += tra+" "
+            stringOfTransitions += "\n"
+        #stringOfTransitions = str(" ").join(map(str, listOfInput))
+        return stringOfTransitions
     
     def convertSegmentedMap(self, seg_map_as_index_map):
 
@@ -245,6 +294,82 @@ class MapAnalyzerServer(object):
         
         return solution
         
+    def floodfill4(self, x, y, oldValue, newValue, img, pixelcounter):
+        stack = []
+        innerstack = []
+        neighborColorList = []
+        innerstack.append(x)
+        innerstack.append(y)
+        stack.append(innerstack)
+        while not (len(stack) == 0): # list empty
+            (x, y) = stack.pop()
+            if img[x][y] == oldValue:
+                img[x][y] = newValue
+                pixelcounter += 1
+                innerstack = []
+                innerstack.append(x)
+                innerstack.append(y+1)
+                stack.append(innerstack)
+                innerstack = []
+                innerstack.append(x)
+                innerstack.append(y-1)
+                stack.append(innerstack)
+                innerstack = []
+                innerstack.append(x+1)
+                innerstack.append(y)
+                stack.append(innerstack)
+                innerstack = []
+                innerstack.append(x-1)
+                innerstack.append(y)
+                stack.append(innerstack)
+            # if the color is not black save the color in a list
+            if not (img[x][y] == 0) and not (img[x][y] == oldValue) and not (img[x][y] == newValue):
+                neighborColorList.append(img[x][y])
+                
+        return (img, pixelcounter, neighborColorList)
+    
+    '''
+    TODO: Delete this: This is just for debugging!
+    '''
+    def encodeImage(self, img_msg):
+        cv_img = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough").copy()
+        cv_enc_img = numpy.zeros((cv_img.shape[0], cv_img.shape[1] , 3), numpy.uint8) # BGR
+        
+        listOfDifColors = []
+        for w in range (0, cv_img.shape[1], 1):
+            for h in range(0, cv_img.shape[0], 1):
+                colorvalue = cv_img[h][w]
+                if colorvalue not in listOfDifColors:
+                    listOfDifColors.append(colorvalue)
+        print listOfDifColors
+        print "colorade labes:"
+        listOfColLab = []
+        for lab in listOfDifColors:
+            labcol = []
+            labcol.append(lab)
+            if lab == 65280:
+                col = [255,255,255]
+            elif lab == 0:
+                col = [0,0,0]
+            else:
+                col = self.colorlist.pop()
+            labcol.append(col)
+            listOfColLab.append(labcol)
+        print listOfColLab
+        
+        pix_col = [255,255,255]
+        for w in range (0, cv_img.shape[1], 1):
+            for h in range (0, cv_img.shape[0], 1):
+                value = cv_img[h][w]
+                #print "listOfColLab index value:"
+                
+                for item in listOfColLab:
+                    if value == item[0]:
+                        pix_col = item[1]
+                    
+                #print listOfColLab.index(value)
+                #pix_col = listOfColLab[listOfColLab[0].index(value)][:]
+                cv_enc_img[h,w,:] = pix_col
         
 if __name__ == '__main__':
     rospy.init_node('map_analyzer_server_node', anonymous=False)

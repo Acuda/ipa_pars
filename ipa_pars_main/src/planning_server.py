@@ -72,6 +72,7 @@ from sensor_msgs.msg._Image import Image
 import sensor_msgs.msg
 from map_analyzer.srv import MapAnalyzer
 from cob_srvs.srv._SetString import SetString
+from map_analyzer.srv._MapAnalyzer import MapAnalyzerResponse
 
 
 class ParsServer(object):
@@ -129,24 +130,29 @@ class ParsServer(object):
         # change herer TODO:
         #===========================
         # robot stuff here
-        success = self.sendImageToMapAnalyzerServer()
-        
-        room_informatio_text = "this is my room information"
-        answer1 = self.room_info_client(room_informatio_text)
+        #room_information = self.sendImageToMapAnalyzerServer()
+        room_information = MapAnalyzerResponse()
+        room_information.answer.data = "room-7 room-6\nroom-5 room-2\nroom-1 room-2\nroom-6 room-2 room-7 room-8\nroom-2 room-5 room-1 room-6 room-4 room-3\nroom-4 room-2\nroom-3 room-2\nroom-9 room-8\nroom-8 room-9 room-6\n"
+        #room_information_text = "this is my room information"
+        # MapAnalzyerResponse() to cob_srvs/SetString
+        #room_info = SetString()
+        #room_info.data = room_informtation.answer.data
+        answer1 = self.room_info_client(room_information.answer.data)
         print answer1
-        planning_goal_text = "this is my goal information"
+        planning_goal_text = str(goal.goal_type)+" "+str(goal.what)+" "+goal.where
         answer2 = self.planning_goal_server(planning_goal_text)
         print answer2
         planning_domain_text = "this is my domain information"
         answer3 = self.planning_domain_server(planning_domain_text)
         print answer3
-        
+        print "i am sleeping now"
+        success = True
         rospy.sleep(5)
         #===========================
         if self._as.is_preempt_requested():
             rospy.loginfo('%s: Preempted' % 'pars_server')
             success = False
-            
+        
         
         r.sleep()
         

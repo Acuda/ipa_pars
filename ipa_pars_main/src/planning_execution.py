@@ -77,12 +77,12 @@ from cob_srvs.srv._SetString import SetStringResponse
 class PlanExecution(object):
     def __init__(self):
         rospy.loginfo("Initialize PlanExecution ...")
-
+        
         self.execution_srv = rospy.Service('planning_execution_service_server', SetString, self.handle_execution_cb)
         
         rospy.logwarn("Waiting for execution_demo_service_server to come available ...")
         rospy.wait_for_service('execution_demo_service_server')
-        rospy.logwarn("Server online!")
+        rospy.logwarn("execution_demo_service_server Server online!")
         try:
             self.execution_service_client = rospy.ServiceProxy('execution_demo_service_server', SetString)
         except rospy.ServiceException, e:
@@ -98,7 +98,6 @@ class PlanExecution(object):
         plan_as_list = plan_as_text.data.splitlines()
         print "plan_as_list"
         print plan_as_list
-
         for lin_goal in plan_as_list:
             print lin_goal
             answer = self.execution_service_client(lin_goal)
