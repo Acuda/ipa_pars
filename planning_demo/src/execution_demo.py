@@ -88,7 +88,7 @@ class ExecutionDemo(object):
         print goal.data
 
         response = SetStringResponse()
-        if (goal.data == " (look-at cob4-1 the-cake room-8"):
+        if (goal.data == " (move-robo-to cob4-1 room-10 room-6)"):
             response.success = False
         else:
             response.success = True

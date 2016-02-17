@@ -1,0 +1,5 @@
+std_msgs/String goal_data
+std_msgs/String room_data
+std_msgs/String domain_data
+---
+std_msgs/String answer

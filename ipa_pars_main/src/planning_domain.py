@@ -75,10 +75,8 @@ from cob_srvs.srv._SetString import SetStringResponse
 
 
 class PlanDomainClass(object):
-    def __init__(self, path_to_inputfile):
+    def __init__(self):
         rospy.loginfo("Initialize PlanDomainClass ...")
-        self.path_to_inputfile = path_to_inputfile
-        rospy.loginfo(path_to_inputfile)
         self.domain_srv = rospy.Service('planning_domain_server', SetString, self.handle_domain_cb)
         self.domain_info = ""
         
@@ -96,7 +94,7 @@ class PlanDomainClass(object):
     def handle_domain_cb(self, domain_info):
         print "domain_info"
         print domain_info
-        self.domain_info = self.generate_debug_domain()
+        self.domain_info = domain_info
         print self.domain_info
         
         answer = self.domain_solver_client(self.domain_info)
@@ -108,21 +106,9 @@ class PlanDomainClass(object):
         
         return response
     
-    def generate_debug_domain(self):
-        print "read input file"
-        listOfInput = []
-        try:
-            fileObject = open(self.path_to_inputfile+"domain.pddl", "r")
-            with fileObject as listOfText:
-                listOfInput = listOfText.readlines()
-            fileObject.close()
-        except IOError:
-            rospy.loginfo("open file failed or readLine error")
-        StringOfObjects = str(" ").join(map(str, listOfInput))
-        domain_text = StringOfObjects
-        return domain_text
+
 
 if __name__ == '__main__':
     rospy.init_node('planning_domain_node', anonymous=False)
-    pDC = PlanDomainClass(sys.argv[1])
+    pDC = PlanDomainClass()
     rospy.spin()

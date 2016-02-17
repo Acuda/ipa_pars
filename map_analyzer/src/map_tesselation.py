@@ -74,7 +74,6 @@ import actionlib
 from map_analyzer.srv import MapAnalyzer
 from map_analyzer.srv._MapAnalyzer import MapAnalyzerResponse, MapAnalyzerRequest
 import sensor_msgs
-from gi.overrides.Gdk import Color
 
 
 class MapTesselation(object):
@@ -93,7 +92,7 @@ class MapTesselation(object):
         self.bridge = CvBridge()
         self.numbpix = 0
         # change alogrithm to one that fits best to the rooms?
-        self.squaresize = 60
+        self.squaresize = 40
         rospy.loginfo("... finished")
         
     def handle_map_cb(self, input_map):
@@ -101,7 +100,12 @@ class MapTesselation(object):
         print input_map.map.header
         print "encoding"
         print input_map.map.encoding
-        cv_img = self.bridge.imgmsg_to_cv2(input_map.map, desired_encoding="passthrough").copy()
+        if input_map.map.encoding == "32SC1":
+            cv_img = self.bridge.imgmsg_to_cv2(input_map.map, desired_encoding="passthrough").copy()
+        elif input_map.map.encoding == "rgb8":
+            cv_img = self.bridge.imgmsg_to_cv2(input_map.map, desired_encoding="mono16")
+            #cv2.imshow("output", cv_img)
+            #cv2.waitKey()
         cv_img = self.tesselateMap(cv_img)
         # create new sensor_msgs/Image:
         output = Image()
@@ -120,26 +124,42 @@ class MapTesselation(object):
 
     def tesselateMap(self, map_img):
         newMap = map_img
+        #cv2.imshow("output", newMap)
+        #cv2.waitKey(1)
+        print "listOfColors"
+        print self.debugmakeListOfColors(newMap)
         print "deleteWhitePixel"
         newMap = self.deleteWhitePixels(newMap)
-        print "makeListOfAreasAndPixels and delete"
-        newMap = self.makeListOfAreasAndPixels(newMap)
+        #cv2.imshow("output", newMap)
+        #cv2.waitKey(1)
+        #print "makeListOfAreasAndPixels and delete"
+        #newMap = self.makeListOfAreasAndPixels(newMap)
+        #cv2.imshow("output", newMap)
+        #cv2.waitKey(1)
         # room preparation done
-        print "room preparation done"
-        print "send to publisher"
-        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
+        #print "room preparation done"
+        #print "send to publisher"
+        #cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
         
-        answer = self.serviceMapPublisherClient(cv_enc_img_msg)
-        print answer
+        #answer = self.serviceMapPublisherClient(cv_enc_img_msg)
+        #print answer
         print "draw squares"
         newMap = self.createSquares(newMap)
+        #cv2.imshow("output", newMap)
+        #cv2.waitKey(1)
         print "fill squares"
         newMap = self.fillSquares(newMap)
+        #cv2.imshow("output", newMap)
+        #cv2.waitKey(1)
         print "deleteSquaresHorizontal"
         newMap = self.deleteSquaresHorizontal(newMap)
+        #cv2.imshow("output", newMap)
+        #cv2.waitKey(1)
         print "deleteSuqaresVertical"
         newMap = self.deleteSquaresVertical(newMap)
-        print "mergeSmallAreas"
+        #cv2.imshow("output", newMap)
+        #cv2.waitKey(1)
+        #print "mergeSmallAreas"
         #print listOfAreasAndPix
         #newMap = self.deleteDoubleAreas(newMap)
         #newMap = self.correctSmallAreas(map_img)
@@ -164,6 +184,15 @@ class MapTesselation(object):
                 if map_img[h][w] == 65280:
                     map_img[h][w] = 0
         return map_img
+
+    def debugmakeListOfColors(self, map_img):
+        listOfColors = []
+        for w in range (0, map_img.shape[1], 1):
+            for h in range (0, map_img.shape[0], 1):
+                if not map_img[h][w][0] in listOfColors:
+                    listOfColors.append(map_img[h][w][0])
+        return listOfColors
+    
     
     def makeListOfAreasAndPixels(self, map_img):
         listOfAreasAndPixels = []
@@ -186,6 +215,7 @@ class MapTesselation(object):
         
         print listOfAreasAndPixels
         return map_img
+
 
 #     def mergeSmallAreas(self, map_img, listOfAreas):
 #         newMap = map_img
@@ -216,14 +246,14 @@ class MapTesselation(object):
         newMap = map_img
         for w in range (0, newMap.shape[1], 1):
             for h in range (0, newMap.shape[0], 1):
-                if newMap[h][w] == 65220:
+                if newMap[h][w] == 65534:
 #                     if not newMap[h-1][w] == 0 or newMap[h-1][w] == 65220:
 #                         newMap[h][w] = newMap[h-1][w]
 #                     elif not newMap[h+1][w] == 0 or newMap[h+1][w] == 65220:
 #                         newMap[h][w] = newMap[h+1][w]
-                    if not newMap[h][w+1] == 0 or newMap[h][w+1] == 65220:
+                    if not newMap[h][w+1] == 0 or newMap[h][w+1] == 65534:
                         newMap[h][w] = newMap[h][w+1]
-                    elif not newMap[h][w-1] == 0 or newMap[h][w-1] == 65220:
+                    elif not newMap[h][w-1] == 0 or newMap[h][w-1] == 65534:
                         newMap[h][w] = newMap[h][w-1]
         return newMap
 #     
@@ -231,10 +261,10 @@ class MapTesselation(object):
         newMap = map_img
         for w in range (0, newMap.shape[1], 1):
             for h in range (0, newMap.shape[0], 1):
-                if newMap[h][w] == 65221:
-                    if not newMap[h-1][w] == 0 or newMap[h-1][w] == 65221:
+                if newMap[h][w] == 65535:
+                    if not newMap[h-1][w] == 0 or newMap[h-1][w] == 65535:
                         newMap[h][w] = newMap[h-1][w]
-                    elif not newMap[h+1][w] == 0 or newMap[h+1][w] == 65221:
+                    elif not newMap[h+1][w] == 0 or newMap[h+1][w] == 652535:
                         newMap[h][w] = newMap[h+1][w]
 #                     elif not newMap[h][w+1] == 0 or newMap[h][w+1] == 65221:
 #                         newMap[h][w] = newMap[h][w+1]
@@ -246,12 +276,12 @@ class MapTesselation(object):
     def fillSquares(self, map_img):
         newMap = map_img
         color = 0
-        counter = 1
+        counter = 1 # Algo endlich so schreiben, dass die Farben richtig zugeteilt werden! Raumzugehoerigkeit und Squares koennen auch aus zwei verschiendenen Nachrichten extrahiert werden!
         workedOnColors = []
         for w in range (0, newMap.shape[1], 1):
             for h in range (0, newMap.shape[0], 1):
                 if not newMap[h][w] == 0:
-                    if not newMap[h][w] == 65220 and not newMap[h][w] == 65221:
+                    if not newMap[h][w] == 65535 and not newMap[h][w] == 65534:
                         if color == 0:
                             color = newMap[h][w] * 1000
                         if not newMap[h][w] in workedOnColors:
@@ -267,12 +297,12 @@ class MapTesselation(object):
         for w in range (0, room_img.shape[1], 1):
             for h in range (0, room_img.shape[0], self.squaresize):
                 if not room_img[h][w] == 0:
-                    room_img[h][w] = 65221
+                    room_img[h][w] = 65535
          
         for w in range (0, room_img.shape[1],  self.squaresize):
             for h in range (0, room_img.shape[0], 1):
                 if not room_img[h][w] == 0:
-                    room_img[h][w] = 65220
+                    room_img[h][w] = 65534
          
         return room_img
 #     

@@ -122,25 +122,26 @@ class MapAnalyzerServer(object):
         print "answer of pass through publisher call"
         print answer
         
-        segmented_map_response = self.useRoomSegmentation(input_map)
-        print "we received a segmented map:"
-        print "its resolution is:"
-        print segmented_map_response.map_resolution
+        #segmented_map_response = self.useRoomSegmentation(input_map)
+        #print "we received a segmented map:"
+        #print "its resolution is:"
+        #print segmented_map_response.map_resolution
         
 #         col_map = self.convertSegmentedMap(segmented_map_response)
-        answer2 = self.serviceMapPublisherClient(segmented_map_response.segmented_map)
-        print answer2
-        print "listOfTransitions after room_segmentation"
-        listOfTransitions = self.getListOfTransitions(segmented_map_response.segmented_map)
-        print "============================== List of Room transitions ========================="
-        print listOfTransitions
+        #answer2 = self.serviceMapPublisherClient(segmented_map_response.segmented_map)
+        #print answer2
+        #print "listOfTransitions after room_segmentation"
+        #listOfTransitions = self.getListOfTransitions(segmented_map_response.segmented_map)
+        #print "============================== List of Room transitions ========================="
+        #print listOfTransitions
         
-        #print "send map to tesselation server"
+        print "send map to tesselation server"
         #answer3 = self.serviceMapTesselationClient(segmented_map_response.segmented_map)
-        #print answer3
+        answer3 = self.serviceMapTesselationClient(input_map)
+        print answer3
         
         response = MapAnalyzerResponse()
-        response.answer.data = listOfTransitions
+        #response.answer.data = listOfTransitions
         return response
     
     def getListOfTransitions(self, map_img):

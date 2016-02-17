@@ -91,8 +91,8 @@ class MapPublisher(object):
         #for image conversion:
         self.colorlist = []
         self.colorScale = 10
-        self.colorlist = color_utils_cme.randomColor(self.colorScale)
-        self.colorlist = color_utils_cme.shuffle_list(self.colorlist)
+        self.colorlist = color_utils_cme.listColor(self.colorScale)
+        #self.colorlist = color_utils_cme.shuffle_list(self.colorlist)
         self.usedColors = []
         self.counter = 0
         rospy.loginfo("... finished")
@@ -104,6 +104,9 @@ class MapPublisher(object):
         print input_map.map.encoding
         response = MapAnalyzerResponse()
         if input_map.map.encoding == "32SC1":
+            self.img_map = self.encodeImage(input_map.map)
+            self.saveLogImage(self.img_map)
+        elif input_map.map.encoding == "16UC1":
             self.img_map = self.encodeImage(input_map.map)
             self.saveLogImage(self.img_map)
         else:

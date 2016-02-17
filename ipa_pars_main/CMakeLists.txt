@@ -12,6 +12,9 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   actionlib
   actionlib_msgs
+  genmsg
+  message_generation
+  roscpp
 )
 
 ## System dependencies are found with CMake's conventions
@@ -55,11 +58,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+add_service_files(
+   FILES
+   PlanData.srv
+ )
 
 ## Generate actions in the 'action' folder
  add_action_files(
@@ -107,7 +109,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ipa_pars_main
-  CATKIN_DEPENDS rospy std_msgs cob_srvs cmake_modules sensor_msgs
+  CATKIN_DEPENDS rospy std_msgs cob_srvs cmake_modules sensor_msgs roscpp message_runtime
   DEPENDS system_lib
 )
 

@@ -73,34 +73,53 @@ import actionlib
 from cob_srvs.srv._SetString import SetString
 from cob_srvs.srv._SetString import SetStringResponse
 
+from ipa_pars_main.srv._PlanData import PlanData, PlanDataResponse, PlanDataRequest
 
 class PlanningController(object):
     def __init__(self):
         rospy.loginfo("Initialize PlanningController ...")
-        self.controller_srv = rospy.Service('planning_controller_server', SetString, self.handle_controller_cb)
-        
-        rospy.logwarn("Waiting for planning_solver_domain_server to come available ...")
+        self.controller_srv = rospy.Service('planning_controller_server', PlanData, self.handle_controller_cb)
+        rospy.logwarn("Waiting for room_information_server to come available ...")
+        rospy.wait_for_service('room_information_server')
+        rospy.logwarn("Server online!")
+        rospy.logwarn("Waiting for planning_goal_server to come available ...")
+        rospy.wait_for_service('planning_goal_server')
+        rospy.logwarn("Server online!")
+        rospy.logwarn("Waiting for planning_domain_server to come available ...")
         rospy.wait_for_service('planning_domain_server')
         rospy.logwarn("Server online!")
         try:
-            self.domain_server_client = rospy.ServiceProxy('planning_domain_server', SetString)
+            self.room_info_client = rospy.ServiceProxy('room_information_server', SetString)
         except rospy.ServiceException, e:
             print "Service call failed: %s"%e
-        
+        try:
+            self.planning_goal_server = rospy.ServiceProxy('planning_goal_server', SetString)
+        except rospy.ServiceException, e:
+            print "Service call failed: %s"%e
+        try:
+            self.planning_domain_server = rospy.ServiceProxy('planning_domain_server', SetString)
+        except rospy.ServiceException, e:
+            print "Service call faield: %s"%e
         rospy.loginfo("PlanningController is running, waiting for new problems to control ...")
         rospy.loginfo("... finished")
         
     def handle_controller_cb(self, controller_info):
         print "controller_info"
         print controller_info
-
+        #==========================================================
+        answer1 = self.room_info_client(controller_info.room_data.data)
+        print answer1
+        answer2 = self.planning_goal_server(controller_info.goal_data.data)
+        print answer2
+        answer3 = self.planning_domain_server(controller_info.domain_data.data)
+        print answer3
+        #==============================================
         
-        answer = self.domain_server_client("whatever")
+        #answer = self.domain_server_client("whatever")
         
-        print answer
-        response = SetStringResponse()
-        response.success = True
-        response.message = "ErrorAnswer"
+        #print answer
+        response = PlanDataResponse()
+        response.answer.data = "Antwort vom Controller"
         
         return response
 

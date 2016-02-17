@@ -101,9 +101,8 @@ class PlanProblemClass(object):
         print informations
         #self.room_info = self.generate_debug_problem()
         #print self.room_info
-        self.listOfInput = informations.data.splitlines()
-        print "listOfInput"
-        print self.listOfInput
+        self.room_info = informations.data.splitlines()
+
         self.room_info_available = True
 
 
@@ -210,6 +209,8 @@ class PlanProblemClass(object):
         listOfLines.append("\n\t ;;; hard coded definitions")
         listOfLines.append("\t\t(is-robo cob4-1)")
         listOfLines.append("\t\t(at the-cake room-9)")
+        # test with two cake locations!
+        listOfLines.append("\t\t(at the-cake room-8)")
         listOfLines.append("\t\t(at cob4-1 room-1)")
         listOfLines.append("\t)")
         listOfLines.append("\n")
@@ -228,10 +229,15 @@ class PlanProblemClass(object):
         
 
     def run(self):
-        r = rospy.Rate(10)
+        r = rospy.Rate(1)
+        #print self.goal_available
+        #print self.goal_info
+        #print self.room_info_available
+        #print self.room_info
+        
         if (self.goal_available) and (self.room_info_available):
             if not self.goal_info == "" and not self.room_info == "":
-                linesAsList = self.assembleProblemFileText(self.listOfInput)
+                linesAsList = self.assembleProblemFileText(self.room_info)
                 linesAsList = self.appendGoalDefinition(linesAsList, self.goal_info)
                 print "linesAsString"
                 linesAsString = ("\n").join(linesAsList)

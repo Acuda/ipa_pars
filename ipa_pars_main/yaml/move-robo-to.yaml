@@ -1,0 +1,13 @@
+# action definition file
+# create 16.02.2016
+name: move-robo-to
+requirements: strips
+predicates: [is-robo, at, transition]
+parameters: [who, from, to]
+iffail:
+        -delete: [transition from to]
+---
+(: action move-robo-to
+        :parameters (?who ?from ?to)
+        :precondition (and:wq
+

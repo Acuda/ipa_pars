@@ -73,15 +73,18 @@ import sensor_msgs.msg
 from map_analyzer.srv import MapAnalyzer
 from cob_srvs.srv._SetString import SetString
 from map_analyzer.srv._MapAnalyzer import MapAnalyzerResponse
+from ipa_pars_main.srv._PlanData import PlanData, PlanDataRequest
 
 
 class ParsServer(object):
     _feedback = ipa_pars_main.msg.LogicPlanFeedback()
     _result = ipa_pars_main.msg.LogicPlanResult()
-    def __init__(self, path_to_map):
+    def __init__(self, path_to_map, path_to_domain):
         rospy.loginfo("Initialize ParsServer ...")
         self._path_to_map = path_to_map
+        self._path_to_domain = path_to_domain
         rospy.loginfo("path_to_map: %s" % path_to_map)
+        rospy.loginfo("path_to_domain: %s" % path_to_domain)
         rospy.loginfo("Reading map from disk ...")
         self.input_map = cv2.imread(self._path_to_map, cv2.IMREAD_COLOR)
         rospy.loginfo("converting map to sensor_msg ...")
@@ -91,29 +94,14 @@ class ParsServer(object):
         rospy.logwarn("Waiting for map_analyzer_service_server to come available ...")
         rospy.wait_for_service('map_analyzer_service_server')
         rospy.logwarn("Server online!")
-        rospy.logwarn("Waiting for room_information_server to come available ...")
-        rospy.wait_for_service('room_information_server')
-        rospy.logwarn("Server online!")
-        rospy.logwarn("Waiting for planning_goal_server to come available ...")
-        rospy.wait_for_service('planning_goal_server')
-        rospy.logwarn("Server online!")
-        rospy.logwarn("Waiting for planning_domain_server to come available ...")
-        rospy.wait_for_service('planning_domain_server')
+        rospy.wait_for_service('planning_controller_server')
         rospy.logwarn("Server online!")
         try:
             self.serviceClient = rospy.ServiceProxy('map_analyzer_service_server', MapAnalyzer)
         except rospy.ServiceException, e:
             print "Service call failed: %s"%e
         try:
-            self.room_info_client = rospy.ServiceProxy('room_information_server', SetString)
-        except rospy.ServiceException, e:
-            print "Service call failed: %s"%e
-        try:
-            self.planning_goal_server = rospy.ServiceProxy('planning_goal_server', SetString)
-        except rospy.ServiceException, e:
-            print "Service call failed: %s"%e
-        try:
-            self.planning_domain_server = rospy.ServiceProxy('planning_domain_server', SetString)
+            self.planning_controller_server = rospy.ServiceProxy('planning_controller_server', PlanData)
         except rospy.ServiceException, e:
             print "Service call faield: %s"%e
         
@@ -130,21 +118,26 @@ class ParsServer(object):
         # change herer TODO:
         #===========================
         # robot stuff here
-        #room_information = self.sendImageToMapAnalyzerServer()
-        room_information = MapAnalyzerResponse()
-        room_information.answer.data = "room-7 room-6\nroom-5 room-2\nroom-1 room-2\nroom-6 room-2 room-7 room-8\nroom-2 room-5 room-1 room-6 room-4 room-3\nroom-4 room-2\nroom-3 room-2\nroom-9 room-8\nroom-8 room-9 room-6\n"
-        #room_information_text = "this is my room information"
-        # MapAnalzyerResponse() to cob_srvs/SetString
-        #room_info = SetString()
-        #room_info.data = room_informtation.answer.data
-        answer1 = self.room_info_client(room_information.answer.data)
-        print answer1
-        planning_goal_text = str(goal.goal_type)+" "+str(goal.what)+" "+goal.where
-        answer2 = self.planning_goal_server(planning_goal_text)
-        print answer2
-        planning_domain_text = "this is my domain information"
-        answer3 = self.planning_domain_server(planning_domain_text)
-        print answer3
+        room_information = self.sendImageToMapAnalyzerServer()
+        #room_information = MapAnalyzerResponse()
+        #room_information.answer.data = "room-1 room-2\nroom-2 room-1 room-3 room-4 room-5 room-10\nroom-3 room-2\nroom-4 room-2\nroom-5 room-2\nroom-6 room-7 room-10 room-11\nroom-7 room-10 room-11\nroom-8 room-9 room-11\nroom-9 room-8\nroom-10 room-2 room-6 room-7\nroom-11 room-6 room-7 room-8"
+
+        #controller_request = PlanDataRequest()
+        #controller_request.goal_data.data = str(goal.goal_type)
+        #controller_request.room_data.data = room_information.answer.data
+        #controller_request.domain_data.data = self.generate_debug_domain()
+        #answer0 = self.planning_controller_server(controller_request)
+        #print answer0
+        #==========================================================
+        #answer1 = self.room_info_client(room_information.answer.data)
+        #print answer1
+        #planning_goal_text = str(goal.goal_type)+" "+str(goal.what)+" "+goal.where
+        #answer2 = self.planning_goal_server(planning_goal_text)
+        #print answer2
+        #planning_domain_text = "this is my domain information"
+        #answer3 = self.planning_domain_server(planning_domain_text)
+        #print answer3
+        #==============================================
         print "i am sleeping now"
         success = True
         rospy.sleep(5)
@@ -160,7 +153,8 @@ class ParsServer(object):
             self._result.success = True
             rospy.loginfo("Succeeded the Logic Plan")
             self._as.set_succeeded(self._result, "good job")
-            
+    
+        
     def sendImageToMapAnalyzerServer(self):
         # TODO: add header and other meta data to message!
         img_msg_typ = Image()
@@ -180,8 +174,22 @@ class ParsServer(object):
         print "answer"
         print answer
         return answer
+    
+    def generate_debug_domain(self):
+        print "read input file"
+        listOfInput = []
+        try:
+            fileObject = open(self._path_to_domain+"domain.pddl", "r")
+            with fileObject as listOfText:
+                listOfInput = listOfText.readlines()
+            fileObject.close()
+        except IOError:
+            rospy.loginfo("open file failed or readLine error")
+        StringOfObjects = str(" ").join(map(str, listOfInput))
+        domain_text = StringOfObjects
+        return domain_text
 
 if __name__ == '__main__':
     rospy.init_node('planning_server', anonymous=False)
-    pARS = ParsServer(sys.argv[1])
+    pARS = ParsServer(sys.argv[1], sys.argv[2])
     rospy.spin()

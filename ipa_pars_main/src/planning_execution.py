@@ -102,6 +102,9 @@ class PlanExecution(object):
             print lin_goal
             answer = self.execution_service_client(lin_goal)
             print answer
+            if not answer.success:
+                print "execution of command failed: we need a new plan!"
+                break
             
         response = SetStringResponse()
         response.success = True

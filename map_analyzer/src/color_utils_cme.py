@@ -47,3 +47,16 @@ def randomColor(scale):
                 colorlist.append(color)
     print str(len(colorlist))+" colors added"
     return colorlist
+
+def listColor(scale):
+    colorlist = []
+    for i in range(30, 240, scale):
+        for j in range(30, 240, scale):
+            for k in range(30,240, scale):
+                color = []
+                color.append(i)
+                color.append(j)
+                color.append(k)
+                colorlist.append(color)
+    print str(len(colorlist))+" colors added"
+    return colorlist
