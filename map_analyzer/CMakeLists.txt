@@ -61,6 +61,7 @@ find_package(catkin REQUIRED COMPONENTS genmsg actionlib_msgs)
  add_service_files(
    FILES
    MapAnalyzer.srv
+   RoomTesselation.srv
 )
 
 ## Generate actions in the 'action' folder

@@ -75,6 +75,9 @@ import actionlib
 # Important notice: class and/or filename must not be same package name!
 from map_analyzer.srv import MapAnalyzer
 from map_analyzer.srv._MapAnalyzer import MapAnalyzerResponse, MapAnalyzerRequest
+
+from map_analyzer.srv import RoomTesselation
+from map_analyzer.srv._RoomTesselation import RoomTesselationResponse, RoomTesselationRequest
 import ipa_room_segmentation
 from ipa_room_segmentation.msg._MapSegmentationAction import *
 from geometry_msgs.msg import Pose
@@ -104,7 +107,7 @@ class MapAnalyzerServer(object):
         rospy.wait_for_service('map_tesselation_service_server')
         rospy.logwarn("Server online!")
         try:
-            self.serviceMapTesselationClient = rospy.ServiceProxy('map_tesselation_service_server', MapAnalyzer)
+            self.serviceMapTesselationClient = rospy.ServiceProxy('map_tesselation_service_server', RoomTesselation)
         except rospy.ServiceException, e:
             print "Service call failed: %s"%e
         
@@ -137,8 +140,18 @@ class MapAnalyzerServer(object):
         
         print "send map to tesselation server"
         #answer3 = self.serviceMapTesselationClient(segmented_map_response.segmented_map)
-        answer3 = self.serviceMapTesselationClient(input_map)
-        print answer3
+        #request = RoomTesselationRequest()
+        #request.room_map = input_map
+        answer3 = self.serviceMapTesselationClient(input_map.map)
+        print answer3.tesselated_rooms.encoding
+        
+        print "listOfTransitions after room_tesselation"
+        print "map encoding after tesselation"
+        #print input_map.map.encoding
+        
+        listOfTransitions = self.getListOfTransitions(answer3.tesselated_rooms)
+        print "============================== List of Room transitions ========================="
+        print listOfTransitions
         
         response = MapAnalyzerResponse()
         #response.answer.data = listOfTransitions

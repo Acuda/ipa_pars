@@ -92,7 +92,7 @@ class MapPublisher(object):
         self.colorlist = []
         self.colorScale = 10
         self.colorlist = color_utils_cme.listColor(self.colorScale)
-        #self.colorlist = color_utils_cme.shuffle_list(self.colorlist)
+        self.colorlist = color_utils_cme.shuffle_list(self.colorlist)
         self.usedColors = []
         self.counter = 0
         rospy.loginfo("... finished")

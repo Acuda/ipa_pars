@@ -73,13 +73,15 @@ import actionlib
 
 from map_analyzer.srv import MapAnalyzer
 from map_analyzer.srv._MapAnalyzer import MapAnalyzerResponse, MapAnalyzerRequest
+from map_analyzer.srv import RoomTesselation
+from map_analyzer.srv._RoomTesselation import RoomTesselationResponse, RoomTesselationRequest
 import sensor_msgs
 
 
 class MapTesselation(object):
     def __init__(self):
         rospy.loginfo("Initialize MapTesselation ...")
-        self.map_srvs = rospy.Service('map_tesselation_service_server', MapAnalyzer, self.handle_map_cb)
+        self.map_srvs = rospy.Service('map_tesselation_service_server', RoomTesselation, self.handle_map_cb)
         
         rospy.logwarn("Waiting for map_publisher_service_server to come available ...")
         rospy.wait_for_service('map_publisher_server')
@@ -92,44 +94,62 @@ class MapTesselation(object):
         self.bridge = CvBridge()
         self.numbpix = 0
         # change alogrithm to one that fits best to the rooms?
-        self.squaresize = 40
+        self.squaresize = 100
+        self.nextSquareColor = 0
+        self.highestColorNumber = 0
         rospy.loginfo("... finished")
         
     def handle_map_cb(self, input_map):
         print "print recieved map header:"
-        print input_map.map.header
+        print input_map.room_map.header
         print "encoding"
-        print input_map.map.encoding
-        if input_map.map.encoding == "32SC1":
-            cv_img = self.bridge.imgmsg_to_cv2(input_map.map, desired_encoding="passthrough").copy()
-        elif input_map.map.encoding == "rgb8":
-            cv_img = self.bridge.imgmsg_to_cv2(input_map.map, desired_encoding="mono16")
+        print input_map.room_map.encoding
+        if input_map.room_map.encoding == "32SC1":
+            cv_img = self.bridge.imgmsg_to_cv2(input_map.room_map, desired_encoding="passthrough").copy()
+        elif input_map.room_map.encoding == "rgb8":
+            cv_img = self.bridge.imgmsg_to_cv2(input_map.room_map, desired_encoding="mono16")
             #cv2.imshow("output", cv_img)
             #cv2.waitKey()
         cv_img = self.tesselateMap(cv_img)
         # create new sensor_msgs/Image:
         output = Image()
-        output.header = input_map.map.header
-        output.encoding = input_map.map.encoding
-        output.height = input_map.map.height
-        output.width = input_map.map.width
+        output.header = input_map.room_map.header
+        output.encoding = input_map.room_map.encoding
+        output.height = input_map.room_map.height
+        output.width = input_map.room_map.width
         cv_enc_img_msg = self.bridge.cv2_to_imgmsg(cv_img)
         
         answer = self.serviceMapPublisherClient(cv_enc_img_msg)
         print answer
         
-        response = MapAnalyzerResponse()
-        response.answer.data = "MapPublisher received a new map!"
+        response = RoomTesselationResponse()
+        response.tesselated_rooms = cv_enc_img_msg
         return response
 
     def tesselateMap(self, map_img):
         newMap = map_img
-        #cv2.imshow("output", newMap)
-        #cv2.waitKey(1)
         print "listOfColors"
-        print self.debugmakeListOfColors(newMap)
-        print "deleteWhitePixel"
-        newMap = self.deleteWhitePixels(newMap)
+        listOfCol = self.debugmakeListOfColors(newMap)
+        print listOfCol
+        if max(listOfCol) == 65280: #room_seg output
+            print "deleteWhitePixel"
+            newMap = self.deleteWhitePixels(newMap)
+            listOfCol = self.debugmakeListOfColors(newMap)
+            self.highestColorNumber = max(listOfCol)
+            
+        elif max(listOfCol) == 65535: # original map
+            listOfCol.remove(65535)
+            self.highestColorNumber = max(listOfCol)
+            print "delete Errors"
+            listOfCol2 = self.debugmakeListOfColors(newMap)
+            print "listOfColor before Error removement"
+            print listOfCol2
+            newMap = self.deleteErrosInMap(newMap)
+            cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
+            self.serviceMapPublisherClient(cv_enc_img_msg)
+        print "highestColorNumber"
+        print self.highestColorNumber
+        self.nextSquareColor = self.highestColorNumber + 1
         #cv2.imshow("output", newMap)
         #cv2.waitKey(1)
         #print "makeListOfAreasAndPixels and delete"
@@ -145,21 +165,28 @@ class MapTesselation(object):
         #print answer
         print "draw squares"
         newMap = self.createSquares(newMap)
-        #cv2.imshow("output", newMap)
-        #cv2.waitKey(1)
+        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
+        self.serviceMapPublisherClient(cv_enc_img_msg)
+
         print "fill squares"
         newMap = self.fillSquares(newMap)
-        #cv2.imshow("output", newMap)
-        #cv2.waitKey(1)
+        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
+        self.serviceMapPublisherClient(cv_enc_img_msg)
         print "deleteSquaresHorizontal"
         newMap = self.deleteSquaresHorizontal(newMap)
-        #cv2.imshow("output", newMap)
-        #cv2.waitKey(1)
+        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
+        self.serviceMapPublisherClient(cv_enc_img_msg)
+
+
         print "deleteSuqaresVertical"
         newMap = self.deleteSquaresVertical(newMap)
-        #cv2.imshow("output", newMap)
-        #cv2.waitKey(1)
-        #print "mergeSmallAreas"
+        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
+        self.serviceMapPublisherClient(cv_enc_img_msg)
+
+        print "mergeSmallAreas"
+        newMap = self.mergeSmallSquares(newMap)
+        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
+        self.serviceMapPublisherClient(cv_enc_img_msg)
         #print listOfAreasAndPix
         #newMap = self.deleteDoubleAreas(newMap)
         #newMap = self.correctSmallAreas(map_img)
@@ -176,8 +203,43 @@ class MapTesselation(object):
         
                  
         return newMap
+    
+    def deleteErrosInMap(self, newMap):
+        listOfUsed = []
+        newCol = 1
+        listOfUsed.append(0)
+        for w in range (0, newMap.shape[1], 1):
+            for h in range (0, newMap.shape[0], 1):
+                if not newMap[h][w] in listOfUsed:
+                    #print "color to go"
+                    oldValue = newMap[h][w]
+                    #print oldValue
+                    newValue = newCol
+                    pixelcounter = 0
+                    (newMap, pixelcounter) = self.floodfill4(h, w, oldValue, 65505, newMap, pixelcounter)
 
-
+                    #print "painted area with color"
+                    #print newValue
+                    #print pixelcounter
+                    #print listOfUsed
+#                     cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
+#                     self.serviceMapPublisherClient(cv_enc_img_msg)
+                    if (pixelcounter < 5000):
+                        pixelcounter = 0
+                        (newMap, pixelcounter) = self.floodfill4(h, w, 65505, 0, newMap, pixelcounter)
+                    else:
+                        print "found an area bigger than 5000pix"
+                        (newMap, pixelcounter) = self.floodfill4(h, w, 65505, newValue, newMap, pixelcounter)
+                    listOfUsed.append(newValue)
+                    newCol += 1
+        
+#         for w in range (0, newMap.shape[1], 1):
+#             for h in range (0, map_img.shape[0], 1):
+#                 if not newMap[h][w] == 0:
+#                     newMap[h][w] = 65535
+        return newMap
+    
+    
     def deleteWhitePixels(self, map_img):
         for w in range (0, map_img.shape[1], 1):
             for h in range (0, map_img.shape[0], 1):
@@ -194,27 +256,27 @@ class MapTesselation(object):
         return listOfColors
     
     
-    def makeListOfAreasAndPixels(self, map_img):
-        listOfAreasAndPixels = []
-        listOfAlreadyFinished = []
-        # dont check black pixels
-        listOfAlreadyFinished.append(0)
-        map_copy = map_img.copy()
-        for w in range (0, map_copy.shape[1], 1):
-            for h in range (0, map_copy.shape[0], 1):
-                if not map_copy[h][w] in listOfAlreadyFinished:
-                    print "found region with color = %d" % map_copy[h][w]
-                    #listOfAlreadyFinished.append(map_copy[h][w])
-                    listOfAlreadyFinished.append(map_copy[h][w]+1000)
-                    pixelcounter = 0
-                    (map_copy, pixelcounter) = self.floodfill4(h, w, map_copy[h][w], map_copy[h][w]+1000, map_copy, pixelcounter)
-                    if pixelcounter < 500:
-                        print "deleting area because its too small"
-                        (map_img, pixelcounter) = self.floodfill4(h, w, map_img[h][w], 0, map_img, pixelcounter)
-                    listOfAreasAndPixels.append((map_copy[h][w], pixelcounter))
-        
-        print listOfAreasAndPixels
-        return map_img
+#     def makeListOfAreasAndPixels(self, map_img):
+#         listOfAreasAndPixels = []
+#         listOfAlreadyFinished = []
+#         # dont check black pixels
+#         listOfAlreadyFinished.append(0)
+#         map_copy = map_img.copy()
+#         for w in range (0, map_copy.shape[1], 1):
+#             for h in range (0, map_copy.shape[0], 1):
+#                 if not map_copy[h][w] in listOfAlreadyFinished:
+#                     print "found region with color = %d" % map_copy[h][w]
+#                     #listOfAlreadyFinished.append(map_copy[h][w])
+#                     listOfAlreadyFinished.append(map_copy[h][w]+1000)
+#                     pixelcounter = 0
+#                     (map_copy, pixelcounter) = self.floodfill4(h, w, map_copy[h][w], map_copy[h][w]+1000, map_copy, pixelcounter)
+#                     if pixelcounter < 500:
+#                         print "deleting area because its too small"
+#                         (map_img, pixelcounter) = self.floodfill4(h, w, map_img[h][w], 0, map_img, pixelcounter)
+#                     listOfAreasAndPixels.append((map_copy[h][w], pixelcounter))
+#         
+#         print listOfAreasAndPixels
+#         return map_img
 
 
 #     def mergeSmallAreas(self, map_img, listOfAreas):
@@ -246,14 +308,14 @@ class MapTesselation(object):
         newMap = map_img
         for w in range (0, newMap.shape[1], 1):
             for h in range (0, newMap.shape[0], 1):
-                if newMap[h][w] == 65534:
+                if newMap[h][w] == 65502:
 #                     if not newMap[h-1][w] == 0 or newMap[h-1][w] == 65220:
 #                         newMap[h][w] = newMap[h-1][w]
 #                     elif not newMap[h+1][w] == 0 or newMap[h+1][w] == 65220:
 #                         newMap[h][w] = newMap[h+1][w]
-                    if not newMap[h][w+1] == 0 or newMap[h][w+1] == 65534:
+                    if not newMap[h][w+1] == 0 or newMap[h][w+1] == 65502:
                         newMap[h][w] = newMap[h][w+1]
-                    elif not newMap[h][w-1] == 0 or newMap[h][w-1] == 65534:
+                    elif not newMap[h][w-1] == 0 or newMap[h][w-1] == 65502:
                         newMap[h][w] = newMap[h][w-1]
         return newMap
 #     
@@ -261,49 +323,93 @@ class MapTesselation(object):
         newMap = map_img
         for w in range (0, newMap.shape[1], 1):
             for h in range (0, newMap.shape[0], 1):
-                if newMap[h][w] == 65535:
-                    if not newMap[h-1][w] == 0 or newMap[h-1][w] == 65535:
+                if newMap[h][w] == 65501:
+                    if not newMap[h-1][w] == 0 or newMap[h-1][w] == 65501:
                         newMap[h][w] = newMap[h-1][w]
-                    elif not newMap[h+1][w] == 0 or newMap[h+1][w] == 652535:
+                    elif not newMap[h+1][w] == 0 or newMap[h+1][w] == 652501:
                         newMap[h][w] = newMap[h+1][w]
 #                     elif not newMap[h][w+1] == 0 or newMap[h][w+1] == 65221:
 #                         newMap[h][w] = newMap[h][w+1]
 #                     elif not newMap[h][w-1] == 0 or newMap[h][w-1] == 65221:
 #                         newMap[h][w] = newMap[h][w-1]
         return newMap
-# 
-#     
-    def fillSquares(self, map_img):
+
+    def mergeSmallSquares(self, map_img):
         newMap = map_img
-        color = 0
-        counter = 1 # Algo endlich so schreiben, dass die Farben richtig zugeteilt werden! Raumzugehoerigkeit und Squares koennen auch aus zwei verschiendenen Nachrichten extrahiert werden!
         workedOnColors = []
+        workedOnColors.append(0)
+        
         for w in range (0, newMap.shape[1], 1):
             for h in range (0, newMap.shape[0], 1):
-                if not newMap[h][w] == 0:
-                    if not newMap[h][w] == 65535 and not newMap[h][w] == 65534:
-                        if color == 0:
-                            color = newMap[h][w] * 1000
-                        if not newMap[h][w] in workedOnColors:
-                            newValue = color + counter
-                            counter += 1
-                            oldValue = newMap[h][w]
-                            workedOnColors.append(newValue)
-                            pixelcounter = 0
-                            (newMap, pixelcounter) = self.floodfill4(h, w, oldValue, newValue, newMap, pixelcounter)
+                if not newMap[h][w] in workedOnColors:
+                    pixelcounter = 0
+                    oldValue = newMap[h][w]
+                    (newMap, pixelcounter) = self.floodfill4(h, w, oldValue, 65003, newMap, pixelcounter)
+                    workedOnColors.append(oldValue)
+                    if (pixelcounter > ((self.squaresize * self.squaresize) / 2)):
+                        pixelcounter = 0
+                        (newMap, pixelcounter) = self.floodfill4(h, w, 65003, oldValue, newMap, pixelcounter)
+                    else:
+                        pixelcounter = 0
+                        stackOfNeighbours = self.floodfindNeighbours(h, w, oldValue, 65004, newMap)
+                        print "has stack of Neighbors:"
+                        print stackOfNeighbours
+                        listOfOccasions = []
+                        for item in stackOfNeighbours:
+                            listOfOccasions.append(stackOfNeighbours.count(item))
+                        pixelcounter = 0
+                        if len(listOfOccasions) == 0:
+                            newColor = 0
+                        else:
+                            newColor = stackOfNeighbours[listOfOccasions.index(max(listOfOccasions))]
+                        print "give this area new color:"
+                        print newColor
+                        (newMap, pixelcounter) = self.floodfill4(h, w, 65004, newColor, newMap, pixelcounter)
+                        workedOnColors.append(newColor)
+
+        return newMap
+    
+
+    def fillSquares(self, map_img):
+        newMap = map_img
+        counter = 1 # Algo endlich so schreiben, dass die Farben richtig zugeteilt werden! Raumzugehoerigkeit und Squares koennen auch aus zwei verschiendenen Nachrichten extrahiert werden!
+        workedOnColors = []
+        workedOnColors.append(0)
+        workedOnColors.append(65001)
+        workedOnColors.append(65002)
+        workedOnColors.append(65003)
+        workedOnColors.append(65004)
+        for w in range (0, newMap.shape[1], 1):
+            for h in range (0, newMap.shape[0], 1):
+                if not newMap[h][w] in workedOnColors:
+                    pixelcounter = 0
+                    (newMap, pixelcounter) = self.floodfill4(h, w, 65535, 65003, newMap, pixelcounter)
+                    if (pixelcounter > 40):
+                        newValue = self.nextSquareColor
+                        #oldValue = newMap[h][w]
+                        workedOnColors.append(newValue)
+                        pixelcounter = 0
+                        (newMap, pixelcounter) = self.floodfill4(h, w, 65003, newValue, newMap, pixelcounter)
+                        self.nextSquareColor += 1
+                        print "next color"
+                        print self.nextSquareColor
+                    else:
+                        (newMap, pixelcounter) = self.floodfill4(h, w, 65003, 0, newMap, pixelcounter)
+                        pixelcounter = 0
+
         return newMap
 #     
     def createSquares(self, room_img):
         for w in range (0, room_img.shape[1], 1):
             for h in range (0, room_img.shape[0], self.squaresize):
                 if not room_img[h][w] == 0:
-                    room_img[h][w] = 65535
+                    room_img[h][w] = 65501
          
-        for w in range (0, room_img.shape[1],  self.squaresize):
+        for w in range (0, room_img.shape[1], self.squaresize):
             for h in range (0, room_img.shape[0], 1):
                 if not room_img[h][w] == 0:
-                    room_img[h][w] = 65534
-         
+                    room_img[h][w] = 65502
+
         return room_img
 #     
 #     def findSmallAreas(self, map_img):
@@ -426,39 +532,40 @@ class MapTesselation(object):
                 stack.append(innerstack)
         return (img, pixelcounter)
     
-#     def floodfindNeighbours(self, x, y, oldValue, newValue, img):
-#         newImg = img.copy()
-#         stackOfNeighbours = []
-#         stack = []
-#         innerstack = []
-#         innerstack.append(x)
-#         innerstack.append(y)
-#         stack.append(innerstack)
-#         while not (len(stack) == 0): # list empty
-#             (x, y) = stack.pop()
-#             if img[x][y] == oldValue:
-#                 img[x][y] = newValue
-#                 self.numbpix += 1
-#                 innerstack = []
-#                 innerstack.append(x)
-#                 innerstack.append(y+1)
-#                 stack.append(innerstack)
-#                 innerstack = []
-#                 innerstack.append(x)
-#                 innerstack.append(y-1)
-#                 stack.append(innerstack)
-#                 innerstack = []
-#                 innerstack.append(x+1)
-#                 innerstack.append(y)
-#                 stack.append(innerstack)
-#                 innerstack = []
-#                 innerstack.append(x-1)
-#                 innerstack.append(y)
-#                 stack.append(innerstack)
-#             else:
-#                 if not img[x][y] == newValue:
-#                     stackOfNeighbours.append(img[x][y])
-#         return stackOfNeighbours
+    def floodfindNeighbours(self, x, y, oldValue, newValue, img):
+        newImg = img.copy()
+        stackOfNeighbours = []
+        stack = []
+        innerstack = []
+        innerstack.append(x)
+        innerstack.append(y)
+        stack.append(innerstack)
+        while not (len(stack) == 0): # list empty
+            (x, y) = stack.pop()
+            if img[x][y] == oldValue:
+                img[x][y] = newValue
+                self.numbpix += 1
+                innerstack = []
+                innerstack.append(x)
+                innerstack.append(y+1)
+                stack.append(innerstack)
+                innerstack = []
+                innerstack.append(x)
+                innerstack.append(y-1)
+                stack.append(innerstack)
+                innerstack = []
+                innerstack.append(x+1)
+                innerstack.append(y)
+                stack.append(innerstack)
+                innerstack = []
+                innerstack.append(x-1)
+                innerstack.append(y)
+                stack.append(innerstack)
+            else:
+                if not img[x][y] == newValue:
+                    if not img[x][y] == 0:
+                        stackOfNeighbours.append(img[x][y])
+        return stackOfNeighbours
 
 if __name__ == '__main__':
     rospy.init_node('map_tesselation_node', anonymous=False)
