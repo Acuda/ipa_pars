@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+	<group ns = "function_tests">
+		<!-- nodes to start -->
+		
+		<node pkg="map_analyzer" type="function_tests.py" name="function_tests_spawner" args="$(find map_analyzer)/tests/lab_ipa2.png" respawn="false" output="screen"/>
+
+	</group>
+</launch>

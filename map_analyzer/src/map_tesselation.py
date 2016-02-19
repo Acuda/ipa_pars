@@ -100,16 +100,23 @@ class MapTesselation(object):
         rospy.loginfo("... finished")
         
     def handle_map_cb(self, input_map):
-        print "print recieved map header:"
-        print input_map.room_map.header
-        print "encoding"
-        print input_map.room_map.encoding
+        '''
+        if ipa_room_segmentation is used the incoming message has format 32SC1
+        if not the incoming message is a rgb grayscale picture which must be coverted
+        '''
         if input_map.room_map.encoding == "32SC1":
             cv_img = self.bridge.imgmsg_to_cv2(input_map.room_map, desired_encoding="passthrough").copy()
+            # delete not segmented pixels (with no room membership)
+            cv_img[cv_img==65280]=0
         elif input_map.room_map.encoding == "rgb8":
+            rospy.loginfo("encoding is rgb8")
             cv_img = self.bridge.imgmsg_to_cv2(input_map.room_map, desired_encoding="mono16")
-            #cv2.imshow("output", cv_img)
-            #cv2.waitKey()
+            # delete small areas with no room membership
+            rospy.loginfo("use binary filter")
+            cv_img[np.where(cv_img>127)]=65500
+            cv_img[np.where(cv_img<128)]=0
+            print type(cv_img)
+
         cv_img = self.tesselateMap(cv_img)
         # create new sensor_msgs/Image:
         output = Image()
@@ -131,36 +138,38 @@ class MapTesselation(object):
         print "listOfColors"
         listOfCol = self.debugmakeListOfColors(newMap)
         print listOfCol
-        if max(listOfCol) == 65280: #room_seg output
-            print "deleteWhitePixel"
-            newMap = self.deleteWhitePixels(newMap)
-            listOfCol = self.debugmakeListOfColors(newMap)
-            self.highestColorNumber = max(listOfCol)
-            
-        elif max(listOfCol) == 65535: # original map
-            listOfCol.remove(65535)
-            self.highestColorNumber = max(listOfCol)
-            print "delete Errors"
-            listOfCol2 = self.debugmakeListOfColors(newMap)
-            print "listOfColor before Error removement"
-            print listOfCol2
+#         if max(listOfCol) == 65280: #room_seg output
+#             print "deleteWhitePixel"
+#             newMap = self.deleteWhitePixels(newMap)
+#             listOfCol = self.debugmakeListOfColors(newMap)
+#             self.highestColorNumber = max(listOfCol)
+#             
+#         elif max(listOfCol) == 65535: # original map
+#             listOfCol.remove(65535)
+#             self.highestColorNumber = max(listOfCol)
+#             print "delete Errors"
+#             listOfCol2 = self.debugmakeListOfColors(newMap)
+#             print "listOfColor before Error removement"
+#             print listOfCol2
 # #             newMap = self.deleteErrosInMap(newMap)
 #             cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
 #             self.serviceMapPublisherClient(cv_enc_img_msg)
         print "highestColorNumber"
         print self.highestColorNumber
-        self.nextSquareColor = self.highestColorNumber + 1
+        #todo:
+        self.nextSquareColor = 0
         #cv2.imshow("output", newMap)
         #cv2.waitKey(1)
-        print "makeListOfAreasAndPixels "
-        newMap = self.makeListOfAreasAndPixels(newMap)
+        #print "makeListOfAreasAndPixels "
+        #newMap = self.makeListOfAreasAndPixels(newMap)
         #cv2.imshow("output", newMap)
         #cv2.waitKey(1)
         # room preparation done
         #print "room preparation done"
         #print "send to publisher"
         #cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
-        
+        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
+        self.serviceMapPublisherClient(cv_enc_img_msg)
         #answer = self.serviceMapPublisherClient(cv_enc_img_msg)
         #print answer
         print "draw squares"
@@ -204,42 +213,70 @@ class MapTesselation(object):
                  
         return newMap
     
-    def deleteErrosInMap(self, newMap):
-        listOfUsed = []
-        newCol = 1
-        listOfUsed.append(0)
-        for w in range (0, newMap.shape[1], 1):
-            for h in range (0, newMap.shape[0], 1):
-                if not newMap[h][w] in listOfUsed:
-                    #print "color to go"
-                    oldValue = newMap[h][w]
-                    #print oldValue
-                    newValue = newCol
-                    listOfUsed.append(newValue)
-                    pixelcounter = 0
-                    (newMap, pixelcounter) = self.floodfill4(h, w, oldValue, 65505, newMap, pixelcounter)
-
-                    #print "painted area with color"
-                    #print newValue
-                    #print pixelcounter
-                    #print listOfUsed
-#                     cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
-#                     self.serviceMapPublisherClient(cv_enc_img_msg)
-                    if (pixelcounter < 5000):
-                        pixelcounter = 0
-                        (newMap, pixelcounter) = self.floodfill4(h, w, 65505, 0, newMap, pixelcounter)
-                    else:
-                        print "found an area bigger than 5000pix"
-                        (newMap, pixelcounter) = self.floodfill4(h, w, 65505, newValue, newMap, pixelcounter)
-                    
-                    newCol += 1
-        
+#     def deleteErrosInMap(self, newMap):
+#         listOfUsed = []
+#         newCol = 1
+#         listOfUsed.append(0)
+#         for w in range (0, newMap.shape[1], 1):
+#             for h in range (0, newMap.shape[0], 1):
+#                 if not newMap[h][w] in listOfUsed:
+#                     #print "color to go"
+#                     oldValue = newMap[h][w]
+#                     #print oldValue
+#                     newValue = newCol
+#                     listOfUsed.append(newValue)
+#                     pixelcounter = 0
+#                     (newMap, pixelcounter) = self.floodfill4(h, w, oldValue, 65505, newMap, pixelcounter)
+# 
+#                     #print "painted area with color"
+#                     #print newValue
+#                     #print pixelcounter
+#                     #print listOfUsed
+# #                     cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
+# #                     self.serviceMapPublisherClient(cv_enc_img_msg)
+#                     if (pixelcounter < 5000):
+#                         pixelcounter = 0
+#                         (newMap, pixelcounter) = self.floodfill4(h, w, 65505, 0, newMap, pixelcounter)
+#                     else:
+#                         print "found an area bigger than 5000pix"
+#                         (newMap, pixelcounter) = self.floodfill4(h, w, 65505, newValue, newMap, pixelcounter)
+#                     
+#                     newCol += 1
+#         
 #         for w in range (0, newMap.shape[1], 1):
 #             for h in range (0, map_img.shape[0], 1):
 #                 if not newMap[h][w] == 0:
 #                     newMap[h][w] = 65535
         return newMap
-    
+
+    def makeListOfAreasAndPixels(self, img):
+        listOfAreasAndPixels = []
+        listOfAlreadyFinished = []
+        # dont check black pixels
+        color = 1
+        listOfAlreadyFinished.append(0)
+        for w in range (0, img.shape[1], 1):
+            for h in range (0, img.shape[0], 1):
+                if not img[h,w] in listOfAlreadyFinished:
+                    print "found region with color = %d" % img[h,w]
+                    #listOfAlreadyFinished.append(map_copy[h][w])
+                    pixelcounter = 0
+                    (img, pixelcounter) = self.floodfill4(h, w, img[h,w], color, img, pixelcounter)
+#                     if pixelcounter < 500:
+#                         print "deleting area because its too small"
+#                         pixelcounter = 0
+#                         (img, pixelcounter) = self.floodfill4(h, w, color, 0, img, pixelcounter)
+                    listOfAlreadyFinished.append(color)
+                    listOfAreasAndPixels.append((img[h,w], pixelcounter))
+                    color += 1
+        print listOfAreasAndPixels
+        for area in listOfAreasAndPixels:
+            if area[1] > 5000:
+                img[np.where(img==area[0])] = 65500
+            else:
+                img[np.where(img==area[0])] = 0
+        
+        return img
     
     def deleteWhitePixels(self, map_img):
         for w in range (0, map_img.shape[1], 1):
@@ -257,27 +294,27 @@ class MapTesselation(object):
         return listOfColors
     
     
-    def makeListOfAreasAndPixels(self, map_img):
-        listOfAreasAndPixels = []
-        listOfAlreadyFinished = []
-        # dont check black pixels
-        listOfAlreadyFinished.append(0)
-        map_copy = map_img.copy()
-        for w in range (0, map_copy.shape[1], 1):
-            for h in range (0, map_copy.shape[0], 1):
-                if not map_copy[h][w] in listOfAlreadyFinished:
-                    print "found region with color = %d" % map_copy[h][w]
-                    #listOfAlreadyFinished.append(map_copy[h][w])
-                    listOfAlreadyFinished.append(map_copy[h][w]+1000)
-                    pixelcounter = 0
-                    (map_copy, pixelcounter) = self.floodfill4(h, w, map_copy[h][w], map_copy[h][w]+1000, map_copy, pixelcounter)
-                    if pixelcounter < 500:
-                        print "deleting area because its too small"
-                        (map_img, pixelcounter) = self.floodfill4(h, w, map_img[h][w], 0, map_img, pixelcounter)
-                    listOfAreasAndPixels.append((map_copy[h][w], pixelcounter))
-         
-        print listOfAreasAndPixels
-        return map_img
+#     def makeListOfAreasAndPixels(self, map_img):
+#         listOfAreasAndPixels = []
+#         listOfAlreadyFinished = []
+#         # dont check black pixels
+#         listOfAlreadyFinished.append(0)
+#         map_copy = map_img.copy()
+#         for w in range (0, map_copy.shape[1], 1):
+#             for h in range (0, map_copy.shape[0], 1):
+#                 if not map_copy[h][w] in listOfAlreadyFinished:
+#                     print "found region with color = %d" % map_copy[h][w]
+#                     #listOfAlreadyFinished.append(map_copy[h][w])
+#                     listOfAlreadyFinished.append(map_copy[h][w]+1000)
+#                     pixelcounter = 0
+#                     (map_copy, pixelcounter) = self.floodfill4(h, w, map_copy[h][w], map_copy[h][w]+1000, map_copy, pixelcounter)
+#                     if pixelcounter < 500:
+#                         print "deleting area because its too small"
+#                         (map_img, pixelcounter) = self.floodfill4(h, w, map_img[h][w], 0, map_img, pixelcounter)
+#                     listOfAreasAndPixels.append((map_copy[h][w], pixelcounter))
+#          
+#         print listOfAreasAndPixels
+#         return map_img
 
 
 #     def mergeSmallAreas(self, map_img, listOfAreas):
@@ -327,7 +364,7 @@ class MapTesselation(object):
                 if newMap[h][w] == 65501:
                     if not newMap[h-1][w] == 0 or newMap[h-1][w] == 65501:
                         newMap[h][w] = newMap[h-1][w]
-                    elif not newMap[h+1][w] == 0 or newMap[h+1][w] == 652501:
+                    elif not newMap[h+1][w] == 0 or newMap[h+1][w] == 65501:
                         newMap[h][w] = newMap[h+1][w]
 #                     elif not newMap[h][w+1] == 0 or newMap[h][w+1] == 65221:
 #                         newMap[h][w] = newMap[h][w+1]
