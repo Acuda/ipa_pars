@@ -144,16 +144,16 @@ class MapTesselation(object):
             listOfCol2 = self.debugmakeListOfColors(newMap)
             print "listOfColor before Error removement"
             print listOfCol2
-            newMap = self.deleteErrosInMap(newMap)
-            cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
-            self.serviceMapPublisherClient(cv_enc_img_msg)
+# #             newMap = self.deleteErrosInMap(newMap)
+#             cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
+#             self.serviceMapPublisherClient(cv_enc_img_msg)
         print "highestColorNumber"
         print self.highestColorNumber
         self.nextSquareColor = self.highestColorNumber + 1
         #cv2.imshow("output", newMap)
         #cv2.waitKey(1)
-        #print "makeListOfAreasAndPixels and delete"
-        #newMap = self.makeListOfAreasAndPixels(newMap)
+        print "makeListOfAreasAndPixels "
+        newMap = self.makeListOfAreasAndPixels(newMap)
         #cv2.imshow("output", newMap)
         #cv2.waitKey(1)
         # room preparation done
@@ -215,6 +215,7 @@ class MapTesselation(object):
                     oldValue = newMap[h][w]
                     #print oldValue
                     newValue = newCol
+                    listOfUsed.append(newValue)
                     pixelcounter = 0
                     (newMap, pixelcounter) = self.floodfill4(h, w, oldValue, 65505, newMap, pixelcounter)
 
@@ -230,7 +231,7 @@ class MapTesselation(object):
                     else:
                         print "found an area bigger than 5000pix"
                         (newMap, pixelcounter) = self.floodfill4(h, w, 65505, newValue, newMap, pixelcounter)
-                    listOfUsed.append(newValue)
+                    
                     newCol += 1
         
 #         for w in range (0, newMap.shape[1], 1):
@@ -256,27 +257,27 @@ class MapTesselation(object):
         return listOfColors
     
     
-#     def makeListOfAreasAndPixels(self, map_img):
-#         listOfAreasAndPixels = []
-#         listOfAlreadyFinished = []
-#         # dont check black pixels
-#         listOfAlreadyFinished.append(0)
-#         map_copy = map_img.copy()
-#         for w in range (0, map_copy.shape[1], 1):
-#             for h in range (0, map_copy.shape[0], 1):
-#                 if not map_copy[h][w] in listOfAlreadyFinished:
-#                     print "found region with color = %d" % map_copy[h][w]
-#                     #listOfAlreadyFinished.append(map_copy[h][w])
-#                     listOfAlreadyFinished.append(map_copy[h][w]+1000)
-#                     pixelcounter = 0
-#                     (map_copy, pixelcounter) = self.floodfill4(h, w, map_copy[h][w], map_copy[h][w]+1000, map_copy, pixelcounter)
-#                     if pixelcounter < 500:
-#                         print "deleting area because its too small"
-#                         (map_img, pixelcounter) = self.floodfill4(h, w, map_img[h][w], 0, map_img, pixelcounter)
-#                     listOfAreasAndPixels.append((map_copy[h][w], pixelcounter))
-#         
-#         print listOfAreasAndPixels
-#         return map_img
+    def makeListOfAreasAndPixels(self, map_img):
+        listOfAreasAndPixels = []
+        listOfAlreadyFinished = []
+        # dont check black pixels
+        listOfAlreadyFinished.append(0)
+        map_copy = map_img.copy()
+        for w in range (0, map_copy.shape[1], 1):
+            for h in range (0, map_copy.shape[0], 1):
+                if not map_copy[h][w] in listOfAlreadyFinished:
+                    print "found region with color = %d" % map_copy[h][w]
+                    #listOfAlreadyFinished.append(map_copy[h][w])
+                    listOfAlreadyFinished.append(map_copy[h][w]+1000)
+                    pixelcounter = 0
+                    (map_copy, pixelcounter) = self.floodfill4(h, w, map_copy[h][w], map_copy[h][w]+1000, map_copy, pixelcounter)
+                    if pixelcounter < 500:
+                        print "deleting area because its too small"
+                        (map_img, pixelcounter) = self.floodfill4(h, w, map_img[h][w], 0, map_img, pixelcounter)
+                    listOfAreasAndPixels.append((map_copy[h][w], pixelcounter))
+         
+        print listOfAreasAndPixels
+        return map_img
 
 
 #     def mergeSmallAreas(self, map_img, listOfAreas):
