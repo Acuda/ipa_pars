@@ -132,13 +132,14 @@ class PicFuncTests(object):
                     print "found region with color = %d" % img[h,w]
                     #listOfAlreadyFinished.append(map_copy[h][w])
                     pixelcounter = 0
-                    (img, pixelcounter) = self.floodfill4(h, w, img[h,w], color, img, pixelcounter)
+                    oldColor = img[h,w]
+                    (img, pixelcounter) = self.floodfill4(h, w, oldColor, color, img, pixelcounter)
 #                     if pixelcounter < 500:
 #                         print "deleting area because its too small"
 #                         pixelcounter = 0
 #                         (img, pixelcounter) = self.floodfill4(h, w, color, 0, img, pixelcounter)
                     listOfAlreadyFinished.append(color)
-                    listOfAreasAndPixels.append((img[h,w], pixelcounter))
+                    listOfAreasAndPixels.append((color, pixelcounter))
                     color += 1
         print listOfAreasAndPixels
         for area in listOfAreasAndPixels:

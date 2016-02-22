@@ -115,7 +115,10 @@ class MapAnalyzerServer(object):
         self.bridge = CvBridge()
         
         rospy.loginfo("... finished")
+    
+    def deleteErrorsInMap(self, map):
         
+        return map
         
     def handle_map_cb(self, input_map):
         print "print recieved map header:"
@@ -124,11 +127,11 @@ class MapAnalyzerServer(object):
         answer = self.serviceMapPublisherClient(input_map)
         print "answer of pass through publisher call"
         print answer
-        
-        #segmented_map_response = self.useRoomSegmentation(input_map)
-        #print "we received a segmented map:"
-        #print "its resolution is:"
-        #print segmented_map_response.map_resolution
+        map = self.deleteErrorsInMap(input_map)
+        segmented_map_response = self.useRoomSegmentation(input_map)
+        print "we received a segmented map:"
+        print "its resolution is:"
+        print segmented_map_response.map_resolution
         
 #         col_map = self.convertSegmentedMap(segmented_map_response)
         #answer2 = self.serviceMapPublisherClient(segmented_map_response.segmented_map)
@@ -139,10 +142,10 @@ class MapAnalyzerServer(object):
         #print listOfTransitions
         
         print "send map to tesselation server"
-        #answer3 = self.serviceMapTesselationClient(segmented_map_response.segmented_map)
+        answer3 = self.serviceMapTesselationClient(segmented_map_response.segmented_map)
         #request = RoomTesselationRequest()
         #request.room_map = input_map
-        answer3 = self.serviceMapTesselationClient(input_map.map)
+#         answer3 = self.serviceMapTesselationClient(input_map.map)
         print answer3.tesselated_rooms.encoding
         
         print "listOfTransitions after room_tesselation"
