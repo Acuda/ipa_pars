@@ -68,16 +68,17 @@ import sys
 import numpy as np
 from sensor_msgs.msg import Image
 #from sensor_msgs.msg._Image import Image
-
+from rosparam import upload_params
+from yaml import load
 
 from cv_bridge import CvBridge, CvBridgeError
-import actionlib
+
+from knowledge_base.srv import MapSeg
+from knowledge_base.srv._MapSeg import MapSegResponse, MapSegRequest
 
 from map_analyzer.srv import MapAnalyzer
 from map_analyzer.srv._MapAnalyzer import MapAnalyzerResponse, MapAnalyzerRequest
 
-import color_utils_cme
-from gst._gst import Segment
 
 class KnowledgeBaseServer(object):
     def __init__(self, path_to_knowledge_base):
@@ -88,7 +89,7 @@ class KnowledgeBaseServer(object):
         self.room_seg_pub = rospy.Publisher('segmented_map', Image, queue_size=1)
         rospy.loginfo("... creating tesselated_map_publisher")
         self.tesselated_map_pub = rospy.Publisher('tesselated_map', Image, queue_size=1)
-        self.segmented_map_srvs = rospy.Service('knowledge_segmented_map_server', MapAnalyzer, self.handle_segmented_map_cb)
+        self.segmented_map_srvs = rospy.Service('knowledge_segmented_map_server', MapSeg, self.handle_segmented_map_cb)
         self.segmented_map = Image()
         self.tesselated_map = Image()
         self.img_map = Image()
@@ -97,30 +98,35 @@ class KnowledgeBaseServer(object):
 
         rospy.loginfo("... finished")
         
-    def handle_segmented_map_cb(self, segmented_map):
+    def handle_segmented_map_cb(self, map_seg):
         print "print recieved segmented_map:"
         print "header"
-        print segmented_map.map.header
+        print map_seg.segmented_map.header
         print "encoding"
-        print segmented_map.encoding
+        print map_seg.segmented_map.encoding
         print "room info in meter"
-        print segmented_map.room_information_in_meter
+        print map_seg.room_information_in_meter
         print "room info in pixel"
-        print segmented_map.room_information_in_pixel
+        print map_seg.room_information_in_pixel
         print "room points"
-        print segmented_map.map_origin
+        print map_seg.map_origin
         print "map resolution"
-        print segmented_map.map_resolution
-        self.segmented_map = segmented_map.map
+        print map_seg.map_resolution
+        self.segmented_map = map_seg.segmented_map
         
         
         
         
-        response = MapAnalyzerResponse()
-        response.answer.data = "MapPublisher received a new map!"
+        response = MapSegResponse()
+        response.success = True
         
         return response
     
+    def load_params_from_yaml(self):
+        f = open(self.path_to_knowledge_base, 'r')
+        yamlfile = load(f)
+        f.close()
+        upload_params('/', yamlfile)
     '''
     ###########################################################################
     #

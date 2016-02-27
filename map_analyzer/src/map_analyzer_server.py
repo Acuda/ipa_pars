@@ -78,8 +78,13 @@ from map_analyzer.srv._MapAnalyzer import MapAnalyzerResponse, MapAnalyzerReques
 
 from map_analyzer.srv import RoomTesselation
 from map_analyzer.srv._RoomTesselation import RoomTesselationResponse, RoomTesselationRequest
+
 import ipa_room_segmentation
 from ipa_room_segmentation.msg._MapSegmentationAction import *
+
+from knowledge_base.srv import MapSeg
+from knowledge_base.srv._MapSeg import MapSegResponse, MapSegRequest
+
 from geometry_msgs.msg import Pose
 from cv2 import CV_8U
 
@@ -98,11 +103,13 @@ class MapAnalyzerServer(object):
         rospy.logwarn("Waiting for map_publisher_service_server to come available ...")
         rospy.wait_for_service('map_publisher_server')
         rospy.logwarn("Server online!")
+        rospy.logwarn("Waiting for knowledge_segmented_map_server to come available ...")
+        rospy.wait_for_service('knowledge_segmented_map_server')
+        rospy.logwarn("Server online!")
         try:
             self.serviceMapPublisherClient = rospy.ServiceProxy('map_publisher_server', MapAnalyzer)
         except rospy.ServiceException, e:
             print "Service call failed: %s"%e
-        
         rospy.logwarn("Waiting for map_tesselation_service_server to come available ...")
         rospy.wait_for_service('map_tesselation_service_server')
         rospy.logwarn("Server online!")
@@ -110,7 +117,10 @@ class MapAnalyzerServer(object):
             self.serviceMapTesselationClient = rospy.ServiceProxy('map_tesselation_service_server', RoomTesselation)
         except rospy.ServiceException, e:
             print "Service call failed: %s"%e
-        
+        try:
+            self.serviceKnowledgeSegmentedMapPublisherClient = rospy.ServiceProxy('knowledge_segmented_map_server', MapSeg)
+        except rospy.ServiceException, e:
+            print "Service call failed: %s"%e
         rospy.loginfo("generating object instances")
         self.bridge = CvBridge()
         
@@ -127,12 +137,23 @@ class MapAnalyzerServer(object):
         answer = self.serviceMapPublisherClient(input_map)
         print "answer of pass through publisher call"
         print answer
+        print "------------- read out type of image"
+        print type(input_map.map)
+        print input_map.map.encoding
         map = self.deleteErrorsInMap(input_map)
         segmented_map_response = self.useRoomSegmentation(input_map)
         print "we received a segmented map:"
         print "its resolution is:"
         print segmented_map_response.map_resolution
         
+        request5 = MapSegRequest()
+        request5.segmented_map = segmented_map_response.segmented_map
+        request5.map_resolution = segmented_map_response.map_resolution
+        request5.map_origin = segmented_map_response.map_origin
+        request5.room_information_in_pixel = segmented_map_response.room_information_in_pixel
+        request5.room_information_in_meter = segmented_map_response.room_information_in_meter
+        answer5 = self.serviceKnowledgeSegmentedMapPublisherClient(request5)
+        print answer5
 #         col_map = self.convertSegmentedMap(segmented_map_response)
         #answer2 = self.serviceMapPublisherClient(segmented_map_response.segmented_map)
         #print answer2
@@ -141,20 +162,20 @@ class MapAnalyzerServer(object):
         #print "============================== List of Room transitions ========================="
         #print listOfTransitions
         
-        print "send map to tesselation server"
-        answer3 = self.serviceMapTesselationClient(segmented_map_response.segmented_map)
+        #print "send map to tesselation server"
+        #answer3 = self.serviceMapTesselationClient(segmented_map_response.segmented_map)
         #request = RoomTesselationRequest()
         #request.room_map = input_map
 #         answer3 = self.serviceMapTesselationClient(input_map.map)
-        print answer3.tesselated_rooms.encoding
+        #print answer3.tesselated_rooms.encoding
         
-        print "listOfTransitions after room_tesselation"
-        print "map encoding after tesselation"
+        #print "listOfTransitions after room_tesselation"
+        #print "map encoding after tesselation"
         #print input_map.map.encoding
         
-        listOfTransitions = self.getListOfTransitions(answer3.tesselated_rooms)
-        print "============================== List of Room transitions ========================="
-        print listOfTransitions
+        #listOfTransitions = self.getListOfTransitions(answer3.tesselated_rooms)
+        #print "============================== List of Room transitions ========================="
+        #print listOfTransitions
         
         response = MapAnalyzerResponse()
         #response.answer.data = listOfTransitions
