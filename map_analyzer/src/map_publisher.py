@@ -92,9 +92,18 @@ class MapPublisher(object):
         self.colorlist = []
         self.colorScale = 10
         self.colorlist = color_utils_cme.listColor(self.colorScale)
-        self.colorlist = color_utils_cme.shuffle_list(self.colorlist)
+        #self.colorlist = color_utils_cme.shuffle_list(self.colorlist)
         self.usedColors = []
         self.counter = 0
+        print "produceIndividualColors"
+        (listOfRoomCol, listOfSquareCol) = self.produceRoomAndSquareColors(10)
+        self.listOfRoomCol = listOfRoomCol
+        self.listOfSquareCol = listOfSquareCol
+        print "listOfRoomCol"
+        print listOfRoomCol
+        print "listOfSquareCol"
+        print listOfSquareCol
+        
         rospy.loginfo("... finished")
         
     def handle_map_cb(self, input_map):
@@ -164,7 +173,8 @@ class MapPublisher(object):
             elif lab == 0:
                 col = [0,0,0]
             else:
-                col = self.colorlist.pop()
+#                 col = self.colorlist.pop()
+                col = self.listOfRoomCol.pop()
             labcol.append(col)
             listOfColLab.append(labcol)
         print listOfColLab
@@ -200,6 +210,34 @@ class MapPublisher(object):
         except:
             e = sys.exc_info()[0]
             print e
+
+    def produceRoomAndSquareColors(self, number_of_rooms):
+        listOfRoomColors = []
+        listOfRoomColorsAsInt = []
+        listOfSquareColors = []
+        listOfSquareColorsAsInt = []
+        divisor = 65000 / (number_of_rooms)
+        for i in range (divisor, 65001, divisor):
+            color = []
+            color.append(i // 256 // 256 % 256)
+            color.append(i // 256 % 256)
+            color.append(i % 256)
+            listOfRoomColors.append(color)
+            listOfRoomColorsAsInt.append(i)
+        #colInt = int('%02x%02x%02x' % (color[0], color[1], color[2]), 16)
+        #mostimportantColor = (mostimportantColorInt[0][0] // 256 // 256 % 256, mostimportantColorInt[0][0] // 256 % 256, mostimportantColorInt[0][0] % 256)
+        # producte Square Colors:
+        # schaetze anzahl quadrate grob auf max 20
+        squares_div = divisor / 20
+        for k in range(0, len(listOfRoomColorsAsInt)-1, 1):
+            for l in range(listOfRoomColorsAsInt[k], listOfRoomColorsAsInt[k+1]-squares_div, squares_div):
+                color = []
+                color.append(l // 256 // 256 % 256)
+                color.append(l // 256 % 256)
+                color.append(l % 256)
+                listOfSquareColors.append(color)
+                listOfSquareColorsAsInt.append(l)
+        return (listOfRoomColors, listOfSquareColors)
         
 
     def run(self):

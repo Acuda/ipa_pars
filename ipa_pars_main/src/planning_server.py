@@ -68,6 +68,7 @@ import cv2
 from cv_bridge import CvBridge, CvBridgeError
 from ipa_pars_main.msg._LogicPlanAction import *
 
+import numpy as np
 from sensor_msgs.msg._Image import Image
 import sensor_msgs.msg
 from map_analyzer.srv import MapAnalyzer
@@ -87,9 +88,12 @@ class ParsServer(object):
         rospy.loginfo("path_to_domain: %s" % path_to_domain)
         rospy.loginfo("Reading map from disk ...")
         self.input_map = cv2.imread(self._path_to_map, cv2.IMREAD_COLOR)
+        #self.input_map = cv2.imread(self._path_to_map, cv2.IMREAD_GRAYSCALE)
+        self.input_map = self.deleteErrorsInMap(self.input_map)
         rospy.loginfo("converting map to sensor_msg ...")
         self.bridge = CvBridge()
         self.output_map = self.bridge.cv2_to_imgmsg(self.input_map, "bgr8")
+        #self.output_map = self.bridge.cv2_to_imgmsg(self.input_map, "mono8")
         rospy.loginfo("... done!")
         rospy.logwarn("Waiting for map_analyzer_service_server to come available ...")
         rospy.wait_for_service('map_analyzer_service_server')
@@ -165,7 +169,9 @@ class ParsServer(object):
         img_msg_typ.width = self.input_map.shape[1]
         img_msg_typ.data = self.output_map.data
         img_msg_typ.encoding = "rgb8"
+        #img_msg_typ.encoding = "mono8"
         byte_depth = 3
+        #byte_depth = 1
         img_msg_typ.is_bigendian = False
         img_msg_typ.step = img_msg_typ.width * byte_depth
         print "This is the header i want to use"
@@ -189,6 +195,50 @@ class ParsServer(object):
         domain_text = StringOfObjects
         return domain_text
 
+    def floodfill4(self, x, y, oldValue, newValue, img, pixelcounter):
+        stack = []
+        innerstack = []
+        innerstack.append(x)
+        innerstack.append(y)
+        stack.append(innerstack)
+        while not (len(stack) == 0): # list empty
+            (x, y) = stack.pop()
+            if img[x,y][0] == oldValue:
+                img[x,y][0] = newValue
+                img[x,y][1] = newValue
+                img[x,y][2] = newValue
+                pixelcounter += 1
+                innerstack = []
+                innerstack.append(x)
+                innerstack.append(y+1)
+                stack.append(innerstack)
+                innerstack = []
+                innerstack.append(x)
+                innerstack.append(y-1)
+                stack.append(innerstack)
+                innerstack = []
+                innerstack.append(x+1)
+                innerstack.append(y)
+                stack.append(innerstack)
+                innerstack = []
+                innerstack.append(x-1)
+                innerstack.append(y)
+                stack.append(innerstack)
+        return (img, pixelcounter)
+    
+    def deleteErrorsInMap(self, img):
+        for w in range (0, img.shape[1], 1):
+            for h in range (0, img.shape[0], 1):
+                if not img[h,w][0] == 0:
+                    if not img[h,w][0] == 254:
+                        pixelcounter = 0
+                        (img, pixelcounter) = self.floodfill4(h, w, 255, 254, img, pixelcounter)
+                        if pixelcounter < 500:
+                            pixelcounter = 0
+                            (img, pixelcounter) = self.floodfill4(h, w, 254, 0, img, pixelcounter)
+        img[np.where(img==254)] = 255
+        return img
+    
 if __name__ == '__main__':
     rospy.init_node('planning_server', anonymous=False)
     pARS = ParsServer(sys.argv[1], sys.argv[2])

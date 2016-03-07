@@ -28,7 +28,7 @@
 
 		<node pkg="ipa_pars_main" type="planning_execution.py" name="planning_execution_spawner" respawn="false" output="screen" />
 
-		<node pkg="knowledge_base" type="knowledge_base_server.py" name="knowledge_base_server_spawner" args="$(find knowledge_base)/content/knowledge-base.yaml" respawn="false" output="screen" />
+		<node pkg="knowledge_base" type="knowledge_base_server.py" name="knowledge_base_server_spawner" args="$(find knowledge_base)/content/" respawn="false" output="screen" />
 
 	</group>
 

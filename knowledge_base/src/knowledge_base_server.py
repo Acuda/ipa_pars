@@ -70,6 +70,7 @@ from sensor_msgs.msg import Image
 #from sensor_msgs.msg._Image import Image
 from rosparam import upload_params
 from yaml import load
+import yaml
 
 from cv_bridge import CvBridge, CvBridgeError
 
@@ -113,20 +114,109 @@ class KnowledgeBaseServer(object):
         print "map resolution"
         print map_seg.map_resolution
         self.segmented_map = map_seg.segmented_map
-        
-        
-        
+#         self.load_params_from_yaml()
+        print "listOfTransitions after room_segmentation"
+        (listOfTransitions_asstring, listOfTransitionsAsList) = self.getListOfTransitions(map_seg.segmented_map)
+        print "============================== List of Room transitions made in knowledge base ========================="
+        print listOfTransitions_asstring
+        print "writing Transitions and rooms to new knowledge-base"
+        #self.writeKnowledgeBase(listOfTransitions)
         
         response = MapSegResponse()
         response.success = True
+        # concatenate informations from room_seg and transitions to yaml file:
+        print "------------------------------------------------"
+        for room in listOfTransitionsAsList:
+            print room
+        print "------------------------------------------------"
         
+        listOfLocs = []
+        for room in listOfTransitionsAsList:
+            name = room[0]
+            i = int(name.split('-')[1])-1
+            list_of_transitions = room[1]
+            x_center = map_seg.room_information_in_pixel[i].room_center.x
+            y_center = map_seg.room_information_in_pixel[i].room_center.y
+            z_center = map_seg.room_information_in_pixel[i].room_center.z
+            dict_of_center = {'X': x_center, 'Y': y_center, 'Z': z_center}
+            area_x_max = map_seg.room_information_in_pixel[i].room_min_max.points[1].x
+            area_y_max = map_seg.room_information_in_pixel[i].room_min_max.points[1].y
+            area_z_max = map_seg.room_information_in_pixel[i].room_min_max.points[1].z
+            area_x_min = map_seg.room_information_in_pixel[i].room_min_max.points[0].x
+            area_y_min = map_seg.room_information_in_pixel[i].room_min_max.points[0].y
+            area_z_min = map_seg.room_information_in_pixel[i].room_min_max.points[0].z
+            dict_of_area = {'max': {'X': area_x_max, 'Y': area_y_max, 'Z': area_z_max}, 'min': {'X': area_x_min, 'Y': area_y_min, 'Z': area_z_min}}
+            dict_of_loc = {'name': name, 'transitions': list_of_transitions, 'center': dict_of_center, 'min-max': dict_of_area}
+            listOfLocs.append(dict_of_loc)
+        dict_of_locations = {'location-data': listOfLocs}
+        yaml_content = yaml.dump(dict_of_locations, default_flow_style=False)
+        print yaml_content
+        with open(self.path_to_knowledge_base+"knowledge-base.yaml", 'w') as yaml_file:
+            yaml_file.write(yaml_content)
         return response
     
+    
+    def writeKnowledgeBase(self, knowledge_base_as_yaml_dict):
+        with open(self.path_to_knowledge_base, 'w') as yaml_file:
+            yaml_file.write( yaml.dump(knowledge_base_as_yaml_dict, default_flow_style=False))
+        yaml_file.close()
+        
+    def floodfill4Neighbours2(self, x, y, oldValue, newValue, img, pixelcounter):
+        stack = []
+        innerstack = []
+        neighborColorList = []
+        innerstack.append(x)
+        innerstack.append(y)
+        stack.append(innerstack)
+        while not (len(stack) == 0): # list empty
+            (x, y) = stack.pop()
+            if img[x][y] == oldValue:
+                img[x][y] = newValue
+                pixelcounter += 1
+                innerstack = []
+                innerstack.append(x)
+                innerstack.append(y+1)
+                stack.append(innerstack)
+                innerstack = []
+                innerstack.append(x)
+                innerstack.append(y-1)
+                stack.append(innerstack)
+                innerstack = []
+                innerstack.append(x+1)
+                innerstack.append(y)
+                stack.append(innerstack)
+                innerstack = []
+                innerstack.append(x-1)
+                innerstack.append(y)
+                stack.append(innerstack)
+            # if the color is not black save the color in a list
+            if not (img[x][y] == 0) and not (img[x][y] == oldValue) and not (img[x][y] == newValue):
+                neighborColorList.append(img[x][y])
+                
+        return (img, pixelcounter, neighborColorList)
+    
+    
     def load_params_from_yaml(self):
+        # beachte: YAMl verwendet nur dicts und lists
+        # verwende die entsprechenden methoden richtig
         f = open(self.path_to_knowledge_base, 'r')
         yamlfile = load(f)
         f.close()
-        upload_params('/', yamlfile)
+        print yamlfile
+        print "------------------------"
+        location_data = yamlfile['location-data']
+        for locations in location_data:
+            location_name = locations['name']
+            location_transitions = locations['transitions']
+            print location_name+": has transitions to:"
+            print location_transitions
+            #room_name = locations[1]
+            #print room_name
+            #room_name = locations['name']
+            #print room_name
+        #location2 = location_data[1]
+        #print location_data
+        #print location1
     '''
     ###########################################################################
     #
@@ -210,6 +300,51 @@ class KnowledgeBaseServer(object):
         except:
             e = sys.exc_info()[0]
             print e
+            
+    def getListOfTransitions(self, map_img):
+        cv_img = self.bridge.imgmsg_to_cv2(map_img, desired_encoding="passthrough").copy()
+        cv_img[cv_img==65280]=0
+        listOfRooms = []
+        listOfRoomInformations = []
+        
+        for w in range (0, cv_img.shape[1], 1):
+            for h in range (0, cv_img.shape[0], 1):
+                if not cv_img[h][w] == 0:
+                    if not cv_img[h][w] == 65280:
+                        if not cv_img[h][w] in listOfRooms:
+                            pixelcounter = 0
+                            newValue = np.max(cv_img)+1
+                            oldValue = cv_img[h][w]
+                            (cv_img, pixelcounter, listOfTransitions) = self.floodfill4Neighbours2(h, w, oldValue, newValue, cv_img, pixelcounter)
+                            (cv_img, pixelcounter, listOfSaft) = self.floodfill4Neighbours2(h, w, newValue, oldValue, cv_img, pixelcounter)
+                            print "added room with number= %d" % oldValue
+                            print "this room has transitions to"
+                            print listOfTransitions
+                            listOfRooms.append(oldValue)
+                            listOfSingleTransitions = []
+                            for trans in listOfTransitions:
+                                if trans not in listOfSingleTransitions:
+                                    listOfSingleTransitions.append(trans)
+                            listOfRoomInformations.append((oldValue, listOfSingleTransitions))
+        listOfTransAsStrings = []
+        print "listOfSingleTransitions"
+        print listOfRoomInformations
+        # translate to stringlist:
+        for (rooms, transitions) in listOfRoomInformations:
+            trans_as_string = []
+            for trans in transitions:
+                trans_as_string.append("room-"+str(trans))
+            listOfTransAsStrings.append(("room-"+str(rooms) , trans_as_string))
+        
+        # translate to string:
+        stringOfTransitions = ""
+        for (room, transi) in listOfTransAsStrings:
+            stringOfTransitions += room+" "
+            for tra in transi:
+                stringOfTransitions += tra+" "
+            stringOfTransitions += "\n"
+        #stringOfTransitions = str(" ").join(map(str, listOfInput))
+        return (stringOfTransitions, listOfTransAsStrings)
         
 
     def run(self):

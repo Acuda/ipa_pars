@@ -63,7 +63,7 @@ Created on Jan 28, 2016
 #****************************************************************/
 import rospy
 import cv2
-import numpy
+import numpy as np
 import cv
 from sensor_msgs.msg import *
 from sensor_msgs.msg._Image import Image
@@ -126,9 +126,18 @@ class MapAnalyzerServer(object):
         
         rospy.loginfo("... finished")
     
-    def deleteErrorsInMap(self, map):
-        
-        return map
+    def deleteErrorsInMap(self, img):
+        for w in range (0, img.shape[1], 1):
+            for h in range (0, img.shape[0], 1):
+                if not img[h,w] == 0:
+                    if not img[h,w] == 254:
+                        pixelcounter = 0
+                        (img, pixelcounter) = self.floodfill4(h, w, 255, 254, img, pixelcounter)
+                        if pixelcounter < 500:
+                            pixelcounter = 0
+                            (img, pixelcounter) = self.floodfill4(h, w, 254, 0, img, pixelcounter)
+        img[np.where(img==254)] = 255
+        return img
         
     def handle_map_cb(self, input_map):
         print "print recieved map header:"
@@ -140,12 +149,18 @@ class MapAnalyzerServer(object):
         print "------------- read out type of image"
         print type(input_map.map)
         print input_map.map.encoding
-        map = self.deleteErrorsInMap(input_map)
-        segmented_map_response = self.useRoomSegmentation(input_map)
+#         cv_img = self.bridge.imgmsg_to_cv2(input_map.map, desired_encoding="mono8").copy()
+#         print "deleting errors"
+#         cv_img = self.deleteErrorsInMap(cv_img)
+        #print "show image"
+#         cv2.imshow("output", cv_img)
+#         cv2.waitKey(0)
+        #output_map = self.bridge.cv2_to_imgmsg(cv_img)
+        segmented_map_response = self.useRoomSegmentation(input_map.map)
         print "we received a segmented map:"
         print "its resolution is:"
         print segmented_map_response.map_resolution
-        
+         
         request5 = MapSegRequest()
         request5.segmented_map = segmented_map_response.segmented_map
         request5.map_resolution = segmented_map_response.map_resolution
@@ -155,20 +170,23 @@ class MapAnalyzerServer(object):
         answer5 = self.serviceKnowledgeSegmentedMapPublisherClient(request5)
         print answer5
 #         col_map = self.convertSegmentedMap(segmented_map_response)
-        #answer2 = self.serviceMapPublisherClient(segmented_map_response.segmented_map)
-        #print answer2
+#         answer2 = self.serviceMapPublisherClient(segmented_map_response.segmented_map)
+#         print answer2
         #print "listOfTransitions after room_segmentation"
         #listOfTransitions = self.getListOfTransitions(segmented_map_response.segmented_map)
         #print "============================== List of Room transitions ========================="
         #print listOfTransitions
         
-        #print "send map to tesselation server"
-        #answer3 = self.serviceMapTesselationClient(segmented_map_response.segmented_map)
+        print "send map to tesselation server"
+        answer3 = self.serviceMapTesselationClient(segmented_map_response.segmented_map)
         #request = RoomTesselationRequest()
         #request.room_map = input_map
 #         answer3 = self.serviceMapTesselationClient(input_map.map)
-        #print answer3.tesselated_rooms.encoding
+        print answer3.tesselated_rooms.encoding
         
+#         print "transposeSquaresToRooms:"
+#         squaresAndRoomsMap = self.transposeSquaresToRooms(segmented_map_response.segmented_map, answer3.tesselated_rooms)
+#         print "ready transposing"
         #print "listOfTransitions after room_tesselation"
         #print "map encoding after tesselation"
         #print input_map.map.encoding
@@ -180,6 +198,18 @@ class MapAnalyzerServer(object):
         response = MapAnalyzerResponse()
         #response.answer.data = listOfTransitions
         return response
+    
+    def transposeSquaresToRooms(self, segmented_map, tesselated_map):
+        cv_img_segmented_map = self.bridge.imgmsg_to_cv2(segmented_map, desired_encoding="passthrough").copy()
+        cv_img_tesselated_map = self.bridge.imgmsg_to_cv2(tesselated_map, desired_encoding="passthrough").copy()
+        squaresAndRoomMap = np.zeros((cv_img_segmented_map.shape[0], cv_img_segmented_map.shape[1] , 1), np.uint16) # BGR
+        for w in range (0, squaresAndRoomMap.shape[1], 1):
+            for h in range (0, squaresAndRoomMap.shape[0], 1):
+                if not cv_img_segmented_map[h,w] == 0:
+                    squaresAndRoomMap[h,w] = cv_img_tesselated_map[h,w] + 1000 * cv_img_segmented_map[h,w]
+                else:
+                    squaresAndRoomMap[h,w] = 0 
+        return squaresAndRoomMap
     
     def getListOfTransitions(self, map_img):
         cv_img = self.bridge.imgmsg_to_cv2(map_img, desired_encoding="passthrough").copy()
@@ -193,10 +223,10 @@ class MapAnalyzerServer(object):
                     if not cv_img[h][w] == 65280:
                         if not cv_img[h][w] in listOfRooms:
                             pixelcounter = 0
-                            newValue = numpy.max(cv_img)+1
+                            newValue = np.max(cv_img)+1
                             oldValue = cv_img[h][w]
-                            (cv_img, pixelcounter, listOfTransitions) = self.floodfill4(h, w, oldValue, newValue, cv_img, pixelcounter)
-                            (cv_img, pixelcounter, listOfSaft) = self.floodfill4(h, w, newValue, oldValue, cv_img, pixelcounter)
+                            (cv_img, pixelcounter, listOfTransitions) = self.floodfill4Neighbours2(h, w, oldValue, newValue, cv_img, pixelcounter)
+                            (cv_img, pixelcounter, listOfSaft) = self.floodfill4Neighbours2(h, w, newValue, oldValue, cv_img, pixelcounter)
                             print "added room with number= %d" % oldValue
                             print "this room has transitions to"
                             print listOfTransitions
@@ -303,7 +333,8 @@ class MapAnalyzerServer(object):
         #goal.input_map.header.seq = 1
         goal.input_map.header.stamp = rospy.Time.now()
         goal.input_map.header.frame_id = "mymapframe"
-        goal.input_map = in_map.map
+        #goal.input_map = in_map.map
+        goal.input_map = in_map
         # TODO: change this lines to use every map!
         goal.map_resolution = 0.05
         pose = Pose()
@@ -331,8 +362,38 @@ class MapAnalyzerServer(object):
         rospy.loginfo("Received a result:")
         
         return solution
-        
+    
     def floodfill4(self, x, y, oldValue, newValue, img, pixelcounter):
+        stack = []
+        innerstack = []
+        innerstack.append(x)
+        innerstack.append(y)
+        stack.append(innerstack)
+        while not (len(stack) == 0): # list empty
+            (x, y) = stack.pop()
+            if img[x,y] == oldValue:
+                img[x,y] = newValue
+                pixelcounter += 1
+                innerstack = []
+                innerstack.append(x)
+                innerstack.append(y+1)
+                stack.append(innerstack)
+                innerstack = []
+                innerstack.append(x)
+                innerstack.append(y-1)
+                stack.append(innerstack)
+                innerstack = []
+                innerstack.append(x+1)
+                innerstack.append(y)
+                stack.append(innerstack)
+                innerstack = []
+                innerstack.append(x-1)
+                innerstack.append(y)
+                stack.append(innerstack)
+        return (img, pixelcounter)
+    
+    
+    def floodfill4Neighbours2(self, x, y, oldValue, newValue, img, pixelcounter):
         stack = []
         innerstack = []
         neighborColorList = []
@@ -371,7 +432,7 @@ class MapAnalyzerServer(object):
     '''
     def encodeImage(self, img_msg):
         cv_img = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough").copy()
-        cv_enc_img = numpy.zeros((cv_img.shape[0], cv_img.shape[1] , 3), numpy.uint8) # BGR
+        cv_enc_img = np.zeros((cv_img.shape[0], cv_img.shape[1] , 3), np.uint8) # BGR
         
         listOfDifColors = []
         for w in range (0, cv_img.shape[1], 1):
