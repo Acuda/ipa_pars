@@ -185,8 +185,8 @@ class MapTesselation(object):
         #print "room preparation done"
         #print "send to publisher"
         #cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
-        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
-        self.serviceMapPublisherClient(cv_enc_img_msg)
+#         cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
+#         self.serviceMapPublisherClient(cv_enc_img_msg)
         #answer = self.serviceMapPublisherClient(cv_enc_img_msg)
         #print answer
         print "draw squares"

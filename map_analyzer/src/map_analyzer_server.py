@@ -126,6 +126,14 @@ class MapAnalyzerServer(object):
         
         rospy.loginfo("... finished")
     
+    def debugmakeListOfColors(self, map_img):
+        listOfColors = []
+        for w in range (0, map_img.shape[1], 1):
+            for h in range (0, map_img.shape[0], 1):
+                if not map_img[h,w] in listOfColors:
+                    listOfColors.append(map_img[h,w])
+        return listOfColors
+    
     def deleteErrorsInMap(self, img):
         for w in range (0, img.shape[1], 1):
             for h in range (0, img.shape[0], 1):
@@ -184,9 +192,14 @@ class MapAnalyzerServer(object):
 #         answer3 = self.serviceMapTesselationClient(input_map.map)
         print answer3.tesselated_rooms.encoding
         
-#         print "transposeSquaresToRooms:"
-#         squaresAndRoomsMap = self.transposeSquaresToRooms(segmented_map_response.segmented_map, answer3.tesselated_rooms)
-#         print "ready transposing"
+        print "transposeSquaresToRooms:"
+        squaresAndRoomsMap = self.transposeSquaresToRooms(segmented_map_response.segmented_map, answer3.tesselated_rooms)
+        print "ready transposing"
+        listOfcol = self.debugmakeListOfColors(squaresAndRoomsMap)
+        print "listOfTransposedColors"
+        print listOfcol
+        output_map = self.bridge.cv2_to_imgmsg(squaresAndRoomsMap)
+        answer7  = self.serviceMapPublisherClient(output_map)
         #print "listOfTransitions after room_tesselation"
         #print "map encoding after tesselation"
         #print input_map.map.encoding
@@ -202,13 +215,21 @@ class MapAnalyzerServer(object):
     def transposeSquaresToRooms(self, segmented_map, tesselated_map):
         cv_img_segmented_map = self.bridge.imgmsg_to_cv2(segmented_map, desired_encoding="passthrough").copy()
         cv_img_tesselated_map = self.bridge.imgmsg_to_cv2(tesselated_map, desired_encoding="passthrough").copy()
-        squaresAndRoomMap = np.zeros((cv_img_segmented_map.shape[0], cv_img_segmented_map.shape[1] , 1), np.uint16) # BGR
+#         squaresAndRoomMap = np.zeros((cv_img_segmented_map.shape[0], cv_img_segmented_map.shape[1] , 1), np.uint16) # BGR
+        squaresAndRoomMap = np.zeros((cv_img_segmented_map.shape[0], cv_img_segmented_map.shape[1]), np.uint16) # BGR
         for w in range (0, squaresAndRoomMap.shape[1], 1):
             for h in range (0, squaresAndRoomMap.shape[0], 1):
                 if not cv_img_segmented_map[h,w] == 0:
-                    squaresAndRoomMap[h,w] = cv_img_tesselated_map[h,w] + 1000 * cv_img_segmented_map[h,w]
+                    squaresAndRoomMap[h,w] = cv_img_tesselated_map[h,w]*12 + 1000 * cv_img_segmented_map[h,w]
                 else:
                     squaresAndRoomMap[h,w] = 0 
+                    
+#         listOfCol = self.debugmakeListOfColors(squaresAndRoomMap)
+#         listOfListsofCol = []
+#         for color in listOfCol:
+#             room = int(round (color / 1000))
+#             listOfRoomCol = []
+
         return squaresAndRoomMap
     
     def getListOfTransitions(self, map_img):
