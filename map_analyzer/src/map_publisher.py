@@ -107,6 +107,20 @@ class MapPublisher(object):
         
         rospy.loginfo("... finished")
         
+        
+        
+    def drawWhiteLines(self, img):
+        for w in range (0, img.shape[1], 1):
+            for h in range (0, img.shape[0], 1):
+                if not img[h,w] == 0:
+                    if not img[h,w] == img[h,w+1]:
+                        if not img[h,w+1] == 0:
+                            img[h,w] = 65530
+                    if not img[h,w] == img[h+1,w]:
+                        if not img[h+1,w] == 0:
+                            img[h,w] = 65530
+        return img
+        
     def handle_map_cb(self, input_map):
         print "print recieved map header:"
         print input_map.map.header
@@ -157,6 +171,7 @@ class MapPublisher(object):
         cv_img = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough").copy()
         cv_enc_img = np.zeros((cv_img.shape[0], cv_img.shape[1] , 3), np.uint8) # BGR
         
+        cv_img = self.drawWhiteLines(cv_img)
         listOfDifColors = []
         for w in range (0, cv_img.shape[1], 1):
             for h in range(0, cv_img.shape[0], 1):
@@ -239,10 +254,14 @@ class MapPublisher(object):
                     col = [0,0,0]
                 elif lab == 65503:
                     col = [0,0,0]
+                elif lab == 65530:
+                    col = [255,255,255]
                 else:
                     col_h = (float(lab) / 1000) * colordivisor
-                    col_v = float(lab) / 10000
-                    col_s = float(lab) / 10000
+                    col_v = 1
+                    col_s = 1
+#                     col_v = float(lab) / 10000
+#                     col_s = float(lab) / 10000
                     print "lab = %f to color = %f, %f, %f" % (lab, col_h, col_s, col_v)
                     color_in_dec = colorsys.hsv_to_rgb(col_h, col_s, col_v)
                     print "as dec = %f , %f , %f " % (color_in_dec[0], color_in_dec[1], color_in_dec[2])
@@ -306,9 +325,9 @@ class MapPublisher(object):
         
         return cv_enc_img_msg
 
-    def createHSVcolor(self, label):
-        h_div = label // 1000
-        
+#     def createHSVcolor(self, label):
+#         h_div = label // 1000
+#         
         
     def saveLogImage(self, img):
         self.counter += 1

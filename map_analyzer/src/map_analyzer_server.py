@@ -200,6 +200,9 @@ class MapAnalyzerServer(object):
         print listOfcol
         output_map = self.bridge.cv2_to_imgmsg(squaresAndRoomsMap)
         answer7  = self.serviceMapPublisherClient(output_map)
+        print "newSquaresNames"
+        map = self.getRealSquaresRoomNames(squaresAndRoomsMap)
+        
         #print "listOfTransitions after room_tesselation"
         #print "map encoding after tesselation"
         #print input_map.map.encoding
@@ -223,14 +226,51 @@ class MapAnalyzerServer(object):
                     squaresAndRoomMap[h,w] = cv_img_tesselated_map[h,w]*12 + 1000 * cv_img_segmented_map[h,w]
                 else:
                     squaresAndRoomMap[h,w] = 0 
-                    
-#         listOfCol = self.debugmakeListOfColors(squaresAndRoomMap)
-#         listOfListsofCol = []
-#         for color in listOfCol:
-#             room = int(round (color / 1000))
-#             listOfRoomCol = []
-
+        
         return squaresAndRoomMap
+                    
+
+    def getRealSquaresRoomNames(self, squaresAndRoomMap):
+        mapwithnicenames = np.zeros((squaresAndRoomMap.shape[0], squaresAndRoomMap.shape[1]), np.uint16)
+        listOfColors = self.debugmakeListOfColors(squaresAndRoomMap)
+        print "listOfColors before RealSquares"
+        print listOfColors
+        listOfColors.remove(0)
+        listOfColors.sort()
+        counter = 1
+        room = 0
+        newListOfRoomSquareTuples = []
+        while not (len(listOfColors) == 0): # list empty
+            newTuple = []
+            romNbr = listOfColors.pop(0)
+            newTuple.append(romNbr)
+            
+            currentRoom = romNbr / 1000
+            if not currentRoom == room:
+                room = currentRoom
+                counter = 1
+            newRoomNumber = currentRoom * 1000 + counter
+            newTuple.append(newRoomNumber)
+            newListOfRoomSquareTuples.append(newTuple)
+            counter += 1
+        
+        print "listOfColors after RealSquares"
+        print newListOfRoomSquareTuples
+#         listOfColorsAndRoomNumbers = []
+#         counterOfRoomNumber = 0
+        for w in range (0, squaresAndRoomMap.shape[1], 1):
+            for h in range (0, squaresAndRoomMap.shape[0], 1):
+                if not squaresAndRoomMap[h,w] == 0:
+                    oldValue = squaresAndRoomMap[h,w]
+                    for element in newListOfRoomSquareTuples:
+                        if element[0] == oldValue:
+                            newValue = element[1]
+                            break
+                    #newValue = newListOfRoomSquareTuples[newListOfRoomSquareTuples.index(oldValue)][1]
+                    mapwithnicenames[h,w] = newValue
+        newList = self.debugmakeListOfColors(mapwithnicenames)
+        print newList
+        return mapwithnicenames
     
     def getListOfTransitions(self, map_img):
         cv_img = self.bridge.imgmsg_to_cv2(map_img, desired_encoding="passthrough").copy()

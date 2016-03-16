@@ -138,15 +138,33 @@ class MapTesselation(object):
         output.encoding = input_map.room_map.encoding
         output.height = input_map.room_map.height
         output.width = input_map.room_map.width
-        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(cv_img)
-        
+#         cv_enc_img_msg = self.bridge.cv2_to_imgmsg(cv_img)
+        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(n_img)
+        listOfAreas = self.debugmakeListOfColors(n_img)
+        listOfBalance = self.calcBalancePoints(n_img, listOfAreas)
+        print "listOfBalancePoints"
+        print listOfBalance
         answer = self.serviceMapPublisherClient(cv_enc_img_msg)
         print answer
+        for points in listOfBalance:
+            h = points[1][0]
+            w = points[1][1]
+            n_img[h,w] = 65499
+        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(n_img)
+        answer22 = self.serviceMapPublisherClient(cv_enc_img_msg)
         
         response = RoomTesselationResponse()
         response.tesselated_rooms = cv_enc_img_msg
         return response
 
+    def debugmakeListOfColors(self, map_img):
+        listOfColors = []
+        for w in range (0, map_img.shape[1], 1):
+            for h in range (0, map_img.shape[0], 1):
+                if not map_img[h,w] in listOfColors:
+                    listOfColors.append(map_img[h,w])
+        return listOfColors
+    
     def tesselateMap(self, map_img):
         newMap = map_img
         listOfCol = self.debugmakeListOfColors(newMap)
@@ -305,13 +323,13 @@ class MapTesselation(object):
                     map_img[h][w] = 0
         return map_img
 
-    def debugmakeListOfColors(self, map_img):
-        listOfColors = []
-        for w in range (0, map_img.shape[1], 1):
-            for h in range (0, map_img.shape[0], 1):
-                if not map_img[h,w] in listOfColors:
-                    listOfColors.append(map_img[h,w])
-        return listOfColors
+#     def debugmakeListOfColors(self, map_img):
+#         listOfColors = []
+#         for w in range (0, map_img.shape[1], 1):
+#             for h in range (0, map_img.shape[0], 1):
+#                 if not map_img[h,w] in listOfColors:
+#                     listOfColors.append(map_img[h,w])
+#         return listOfColors
     
     
 #     def makeListOfAreasAndPixels(self, map_img):
@@ -456,6 +474,44 @@ class MapTesselation(object):
                     room_img[h,w] = 65502
 
         return room_img
+    
+    def calcBalancePoints(self, img, listOfAreas):
+        
+        listOfBalancePoints = []
+        #print listOfAreas
+        for color in listOfAreas:
+            listOfPointInfo = []
+            print "Schwerpunkt berechnen fuer=",color
+            listOfX = []
+            listOfY = []
+            for w in range(0, img.shape[1], 1):
+                for h in range(0, img.shape[0], 1):
+                    if (img[h,w] == color):
+                        listOfX.append(h)
+                        listOfY.append(w)
+            mx = 0
+            my = 0
+            for x in listOfX:
+                mx = mx+x
+                
+            for y in listOfY:
+                my = my+y
+            
+            xs = mx/len(listOfX)
+            ys = my/len(listOfY)
+            #mark red
+            img[xs,ys] = 65525
+            coordinateXYZ = []
+            coordinateXYZ.append(xs)
+            coordinateXYZ.append(ys)
+            coordinateXYZ.append(0)
+            listOfPointInfo.append(color)
+            listOfPointInfo.append(coordinateXYZ)
+            listOfBalancePoints.append(listOfPointInfo)
+#             for room in listOfTransitions:
+#                 if (room[1][0] == color[0]) and (room[1][1] == color[1]) and (room[1][2] == color[2]):
+#                     room.append(coordinateXY)
+        return listOfBalancePoints
 #     
 #     def findSmallAreas(self, map_img):
 #         newMap = map_img.copy()
