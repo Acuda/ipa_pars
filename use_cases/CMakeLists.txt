@@ -1,25 +1,14 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(map_analyzer)
+project(use_cases)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED
-	rospy
-	cmake_modules
-	std_msgs
-	sensor_msgs
-	actionlib
-	actionlib_msgs
-	genmsg
-	message_generation
-	roscpp
-	geometry_msgs
-	cv_bridge
-)
+find_package(catkin REQUIRED)
 
 ## System dependencies are found with CMake's conventions
-find_package(catkin REQUIRED COMPONENTS genmsg actionlib_msgs)
+# find_package(Boost REQUIRED COMPONENTS system)
+
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -58,28 +47,24 @@ find_package(catkin REQUIRED COMPONENTS genmsg actionlib_msgs)
 # )
 
 ## Generate services in the 'srv' folder
- add_service_files(
-   FILES
-   MapAnalyzer.srv
-   RoomTesselation.srv
-)
+# add_service_files(
+#   FILES
+#   Service1.srv
+#   Service2.srv
+# )
 
 ## Generate actions in the 'action' folder
- add_action_files(
-   FILES
-   MapAnalyzer.action
-   MapTesselation.action
- )
+# add_action_files(
+#   FILES
+#   Action1.action
+#   Action2.action
+# )
 
 ## Generate added messages and services with any dependencies listed here
- generate_messages(
-   DEPENDENCIES
-   std_msgs
-   sensor_msgs
-   geometry_msgs
-   actionlib_msgs
-   # Or other packages containing msgs
-)
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs  # Or other packages containing msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -111,10 +96,10 @@ find_package(catkin REQUIRED COMPONENTS genmsg actionlib_msgs)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES map_analyzer
-  CATKIN_DEPENDS std_msgs sensor_msgs roscpp rospy message_runtime
-  DEPENDS system_lib
+#  INCLUDE_DIRS include
+#  LIBRARIES use_cases
+#  CATKIN_DEPENDS other_catkin_pkg
+#  DEPENDS system_lib
 )
 
 ###########
@@ -124,29 +109,26 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
-include_directories(
-	${catkin_INCLUDE_DIRS}
-)
 
 ## Declare a C++ library
-# add_library(map_analyzer
-#   src/${PROJECT_NAME}/map_analyzer.cpp
+# add_library(use_cases
+#   src/${PROJECT_NAME}/use_cases.cpp
 # )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(map_analyzer ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(use_cases ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-# add_executable(map_analyzer_node src/map_analyzer_node.cpp)
+# add_executable(use_cases_node src/use_cases_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(map_analyzer_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(use_cases_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(map_analyzer_node
+# target_link_libraries(use_cases_node
 #   ${catkin_LIBRARIES}
 # )
 
@@ -165,7 +147,7 @@ include_directories(
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS map_analyzer map_analyzer_node
+# install(TARGETS use_cases use_cases_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -190,7 +172,7 @@ include_directories(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_map_analyzer.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_use_cases.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

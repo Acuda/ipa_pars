@@ -67,6 +67,7 @@ import numpy as np
 from sensor_msgs.msg import Image
 #from sensor_msgs.msg._Image import Image
 
+from map_analyzer.msg._MapTesselationAction import *
 
 from cv_bridge import CvBridge, CvBridgeError
 import actionlib
@@ -76,12 +77,15 @@ from map_analyzer.srv._MapAnalyzer import MapAnalyzerResponse, MapAnalyzerReques
 from map_analyzer.srv import RoomTesselation
 from map_analyzer.srv._RoomTesselation import RoomTesselationResponse, RoomTesselationRequest
 import sensor_msgs
+import map_analyzer
 
 
 class MapTesselation(object):
+    _feedback = map_analyzer.msg.MapTesselationFeedback()
+    _result = map_analyzer.msg.MapTesselationResult()
     def __init__(self):
         rospy.loginfo("Initialize MapTesselation ...")
-        self.map_srvs = rospy.Service('map_tesselation_service_server', RoomTesselation, self.handle_map_cb)
+#         self.map_srvs = rospy.Service('map_tesselation_service_server', RoomTesselation, self.handle_map_cb)
         
         rospy.logwarn("Waiting for map_publisher_service_server to come available ...")
         rospy.wait_for_service('map_publisher_server')
@@ -90,7 +94,7 @@ class MapTesselation(object):
             self.serviceMapPublisherClient = rospy.ServiceProxy('map_publisher_server', MapAnalyzer)
         except rospy.ServiceException, e:
             print "Service call failed: %s"%e
-            
+#             
         self.bridge = CvBridge()
         self.numbpix = 0
         # change alogrithm to one that fits best to the rooms?
@@ -98,7 +102,35 @@ class MapTesselation(object):
         self.nextSquareColor = 0
         self.highestColorNumber = 0
         self.encoding = "empty"
-        rospy.loginfo("... finished")
+        
+        self._as = actionlib.SimpleActionServer('room_tesselation_server', map_analyzer.msg.MapTesselationAction, execute_cb=self.execute_cb, auto_start=False)
+        self._as.start()
+        rospy.loginfo("MapTesselationServer running! Waiting for a new map to tesselate ...")
+        rospy.loginfo("MapTesselationServer initialize finished")
+    
+    def execute_cb(self, goal):
+        rospy.loginfo("Tesselating a new map!")
+        rospy.loginfo("header");
+        print goal.input_map.header
+        rospy.loginfo("goal in progress ...")
+        r = rospy.Rate(1)
+        cv_img = self.bridge.imgmsg_to_cv2(goal.input_map, desired_encoding="passthrough").copy()
+        cv_img[cv_img==65280]=0
+        n_img = cv_img.reshape(cv_img.shape[:2])
+        n_img = self.tesselateMap(n_img)
+        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(n_img)
+        success = True
+        self._result.tesselated_map = cv_enc_img_msg
+        rospy.sleep(5)
+        #===========================
+        if self._as.is_preempt_requested():
+            rospy.loginfo('%s: Preempted' % 'map_analyzer_server')
+            result = "there is no yaml file text here"
+        r.sleep()
+        if success:
+            rospy.loginfo("Produced fundamental static knowledge")
+            self._as.set_succeeded(self._result, "good job")
+
         
     def handle_map_cb(self, input_map):
         '''

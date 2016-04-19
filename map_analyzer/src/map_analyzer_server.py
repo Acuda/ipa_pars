@@ -65,6 +65,10 @@ import rospy
 import cv2
 import numpy as np
 import cv
+
+from map_analyzer.msg._MapAnalyzerAction import *
+from map_analyzer.msg._MapTesselationAction import *
+
 from sensor_msgs.msg import *
 from sensor_msgs.msg._Image import Image
 import color_utils_cme
@@ -91,40 +95,144 @@ from cv2 import CV_8U
 
 
 class MapAnalyzerServer(object):
+    _feedback = map_analyzer.msg.MapAnalyzerFeedback()
+    _result = map_analyzer.msg.MapAnalyzerResult()
     def __init__(self):
-        rospy.loginfo("Initialize MapAnalyzer ...")
+        rospy.loginfo("Initialize MapAnalyzerServer ...")
         rospy.loginfo("... starting room_segmentation_client")
         self._roomsegclient = actionlib.SimpleActionClient('room_segmentation_server', MapSegmentationAction)
         rospy.logwarn("Waiting for Segmentation Server to come available ...")
         self._roomsegclient.wait_for_server()
         rospy.logwarn("Server is online!")
-        rospy.loginfo("... starting map_analyzer_service_server")
-        self.map_srvs = rospy.Service('map_analyzer_service_server', MapAnalyzer, self.handle_map_cb)
-        rospy.logwarn("Waiting for map_publisher_service_server to come available ...")
-        rospy.wait_for_service('map_publisher_server')
-        rospy.logwarn("Server online!")
-        rospy.logwarn("Waiting for knowledge_segmented_map_server to come available ...")
-        rospy.wait_for_service('knowledge_segmented_map_server')
-        rospy.logwarn("Server online!")
-        try:
-            self.serviceMapPublisherClient = rospy.ServiceProxy('map_publisher_server', MapAnalyzer)
-        except rospy.ServiceException, e:
-            print "Service call failed: %s"%e
-        rospy.logwarn("Waiting for map_tesselation_service_server to come available ...")
-        rospy.wait_for_service('map_tesselation_service_server')
-        rospy.logwarn("Server online!")
-        try:
-            self.serviceMapTesselationClient = rospy.ServiceProxy('map_tesselation_service_server', RoomTesselation)
-        except rospy.ServiceException, e:
-            print "Service call failed: %s"%e
-        try:
-            self.serviceKnowledgeSegmentedMapPublisherClient = rospy.ServiceProxy('knowledge_segmented_map_server', MapSeg)
-        except rospy.ServiceException, e:
-            print "Service call failed: %s"%e
-        rospy.loginfo("generating object instances")
+        rospy.loginfo("... starting room_tesselation_client")
+        self._roomtesclient = actionlib.SimpleActionClient('room_tesselation_server', MapTesselationAction)
+        rospy.logwarn("Waiting for Tesselation Server to come available ...")
+        self._roomtesclient.wait_for_server()
+        rospy.logwarn("Server is online!")
+        rospy.loginfo("... starting knowledge_extractor_client")
+        self._knowledgeExtractorClient = actionlib.SimpleActionClient('knowledge_extractor_server', MapAnalyzerAction)
+        rospy.logwarn("Waiting for KnowledgeExtractorServer to come available ...")
+        self._knowledgeExtractorClient.wait_for_server()
+        rospy.logwarn("Server is online!")
+        
+#        rospy.loginfo("... starting map_analyzer_service_server")
+#         self.map_srvs = rospy.Service('map_analyzer_service_server', MapAnalyzer, self.handle_map_cb)
+#         rospy.logwarn("Waiting for map_publisher_service_server to come available ...")
+#         rospy.wait_for_service('map_publisher_server')
+#         rospy.logwarn("Server online!")
+#         rospy.logwarn("Waiting for knowledge_segmented_map_server to come available ...")
+#         rospy.wait_for_service('knowledge_segmented_map_server')
+#         rospy.logwarn("Server online!")
+#         try:
+#             self.serviceMapPublisherClient = rospy.ServiceProxy('map_publisher_server', MapAnalyzer)
+#         except rospy.ServiceException, e:
+#             print "Service call failed: %s"%e
+#         rospy.logwarn("Waiting for map_tesselation_service_server to come available ...")
+#         rospy.wait_for_service('map_tesselation_service_server')
+#         rospy.logwarn("Server online!")
+#         try:
+#             self.serviceMapTesselationClient = rospy.ServiceProxy('map_tesselation_service_server', RoomTesselation)
+#         except rospy.ServiceException, e:
+#             print "Service call failed: %s"%e
+#         try:
+#             self.serviceKnowledgeSegmentedMapPublisherClient = rospy.ServiceProxy('knowledge_segmented_map_server', MapSeg)
+#         except rospy.ServiceException, e:
+#             print "Service call failed: %s"%e
+#         rospy.loginfo("generating object instances")
         self.bridge = CvBridge()
         
-        rospy.loginfo("... finished")
+        self._as = actionlib.SimpleActionServer('map_analyzer_server', map_analyzer.msg.MapAnalyzerAction, execute_cb=self.execute_cb, auto_start=False)
+        self._as.start()
+        
+        rospy.loginfo("MapAnalyzerServer running! Waiting for a new map to analyze ...")
+        rospy.loginfo("MapAnalyzerServer initialize finished")
+        
+    def execute_cb(self, goal):
+        rospy.loginfo("Analyzing a new map!")
+        rospy.loginfo("header");
+        print goal.input_map.header
+        rospy.loginfo("goal in progress ...")
+        r = rospy.Rate(1)
+        # 1
+        # Delete Errors:
+        received_map_as_bgr = self.bridge.imgmsg_to_cv2(goal.input_map).copy()
+        received_map_as_bgr = self.deleteErrorsInMap(received_map_as_bgr)
+        received_map_as_imgmsg = self.bridge.cv2_to_imgmsg(received_map_as_bgr, encoding="bgr8")
+        self._feedback.status = 1
+        # goal to MapSegmentationServer
+        segmented_map_response = self.useRoomSegmentation(received_map_as_imgmsg)
+        print "we received a segmented map:"
+        print "its resolution is:"
+        print segmented_map_response.map_resolution
+        self._feedback.status = 2
+        # goal to MapTesselationServer
+        tesselated_map_response = self.useRoomTesselation(segmented_map_response)
+        print "this should be a resolution"
+        print tesselated_map_response.map_resolution
+        self._feedback.status = 3
+        # send map to KnowledgeExtractorServer
+        knowledge_result = self.useKnowledgeExtractor(tesselated_map_response)
+        print "this should be a text in yaml format"
+        self._feedback.status = 4
+        
+        print "i am sleeping now"
+        success = True
+        result = knowledge_result
+        rospy.sleep(5)
+        #===========================
+        if self._as.is_preempt_requested():
+            rospy.loginfo('%s: Preempted' % 'map_analyzer_server')
+            result = "there is no yaml file text here"
+        r.sleep()
+        if success:
+            self._result.static_knowledge.data = result
+            rospy.loginfo("Produced fundamental static knowledge")
+            self._as.set_succeeded(self._result, "good job")
+
+    def deleteErrorsInMap(self, img):
+        for w in range (0, img.shape[1], 1):
+            for h in range (0, img.shape[0], 1):
+                if not img[h,w][0] == 0:
+                    if not img[h,w][0] == 254:
+                        pixelcounter = 0
+                        (img, pixelcounter) = self.floodfill4ColorsForErrorDeletion(h, w, 255, 254, img, pixelcounter)
+                        if pixelcounter < 500:
+                            pixelcounter = 0
+                            (img, pixelcounter) = self.floodfill4ColorsForErrorDeletion(h, w, 254, 0, img, pixelcounter)
+        img[np.where(img==254)] = 255
+        return img
+    
+    def floodfill4ColorsForErrorDeletion(self, x, y, oldValue, newValue, img, pixelcounter):
+        stack = []
+        innerstack = []
+        innerstack.append(x)
+        innerstack.append(y)
+        stack.append(innerstack)
+        while not (len(stack) == 0): # list empty
+            (x, y) = stack.pop()
+            if img[x,y][0] == oldValue:
+                img[x,y][0] = newValue
+                img[x,y][1] = newValue
+                img[x,y][2] = newValue
+                pixelcounter += 1
+                innerstack = []
+                innerstack.append(x)
+                innerstack.append(y+1)
+                stack.append(innerstack)
+                innerstack = []
+                innerstack.append(x)
+                innerstack.append(y-1)
+                stack.append(innerstack)
+                innerstack = []
+                innerstack.append(x+1)
+                innerstack.append(y)
+                stack.append(innerstack)
+                innerstack = []
+                innerstack.append(x-1)
+                innerstack.append(y)
+                stack.append(innerstack)
+        return (img, pixelcounter)
+    
     
     def debugmakeListOfColors(self, map_img):
         listOfColors = []
@@ -134,7 +242,7 @@ class MapAnalyzerServer(object):
                     listOfColors.append(map_img[h,w])
         return listOfColors
     
-    def deleteErrorsInMap(self, img):
+    def deleteErrorsInMap2(self, img):
         for w in range (0, img.shape[1], 1):
             for h in range (0, img.shape[0], 1):
                 if not img[h,w] == 0:
@@ -389,6 +497,32 @@ class MapAnalyzerServer(object):
         print output_msg.map.step
         return output_msg
     
+    def useKowledgeExtractor(self, tesselated_map_response):
+        goal = map_analyzer.msg.MapAnalyzerGoal()
+        goal.input_map = tesselated_map_response.tesselated_map
+        goal.map_resolution = tesselated_map_response.map_resolution
+        goal.map_origin = tesselated_map_response.map_origin
+        rospy.loginfo("Send goal to KnowledgeExtractorServer ...")
+        self._knowledgeExtractorClient.send_goal(goal)
+        rospy.loginfo("Waiting for result of KnowledgeExtractorServer ...")
+        result = self._knowledgeExtractorClient.get_result()
+        rospy.loginfo("Received a result from KnowledegeExtractorServer!")
+        return result
+        
+    def useRoomTesselation(self, seg_map):
+        goal = map_analyzer.msg.MapTesselationGoal()
+        goal.input_map = seg_map.segmented_map
+        goal.map_resolution = seg_map.map_resolution
+        goal.map_origin = seg_map.map_origin
+        rospy.loginfo("Send goal to MapTesselationServer ...")
+        self._roomtesclient.send_goal(goal)
+        rospy.loginfo("Waiting for result of MapTesselationServer ...")
+        self._roomtesclient.wait_for_result()
+        result = self._roomtesclient.get_result()
+        rospy.loginfo("Received a result from RoomTesselationServer!")
+        
+        return result
+        
     def useRoomSegmentation(self, in_map):
         goal = ipa_room_segmentation.msg.MapSegmentationGoal()
         #goal.input_map.header.seq = 1

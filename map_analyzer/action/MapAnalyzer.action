@@ -1,0 +1,18 @@
+# Map Analyzer action
+# Provides interface to get the static knowledge of the map
+
+# goal definition
+sensor_msgs/Image input_map
+float32 map_resolution
+geometry_msgs/Pose map_origin
+
+---
+
+# result definition
+std_msgs/String static_knowledge
+
+---
+
+# feedback definition
+
+int32 status
