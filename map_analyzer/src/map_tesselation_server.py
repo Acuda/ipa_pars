@@ -68,14 +68,16 @@ from sensor_msgs.msg import Image
 #from sensor_msgs.msg._Image import Image
 
 from map_analyzer.msg._MapTesselationAction import *
+from geometry_msgs.msg import Point32
+# from map_analyzer.msg import RoomBalancePoints
 
 from cv_bridge import CvBridge, CvBridgeError
 import actionlib
 
 from map_analyzer.srv import MapAnalyzer
 from map_analyzer.srv._MapAnalyzer import MapAnalyzerResponse, MapAnalyzerRequest
-from map_analyzer.srv import RoomTesselation
-from map_analyzer.srv._RoomTesselation import RoomTesselationResponse, RoomTesselationRequest
+#from map_analyzer.srv import RoomTesselation
+#from map_analyzer.srv._RoomTesselation import RoomTesselationResponse, RoomTesselationRequest
 import sensor_msgs
 import map_analyzer
 
@@ -118,14 +120,30 @@ class MapTesselation(object):
         cv_img[cv_img==65280]=0
         n_img = cv_img.reshape(cv_img.shape[:2])
         n_img = self.tesselateMap(n_img)
+        
+#         listOfAreas = self.debugmakeListOfColors(n_img)
+#         listOfBalance = self.calcBalancePoints(n_img, listOfAreas)
+#         print "listOfBalancePoints"
+#         print listOfBalance
+#         roomBalancePoints = []
+#         
+#         for room in listOfBalance:
+#             roomBalancePoint = Point32()
+#             roomBalancePoint.x = room[1][0]
+#             roomBalancePoint.y = room[1][1]
+#             roomBalancePoint.z = 0
+#             print "added BalancePoint to list"
+#             print roomBalancePoint
+#             roomBalancePoints.append(roomBalancePoint)
+        
         cv_enc_img_msg = self.bridge.cv2_to_imgmsg(n_img)
         success = True
         self._result.tesselated_map = cv_enc_img_msg
+#         self._result.balance_points = roomBalancePoints
         rospy.sleep(5)
         #===========================
         if self._as.is_preempt_requested():
             rospy.loginfo('%s: Preempted' % 'map_analyzer_server')
-            result = "there is no yaml file text here"
         r.sleep()
         if success:
             rospy.loginfo("Produced fundamental static knowledge")
@@ -241,28 +259,28 @@ class MapTesselation(object):
         #print answer
         print "draw squares"
         newMap = self.createSquares(newMap)
-        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
-        self.serviceMapPublisherClient(cv_enc_img_msg)
+#         cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
+#         self.serviceMapPublisherClient(cv_enc_img_msg)
 
         print "fill squares"
         newMap = self.fillSquares(newMap)
-        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
-        self.serviceMapPublisherClient(cv_enc_img_msg)
+#         cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
+#         self.serviceMapPublisherClient(cv_enc_img_msg)
          
         print "deleteSquaresHorizontal"
         newMap = self.deleteSquaresHorizontal(newMap)
-        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
-        self.serviceMapPublisherClient(cv_enc_img_msg)
+#         cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
+#         self.serviceMapPublisherClient(cv_enc_img_msg)
  
         print "deleteSquaresVertical"
         newMap = self.deleteSquaresVertical(newMap)
-        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
-        self.serviceMapPublisherClient(cv_enc_img_msg)
+#         cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
+#         self.serviceMapPublisherClient(cv_enc_img_msg)
    
         print "mergeSmallAreas"
         newMap = self.mergeSmallSquares(newMap)
-        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
-        self.serviceMapPublisherClient(cv_enc_img_msg)
+#         cv_enc_img_msg = self.bridge.cv2_to_imgmsg(newMap)
+#         self.serviceMapPublisherClient(cv_enc_img_msg)
         #print listOfAreasAndPix
         #newMap = self.deleteDoubleAreas(newMap)
         #newMap = self.correctSmallAreas(map_img)
@@ -532,7 +550,7 @@ class MapTesselation(object):
             xs = mx/len(listOfX)
             ys = my/len(listOfY)
             #mark red
-            img[xs,ys] = 65525
+            #img[xs,ys] = 65525
             coordinateXYZ = []
             coordinateXYZ.append(xs)
             coordinateXYZ.append(ys)

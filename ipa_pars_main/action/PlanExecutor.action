@@ -1,0 +1,11 @@
+# Define the goal
+
+std_msgs/String[] action_list
+
+---
+# Define a result
+bool success
+
+---
+# Define a feedback message
+

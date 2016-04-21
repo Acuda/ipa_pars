@@ -10,11 +10,12 @@
 
 
 		<!-- nodes to start -->
-		<node pkg="map_analyzer" type="map_analyzer_client.py" name="map_analyzer_client_spawner" args="$(find map_analyzer)/maps/lab_ipa2.png" respawn="false" output="screen"/>
+		<node pkg="map_analyzer" type="map_analyzer_client.py" name="map_analyzer_client_spawner" args="$(find map_analyzer)/maps/" respawn="false" output="screen"/>
 		<node pkg="map_analyzer" type="map_analyzer_server.py" name="map_analyzer_server_spawner" respawn="false" output="screen" />
 		<node pkg="map_analyzer" type="map_tesselation_server.py" name="map_tesselation_server_spawner" respawn="false" output="screen" />
 		<node pkg="map_analyzer" type="map_publisher.py" name="map_publisher_spawner" args="$(find map_analyzer)/logs/" respawn="false" output="screen"/>
-		<node pkg="map_analyzer" type="knowledge_extractor_server.py" name="knowledge_extractor_server_spawner" respawn="false" output="screen" />
+		<node pkg="map_analyzer" type="knowledge_extractor_server.py" name="knowledge_extractor_server_spawner" args="$(find map_analyzer)/knowledge/" respawn="false" output="screen" />
+		<node pkg="map_analyzer" type="map_status_logger.py" name="map_status_logger_spawner" args="$(find map_analyzer)/maps/" respawn="false" output="screen" />
 
 	</group>
 </launch>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- ipa_planning_and_reasoning_system -->
+
+	<!-- ipa_pars -->
+	<group ns = "ipa_pars">
+
+	<!-- nodes to start -->
+	<node pkg="ipa_pars_main" type="planning_executor_server.py" args="$(find ipa_pars_main)/execution_tests/" name="planning_executor_server_spawner" respawn="false" output="screen" />
+	<node pkg="ipa_pars_main" type="planning_executor_client.py" name="planning_executor_client_spawner" args="$(find ipa_pars_main)/execution_tests/" respawn="false" output="screen" />
+
+	</group>
+</launch>

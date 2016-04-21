@@ -1,0 +1,731 @@
+location-data:
+- center:
+    X: 460
+    Y: 131
+    Z: 0
+  name: room-7011
+  transitions:
+  - room-7009
+  - room-7012
+  - room-7015
+- center:
+    X: 249
+    Y: 132
+    Z: 0
+  name: room-5004
+  transitions:
+  - room-5003
+  - room-5005
+- center:
+    X: 422
+    Y: 140
+    Z: 0
+  name: room-7009
+  transitions:
+  - room-7011
+  - room-7013
+  - room-7014
+- center:
+    X: 220
+    Y: 132
+    Z: 0
+  name: room-5003
+  transitions:
+  - room-5004
+  - room-5005
+- center:
+    X: 179
+    Y: 133
+    Z: 0
+  name: room-1003
+  transitions:
+  - room-1002
+  - room-1006
+- center:
+    X: 140
+    Y: 134
+    Z: 0
+  name: room-1002
+  transitions:
+  - room-1003
+  - room-1001
+  - room-1005
+- center:
+    X: 109
+    Y: 134
+    Z: 0
+  name: room-1001
+  transitions:
+  - room-1002
+  - room-1004
+- center:
+    X: 496
+    Y: 143
+    Z: 0
+  name: room-7012
+  transitions:
+  - room-7011
+  - room-7017
+  - room-7016
+- center:
+    X: 537
+    Y: 182
+    Z: 0
+  name: room-7017
+  transitions:
+  - room-7012
+  - room-7016
+  - room-7023
+- center:
+    X: 109
+    Y: 178
+    Z: 0
+  name: room-1004
+  transitions:
+  - room-1005
+  - room-1001
+- center:
+    X: 140
+    Y: 178
+    Z: 0
+  name: room-1005
+  transitions:
+  - room-1004
+  - room-1006
+  - room-1002
+- center:
+    X: 180
+    Y: 177
+    Z: 0
+  name: room-1006
+  transitions:
+  - room-1005
+  - room-1003
+  - room-2001
+  - room-2004
+- center:
+    X: 230
+    Y: 176
+    Z: 0
+  name: room-5005
+  transitions:
+  - room-5004
+  - room-2002
+  - room-2005
+  - room-5003
+- center:
+    X: 383
+    Y: 182
+    Z: 0
+  name: room-7013
+  transitions:
+  - room-7014
+  - room-7009
+  - room-7018
+  - room-7019
+- center:
+    X: 420
+    Y: 179
+    Z: 0
+  name: room-7014
+  transitions:
+  - room-7013
+  - room-7015
+  - room-7009
+  - room-7020
+- center:
+    X: 460
+    Y: 179
+    Z: 0
+  name: room-7015
+  transitions:
+  - room-7014
+  - room-7016
+  - room-7011
+  - room-7021
+- center:
+    X: 500
+    Y: 179
+    Z: 0
+  name: room-7016
+  transitions:
+  - room-7015
+  - room-7017
+  - room-7012
+  - room-7022
+- center:
+    X: 281
+    Y: 182
+    Z: 0
+  name: room-6001
+  transitions:
+  - room-2002
+  - room-6004
+  - room-6003
+  - room-6002
+- center:
+    X: 345
+    Y: 213
+    Z: 0
+  name: room-7018
+  transitions:
+  - room-7013
+  - room-6004
+  - room-7019
+- center:
+    X: 251
+    Y: 196
+    Z: 0
+  name: room-2002
+  transitions:
+  - room-5005
+  - room-2005
+  - room-6001
+  - room-6002
+  - room-2006
+- center:
+    X: 200
+    Y: 194
+    Z: 0
+  name: room-2001
+  transitions:
+  - room-1006
+  - room-2004
+- center:
+    X: 220
+    Y: 216
+    Z: 0
+  name: room-2005
+  transitions:
+  - room-2002
+  - room-5005
+  - room-2004
+  - room-2006
+  - room-4001
+  - room-4003
+- center:
+    X: 180
+    Y: 217
+    Z: 0
+  name: room-2004
+  transitions:
+  - room-1006
+  - room-2001
+  - room-2005
+  - room-2003
+- center:
+    X: 130
+    Y: 220
+    Z: 0
+  name: room-2003
+  transitions:
+  - room-2004
+  - room-3001
+- center:
+    X: 324
+    Y: 214
+    Z: 0
+  name: room-6004
+  transitions:
+  - room-6001
+  - room-7018
+  - room-6003
+- center:
+    X: 251
+    Y: 219
+    Z: 0
+  name: room-2006
+  transitions:
+  - room-2005
+  - room-6002
+  - room-2002
+  - room-4004
+  - room-2007
+- center:
+    X: 271
+    Y: 219
+    Z: 0
+  name: room-6002
+  transitions:
+  - room-2006
+  - room-6003
+  - room-6001
+  - room-6005
+  - room-2002
+- center:
+    X: 299
+    Y: 217
+    Z: 0
+  name: room-6003
+  transitions:
+  - room-6002
+  - room-6004
+  - room-6001
+  - room-6005
+- center:
+    X: 382
+    Y: 230
+    Z: 0
+  name: room-7019
+  transitions:
+  - room-7018
+  - room-7020
+  - room-7013
+  - room-7024
+- center:
+    X: 420
+    Y: 219
+    Z: 0
+  name: room-7020
+  transitions:
+  - room-7019
+  - room-7021
+  - room-7014
+  - room-7024
+- center:
+    X: 460
+    Y: 219
+    Z: 0
+  name: room-7021
+  transitions:
+  - room-7020
+  - room-7022
+  - room-7015
+  - room-7025
+- center:
+    X: 500
+    Y: 219
+    Z: 0
+  name: room-7022
+  transitions:
+  - room-7021
+  - room-7023
+  - room-7016
+  - room-7026
+- center:
+    X: 542
+    Y: 218
+    Z: 0
+  name: room-7023
+  transitions:
+  - room-7022
+  - room-7017
+  - room-7026
+- center:
+    X: 238
+    Y: 239
+    Z: 0
+  name: room-4001
+  transitions:
+  - room-2005
+  - room-4003
+- center:
+    X: 175
+    Y: 259
+    Z: 0
+  name: room-4002
+  transitions:
+  - room-4003
+  - room-4005
+- center:
+    X: 220
+    Y: 259
+    Z: 0
+  name: room-4003
+  transitions:
+  - room-4002
+  - room-4004
+  - room-2005
+  - room-4006
+  - room-4001
+- center:
+    X: 251
+    Y: 259
+    Z: 0
+  name: room-4004
+  transitions:
+  - room-4003
+  - room-2007
+  - room-2006
+  - room-5001
+- center:
+    X: 261
+    Y: 240
+    Z: 0
+  name: room-2007
+  transitions:
+  - room-4004
+  - room-2006
+- center:
+    X: 284
+    Y: 260
+    Z: 0
+  name: room-6005
+  transitions:
+  - room-6003
+  - room-7001
+  - room-6002
+- center:
+    X: 422
+    Y: 269
+    Z: 0
+  name: room-7024
+  transitions:
+  - room-7019
+  - room-7025
+  - room-7020
+  - room-8001
+- center:
+    X: 460
+    Y: 259
+    Z: 0
+  name: room-7025
+  transitions:
+  - room-7024
+  - room-7026
+  - room-7021
+  - room-8001
+- center:
+    X: 509
+    Y: 257
+    Z: 0
+  name: room-7026
+  transitions:
+  - room-7025
+  - room-7023
+  - room-8001
+  - room-7022
+- center:
+    X: 124
+    Y: 261
+    Z: 0
+  name: room-3001
+  transitions:
+  - room-2003
+  - room-3002
+- center:
+    X: 126
+    Y: 305
+    Z: 0
+  name: room-3002
+  transitions:
+  - room-3001
+- center:
+    X: 175
+    Y: 299
+    Z: 0
+  name: room-4005
+  transitions:
+  - room-4006
+  - room-4002
+  - room-5002
+- center:
+    X: 220
+    Y: 303
+    Z: 0
+  name: room-4006
+  transitions:
+  - room-4005
+  - room-5001
+  - room-4003
+  - room-5002
+- center:
+    X: 252
+    Y: 303
+    Z: 0
+  name: room-5001
+  transitions:
+  - room-4006
+  - room-4004
+- center:
+    X: 292
+    Y: 299
+    Z: 0
+  name: room-7001
+  transitions:
+  - room-7004
+  - room-7003
+  - room-6005
+- center:
+    X: 468
+    Y: 306
+    Z: 0
+  name: room-8001
+  transitions:
+  - room-7024
+  - room-7026
+  - room-7002
+  - room-7025
+- center:
+    X: 338
+    Y: 329
+    Z: 0
+  name: room-7004
+  transitions:
+  - room-7001
+  - room-7003
+  - room-7005
+  - room-7006
+- center:
+    X: 175
+    Y: 324
+    Z: 0
+  name: room-5002
+  transitions:
+  - room-4006
+  - room-4005
+- center:
+    X: 300
+    Y: 339
+    Z: 0
+  name: room-7003
+  transitions:
+  - room-7004
+  - room-7001
+  - room-7006
+- center:
+    X: 375
+    Y: 346
+    Z: 0
+  name: room-7005
+  transitions:
+  - room-7004
+  - room-7008
+  - room-7007
+- center:
+    X: 462
+    Y: 351
+    Z: 0
+  name: room-7002
+  transitions:
+  - room-8001
+  - room-7010
+- center:
+    X: 343
+    Y: 378
+    Z: 0
+  name: room-7006
+  transitions:
+  - room-7003
+  - room-7007
+  - room-7004
+- center:
+    X: 380
+    Y: 382
+    Z: 0
+  name: room-7007
+  transitions:
+  - room-7006
+  - room-7008
+  - room-7005
+- center:
+    X: 420
+    Y: 383
+    Z: 0
+  name: room-7008
+  transitions:
+  - room-7007
+  - room-7010
+  - room-7005
+- center:
+    X: 459
+    Y: 382
+    Z: 0
+  name: room-7010
+  transitions:
+  - room-7002
+  - room-7008
+  - room-9001
+- center:
+    X: 548
+    Y: 421
+    Z: 0
+  name: room-10001
+  transitions:
+  - room-10002
+  - room-10004
+- center:
+    X: 506
+    Y: 422
+    Z: 0
+  name: room-10002
+  transitions:
+  - room-10001
+  - room-9001
+  - room-10003
+- center:
+    X: 461
+    Y: 422
+    Z: 0
+  name: room-9001
+  transitions:
+  - room-9002
+  - room-10002
+  - room-9006
+  - room-7010
+- center:
+    X: 423
+    Y: 425
+    Z: 0
+  name: room-9002
+  transitions:
+  - room-9001
+  - room-9003
+  - room-9005
+- center:
+    X: 373
+    Y: 427
+    Z: 0
+  name: room-9003
+  transitions:
+  - room-9002
+  - room-9004
+- center:
+    X: 376
+    Y: 459
+    Z: 0
+  name: room-9004
+  transitions:
+  - room-9005
+  - room-9003
+  - room-9007
+- center:
+    X: 420
+    Y: 459
+    Z: 0
+  name: room-9005
+  transitions:
+  - room-9004
+  - room-9006
+  - room-9002
+  - room-9008
+- center:
+    X: 462
+    Y: 458
+    Z: 0
+  name: room-9006
+  transitions:
+  - room-9005
+  - room-10003
+  - room-9001
+  - room-9009
+- center:
+    X: 506
+    Y: 458
+    Z: 0
+  name: room-10003
+  transitions:
+  - room-9006
+  - room-10004
+  - room-10002
+  - room-10005
+- center:
+    X: 549
+    Y: 459
+    Z: 0
+  name: room-10004
+  transitions:
+  - room-10003
+  - room-10001
+  - room-10006
+- center:
+    X: 376
+    Y: 499
+    Z: 0
+  name: room-9007
+  transitions:
+  - room-9008
+  - room-9004
+  - room-9010
+- center:
+    X: 420
+    Y: 499
+    Z: 0
+  name: room-9008
+  transitions:
+  - room-9007
+  - room-9009
+  - room-9005
+  - room-9011
+- center:
+    X: 464
+    Y: 500
+    Z: 0
+  name: room-9009
+  transitions:
+  - room-9008
+  - room-9006
+  - room-10005
+  - room-9012
+- center:
+    X: 506
+    Y: 499
+    Z: 0
+  name: room-10005
+  transitions:
+  - room-10006
+  - room-10003
+  - room-9009
+  - room-10007
+- center:
+    X: 549
+    Y: 499
+    Z: 0
+  name: room-10006
+  transitions:
+  - room-10005
+  - room-10004
+  - room-10008
+- center:
+    X: 377
+    Y: 539
+    Z: 0
+  name: room-9010
+  transitions:
+  - room-9011
+  - room-9007
+  - room-9013
+- center:
+    X: 420
+    Y: 543
+    Z: 0
+  name: room-9011
+  transitions:
+  - room-9010
+  - room-9012
+  - room-9008
+  - room-9013
+- center:
+    X: 464
+    Y: 546
+    Z: 0
+  name: room-9012
+  transitions:
+  - room-9011
+  - room-10007
+  - room-9009
+- center:
+    X: 507
+    Y: 540
+    Z: 0
+  name: room-10007
+  transitions:
+  - room-9012
+  - room-10008
+  - room-10005
+- center:
+    X: 549
+    Y: 541
+    Z: 0
+  name: room-10008
+  transitions:
+  - room-10007
+  - room-10006
+- center:
+    X: 377
+    Y: 563
+    Z: 0
+  name: room-9013
+  transitions:
+  - room-9011
+  - room-9010
