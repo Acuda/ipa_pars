@@ -78,18 +78,45 @@ class PlanningExecutorServer(object):
         rospy.loginfo("Initialize PlanExecutorServer ...")
         self.path_to_inputfile = path_to_inputfile
         rospy.loginfo(path_to_inputfile)
+        # read yaml file static knowledge base
+        self.yamlfile_static_knowledge = self.load_static_knowledge_from_yaml()
+        
         self._as = actionlib.SimpleActionServer('plan_executor_server', ipa_pars_main.msg.PlanExecutorAction, execute_cb=self.execute_cb, auto_start=False)
         self._as.start()
-        # read yaml file static knowledge base
-        self.load_params_from_yaml()
+
 
         rospy.loginfo("PlanExecutorServer running! Waiting for a new action list to execute ...")
         rospy.loginfo("MapAnalyzerServer initialize finished")
+    
+    
+    def getTargetPoint(self, target_name):
+        pose_is_set = False
+        _new_pose = Pose()
+        location_data = self.yamlfile_static_knowledge["location-data"]
+        for squares in location_data:
+            if (squares["name"] == target_name):
+                point_coordinates = squares["center"]
+                _new_pose.position.x = point_coordinates["X"]
+                _new_pose.position.y = point_coordinates["Y"]
+                _new_pose.position.z = point_coordinates["Z"]
+                _new_pose.orientation.x = 0
+                _new_pose.orientation.y = 0
+                _new_pose.orientation.z = 0
+                _new_pose.orientation.w = 1
+                pose_is_set = True
+
+        if pose_is_set:
+            return _new_pose
+        else:
+            rospy.logerr("For the location %s we found no data to set move-base parameters!" % target_name)
+            return _new_pose
+
         
     def execute_cb(self, goal):
         rospy.loginfo("Executing a new list of goals!")
         print goal.action_list
-
+        
+        
         for action_goal in goal.action_list:
             #print action_goal.data
             #split input
@@ -98,7 +125,9 @@ class PlanningExecutorServer(object):
                 print "================================"
                 print "this is a move-base action call"
                 print "robot should move to"
-                print split_input[3]
+                #print split_input[3]
+                print self.getTargetPoint(split_input[3])
+                
                 print "================================"
 
             if (split_input[0] == "take"):
@@ -128,14 +157,13 @@ class PlanningExecutorServer(object):
             rospy.loginfo("Plan Executor attained all goals")
             self._as.set_succeeded(self._result, "perfect job")
 
-    def load_params_from_yaml(self):
+    def load_static_knowledge_from_yaml(self):
         # beachte: YAMl verwendet nur dicts und lists
         # verwende die entsprechenden methoden richtig
-        f = open(self.path_to_inputfile+"knowledge-base.yaml", 'r')
+        f = open(self.path_to_inputfile+"knowledge-base-static.yaml", 'r')
         yamlfile = load(f)
         f.close()
-        print yamlfile
-        print "------------------------"
+        return yamlfile
         
 if __name__ == '__main__':
     rospy.init_node('planning_executor_server_node', anonymous=False)

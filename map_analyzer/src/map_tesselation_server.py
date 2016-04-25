@@ -487,7 +487,7 @@ class MapTesselation(object):
                         print "give this area new color:"
                         print newColor
                         (map_img, pixelcounter) = self.floodfill4(h, w, 65504, newColor, map_img, pixelcounter)
-                        workedOnColors.append(newColor)
+                        #workedOnColors.append(newColor)
 
         return map_img
     

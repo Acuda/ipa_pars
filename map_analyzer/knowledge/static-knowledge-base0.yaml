@@ -1,7 +1,7 @@
 room-7011 room-7009 room-7012 room-7015 
-room-5004 room-5003 room-5005 
+room-5003 room-5002 room-5004 
 room-7009 room-7011 room-7013 room-7014 
-room-5003 room-5004 room-5005 
+room-5002 room-5003 room-5004 
 room-1003 room-1002 room-1006 
 room-1002 room-1003 room-1001 room-1005 
 room-1001 room-1002 room-1004 
@@ -10,16 +10,16 @@ room-7017 room-7012 room-7016 room-7023
 room-1004 room-1005 room-1001 
 room-1005 room-1004 room-1006 room-1002 
 room-1006 room-1005 room-1003 room-2001 room-2004 
-room-5005 room-5004 room-2002 room-2005 room-5003 
+room-5004 room-5003 room-2002 room-2005 room-5002 
 room-7013 room-7014 room-7009 room-7018 room-7019 
 room-7014 room-7013 room-7015 room-7009 room-7020 
 room-7015 room-7014 room-7016 room-7011 room-7021 
 room-7016 room-7015 room-7017 room-7012 room-7022 
 room-6001 room-2002 room-6004 room-6003 room-6002 
 room-7018 room-7013 room-6004 room-7019 
-room-2002 room-5005 room-2005 room-6001 room-6002 room-2006 
+room-2002 room-5004 room-2005 room-6001 room-6002 room-2006 
 room-2001 room-1006 room-2004 
-room-2005 room-2002 room-5005 room-2004 room-2006 room-4001 room-4003 
+room-2005 room-2002 room-5004 room-2004 room-2006 room-4001 room-4003 
 room-2004 room-1006 room-2001 room-2005 room-2003 
 room-2003 room-2004 room-3001 
 room-6004 room-6001 room-7018 room-6003 
@@ -42,13 +42,12 @@ room-7025 room-7024 room-7026 room-7021 room-8001
 room-7026 room-7025 room-7023 room-8001 room-7022 
 room-3001 room-2003 room-3002 
 room-3002 room-3001 
-room-4005 room-4006 room-4002 room-5002 
-room-4006 room-4005 room-5001 room-4003 room-5002 
+room-4005 room-4006 room-4002 
+room-4006 room-4005 room-5001 room-4003 
 room-5001 room-4006 room-4004 
 room-7001 room-7004 room-7003 room-6005 
 room-8001 room-7024 room-7026 room-7002 room-7025 
 room-7004 room-7001 room-7003 room-7005 room-7006 
-room-5002 room-4006 room-4005 
 room-7003 room-7004 room-7001 room-7006 
 room-7005 room-7004 room-7008 room-7007 
 room-7002 room-8001 room-7010 
@@ -71,9 +70,8 @@ room-9008 room-9007 room-9009 room-9005 room-9011
 room-9009 room-9008 room-9006 room-10005 room-9012 
 room-10005 room-10006 room-10003 room-9009 room-10007 
 room-10006 room-10005 room-10004 room-10008 
-room-9010 room-9011 room-9007 room-9013 
-room-9011 room-9010 room-9012 room-9008 room-9013 
+room-9010 room-9011 room-9007 
+room-9011 room-9010 room-9012 room-9008 
 room-9012 room-9011 room-10007 room-9009 
 room-10007 room-9012 room-10008 room-10005 
 room-10008 room-10007 room-10006 
-room-9013 room-9011 room-9010 

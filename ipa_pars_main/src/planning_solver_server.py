@@ -65,63 +65,77 @@ import rospy
 import sys
 import os
 import subprocess
-import cv2
 import numpy as np
-from sensor_msgs.msg import Image
-#from sensor_msgs.msg._Image import Image
 
 import actionlib
 
-from cob_srvs.srv._SetString import SetString
-from cob_srvs.srv._SetString import SetStringResponse
+from ipa_pars_main.msg._PlanSolverAction import *
 
 
-class PlanSolver(object):
+class PlanningSolverServer(object):
+    _feedback = ipa_pars_main.msg.PlanSolverFeedback()
+    _result = ipa_pars_main.msg.PlanSolverResult()
     def __init__(self, path_to_outputfile):
-        rospy.loginfo("Initialize PlanSolver ...")
+        rospy.loginfo("Initialize PlanningSolverServer ...")
         self.path_to_outputfile = path_to_outputfile
         rospy.loginfo(path_to_outputfile)
-        self.domain_srv = rospy.Service('planning_solver_domain_server', SetString, self.handle_domain_cb)
-        self.problem_srv = rospy.Service('planning_solver_problem_server', SetString, self.handle_problem_cb)
+        self._as = actionlib.SimpleActionServer('planning_solver_server', ipa_pars_main.msg.PlanSolverAction, execute_cb=self.execute_cb, auto_start=False)
+        self._as.start()
+        rospy.loginfo("PlaningSolverServer running! Waiting for a new problem to solve ...")
+        rospy.loginfo("PlanningSolverServer initialize finished")
         
-        rospy.logwarn("Waiting for planning_execution_service_server to come available ...")
-        rospy.wait_for_service('planning_execution_service_server')
-        rospy.logwarn("Server online!")
-        try:
-            self.execution_service_client = rospy.ServiceProxy('planning_execution_service_server', SetString)
-        except rospy.ServiceException, e:
-            print "Service call failed: %s"%e
-        rospy.loginfo("PlanSolverServer is running, waiting for new problems to solve ...")
-        rospy.loginfo("... finished")
-        
-    def handle_domain_cb(self, domain_as_string):
-        print "domain_as_string"
-        print domain_as_string
-        # TODO: do some stuff
-        self.save_domain_file(domain_as_string.data)
-        response = SetStringResponse()
-        response.success = True
-        response.message = "ErrorAnswer"
-        
-        return response
-    
-    def handle_problem_cb(self, problem_as_string):
-        print "problem_as_string"
-        print problem_as_string
-        # TODO: do some stuff:
-        self.save_problem_file(problem_as_string.data)
-        
-        # TODO: check that domain AND problem files are created!
+    def execute_cb(self, goal):
+        rospy.loginfo("Solving a new problem!")
+        rospy.loginfo("Received the following goal:")
+        print goal
+        domain_text = goal.domain.data
+        problem_text = goal.problem.data
+        self.save_domain_file(domain_text)
+        self.save_problem_file(problem_text)
         self.workOnPlan(self.path_to_outputfile)
-        plan_as_text = self.readPlanFile()
-        answer = self.execution_service_client(plan_as_text)
         
-        print answer
+        actionsAsString = self.readPlanFile()
+        list_of_actions = actionsAsString.splitlines()
+        success = True
+        self._result.success = True
+        self._result.action_list = list_of_actions
+        print self._result
+        rospy.sleep(5)
+        #===========================
+        if self._as.is_preempt_requested():
+            rospy.loginfo('%s: Preempted' % 'planning_solver_server')
+        if success:
+            rospy.loginfo("Plan Solver Server solved problems")
+            self._as.set_succeeded(self._result, "perfect job")
         
-        response = SetStringResponse()
-        response.success = True
-        response.message = "Error Answer"
-        return response
+#     def handle_domain_cb(self, domain_as_string):
+#         print "domain_as_string"
+#         print domain_as_string
+#         # TODO: do some stuff
+#         self.save_domain_file(domain_as_string.data)
+#         response = SetStringResponse()
+#         response.success = True
+#         response.message = "ErrorAnswer"
+#         
+#         return response
+#     
+#     def handle_problem_cb(self, problem_as_string):
+#         print "problem_as_string"
+#         print problem_as_string
+#         # TODO: do some stuff:
+#         self.save_problem_file(problem_as_string.data)
+#         
+#         # TODO: check that domain AND problem files are created!
+#         self.workOnPlan(self.path_to_outputfile)
+#         plan_as_text = self.readPlanFile()
+#         answer = self.execution_service_client(plan_as_text)
+#         
+#         print answer
+#         
+#         response = SetStringResponse()
+#         response.success = True
+#         response.message = "Error Answer"
+#         return response
     
     def save_domain_file(self, domain_text):
         print "save domain file"
@@ -130,6 +144,7 @@ class PlanSolver(object):
                 myfile.seek(0)
                 myfile.write(domain_text)
             myfile.close()
+            rospy.loginfo("wrote domain file successfully!")
         except IOError:
             rospy.loginfo("writing domain.pddl failed!")
     
@@ -140,6 +155,7 @@ class PlanSolver(object):
                 myfile.seek(0)
                 myfile.write(problem_text)
             myfile.close()
+            rospy.loginfo("wrote problem file successfully!")
         except IOError:
             rospy.loginfo("writing problem.pddl failed!")
 
@@ -152,7 +168,7 @@ class PlanSolver(object):
                 listOfInput = listOfText.readlines()
             fileObject.close()
         except IOError:
-            rospy.loginfo("open file failed or readline error!")
+            rospy.loginfo("open file failed or readline error in readPlanFile!")
             
         stringOfObjects = str(" ").join(map(str, listOfInput))
         return stringOfObjects
@@ -193,6 +209,6 @@ class PlanSolver(object):
             
     
 if __name__ == '__main__':
-    rospy.init_node('planning_solver_node', anonymous=False)
-    pS = PlanSolver(sys.argv[1])
+    rospy.init_node('planning_solver_server_node', anonymous=False)
+    pSS = PlanningSolverServer(sys.argv[1])
     rospy.spin()
