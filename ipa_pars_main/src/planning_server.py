@@ -65,10 +65,11 @@ import actionlib
 import rospy
 import sys
 import cv2
+from yaml import load
 # from cv_bridge import CvBridge, CvBridgeError
 from ipa_pars_main.msg._LogicPlanAction import *
 from ipa_pars_main.msg._PlanSolverAction import *
-
+from ipa_pars_main.msg._KnowledgeParserAction import *
 # import numpy as np
 # from sensor_msgs.msg._Image import Image
 # import sensor_msgs.msg
@@ -82,47 +83,40 @@ from ipa_pars_main.msg._PlanSolverAction import *
 class PlanningServer(object):
     _feedback = ipa_pars_main.msg.LogicPlanFeedback()
     _result = ipa_pars_main.msg.LogicPlanResult()
-    def __init__(self, path_to_domain):
+    def __init__(self, path_to_domain, path_to_knowledge):
         rospy.loginfo("Initialize PlanningServer ...")
         self._path_to_domain = path_to_domain
         self._path_to_problem = path_to_domain
+        self._path_to_knowledge = path_to_knowledge
+        rospy.loginfo("path_to_knowledge: %s " % path_to_knowledge)
         rospy.loginfo("path_to_domain: %s" % path_to_domain)
-        #self.input_map = cv2.imread(self._path_to_map, cv2.IMREAD_GRAYSCALE)
-#         self.input_map = self.deleteErrorsInMap(self.input_map)
-#         rospy.loginfo("converting map to sensor_msg ...")
-#         self.bridge = CvBridge()
-#         self.output_map = self.bridge.cv2_to_imgmsg(self.input_map, "bgr8")
-#         #self.output_map = self.bridge.cv2_to_imgmsg(self.input_map, "mono8")
-#         rospy.loginfo("... done!")
-#         rospy.logwarn("Waiting for map_analyzer_service_server to come available ...")
-#         rospy.wait_for_service('map_analyzer_service_server')
-#         rospy.logwarn("Server online!")
-#         rospy.wait_for_service('planning_controller_server')
-#         rospy.logwarn("Server online!")
-#         try:
-#             self.serviceClient = rospy.ServiceProxy('map_analyzer_service_server', MapAnalyzer)
-#         except rospy.ServiceException, e:
-#             print "Service call failed: %s"%e
-#         try:
-#             self.planning_controller_server = rospy.ServiceProxy('planning_controller_server', PlanData)
-#         except rospy.ServiceException, e:
-#             print "Service call faield: %s"%e
-        
         self._planSolverClient = actionlib.SimpleActionClient('planning_solver_server', PlanSolverAction)
         rospy.logwarn("Waiting for PlanSolverServer to come available ...")
         self._planSolverClient.wait_for_server()
-        rospy.logwarn("PlanSolverServer is online!")
-        
-        
+        rospy.logwarn("PlanningSolverServer is online!")
+        self._knowledgeParserClient = actionlib.SimpleActionClient('knowledge_parser_server', KnowledgeParserAction)
+        rospy.logwarn("Waiting for KnowledgeParserServer to come available ...")
+        self._knowledgeParserClient.wait_for_server()
+        rospy.logwarn("KnowledgeParserServer is online!")
         self._as = actionlib.SimpleActionServer('planning_server', ipa_pars_main.msg.LogicPlanAction, execute_cb=self.execute_cb, auto_start=False)
         self._as.start()
-        
-        rospy.loginfo("ParsServer running! Waiting for a new goal.")
+        rospy.loginfo("PlanningServer running! Waiting for a new goal.")
 
     def execute_cb(self, goal):
         rospy.loginfo("Executing a new goal!")
         rospy.loginfo("GOAL: %s , %s, %s " % (str(goal.goal_type), str(goal.what), str(goal.where)))
         rospy.loginfo("in progress ...")
+        knowledge_goal = ipa_pars_main.msg.KnowledgeParserGoal()
+        knowledge_goal.static_knowledge = self.readKnowledgeBase("knowledge-base-static-test-01.yaml")
+        knowledge_goal.dynamic_knowledge = self.readKnowledgeBase("knowledge-base-dynamic-test-01.yaml")
+        rospy.loginfo("Sending goal to KnowledgeParserServer ...")
+        self._knowledgeParserClient.send_goal(knowledge_goal)
+        rospy.loginfo("Waiting for result ...")
+        self._knowledgeParserClient.wait_for_result()
+        result = self._knowledgeParserClient.get_result()
+        rospy.loginfo("Received the result from KnowledgeParserServer!")
+        rospy.loginfo(result)
+        
         
         goal = ipa_pars_main.msg.PlanSolverGoal()
         problem_text = self.generate_debug_problem()
@@ -174,30 +168,18 @@ class PlanningServer(object):
             self._result.success = True
             rospy.loginfo("Succeeded the Logic Plan")
             self._as.set_succeeded(self._result, "good job")
-    
+
+    def readKnowledgeBase(self, knowledge_yaml):
+        listOfInput = []
+        try:
+            fileObject = open(self.path_to_knowledge+knowledge_yaml, "r")
+            yamlfile = load(fileObject)
+            fileObject.close()
+        except IOError:
+            rospy.loginfo("Reading %s base failed!" % knowledge_yaml)
+        return yamlfile
+
         
-#     def sendImageToMapAnalyzerServer(self):
-#         # TODO: add header and other meta data to message!
-#         img_msg_typ = Image()
-#         img_msg_typ.header.stamp = rospy.Time.now()
-#         img_msg_typ.header.frame_id = "planning_server_frame"
-#         #img_msg_typ.height = self.input_map.shape[1]
-#         img_msg_typ.height = self.input_map.shape[0]
-#         img_msg_typ.width = self.input_map.shape[1]
-#         img_msg_typ.data = self.output_map.data
-#         img_msg_typ.encoding = "rgb8"
-#         #img_msg_typ.encoding = "mono8"
-#         byte_depth = 3
-#         #byte_depth = 1
-#         img_msg_typ.is_bigendian = False
-#         img_msg_typ.step = img_msg_typ.width * byte_depth
-#         print "This is the header i want to use"
-#         print img_msg_typ.header
-#         answer = self.serviceClient(img_msg_typ)
-#         print "answer"
-#         print answer
-#         return answer
-    
     def generate_debug_domain(self):
         print "read input file"
         listOfInput = []
@@ -226,52 +208,8 @@ class PlanningServer(object):
         StringOfObjects = str(" ").join(map(str, listOfInput))
         problem_text = StringOfObjects
         return problem_text
-    
-#     def floodfill4(self, x, y, oldValue, newValue, img, pixelcounter):
-#         stack = []
-#         innerstack = []
-#         innerstack.append(x)
-#         innerstack.append(y)
-#         stack.append(innerstack)
-#         while not (len(stack) == 0): # list empty
-#             (x, y) = stack.pop()
-#             if img[x,y][0] == oldValue:
-#                 img[x,y][0] = newValue
-#                 img[x,y][1] = newValue
-#                 img[x,y][2] = newValue
-#                 pixelcounter += 1
-#                 innerstack = []
-#                 innerstack.append(x)
-#                 innerstack.append(y+1)
-#                 stack.append(innerstack)
-#                 innerstack = []
-#                 innerstack.append(x)
-#                 innerstack.append(y-1)
-#                 stack.append(innerstack)
-#                 innerstack = []
-#                 innerstack.append(x+1)
-#                 innerstack.append(y)
-#                 stack.append(innerstack)
-#                 innerstack = []
-#                 innerstack.append(x-1)
-#                 innerstack.append(y)
-#                 stack.append(innerstack)
-#         return (img, pixelcounter)
-#     
-#     def deleteErrorsInMap(self, img):
-#         for w in range (0, img.shape[1], 1):
-#             for h in range (0, img.shape[0], 1):
-#                 if not img[h,w][0] == 0:
-#                     if not img[h,w][0] == 254:
-#                         pixelcounter = 0
-#                         (img, pixelcounter) = self.floodfill4(h, w, 255, 254, img, pixelcounter)
-#                         if pixelcounter < 500:
-#                             pixelcounter = 0
-#                             (img, pixelcounter) = self.floodfill4(h, w, 254, 0, img, pixelcounter)
-#         img[np.where(img==254)] = 255
-#         return img
-    
+
 if __name__ == '__main__':
     rospy.init_node('planning_server_node', anonymous=False)
-    pS = PlanningServer(sys.argv[1])
+    pS = PlanningServer(sys.argv[1], sys.argv[2])
     rospy.spin()

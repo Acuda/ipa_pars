@@ -76,13 +76,14 @@ import map_analyzer
 class MapAnalyzerClient(object):
     def __init__(self, path_to_map):
         rospy.loginfo("Initialize MapAnalyzerClient ...")
-        self.path_to_map = path_to_map+"lab_ipa2.png"
+        self.path_to_map = path_to_map+"lab_ipa4.png"
         rospy.loginfo(path_to_map)
         rospy.loginfo("... loading map from file")
-        self.input_map = cv2.imread(self.path_to_map, cv2.IMREAD_COLOR)
+        self.input_map = cv2.imread(self.path_to_map, cv2.IMREAD_GRAYSCALE)
         rospy.loginfo("converting map to sensor_msg ...")
         self.bridge = CvBridge()
-        self.output_map = self.bridge.cv2_to_imgmsg(self.input_map, "bgr8")
+        self.output_map = self.bridge.cv2_to_imgmsg(self.input_map, "mono8")
+        #self.output_map = self.bridge.cv2_to_imgmsg(self.input_map, "bgr8")
         rospy.loginfo("... done!")
         self._aclient = actionlib.SimpleActionClient('map_analyzer_server', map_analyzer.msg.MapAnalyzerAction)
         rospy.logwarn("Waiting for MapAnalyzerServer to come available ...")
@@ -97,7 +98,8 @@ class MapAnalyzerClient(object):
         output_img.header.frame_id = "demo_map_init_frame"
         output_img.height = self.input_map.shape[0]
         output_img.width = self.input_map.shape[1]
-        output_img.encoding = "rgb8"
+        output_img.encoding = "mono8"
+        #output_img.encoding = "rgb8"
         output_img.is_bigendian = False
         output_img.step = output_img.width * 3
         output_img.data = self.output_map.data

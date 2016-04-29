@@ -167,20 +167,21 @@ class MapAnalyzerServer(object):
         # 1
         
         # Delete Errors:
-        received_map_as_bgr = self.bridge.imgmsg_to_cv2(goal.input_map).copy()
-        received_map_as_bgr = self.deleteErrorsInMap(received_map_as_bgr)
-        received_map_as_imgmsg = self.bridge.cv2_to_imgmsg(received_map_as_bgr, encoding="bgr8")
+        received_map_as_bgr = self.bridge.imgmsg_to_cv2(goal.input_map, desired_encoding="mono8").copy()
+        ret,thresh1 = cv2.threshold(received_map_as_bgr,127,255,cv2.THRESH_BINARY)
+        received_map_as_bgr = self.deleteErrorsInMap(thresh1)
+        received_map_as_imgmsg = self.bridge.cv2_to_imgmsg(received_map_as_bgr, encoding="mono8")
         self._feedback.status = 1
-#         response = self.serviceMapLoggerClient(received_map_as_imgmsg)
-#         print response
+        response = self.serviceMapLoggerClient(received_map_as_imgmsg)
+        print response
         # goal to MapSegmentationServer
         segmented_map_response = self.useRoomSegmentation(received_map_as_imgmsg)
         print "we received a segmented map:"
         print "its resolution is:"
         print segmented_map_response.map_resolution
         self._feedback.status = 2
-#         response = self.serviceMapLoggerClient(segmented_map_response.segmented_map)
-#         print response
+        response = self.serviceMapLoggerClient(segmented_map_response.segmented_map)
+        print response
         # goal to MapTesselationServer
         tesselated_map_response = self.useRoomTesselation(segmented_map_response)
         print "this should be a resolution"
@@ -194,8 +195,8 @@ class MapAnalyzerServer(object):
         map_np = self.getRealSquaresRoomNames(squaresAndRoomsMap)
         cv_map = self.bridge.cv2_to_imgmsg(map_np, encoding="mono16")
         self._feedback.status = 4
-#         response = self.serviceMapLoggerClient(map_np)
-#         print response
+        response = self.serviceMapLoggerClient(cv_map)
+        print response
         # send map to KnowledgeExtractorServer
         knowledge_result = self.useKnowledgeExtractor(cv_map)
         print "this should be a text in yaml format"
@@ -217,13 +218,13 @@ class MapAnalyzerServer(object):
     def deleteErrorsInMap(self, img):
         for w in range (0, img.shape[1], 1):
             for h in range (0, img.shape[0], 1):
-                if not img[h,w][0] == 0:
-                    if not img[h,w][0] == 254:
+                if not img[h,w] == 0:
+                    if not img[h,w] == 254:
                         pixelcounter = 0
                         (img, pixelcounter) = self.floodfill4ColorsForErrorDeletion(h, w, 255, 254, img, pixelcounter)
                         if pixelcounter < 500:
-                            pixelcounter = 0
                             (img, pixelcounter) = self.floodfill4ColorsForErrorDeletion(h, w, 254, 0, img, pixelcounter)
+                        pixelcounter = 0
         img[np.where(img==254)] = 255
         return img
     
@@ -235,10 +236,10 @@ class MapAnalyzerServer(object):
         stack.append(innerstack)
         while not (len(stack) == 0): # list empty
             (x, y) = stack.pop()
-            if img[x,y][0] == oldValue:
-                img[x,y][0] = newValue
-                img[x,y][1] = newValue
-                img[x,y][2] = newValue
+            if img[x,y] == oldValue:
+                img[x,y] = newValue
+#                 img[x,y][1] = newValue
+#                 img[x,y][2] = newValue
                 pixelcounter += 1
                 innerstack = []
                 innerstack.append(x)
@@ -356,7 +357,8 @@ class MapAnalyzerServer(object):
         for w in range (0, squaresAndRoomMap.shape[1], 1):
             for h in range (0, squaresAndRoomMap.shape[0], 1):
                 if not cv_img_segmented_map[h,w] == 0:
-                    squaresAndRoomMap[h,w] = cv_img_tesselated_map[h,w]*12 + 1000 * cv_img_segmented_map[h,w]
+                    squaresAndRoomMap[h,w] = cv_img_tesselated_map[h,w] + 1000 * cv_img_segmented_map[h,w]
+                    #squaresAndRoomMap[h,w] = cv_img_tesselated_map[h,w]*12 + 1000 * cv_img_segmented_map[h,w]
                 else:
                     squaresAndRoomMap[h,w] = 0 
         
@@ -572,7 +574,7 @@ class MapAnalyzerServer(object):
         goal.map_origin = pose
         goal.return_format_in_pixel = True
         goal.return_format_in_meter = False
-        goal.room_segmentation_algorithm = 2
+        goal.room_segmentation_algorithm = 3
         
         print "header and size of pic before room_segmentation"
         print goal.input_map.header

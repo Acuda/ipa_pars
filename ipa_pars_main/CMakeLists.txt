@@ -69,6 +69,7 @@ add_service_files(
    LogicPlan.action
    PlanExecutor.action
    PlanSolver.action
+   KnowledgeParser.action
  )
 
 ## Generate added messages and services with any dependencies listed here

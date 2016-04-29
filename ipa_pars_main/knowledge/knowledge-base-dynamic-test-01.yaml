@@ -1,0 +1,16 @@
+object-data:
+- center:
+        X: 500
+        Y: 600
+        Z: 1
+  name: the-cake
+  properties:
+  - portable
+- center:
+        X: 350
+        Y: 250
+        Z: 2
+  name: the-kitchen
+  properties:
+  link:
+  - the-cake

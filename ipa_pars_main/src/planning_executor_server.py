@@ -65,11 +65,21 @@ import rospy
 import actionlib
 
 from ipa_pars_main.msg._PlanExecutorAction import *
+from move_base_msgs.msg._MoveBaseAction import *
+from move_base_msgs.msg import MoveBaseGoal
+import simple_moveit_interface as smi
+from cob_perception_msgs.msg import Detection
+from cob_object_detection_msgs.msg import DetectObjectsActionGoal
+from cob_object_detection_msgs.msg import DetectObjectsAction
+
+from simple_script_server import *
+sss = simple_script_server()
+
 
 import yaml
 from yaml import load
 
-from geometry_msgs.msg import Pose
+from geometry_msgs.msg import Pose, PoseStamped
 
 class PlanningExecutorServer(object):
     _feedback = ipa_pars_main.msg.PlanExecutorFeedback()
@@ -89,7 +99,7 @@ class PlanningExecutorServer(object):
         rospy.loginfo("MapAnalyzerServer initialize finished")
     
     
-    def getTargetPoint(self, target_name):
+    def getTargetPose(self, target_name):
         pose_is_set = False
         _new_pose = Pose()
         location_data = self.yamlfile_static_knowledge["location-data"]
@@ -122,28 +132,61 @@ class PlanningExecutorServer(object):
             #split input
             split_input = action_goal.data.split( )
             if (split_input[0] == "move-robo-to"):
-                print "================================"
+                print "========================================================"
                 print "this is a move-base action call"
-                print "robot should move to"
+                print "robot should move to pose: "
                 #print split_input[3]
-                print self.getTargetPoint(split_input[3])
-                
-                print "================================"
-
+                print self.getTargetPose(split_input[3])
+                print "connecting to move_base server"
+                self.moveBaseClient = actionlib.SimpleActionClient('move_base', MoveBaseAction)
+#                 print "waiting for move_base server ..."
+#                 self.moveBaseClient.wait_for_server()
+                target_pose = PoseStamped()
+                target_pose.header.stamp = rospy.Time.now()
+                target_pose.header.frame_id = "map"
+                target_pose.pose = self.getTargetPose(split_input[3])
+                target_goal = MoveBaseGoal(target_pose)
+                print "I would like to send this goal to move_base:"
+                print target_goal
+#                 self.moveBaseClient.send_goal(target_goal)
+#                 print "sending goal to move_base: Waiting for result"
+#                 result = self.moveBaseClient.wait_for_result(rospy.Duration.from_sec(30.0))
+#                 print "result is"
+#                 print result
+                print "========================================================"
             if (split_input[0] == "take"):
-                print "================================"
+                print "========================================================"
                 print "this is a take action call"
                 print "the robot should take"
                 print split_input[2]
-                print "================================"
-                
+#                 sss.say("sound", ["hello"])
+#                 component_name = "arm_left"
+#                 sss.move(component_name,["base_link", [0,0,0],[0,0,0]])
+#                 config = smi.get_goal_from_server("arm", "home")
+#                 print config
+#                 success = smi.moveit_joint_goal("arm", config)
+#                 print success
+                print "========================================================"
             if (split_input[0] == "look-at"):
-                print "================================"
+                print "========================================================"
                 print "this is a look-at action call"
                 print "the robot should look-at"
                 print split_input[2]
-                print "================================"
-
+                obj_name = "nameOfObject"
+                goal = DetectObjectsActionGoal()
+                goal.object_name = obj_name
+                print "connecting to object_detection server"
+                self.objectDetectionClient = actionlib.SimpleActionClient('detect', DetectObjectsAction)
+#                 print "waiting for detect server ..."
+#                 self.objectDetectionClient.wait_for_server()
+                print goal
+#                 self.objectDetectionlient.send_goal(goal)
+#                 print "sending goal to detect: Waiting for result"
+#                 result = self.objectDetectionClient.wait_for_result(rospy.Duration.from_sec(30.0))
+#                 print "result is a DetectionArray object list with poses"
+#                 print result
+                
+                print "========================================================"
 
 
 
@@ -160,7 +203,7 @@ class PlanningExecutorServer(object):
     def load_static_knowledge_from_yaml(self):
         # beachte: YAMl verwendet nur dicts und lists
         # verwende die entsprechenden methoden richtig
-        f = open(self.path_to_inputfile+"knowledge-base-static.yaml", 'r')
+        f = open(self.path_to_inputfile+"knowledge-base-static-test-01.yaml", 'r')
         yamlfile = load(f)
         f.close()
         return yamlfile

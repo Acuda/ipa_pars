@@ -68,15 +68,27 @@ import sys
 import yaml
 from yaml import load
 
+from ipa_pars_main.msg._KnowledgeParserAction import *
+
 
 class KnowledgeParserServer(object):
+    _feedback = ipa_pars_main.msg.KnowledgeParserFeedback()
+    _result = ipa_pars_main.msg.KnowledgeParserResult()
     def __init__(self, path_to_inputfiles):
         rospy.loginfo("Initialize KnowledgePaserServer ...")
         self.path_to_inputfiles = path_to_inputfiles
         self.yamlfile_static_knowledge = self.load_static_knowledge_from_yaml()
         self.goal_info = "static goal info"
+        
+        self._as = actionlib.SimpleActionServer('knowledge_parser_server', ipa_pars_main.msg.KnowledgeParserAction, execute_cb=self.execute_cb, auto_start=False)
+        self._as.start()
         rospy.loginfo("KnowledgeParserServer initialize finished")
+        rospy.loginfo("KnowledgeParserServer running waiting for knowledge to parse ...")
 
+    def execute_cb(self, goal):
+        rospy.loginfo("Received a new goal:")
+        print goal
+        
     def parseLocationInfoFromYaml(self):
         location_data = self.yamlfile_static_knowledge["location-data"]
         listOfTransitions = []
@@ -158,8 +170,8 @@ class KnowledgeParserServer(object):
         listOfLines.append("\t\t(is-robo cob4-1)")
         #listOfLines.append("\t\t(at the-cake room-9)")
         # test with two cake locations!
-        listOfLines.append("\t\t(at the-cake room-9007)")
-        listOfLines.append("\t\t(at cob4-1 room-7007)")
+        listOfLines.append("\t\t(at the-cake room-10-square-10)")
+        listOfLines.append("\t\t(at cob4-1 room-13-square-7)")
         listOfLines.append("\t)")
         listOfLines.append("\n")
 
@@ -171,7 +183,7 @@ class KnowledgeParserServer(object):
         print goal_informations
         
         listOfLines.append("\t;;; goal definition")
-        listOfLines.append("\t(:goal (and (have cob4-1 the-cake) (at cob4-1 room-7007)))")
+        listOfLines.append("\t(:goal (and (have cob4-1 the-cake) (at cob4-1 room-13-square-7)))")
         listOfLines.append(")")
         return listOfLines
     
@@ -197,4 +209,5 @@ class KnowledgeParserServer(object):
 if __name__ == '__main__':
     rospy.init_node('knowledge_parser_server_node', anonymous=False)
     kPS = KnowledgeParserServer(sys.argv[1])
-    kPS.createProblemPDDL()
+    rospy.spin()
+    #kPS.createProblemPDDL()

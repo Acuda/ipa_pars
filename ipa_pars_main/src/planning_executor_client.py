@@ -85,7 +85,7 @@ class PlanningExecutorClient(object):
         #read goals for debug from file
         listOfInput = []
         try:
-            fileObject = open(self.path_to_inputfile+"sas_plan", "r")
+            fileObject = open(self.path_to_inputfile+"sas_plan-test-01", "r")
             with fileObject as listOfText:
                 listOfInput = listOfText.readlines()
             fileObject.close()

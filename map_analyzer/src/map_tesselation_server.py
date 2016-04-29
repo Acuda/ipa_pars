@@ -100,7 +100,7 @@ class MapTesselation(object):
         self.bridge = CvBridge()
         self.numbpix = 0
         # change alogrithm to one that fits best to the rooms?
-        self.squaresize = 40
+        self.squaresize = 20
         self.nextSquareColor = 0
         self.highestColorNumber = 0
         self.encoding = "empty"
@@ -114,11 +114,15 @@ class MapTesselation(object):
         rospy.loginfo("Tesselating a new map!")
         rospy.loginfo("header");
         print goal.input_map.header
+        print goal.input_map.encoding
         rospy.loginfo("goal in progress ...")
         r = rospy.Rate(1)
         cv_img = self.bridge.imgmsg_to_cv2(goal.input_map, desired_encoding="passthrough").copy()
         cv_img[cv_img==65280]=0
         n_img = cv_img.reshape(cv_img.shape[:2])
+        #print self.debugmakeListOfColors(n_img)
+        #print "freeze ouput to read it"
+        #rospy.sleep(10)
         n_img = self.tesselateMap(n_img)
         
 #         listOfAreas = self.debugmakeListOfColors(n_img)
@@ -143,10 +147,10 @@ class MapTesselation(object):
         rospy.sleep(5)
         #===========================
         if self._as.is_preempt_requested():
-            rospy.loginfo('%s: Preempted' % 'map_analyzer_server')
+            rospy.loginfo('%s: Preempted' % 'map_tesselation_server')
         r.sleep()
         if success:
-            rospy.loginfo("Produced fundamental static knowledge")
+            rospy.loginfo("Produced tesselated map")
             self._as.set_succeeded(self._result, "good job")
 
         
@@ -360,7 +364,7 @@ class MapTesselation(object):
                     color += 1
         print listOfAreasAndPixels
         for area in listOfAreasAndPixels:
-            if area[1] > 5000:
+            if area[1] > 500:
                 img[np.where(img==area[0])] = 65500
             else:
                 img[np.where(img==area[0])] = 0

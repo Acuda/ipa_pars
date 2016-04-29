@@ -69,7 +69,7 @@ import colorsys
 import numpy as np
 from sensor_msgs.msg import Image
 #from sensor_msgs.msg._Image import Image
-
+import random
 
 from cv_bridge import CvBridge, CvBridgeError
 import actionlib
@@ -80,23 +80,27 @@ from map_analyzer.srv._MapLogger import MapLoggerResponse, MapLoggerRequest
 import color_utils_cme
 
 class MapStatusLogger(object):
-    def __init__(self, path_to_map):
+    def __init__(self, path_to_map, path_to_logfiles):
         rospy.loginfo("Initialize MapStatusLogger ...")
         self.path_to_map = path_to_map
+        self.path_to_logfiles = path_to_logfiles
         rospy.loginfo(path_to_map)
+        rospy.loginfo(path_to_logfiles)
         self.map_srvs = rospy.Service('map_status_logger', MapLogger, self.handle_map_cb)
         rospy.loginfo("map_status_logger Server online!")
         self.img_map = Image()
         self.bridge = CvBridge()
         #for image conversion:
         self.colorlist = []
-        self.colorScale = 10
+        self.colorScale = 60
         self.colorlist = color_utils_cme.listColor(self.colorScale)
+        random.shuffle(self.colorlist)
+        
         #self.colorlist = color_utils_cme.shuffle_list(self.colorlist)
         self.usedColors = []
         self.counter = 0
         print "produceIndividualColors"
-        (listOfRoomCol, listOfSquareCol) = self.produceRoomAndSquareColors(10)
+        (listOfRoomCol, listOfSquareCol) = self.produceRoomAndSquareColors(13)
         self.listOfRoomCol = listOfRoomCol
         rospy.loginfo("... finished")
         
@@ -119,6 +123,11 @@ class MapStatusLogger(object):
         print input_map.map.header
         cv_img = self.bridge.imgmsg_to_cv2(input_map.map, desired_encoding="passthrough").copy()
         self.saveLogImage(cv_img)
+        print "map encoding"
+#         self.img_map (input_map.map)
+        colored_img = self.colorMap(cv_img)
+        self.saveLogImage(colored_img)
+        
         response = MapLoggerResponse()
 #         if input_map.map.encoding == "32SC1":
 #             self.img_map = self.encodeImage(input_map.map)
@@ -134,6 +143,42 @@ class MapStatusLogger(object):
         
         return response
     
+    def colorMap(self, input_map):
+        colored_img = np.zeros((input_map.shape[0], input_map.shape[1] , 3), np.uint8) # BGR
+        self.colorlist = color_utils_cme.listColor(self.colorScale)
+        random.shuffle(self.colorlist)
+        usedColorsList = []
+        workedOnColors = []
+        for w in range (0, input_map.shape[1], 1):
+            for h in range(0, input_map.shape[0], 1):
+                colorvalue = (input_map[h][w]//1000)
+                if not colorvalue == 0:
+                    if not colorvalue in workedOnColors:
+                        newColor = self.colorlist.pop()
+                        combi = []
+                        combi.append(colorvalue)
+                        combi.append(newColor)
+                        usedColorsList.append(combi)
+                        workedOnColors.append(colorvalue)
+                    else:
+                        for ite in usedColorsList:
+                            if ite[0] == colorvalue:
+                                newColor = ite[1]
+                    colored_img[h,w] = newColor
+#                     if colorvalue < 1000:
+#                         colored_img[h,w] = self.colorlist.pop()
+#                     else:
+#                         colored_img[h,w] = self.colorlist.pop()
+                        #colored_img[h,w] = self.colorlist[int (colorvalue / 1000)]
+                    if not input_map[h,w] == input_map[h,w+1]:
+                        if not input_map[h,w+1] == 0:
+                            colored_img[h,w] = [255,255,255]
+                    if not input_map[h,w] == input_map[h+1,w]:
+                        if not input_map[h+1,w] == 0:
+                            colored_img[h,w] = [255,255,255]
+                    
+        
+        return colored_img
     '''
     ###########################################################################
     #
@@ -370,7 +415,7 @@ class MapStatusLogger(object):
         
 if __name__ == '__main__':
     rospy.init_node('map_status_logger_node', anonymous=False)
-    mSL = MapStatusLogger(sys.argv[1])
+    mSL = MapStatusLogger(sys.argv[1], sys.argv[2])
     while not rospy.is_shutdown():
         mSL.run()
         

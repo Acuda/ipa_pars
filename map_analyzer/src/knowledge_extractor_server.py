@@ -228,8 +228,8 @@ class KnowledgeExtractorServer(object):
         for (rooms, transitions) in listOfRoomInformations:
             trans_as_string = []
             for trans in transitions:
-                trans_as_string.append("room-"+str(trans))
-            listOfTransAsStrings.append(("room-"+str(rooms) , trans_as_string))
+                trans_as_string.append("room-"+str(trans/1000)+"-square-"+str(trans%1000))
+            listOfTransAsStrings.append(("room-"+str(rooms/1000)+"-square-"+str(rooms%1000) , trans_as_string))
         
         # translate to string:
         stringOfTransitions = ""
