@@ -1,0 +1,16 @@
+# PlanSolver action
+# Provides interface to get the action plan from pddl input
+
+# goal definition
+std_msgs/String problem
+std_msgs/String domain
+
+---
+
+# result definition
+bool success
+std_msgs/String[] action_list
+
+---
+
+# feedback definition

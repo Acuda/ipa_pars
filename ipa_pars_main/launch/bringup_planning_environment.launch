@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- ipa_planning_and_reasoning_system -->
+
+	<!-- launch environment needed for planning and execution -->
+
+	<!-- nodes to start -->
+	
+	<!-- cob_navigation -->
+	<include file="$(find cob_navigation_global)/launch/2dnav_ros_dwa.launch" />
+	<!-- object detection -->
+	
+	<!-- cob_script_server if needed -->
+
+	<!-- cob_trajectory or other arm mode -->
+</launch>
+	

@@ -1,0 +1,21 @@
+#!/bin/bash
+echo sourcing ...
+source /home/cme/.bashrc
+echo starting ...
+
+# start simulation, navigation, rviz, und sonstige knoten zuerst ...
+
+# Spawn robot at position:
+rosservice call /gazebo/set_model_state "{model_state: {model_name: robot, pose: {position: { x: 0.0, y: 0.0, z: 0.0}, orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}}, twist: { linear: {x: 0.0, y: 0.0, z:0.0}, angular: { x: 0.0, y: 0.0, z: 0.0 }}, reference_frame: world }}"
+sleep 2s
+# RESET RVIZ POS
+echo RVIZ resetting ...
+rostopic pub /initialpose geometry_msgs/PoseWithCovarianceStamped '{ header: { stamp: now, frame_id: /map}, pose: { pose: { position: { x: 0.0, y: 0.0, z: 0.0}, orientation: { x: 0.0, y: 0.0, z: 0.0, w: 1.0}}, covariance: [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]}}' &
+# RESET COSTMAP
+echo COSTMAP resetting ...
+rosservice call /move_base/clear_costmaps
+
+# send Planning Goal to Planning System.
+
+# sonst noch noetig: ein logging knoten, der Roboterposition, Aufgabenfortschritt, Aufgabenaktionen, Neuplanungszyklen usw. mitschreibt zum Testen.
+

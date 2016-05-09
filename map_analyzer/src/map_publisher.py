@@ -65,6 +65,7 @@ import rospy
 import roslib
 import cv2
 import sys
+import colorsys
 import numpy as np
 from sensor_msgs.msg import Image
 #from sensor_msgs.msg._Image import Image
@@ -105,6 +106,20 @@ class MapPublisher(object):
         print listOfSquareCol
         
         rospy.loginfo("... finished")
+        
+        
+        
+    def drawWhiteLines(self, img):
+        for w in range (0, img.shape[1], 1):
+            for h in range (0, img.shape[0], 1):
+                if not img[h,w] == 0:
+                    if not img[h,w] == img[h,w+1]:
+                        if not img[h,w+1] == 0:
+                            img[h,w] = 65530
+                    if not img[h,w] == img[h+1,w]:
+                        if not img[h+1,w] == 0:
+                            img[h,w] = 65530
+        return img
         
     def handle_map_cb(self, input_map):
         print "print recieved map header:"
@@ -156,6 +171,7 @@ class MapPublisher(object):
         cv_img = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough").copy()
         cv_enc_img = np.zeros((cv_img.shape[0], cv_img.shape[1] , 3), np.uint8) # BGR
         
+        cv_img = self.drawWhiteLines(cv_img)
         listOfDifColors = []
         for w in range (0, cv_img.shape[1], 1):
             for h in range(0, cv_img.shape[0], 1):
@@ -163,21 +179,133 @@ class MapPublisher(object):
                 if colorvalue not in listOfDifColors:
                     listOfDifColors.append(colorvalue)
         print listOfDifColors
-        print "colorade labes:"
-        listOfColLab = []
-        for lab in listOfDifColors:
-            labcol = []
-            labcol.append(lab)
-            if lab == 65280:
-                col = [255,255,255]
-            elif lab == 0:
-                col = [0,0,0]
-            else:
+        
+        listOfColWithoutError = []
+        for colors in listOfDifColors:
+            if colors < 65500:
+                listOfColWithoutError.append(colors)
+#         cv_enc_img[np.where(cv_img==0)] = [0,0,0]
+#         listOfDifColors.remove(0)
+#         if 65501 in listOfDifColors:
+#             cv_enc_img[np.where(cv_img==65501)] = [0,0,0]
+#             listOfDifColors.remove(65501)
+#         if 65502 in listOfDifColors:
+#             cv_enc_img[np.where(cv_img==65502)] = [0,0,0]
+#             listOfDifColors.remove(65502)
+#         if 65503 in listOfDifColors:
+#             cv_enc_img[np.where(cv_img==65503)] = [0,0,0]
+#             listOfDifColors.remove(65503)
+#         if 65280 in listOfDifColors:
+#             cv_enc_img[np.where(cv_img==65280)] = [0,0,0]
+#             listOfDifColors.remove(65280)
+        if len(listOfDifColors) == 2:
+            #cv_enc_img[np.where(cv_img==0)] = [0,0,0]
+            cv_enc_img[np.where(cv_img==255)] = [255,255,255]
+            cv_enc_img_msg = self.bridge.cv2_to_imgmsg(cv_enc_img, "bgr8")
+            return cv_enc_img_msg
+
+        elif max(listOfColWithoutError) < 1500:
+            print listOfDifColors
+            print "erkannt zahl zwischen 0 - 1500"
+            highestcol = max(listOfColWithoutError)
+            print "highestcol = %d" % highestcol
+            colordivisor = 1.0 / float(highestcol) 
+            print colordivisor
+            listOfColLab = []
+            for lab in listOfDifColors:
+                labcol = []
+                labcol.append(lab)
+                if lab == 0:
+                    col = [0,0,0]
+                elif lab == 65501:
+                    col = [0,0,0]
+                elif lab == 65502:
+                    col = [0,0,0]
+                elif lab == 65503:
+                    col = [0,0,0]
+                else:
+                    col_h = float(lab) * colordivisor
+                    col_s = 1
+                    col_v = 0.8
+                    print "lab = %f to color = %f, %f, %f" % (lab, col_h, col_s, col_v)
+                    color_in_dec = colorsys.hsv_to_rgb(col_h, col_s, col_v)
+                    print "as dec = %f , %f , %f " % (color_in_dec[0], color_in_dec[1], color_in_dec[2])
+                    col = [int(round(color_in_dec[0] * 255)),int(round(color_in_dec[1] * 255)),int(round(color_in_dec[2] * 255))]
+                    print "which is rgb"
+                    print col
+                labcol.append(col)
+                listOfColLab.append(labcol)
+        else:
+            print "erkannt zahl groesser 1500"
+            highestcol = (max(listOfColWithoutError) / 1000)
+            print "highestcol = %d" % highestcol
+            colordivisor = 1.0 / float(highestcol) 
+            print colordivisor
+
+            listOfColLab = []
+            for lab in listOfDifColors:
+                labcol = []
+                labcol.append(lab)
+                if lab == 0:
+                    col = [0,0,0]
+                elif lab == 65501:
+                    col = [0,0,0]
+                elif lab == 65502:
+                    col = [0,0,0]
+                elif lab == 65503:
+                    col = [0,0,0]
+                elif lab == 65530:
+                    col = [255,255,255]
+                else:
+                    col_h = (float(lab) / 1000) * colordivisor
+                    col_v = 1
+                    col_s = 1
+#                     col_v = float(lab) / 10000
+#                     col_s = float(lab) / 10000
+                    print "lab = %f to color = %f, %f, %f" % (lab, col_h, col_s, col_v)
+                    color_in_dec = colorsys.hsv_to_rgb(col_h, col_s, col_v)
+                    print "as dec = %f , %f , %f " % (color_in_dec[0], color_in_dec[1], color_in_dec[2])
+                    col = [int(round(color_in_dec[0] * 255)),int(round(color_in_dec[1] * 255)),int(round(color_in_dec[2] * 255))]
+                    print "which is rgb"
+                    print col
+                labcol.append(col)
+                listOfColLab.append(labcol)
+#         listOfRooms = []
+#         for roomcol in listOfDifColors:
+#             val = (roomcol // 1000)
+#             if (val < 65):
+#                 listOfRooms.append(val)
+#         highestCol = max(listOfRooms)
+#         divis = highestCol // 360
+        
+        
+#         print "colorade labes:"
+#         listOfColLab = []
+#         for lab in listOfDifColors:
+#             labcol = []
+#             labcol.append(lab)
+#             if lab == 65280:
+#                 col = [255,255,255]
+#             elif lab == 0:
+#                 col = [0,0,0]
+#             else:
 #                 col = self.colorlist.pop()
-                col = self.listOfRoomCol.pop()
-            labcol.append(col)
-            listOfColLab.append(labcol)
-        print listOfColLab
+# #                 col = self.listOfRoomCol.pop()
+# #                 col_value = listOfDifColors.pop()
+# #                 print "das label ist"
+# #                 print col_value
+# #                 col_h = ((col_value // 1000) * divis)
+# #                 col_s = ((col_value % 1000) / 100)
+# #                 col_v = 1
+# #                 print "errechnete hsv:"
+# #                 print "%d , %d , %d " % (col_h, col_s, col_v)
+# #                 col = colorsys.hsv_to_rgb(col_h, col_s, col_v)
+# #                 print "errechnete RGB Farbe ist:"
+# #                 print col
+#                 
+#             labcol.append(col)
+#             listOfColLab.append(labcol)
+#         print listOfColLab
         
         pix_col = [255,255,255]
         for w in range (0, cv_img.shape[1], 1):
@@ -197,6 +325,10 @@ class MapPublisher(object):
         
         return cv_enc_img_msg
 
+#     def createHSVcolor(self, label):
+#         h_div = label // 1000
+#         
+        
     def saveLogImage(self, img):
         self.counter += 1
         path_to_logimage = self.path_to_logfile+"logimg"+str(self.counter)+".png"
@@ -211,6 +343,7 @@ class MapPublisher(object):
             e = sys.exc_info()[0]
             print e
 
+        
     def produceRoomAndSquareColors(self, number_of_rooms):
         listOfRoomColors = []
         listOfRoomColorsAsInt = []

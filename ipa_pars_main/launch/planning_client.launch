@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- ipa_planning_and_reasoning_system -->
+
+	<!-- ipa_pars -->
+	<group ns = "ipa_pars">
+	
+	<!-- nodes to start -->
+	<node pkg="ipa_pars_main" type="planning_client.py" name="planning_client_spawner" respawn="false" output="screen"/>
+
+	</group>
+</launch>
