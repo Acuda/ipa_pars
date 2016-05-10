@@ -1945,10 +1945,10 @@
 	 ;;; hard coded definitions
 		(is-robo cob4-1)
 		(at the-cake room-10-square-10)
-		(at cob4-1 room-12-square-7)
+		(at cob4-1 room-13-square-7)
 	)
 
 
 	;;; goal definition
-	(:goal (and (have cob4-1 the-cake) (at cob4-1 room-12-square-7)))
+	(:goal (and (have cob4-1 the-cake) (at cob4-1 room-13-square-7)))
 )
