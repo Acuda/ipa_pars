@@ -73,7 +73,7 @@ class PlanningExecutorClient(object):
         rospy.loginfo("Initialize PlanExecutorClient ...")
         self.path_to_inputfile = path_to_inputfile
         rospy.loginfo(path_to_inputfile)
-        rospy.loginfo("... starting room_segmentation_client")
+        rospy.loginfo("... starting plan_executor_server")
         self._planExecutorClient = actionlib.SimpleActionClient('plan_executor_server', PlanExecutorAction)
         rospy.logwarn("Waiting for PlanExecutorServer to come available ...")
         self._planExecutorClient.wait_for_server()

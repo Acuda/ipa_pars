@@ -87,16 +87,10 @@
 		 room-10-square-80 room-10-square-81 room-10-square-82 room-10-square-83 
 		 room-10-square-84 room-10-square-85 room-10-square-86 room-10-square-87 
  
-		 ;;; fixed things for interaction
-
-		 user
-		 door-1
  		 ;;; movable things 
- 		
+ 
 		 the-cake 
-		 cob4-1
-		the-box
-		)
+		 cob4-1)
 
 
 	(:init  
@@ -1335,7 +1329,7 @@
 		(trans room-12-square-7 room-12-square-6)
 		(trans room-12-square-7 room-12-square-2)
 		(trans room-12-square-7 room-12-square-8)
-	;;;(trans room-12-square-7 room-12-square-12)
+		(trans room-12-square-7 room-12-square-12)
 
  		 ;;; transitions for room-12-square-6
 		(trans room-12-square-6 room-12-square-7)
@@ -1442,12 +1436,12 @@
 		(trans room-12-square-13 room-12-square-14)
 		(trans room-12-square-13 room-12-square-8)
 		(trans room-12-square-13 room-10-square-2)
-	;;;(trans room-12-square-13 room-10-square-3)
+		(trans room-12-square-13 room-10-square-3)
 
  		 ;;; transitions for room-12-square-14
 		(trans room-12-square-14 room-12-square-13)
 		(trans room-12-square-14 room-12-square-10)
-	;;;(trans room-12-square-14 room-10-square-3)
+		(trans room-12-square-14 room-10-square-3)
 		(trans room-12-square-14 room-12-square-9)
 
  		 ;;; transitions for room-10-square-8
@@ -1484,12 +1478,12 @@
  		 ;;; transitions for room-10-square-2
 		(trans room-10-square-2 room-10-square-3)
 		(trans room-10-square-2 room-12-square-13)
-	;;;(trans room-10-square-2 room-10-square-1)
+		(trans room-10-square-2 room-10-square-1)
 		(trans room-10-square-2 room-10-square-14)
 
  		 ;;; transitions for room-10-square-1
-	;;;(trans room-10-square-1 room-10-square-2)
-	;;;(trans room-10-square-1 room-10-square-12)
+		(trans room-10-square-1 room-10-square-2)
+		(trans room-10-square-1 room-10-square-12)
 		(trans room-10-square-1 room-10-square-13)
 
  		 ;;; transitions for room-10-square-9
@@ -1497,27 +1491,27 @@
 		(trans room-10-square-9 room-10-square-21)
 
  		 ;;; transitions for room-10-square-12
-	;;;(trans room-10-square-12 room-10-square-1)
-	;;;(trans room-10-square-12 room-10-square-11)
-	;;;(trans room-10-square-12 room-10-square-13)
+		(trans room-10-square-12 room-10-square-1)
+		(trans room-10-square-12 room-10-square-11)
+		(trans room-10-square-12 room-10-square-13)
 		(trans room-10-square-12 room-10-square-24)
 
  		 ;;; transitions for room-9-square-80
 		(trans room-9-square-80 room-10-square-10)
 
  		 ;;; transitions for room-10-square-11
-	;;;(trans room-10-square-11 room-10-square-12)
-	;;;(trans room-10-square-11 room-10-square-10)
+		(trans room-10-square-11 room-10-square-12)
+		(trans room-10-square-11 room-10-square-10)
 		(trans room-10-square-11 room-10-square-23)
 
  		 ;;; transitions for room-10-square-10
 		(trans room-10-square-10 room-10-square-9)
 		(trans room-10-square-10 room-9-square-80)
-	;;;(trans room-10-square-10 room-10-square-11)
+		(trans room-10-square-10 room-10-square-11)
 		(trans room-10-square-10 room-10-square-22)
 
  		 ;;; transitions for room-10-square-13
-	;;;(trans room-10-square-13 room-10-square-12)
+		(trans room-10-square-13 room-10-square-12)
 		(trans room-10-square-13 room-10-square-14)
 		(trans room-10-square-13 room-10-square-1)
 		(trans room-10-square-13 room-10-square-25)
@@ -1948,29 +1942,13 @@
 		(trans room-10-square-87 room-10-square-82)
 		(trans room-10-square-87 room-10-square-81)
 
-		(door-1-trans room-12-square-13 room-10-square-2)
-		(door-1-trans room-10-square-2 room-12-square-13)
-
 	 ;;; hard coded definitions
 		(is-robo cob4-1)
-		(is-user user)
 		(at the-cake room-10-square-10)
-		;;;(at the-cake room-10-square-11)
-		(at cob4-1 room-12-square-7)
-		(at user room-12-square-6)
-		;;;(at user room-10-square-48)
-		(neglected cob4-1)
-		;;;(nearby cob4-1 room-12-square-8)
-		(occupied room-10-square-2)
-		(occupied room-10-square-22)
-		(at the-box room-10-square-2)
-		(at the-box room-10-square-22)
-		;;;(door-1 room-12-square-13 room-10-square-2)
+		(at cob4-1 room-13-square-7)
 	)
 
 
 	;;; goal definition
-	(:goal (and (have user the-cake)))
-	;;;(:goal (and (at the-cake room-12-square-7)))
-	;;;(:goal (and (have cob4-1 the-cake) (at cob4-1 room-12-square-7)))
+	(:goal (and (have cob4-1 the-cake) (at cob4-1 room-13-square-7)))
 )

@@ -96,7 +96,7 @@ class PlanningExecutorServer(object):
 
 
         rospy.loginfo("PlanExecutorServer running! Waiting for a new action list to execute ...")
-        rospy.loginfo("MapAnalyzerServer initialize finished")
+        rospy.loginfo("PlanExecutorServer initialize finished")
     
     
     def getTargetPose(self, target_name):

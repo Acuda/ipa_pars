@@ -168,7 +168,8 @@ class MapAnalyzerServer(object):
         
         # Delete Errors:
         received_map_as_bgr = self.bridge.imgmsg_to_cv2(goal.input_map, desired_encoding="mono8").copy()
-        ret,thresh1 = cv2.threshold(received_map_as_bgr,127,255,cv2.THRESH_BINARY)
+        #ret,thresh1 = cv2.threshold(received_map_as_bgr,127,255,cv2.THRESH_BINARY)
+        ret,thresh1 = cv2.threshold(received_map_as_bgr,230,255,cv2.THRESH_BINARY)
         received_map_as_bgr = self.deleteErrorsInMap(thresh1)
         received_map_as_imgmsg = self.bridge.cv2_to_imgmsg(received_map_as_bgr, encoding="mono8")
         self._feedback.status = 1

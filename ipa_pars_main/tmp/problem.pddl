@@ -4,443 +4,1973 @@
   		 ;;; available objects 
   
   		 ;;; fixed locations 
- 		 room-7011 room-5003 room-7009 room-5002 
- 		 room-1003 room-1002 room-1001 room-7012 
- 		 room-7017 room-1004 room-1005 room-1006 
- 		 room-5004 room-7013 room-7014 room-7015 
- 		 room-7016 room-6001 room-7018 room-2002 
- 		 room-2001 room-2005 room-2004 room-2003 
- 		 room-6004 room-2006 room-6002 room-6003 
- 		 room-7019 room-7020 room-7021 room-7022 
- 		 room-7023 room-4001 room-4002 room-4003 
- 		 room-4004 room-2007 room-6005 room-7024 
- 		 room-7025 room-7026 room-3001 room-3002 
- 		 room-4005 room-4006 room-5001 room-7001 
- 		 room-8001 room-7004 room-7003 room-7005 
- 		 room-7002 room-7006 room-7007 room-7008 
- 		 room-7010 room-10001 room-10002 room-9001 
- 		 room-9002 room-9003 room-9004 room-9005 
- 		 room-9006 room-10003 room-10004 room-9007 
- 		 room-9008 room-9009 room-10005 room-10006 
- 		 room-9010 room-9011 room-9012 room-10007 
- 		 room-10008 
+ 		 room-9-square-3 room-9-square-2 room-9-square-1 room-9-square-4 
+ 		 room-5-square-3 room-5-square-2 room-5-square-1 room-1-square-3 
+ 		 room-1-square-2 room-9-square-5 room-9-square-6 room-9-square-7 
+ 		 room-9-square-8 room-9-square-9 room-1-square-1 room-1-square-4 
+ 		 room-1-square-5 room-9-square-16 room-1-square-6 room-1-square-7 
+ 		 room-1-square-8 room-1-square-9 room-1-square-10 room-5-square-4 
+ 		 room-5-square-5 room-5-square-6 room-9-square-10 room-9-square-11 
+ 		 room-9-square-12 room-9-square-13 room-9-square-14 room-9-square-15 
+ 		 room-9-square-25 room-1-square-11 room-1-square-12 room-1-square-13 
+ 		 room-1-square-14 room-1-square-15 room-5-square-7 room-5-square-8 
+ 		 room-5-square-9 room-9-square-17 room-9-square-18 room-9-square-19 
+ 		 room-9-square-20 room-9-square-21 room-9-square-22 room-9-square-23 
+ 		 room-9-square-24 room-6-square-1 room-6-square-3 room-1-square-16 
+ 		 room-1-square-17 room-1-square-18 room-1-square-19 room-1-square-20 
+ 		 room-5-square-10 room-5-square-11 room-5-square-12 room-6-square-4 
+ 		 room-6-square-5 room-9-square-26 room-9-square-27 room-9-square-28 
+ 		 room-9-square-29 room-9-square-30 room-9-square-31 room-9-square-32 
+ 		 room-9-square-33 room-9-square-34 room-9-square-35 room-6-square-2 
+ 		 room-6-square-11 room-6-square-10 room-1-square-21 room-1-square-22 
+ 		 room-1-square-23 room-5-square-13 room-6-square-6 room-6-square-7 
+ 		 room-6-square-8 room-6-square-9 room-9-square-36 room-9-square-37 
+ 		 room-9-square-38 room-9-square-39 room-9-square-40 room-9-square-41 
+ 		 room-9-square-42 room-9-square-43 room-9-square-44 room-9-square-45 
+ 		 room-9-square-46 room-9-square-47 room-2-square-2 room-2-square-1 
+ 		 room-2-square-3 room-2-square-4 room-6-square-12 room-2-square-8 
+ 		 room-2-square-7 room-2-square-6 room-2-square-5 room-2-square-9 
+ 		 room-2-square-10 room-2-square-11 room-6-square-13 room-6-square-14 
+ 		 room-6-square-15 room-6-square-16 room-6-square-17 room-6-square-18 
+ 		 room-9-square-48 room-9-square-49 room-9-square-50 room-9-square-51 
+ 		 room-9-square-52 room-9-square-53 room-9-square-54 room-9-square-55 
+ 		 room-9-square-56 room-9-square-57 room-7-square-3 room-7-square-2 
+ 		 room-7-square-1 room-2-square-12 room-2-square-13 room-6-square-19 
+ 		 room-7-square-4 room-7-square-5 room-9-square-58 room-9-square-59 
+ 		 room-9-square-60 room-9-square-61 room-9-square-62 room-9-square-63 
+ 		 room-9-square-64 room-9-square-65 room-4-square-1 room-4-square-2 
+ 		 room-3-square-2 room-4-square-3 room-4-square-4 room-4-square-5 
+ 		 room-3-square-1 room-3-square-4 room-3-square-3 room-3-square-5 
+ 		 room-4-square-6 room-4-square-7 room-4-square-8 room-4-square-9 
+ 		 room-4-square-10 room-7-square-6 room-7-square-7 room-9-square-66 
+ 		 room-9-square-67 room-9-square-68 room-9-square-69 room-9-square-70 
+ 		 room-9-square-71 room-8-square-3 room-13-square-1 room-13-square-2 
+ 		 room-8-square-1 room-8-square-2 room-3-square-6 room-3-square-7 
+ 		 room-4-square-11 room-4-square-12 room-4-square-13 room-4-square-14 
+ 		 room-4-square-15 room-4-square-16 room-8-square-4 room-9-square-72 
+ 		 room-9-square-73 room-9-square-74 room-13-square-3 room-8-square-8 
+ 		 room-3-square-8 room-3-square-9 room-4-square-17 room-4-square-18 
+ 		 room-4-square-19 room-4-square-20 room-4-square-21 room-4-square-22 
+ 		 room-8-square-5 room-8-square-6 room-8-square-7 room-9-square-75 
+ 		 room-9-square-76 room-8-square-13 room-3-square-10 room-3-square-11 
+ 		 room-4-square-23 room-4-square-24 room-4-square-25 room-4-square-26 
+ 		 room-4-square-27 room-8-square-9 room-8-square-10 room-8-square-11 
+ 		 room-8-square-12 room-9-square-77 room-9-square-78 room-8-square-18 
+ 		 room-12-square-1 room-2-square-14 room-8-square-14 room-8-square-15 
+ 		 room-8-square-16 room-8-square-17 room-9-square-79 room-12-square-2 
+ 		 room-12-square-3 room-8-square-19 room-12-square-10 room-12-square-7 
+ 		 room-12-square-6 room-12-square-4 room-8-square-20 room-8-square-21 
+ 		 room-8-square-22 room-8-square-23 room-8-square-24 room-8-square-25 
+ 		 room-12-square-8 room-12-square-9 room-12-square-5 room-11-square-3 
+ 		 room-11-square-1 room-11-square-2 room-8-square-26 room-11-square-4 
+ 		 room-12-square-11 room-12-square-12 room-12-square-13 room-12-square-14 
+ 		 room-10-square-8 room-10-square-7 room-10-square-6 room-10-square-5 
+ 		 room-10-square-4 room-10-square-3 room-10-square-2 room-10-square-1 
+ 		 room-10-square-9 room-10-square-12 room-9-square-80 room-10-square-11 
+ 		 room-10-square-10 room-10-square-13 room-10-square-14 room-10-square-15 
+ 		 room-10-square-16 room-10-square-17 room-10-square-18 room-10-square-19 
+ 		 room-10-square-20 room-10-square-21 room-10-square-22 room-10-square-23 
+ 		 room-10-square-24 room-10-square-25 room-10-square-26 room-10-square-27 
+ 		 room-10-square-28 room-10-square-29 room-10-square-30 room-10-square-31 
+ 		 room-10-square-32 room-10-square-33 room-10-square-34 room-10-square-35 
+ 		 room-10-square-36 room-10-square-37 room-10-square-38 room-10-square-39 
+ 		 room-10-square-40 room-10-square-41 room-10-square-42 room-10-square-43 
+ 		 room-10-square-44 room-10-square-45 room-10-square-46 room-10-square-47 
+ 		 room-10-square-48 room-10-square-49 room-10-square-50 room-10-square-51 
+ 		 room-10-square-52 room-10-square-53 room-10-square-54 room-10-square-55 
+ 		 room-10-square-56 room-10-square-57 room-10-square-58 room-10-square-59 
+ 		 room-10-square-60 room-10-square-61 room-10-square-62 room-10-square-63 
+ 		 room-10-square-64 room-10-square-65 room-10-square-66 room-10-square-67 
+ 		 room-10-square-68 room-10-square-69 room-10-square-70 room-10-square-71 
+ 		 room-10-square-72 room-10-square-73 room-10-square-74 room-10-square-75 
+ 		 room-10-square-76 room-10-square-77 room-10-square-78 room-10-square-79 
+ 		 room-10-square-80 room-10-square-81 room-10-square-82 room-10-square-83 
+ 		 room-10-square-84 room-10-square-85 room-10-square-86 room-10-square-87 
   
+ 		 ;;; fixed things for interaction
+ 
+ 		 user
+ 		 door-1
   		 ;;; movable things 
-  
+  		
  		 the-cake 
- 		 cob4-1)
+ 		 cob4-1
+ 		the-box
+ 		)
  
  
  	(:init  
-  		 ;;; transitions for room-7011
- 		(trans room-7011 room-7009)
- 		(trans room-7011 room-7012)
- 		(trans room-7011 room-7015)
- 
-  		 ;;; transitions for room-5003
- 		(trans room-5003 room-5002)
- 		(trans room-5003 room-5004)
- 
-  		 ;;; transitions for room-7009
- 		(trans room-7009 room-7011)
- 		(trans room-7009 room-7013)
- 		(trans room-7009 room-7014)
- 
-  		 ;;; transitions for room-5002
- 		(trans room-5002 room-5003)
- 		(trans room-5002 room-5004)
- 
-  		 ;;; transitions for room-1003
- 		(trans room-1003 room-1002)
- 		(trans room-1003 room-1006)
- 
-  		 ;;; transitions for room-1002
- 		(trans room-1002 room-1003)
- 		(trans room-1002 room-1001)
- 		(trans room-1002 room-1005)
- 
-  		 ;;; transitions for room-1001
- 		(trans room-1001 room-1002)
- 		(trans room-1001 room-1004)
- 
-  		 ;;; transitions for room-7012
- 		(trans room-7012 room-7011)
- 		(trans room-7012 room-7017)
- 		(trans room-7012 room-7016)
- 
-  		 ;;; transitions for room-7017
- 		(trans room-7017 room-7012)
- 		(trans room-7017 room-7016)
- 		(trans room-7017 room-7023)
- 
-  		 ;;; transitions for room-1004
- 		(trans room-1004 room-1005)
- 		(trans room-1004 room-1001)
- 
-  		 ;;; transitions for room-1005
- 		(trans room-1005 room-1004)
- 		(trans room-1005 room-1006)
- 		(trans room-1005 room-1002)
- 
-  		 ;;; transitions for room-1006
- 		(trans room-1006 room-1005)
- 		(trans room-1006 room-1003)
- 		(trans room-1006 room-2001)
- 		(trans room-1006 room-2004)
- 
-  		 ;;; transitions for room-5004
- 		(trans room-5004 room-5003)
- 		(trans room-5004 room-2002)
- 		(trans room-5004 room-2005)
- 		(trans room-5004 room-5002)
- 
-  		 ;;; transitions for room-7013
- 		(trans room-7013 room-7014)
- 		(trans room-7013 room-7009)
- 		(trans room-7013 room-7018)
- 		(trans room-7013 room-7019)
- 
-  		 ;;; transitions for room-7014
- 		(trans room-7014 room-7013)
- 		(trans room-7014 room-7015)
- 		(trans room-7014 room-7009)
- 		(trans room-7014 room-7020)
- 
-  		 ;;; transitions for room-7015
- 		(trans room-7015 room-7014)
- 		(trans room-7015 room-7016)
- 		(trans room-7015 room-7011)
- 		(trans room-7015 room-7021)
- 
-  		 ;;; transitions for room-7016
- 		(trans room-7016 room-7015)
- 		(trans room-7016 room-7017)
- 		(trans room-7016 room-7012)
- 		(trans room-7016 room-7022)
- 
-  		 ;;; transitions for room-6001
- 		(trans room-6001 room-2002)
- 		(trans room-6001 room-6004)
- 		(trans room-6001 room-6003)
- 		(trans room-6001 room-6002)
- 
-  		 ;;; transitions for room-7018
- 		(trans room-7018 room-7013)
- 		(trans room-7018 room-6004)
- 		(trans room-7018 room-7019)
- 
-  		 ;;; transitions for room-2002
- 		(trans room-2002 room-5004)
- 		(trans room-2002 room-2005)
- 		(trans room-2002 room-6001)
- 		(trans room-2002 room-6002)
- 		(trans room-2002 room-2006)
- 
-  		 ;;; transitions for room-2001
- 		(trans room-2001 room-1006)
- 		(trans room-2001 room-2004)
- 
-  		 ;;; transitions for room-2005
- 		(trans room-2005 room-2002)
- 		(trans room-2005 room-5004)
- 		(trans room-2005 room-2004)
- 		(trans room-2005 room-2006)
- 		(trans room-2005 room-4001)
- 		(trans room-2005 room-4003)
- 
-  		 ;;; transitions for room-2004
- 		(trans room-2004 room-1006)
- 		(trans room-2004 room-2001)
- 		(trans room-2004 room-2005)
- 		(trans room-2004 room-2003)
- 
-  		 ;;; transitions for room-2003
- 		(trans room-2003 room-2004)
- 		(trans room-2003 room-3001)
- 
-  		 ;;; transitions for room-6004
- 		(trans room-6004 room-6001)
- 		(trans room-6004 room-7018)
- 		(trans room-6004 room-6003)
- 
-  		 ;;; transitions for room-2006
- 		(trans room-2006 room-2005)
- 		(trans room-2006 room-6002)
- 		(trans room-2006 room-2002)
- 		(trans room-2006 room-4004)
- 		(trans room-2006 room-2007)
- 
-  		 ;;; transitions for room-6002
- 		(trans room-6002 room-2006)
- 		(trans room-6002 room-6003)
- 		(trans room-6002 room-6001)
- 		(trans room-6002 room-6005)
- 		(trans room-6002 room-2002)
- 
-  		 ;;; transitions for room-6003
- 		(trans room-6003 room-6002)
- 		(trans room-6003 room-6004)
- 		(trans room-6003 room-6001)
- 		(trans room-6003 room-6005)
- 
-  		 ;;; transitions for room-7019
- 		(trans room-7019 room-7018)
- 		(trans room-7019 room-7020)
- 		(trans room-7019 room-7013)
- 		(trans room-7019 room-7024)
- 
-  		 ;;; transitions for room-7020
- 		(trans room-7020 room-7019)
- 		(trans room-7020 room-7021)
- 		(trans room-7020 room-7014)
- 		(trans room-7020 room-7024)
- 
-  		 ;;; transitions for room-7021
- 		(trans room-7021 room-7020)
- 		(trans room-7021 room-7022)
- 		(trans room-7021 room-7015)
- 		(trans room-7021 room-7025)
- 
-  		 ;;; transitions for room-7022
- 		(trans room-7022 room-7021)
- 		(trans room-7022 room-7023)
- 		(trans room-7022 room-7016)
- 		(trans room-7022 room-7026)
- 
-  		 ;;; transitions for room-7023
- 		(trans room-7023 room-7022)
- 		(trans room-7023 room-7017)
- 		(trans room-7023 room-7026)
- 
-  		 ;;; transitions for room-4001
- 		(trans room-4001 room-2005)
- 		(trans room-4001 room-4003)
- 
-  		 ;;; transitions for room-4002
- 		(trans room-4002 room-4003)
- 		(trans room-4002 room-4005)
- 
-  		 ;;; transitions for room-4003
- 		(trans room-4003 room-4002)
- 		(trans room-4003 room-4004)
- 		(trans room-4003 room-2005)
- 		(trans room-4003 room-4006)
- 		(trans room-4003 room-4001)
- 
-  		 ;;; transitions for room-4004
- 		(trans room-4004 room-4003)
- 		(trans room-4004 room-2007)
- 		(trans room-4004 room-2006)
- 		(trans room-4004 room-5001)
- 
-  		 ;;; transitions for room-2007
- 		(trans room-2007 room-4004)
- 		(trans room-2007 room-2006)
- 
-  		 ;;; transitions for room-6005
- 		(trans room-6005 room-6003)
- 		(trans room-6005 room-7001)
- 		(trans room-6005 room-6002)
- 
-  		 ;;; transitions for room-7024
- 		(trans room-7024 room-7019)
- 		(trans room-7024 room-7025)
- 		(trans room-7024 room-7020)
- 		(trans room-7024 room-8001)
- 
-  		 ;;; transitions for room-7025
- 		(trans room-7025 room-7024)
- 		(trans room-7025 room-7026)
- 		(trans room-7025 room-7021)
- 		(trans room-7025 room-8001)
- 
-  		 ;;; transitions for room-7026
- 		(trans room-7026 room-7025)
- 		(trans room-7026 room-7023)
- 		(trans room-7026 room-8001)
- 		(trans room-7026 room-7022)
- 
-  		 ;;; transitions for room-3001
- 		(trans room-3001 room-2003)
- 		(trans room-3001 room-3002)
- 
-  		 ;;; transitions for room-3002
- 		(trans room-3002 room-3001)
- 
-  		 ;;; transitions for room-4005
- 		(trans room-4005 room-4006)
- 		(trans room-4005 room-4002)
- 
-  		 ;;; transitions for room-4006
- 		(trans room-4006 room-4005)
- 		(trans room-4006 room-5001)
- 		(trans room-4006 room-4003)
- 
-  		 ;;; transitions for room-5001
- 		(trans room-5001 room-4006)
- 		(trans room-5001 room-4004)
- 
-  		 ;;; transitions for room-7001
- 		(trans room-7001 room-7004)
- 		(trans room-7001 room-7003)
- 		(trans room-7001 room-6005)
- 
-  		 ;;; transitions for room-8001
- 		(trans room-8001 room-7024)
- 		(trans room-8001 room-7026)
- 		(trans room-8001 room-7002)
- 		(trans room-8001 room-7025)
- 
-  		 ;;; transitions for room-7004
- 		(trans room-7004 room-7001)
- 		(trans room-7004 room-7003)
- 		(trans room-7004 room-7005)
- 		(trans room-7004 room-7006)
- 
-  		 ;;; transitions for room-7003
- 		(trans room-7003 room-7004)
- 		(trans room-7003 room-7001)
- 		(trans room-7003 room-7006)
- 
-  		 ;;; transitions for room-7005
- 		(trans room-7005 room-7004)
- 		(trans room-7005 room-7008)
- 		(trans room-7005 room-7007)
- 
-  		 ;;; transitions for room-7002
- 		(trans room-7002 room-8001)
- 		(trans room-7002 room-7010)
- 
-  		 ;;; transitions for room-7006
- 		(trans room-7006 room-7003)
- 		(trans room-7006 room-7007)
- 		(trans room-7006 room-7004)
- 
-  		 ;;; transitions for room-7007
- 		(trans room-7007 room-7006)
- 		(trans room-7007 room-7008)
- 		(trans room-7007 room-7005)
- 
-  		 ;;; transitions for room-7008
- 		(trans room-7008 room-7007)
- 		(trans room-7008 room-7010)
- 		(trans room-7008 room-7005)
- 
-  		 ;;; transitions for room-7010
- 		(trans room-7010 room-7002)
- 		(trans room-7010 room-7008)
- 		(trans room-7010 room-9001)
- 
-  		 ;;; transitions for room-10001
- 		(trans room-10001 room-10002)
- 		(trans room-10001 room-10004)
- 
-  		 ;;; transitions for room-10002
- 		(trans room-10002 room-10001)
- 		(trans room-10002 room-9001)
- 		(trans room-10002 room-10003)
- 
-  		 ;;; transitions for room-9001
- 		(trans room-9001 room-9002)
- 		(trans room-9001 room-10002)
- 		(trans room-9001 room-9006)
- 		(trans room-9001 room-7010)
- 
-  		 ;;; transitions for room-9002
- 		(trans room-9002 room-9001)
- 		(trans room-9002 room-9003)
- 		(trans room-9002 room-9005)
- 
-  		 ;;; transitions for room-9003
- 		(trans room-9003 room-9002)
- 		(trans room-9003 room-9004)
- 
-  		 ;;; transitions for room-9004
- 		(trans room-9004 room-9005)
- 		(trans room-9004 room-9003)
- 		(trans room-9004 room-9007)
- 
-  		 ;;; transitions for room-9005
- 		(trans room-9005 room-9004)
- 		(trans room-9005 room-9006)
- 		(trans room-9005 room-9002)
- 		(trans room-9005 room-9008)
- 
-  		 ;;; transitions for room-9006
- 		(trans room-9006 room-9005)
- 		(trans room-9006 room-10003)
- 		(trans room-9006 room-9001)
- 		(trans room-9006 room-9009)
- 
-  		 ;;; transitions for room-10003
- 		(trans room-10003 room-9006)
- 		(trans room-10003 room-10004)
- 		(trans room-10003 room-10002)
- 		(trans room-10003 room-10005)
- 
-  		 ;;; transitions for room-10004
- 		(trans room-10004 room-10003)
- 		(trans room-10004 room-10001)
- 		(trans room-10004 room-10006)
- 
-  		 ;;; transitions for room-9007
- 		(trans room-9007 room-9008)
- 		(trans room-9007 room-9004)
- 		(trans room-9007 room-9010)
- 
-  		 ;;; transitions for room-9008
- 		(trans room-9008 room-9007)
- 		(trans room-9008 room-9009)
- 		(trans room-9008 room-9005)
- 		(trans room-9008 room-9011)
- 
-  		 ;;; transitions for room-9009
- 		(trans room-9009 room-9008)
- 		(trans room-9009 room-9006)
- 		(trans room-9009 room-10005)
- 		(trans room-9009 room-9012)
- 
-  		 ;;; transitions for room-10005
- 		(trans room-10005 room-10006)
- 		(trans room-10005 room-10003)
- 		(trans room-10005 room-9009)
- 		(trans room-10005 room-10007)
- 
-  		 ;;; transitions for room-10006
- 		(trans room-10006 room-10005)
- 		(trans room-10006 room-10004)
- 		(trans room-10006 room-10008)
- 
-  		 ;;; transitions for room-9010
- 		(trans room-9010 room-9011)
- 		(trans room-9010 room-9007)
- 
-  		 ;;; transitions for room-9011
- 		(trans room-9011 room-9010)
- 		(trans room-9011 room-9012)
- 		(trans room-9011 room-9008)
- 
-  		 ;;; transitions for room-9012
- 		(trans room-9012 room-9011)
- 		(trans room-9012 room-10007)
- 		(trans room-9012 room-9009)
- 
-  		 ;;; transitions for room-10007
- 		(trans room-10007 room-9012)
- 		(trans room-10007 room-10008)
- 		(trans room-10007 room-10005)
- 
-  		 ;;; transitions for room-10008
- 		(trans room-10008 room-10007)
- 		(trans room-10008 room-10006)
+  		 ;;; transitions for room-9-square-3
+ 		(trans room-9-square-3 room-9-square-2)
+ 		(trans room-9-square-3 room-9-square-4)
+ 		(trans room-9-square-3 room-9-square-7)
+ 
+  		 ;;; transitions for room-9-square-2
+ 		(trans room-9-square-2 room-9-square-3)
+ 		(trans room-9-square-2 room-9-square-1)
+ 		(trans room-9-square-2 room-9-square-6)
+ 
+  		 ;;; transitions for room-9-square-1
+ 		(trans room-9-square-1 room-9-square-2)
+ 		(trans room-9-square-1 room-9-square-5)
+ 
+  		 ;;; transitions for room-9-square-4
+ 		(trans room-9-square-4 room-9-square-3)
+ 		(trans room-9-square-4 room-9-square-9)
+ 		(trans room-9-square-4 room-9-square-8)
+ 
+  		 ;;; transitions for room-5-square-3
+ 		(trans room-5-square-3 room-5-square-2)
+ 		(trans room-5-square-3 room-5-square-6)
+ 
+  		 ;;; transitions for room-5-square-2
+ 		(trans room-5-square-2 room-5-square-3)
+ 		(trans room-5-square-2 room-5-square-1)
+ 		(trans room-5-square-2 room-5-square-5)
+ 
+  		 ;;; transitions for room-5-square-1
+ 		(trans room-5-square-1 room-5-square-2)
+ 		(trans room-5-square-1 room-5-square-4)
+ 
+  		 ;;; transitions for room-1-square-3
+ 		(trans room-1-square-3 room-1-square-2)
+ 		(trans room-1-square-3 room-1-square-10)
+ 
+  		 ;;; transitions for room-1-square-2
+ 		(trans room-1-square-2 room-1-square-3)
+ 		(trans room-1-square-2 room-1-square-1)
+ 		(trans room-1-square-2 room-1-square-9)
+ 
+  		 ;;; transitions for room-9-square-5
+ 		(trans room-9-square-5 room-9-square-6)
+ 		(trans room-9-square-5 room-9-square-1)
+ 		(trans room-9-square-5 room-9-square-10)
+ 		(trans room-9-square-5 room-9-square-11)
+ 
+  		 ;;; transitions for room-9-square-6
+ 		(trans room-9-square-6 room-9-square-5)
+ 		(trans room-9-square-6 room-9-square-7)
+ 		(trans room-9-square-6 room-9-square-2)
+ 		(trans room-9-square-6 room-9-square-12)
+ 
+  		 ;;; transitions for room-9-square-7
+ 		(trans room-9-square-7 room-9-square-6)
+ 		(trans room-9-square-7 room-9-square-8)
+ 		(trans room-9-square-7 room-9-square-3)
+ 		(trans room-9-square-7 room-9-square-13)
+ 
+  		 ;;; transitions for room-9-square-8
+ 		(trans room-9-square-8 room-9-square-7)
+ 		(trans room-9-square-8 room-9-square-9)
+ 		(trans room-9-square-8 room-9-square-4)
+ 		(trans room-9-square-8 room-9-square-14)
+ 
+  		 ;;; transitions for room-9-square-9
+ 		(trans room-9-square-9 room-9-square-8)
+ 		(trans room-9-square-9 room-9-square-16)
+ 		(trans room-9-square-9 room-9-square-15)
+ 		(trans room-9-square-9 room-9-square-4)
+ 
+  		 ;;; transitions for room-1-square-1
+ 		(trans room-1-square-1 room-1-square-2)
+ 		(trans room-1-square-1 room-1-square-4)
+ 		(trans room-1-square-1 room-1-square-8)
+ 
+  		 ;;; transitions for room-1-square-4
+ 		(trans room-1-square-4 room-1-square-1)
+ 		(trans room-1-square-4 room-1-square-5)
+ 		(trans room-1-square-4 room-1-square-7)
+ 
+  		 ;;; transitions for room-1-square-5
+ 		(trans room-1-square-5 room-1-square-4)
+ 		(trans room-1-square-5 room-1-square-6)
+ 
+  		 ;;; transitions for room-9-square-16
+ 		(trans room-9-square-16 room-9-square-9)
+ 		(trans room-9-square-16 room-9-square-15)
+ 		(trans room-9-square-16 room-9-square-25)
+ 		(trans room-9-square-16 room-9-square-24)
+ 
+  		 ;;; transitions for room-1-square-6
+ 		(trans room-1-square-6 room-1-square-7)
+ 		(trans room-1-square-6 room-1-square-5)
+ 		(trans room-1-square-6 room-1-square-11)
+ 
+  		 ;;; transitions for room-1-square-7
+ 		(trans room-1-square-7 room-1-square-6)
+ 		(trans room-1-square-7 room-1-square-8)
+ 		(trans room-1-square-7 room-1-square-4)
+ 		(trans room-1-square-7 room-1-square-12)
+ 
+  		 ;;; transitions for room-1-square-8
+ 		(trans room-1-square-8 room-1-square-7)
+ 		(trans room-1-square-8 room-1-square-9)
+ 		(trans room-1-square-8 room-1-square-1)
+ 		(trans room-1-square-8 room-1-square-13)
+ 
+  		 ;;; transitions for room-1-square-9
+ 		(trans room-1-square-9 room-1-square-8)
+ 		(trans room-1-square-9 room-1-square-10)
+ 		(trans room-1-square-9 room-1-square-2)
+ 		(trans room-1-square-9 room-1-square-14)
+ 
+  		 ;;; transitions for room-1-square-10
+ 		(trans room-1-square-10 room-1-square-9)
+ 		(trans room-1-square-10 room-1-square-3)
+ 		(trans room-1-square-10 room-1-square-15)
+ 
+  		 ;;; transitions for room-5-square-4
+ 		(trans room-5-square-4 room-5-square-5)
+ 		(trans room-5-square-4 room-5-square-1)
+ 		(trans room-5-square-4 room-5-square-7)
+ 
+  		 ;;; transitions for room-5-square-5
+ 		(trans room-5-square-5 room-5-square-4)
+ 		(trans room-5-square-5 room-5-square-6)
+ 		(trans room-5-square-5 room-5-square-2)
+ 		(trans room-5-square-5 room-5-square-8)
+ 
+  		 ;;; transitions for room-5-square-6
+ 		(trans room-5-square-6 room-5-square-5)
+ 		(trans room-5-square-6 room-5-square-3)
+ 		(trans room-5-square-6 room-5-square-9)
+ 
+  		 ;;; transitions for room-9-square-10
+ 		(trans room-9-square-10 room-9-square-11)
+ 		(trans room-9-square-10 room-9-square-5)
+ 		(trans room-9-square-10 room-9-square-17)
+ 		(trans room-9-square-10 room-9-square-18)
+ 
+  		 ;;; transitions for room-9-square-11
+ 		(trans room-9-square-11 room-9-square-10)
+ 		(trans room-9-square-11 room-9-square-12)
+ 		(trans room-9-square-11 room-9-square-5)
+ 		(trans room-9-square-11 room-9-square-19)
+ 
+  		 ;;; transitions for room-9-square-12
+ 		(trans room-9-square-12 room-9-square-11)
+ 		(trans room-9-square-12 room-9-square-13)
+ 		(trans room-9-square-12 room-9-square-6)
+ 		(trans room-9-square-12 room-9-square-20)
+ 
+  		 ;;; transitions for room-9-square-13
+ 		(trans room-9-square-13 room-9-square-12)
+ 		(trans room-9-square-13 room-9-square-14)
+ 		(trans room-9-square-13 room-9-square-7)
+ 		(trans room-9-square-13 room-9-square-21)
+ 
+  		 ;;; transitions for room-9-square-14
+ 		(trans room-9-square-14 room-9-square-13)
+ 		(trans room-9-square-14 room-9-square-15)
+ 		(trans room-9-square-14 room-9-square-8)
+ 		(trans room-9-square-14 room-9-square-22)
+ 
+  		 ;;; transitions for room-9-square-15
+ 		(trans room-9-square-15 room-9-square-14)
+ 		(trans room-9-square-15 room-9-square-16)
+ 		(trans room-9-square-15 room-9-square-9)
+ 		(trans room-9-square-15 room-9-square-23)
+ 
+  		 ;;; transitions for room-9-square-25
+ 		(trans room-9-square-25 room-9-square-16)
+ 		(trans room-9-square-25 room-9-square-24)
+ 		(trans room-9-square-25 room-9-square-35)
+ 
+  		 ;;; transitions for room-1-square-11
+ 		(trans room-1-square-11 room-1-square-12)
+ 		(trans room-1-square-11 room-1-square-6)
+ 		(trans room-1-square-11 room-1-square-16)
+ 
+  		 ;;; transitions for room-1-square-12
+ 		(trans room-1-square-12 room-1-square-11)
+ 		(trans room-1-square-12 room-1-square-13)
+ 		(trans room-1-square-12 room-1-square-7)
+ 		(trans room-1-square-12 room-1-square-17)
+ 
+  		 ;;; transitions for room-1-square-13
+ 		(trans room-1-square-13 room-1-square-12)
+ 		(trans room-1-square-13 room-1-square-14)
+ 		(trans room-1-square-13 room-1-square-8)
+ 		(trans room-1-square-13 room-1-square-18)
+ 
+  		 ;;; transitions for room-1-square-14
+ 		(trans room-1-square-14 room-1-square-13)
+ 		(trans room-1-square-14 room-1-square-15)
+ 		(trans room-1-square-14 room-1-square-9)
+ 		(trans room-1-square-14 room-1-square-19)
+ 
+  		 ;;; transitions for room-1-square-15
+ 		(trans room-1-square-15 room-1-square-14)
+ 		(trans room-1-square-15 room-1-square-10)
+ 		(trans room-1-square-15 room-1-square-20)
+ 
+  		 ;;; transitions for room-5-square-7
+ 		(trans room-5-square-7 room-5-square-8)
+ 		(trans room-5-square-7 room-5-square-4)
+ 		(trans room-5-square-7 room-5-square-10)
+ 
+  		 ;;; transitions for room-5-square-8
+ 		(trans room-5-square-8 room-5-square-7)
+ 		(trans room-5-square-8 room-5-square-9)
+ 		(trans room-5-square-8 room-5-square-5)
+ 		(trans room-5-square-8 room-5-square-11)
+ 
+  		 ;;; transitions for room-5-square-9
+ 		(trans room-5-square-9 room-5-square-8)
+ 		(trans room-5-square-9 room-5-square-6)
+ 		(trans room-5-square-9 room-5-square-12)
+ 
+  		 ;;; transitions for room-9-square-17
+ 		(trans room-9-square-17 room-9-square-18)
+ 		(trans room-9-square-17 room-9-square-10)
+ 		(trans room-9-square-17 room-9-square-26)
+ 		(trans room-9-square-17 room-9-square-27)
+ 
+  		 ;;; transitions for room-9-square-18
+ 		(trans room-9-square-18 room-9-square-17)
+ 		(trans room-9-square-18 room-9-square-19)
+ 		(trans room-9-square-18 room-9-square-10)
+ 		(trans room-9-square-18 room-9-square-28)
+ 
+  		 ;;; transitions for room-9-square-19
+ 		(trans room-9-square-19 room-9-square-18)
+ 		(trans room-9-square-19 room-9-square-20)
+ 		(trans room-9-square-19 room-9-square-11)
+ 		(trans room-9-square-19 room-9-square-29)
+ 
+  		 ;;; transitions for room-9-square-20
+ 		(trans room-9-square-20 room-9-square-19)
+ 		(trans room-9-square-20 room-9-square-21)
+ 		(trans room-9-square-20 room-9-square-12)
+ 		(trans room-9-square-20 room-9-square-30)
+ 
+  		 ;;; transitions for room-9-square-21
+ 		(trans room-9-square-21 room-9-square-20)
+ 		(trans room-9-square-21 room-9-square-22)
+ 		(trans room-9-square-21 room-9-square-13)
+ 		(trans room-9-square-21 room-9-square-31)
+ 
+  		 ;;; transitions for room-9-square-22
+ 		(trans room-9-square-22 room-9-square-21)
+ 		(trans room-9-square-22 room-9-square-23)
+ 		(trans room-9-square-22 room-9-square-14)
+ 		(trans room-9-square-22 room-9-square-32)
+ 
+  		 ;;; transitions for room-9-square-23
+ 		(trans room-9-square-23 room-9-square-22)
+ 		(trans room-9-square-23 room-9-square-24)
+ 		(trans room-9-square-23 room-9-square-15)
+ 		(trans room-9-square-23 room-9-square-33)
+ 
+  		 ;;; transitions for room-9-square-24
+ 		(trans room-9-square-24 room-9-square-23)
+ 		(trans room-9-square-24 room-9-square-25)
+ 		(trans room-9-square-24 room-9-square-16)
+ 		(trans room-9-square-24 room-9-square-34)
+ 
+  		 ;;; transitions for room-6-square-1
+ 		(trans room-6-square-1 room-6-square-3)
+ 		(trans room-6-square-1 room-6-square-4)
+ 		(trans room-6-square-1 room-6-square-5)
+ 
+  		 ;;; transitions for room-6-square-3
+ 		(trans room-6-square-3 room-6-square-1)
+ 		(trans room-6-square-3 room-6-square-4)
+ 		(trans room-6-square-3 room-6-square-7)
+ 
+  		 ;;; transitions for room-1-square-16
+ 		(trans room-1-square-16 room-1-square-17)
+ 		(trans room-1-square-16 room-1-square-11)
+ 		(trans room-1-square-16 room-1-square-21)
+ 
+  		 ;;; transitions for room-1-square-17
+ 		(trans room-1-square-17 room-1-square-16)
+ 		(trans room-1-square-17 room-1-square-18)
+ 		(trans room-1-square-17 room-1-square-12)
+ 		(trans room-1-square-17 room-1-square-22)
+ 
+  		 ;;; transitions for room-1-square-18
+ 		(trans room-1-square-18 room-1-square-17)
+ 		(trans room-1-square-18 room-1-square-19)
+ 		(trans room-1-square-18 room-1-square-13)
+ 		(trans room-1-square-18 room-1-square-23)
+ 
+  		 ;;; transitions for room-1-square-19
+ 		(trans room-1-square-19 room-1-square-18)
+ 		(trans room-1-square-19 room-1-square-20)
+ 		(trans room-1-square-19 room-1-square-14)
+ 		(trans room-1-square-19 room-1-square-23)
+ 
+  		 ;;; transitions for room-1-square-20
+ 		(trans room-1-square-20 room-1-square-19)
+ 		(trans room-1-square-20 room-2-square-2)
+ 		(trans room-1-square-20 room-2-square-1)
+ 		(trans room-1-square-20 room-2-square-3)
+ 		(trans room-1-square-20 room-1-square-15)
+ 
+  		 ;;; transitions for room-5-square-10
+ 		(trans room-5-square-10 room-5-square-11)
+ 		(trans room-5-square-10 room-5-square-7)
+ 
+  		 ;;; transitions for room-5-square-11
+ 		(trans room-5-square-11 room-5-square-10)
+ 		(trans room-5-square-11 room-5-square-12)
+ 		(trans room-5-square-11 room-5-square-8)
+ 
+  		 ;;; transitions for room-5-square-12
+ 		(trans room-5-square-12 room-5-square-11)
+ 		(trans room-5-square-12 room-5-square-9)
+ 		(trans room-5-square-12 room-6-square-2)
+ 		(trans room-5-square-12 room-5-square-13)
+ 		(trans room-5-square-12 room-6-square-6)
+ 
+  		 ;;; transitions for room-6-square-4
+ 		(trans room-6-square-4 room-6-square-3)
+ 		(trans room-6-square-4 room-6-square-5)
+ 		(trans room-6-square-4 room-6-square-1)
+ 		(trans room-6-square-4 room-6-square-8)
+ 
+  		 ;;; transitions for room-6-square-5
+ 		(trans room-6-square-5 room-6-square-4)
+ 		(trans room-6-square-5 room-6-square-1)
+ 		(trans room-6-square-5 room-6-square-9)
+ 
+  		 ;;; transitions for room-9-square-26
+ 		(trans room-9-square-26 room-9-square-27)
+ 		(trans room-9-square-26 room-9-square-17)
+ 		(trans room-9-square-26 room-6-square-11)
+ 		(trans room-9-square-26 room-9-square-37)
+ 		(trans room-9-square-26 room-9-square-36)
+ 
+  		 ;;; transitions for room-9-square-27
+ 		(trans room-9-square-27 room-9-square-26)
+ 		(trans room-9-square-27 room-9-square-28)
+ 		(trans room-9-square-27 room-9-square-17)
+ 		(trans room-9-square-27 room-9-square-38)
+ 
+  		 ;;; transitions for room-9-square-28
+ 		(trans room-9-square-28 room-9-square-27)
+ 		(trans room-9-square-28 room-9-square-29)
+ 		(trans room-9-square-28 room-9-square-18)
+ 		(trans room-9-square-28 room-9-square-39)
+ 
+  		 ;;; transitions for room-9-square-29
+ 		(trans room-9-square-29 room-9-square-28)
+ 		(trans room-9-square-29 room-9-square-30)
+ 		(trans room-9-square-29 room-9-square-19)
+ 		(trans room-9-square-29 room-9-square-40)
+ 
+  		 ;;; transitions for room-9-square-30
+ 		(trans room-9-square-30 room-9-square-29)
+ 		(trans room-9-square-30 room-9-square-31)
+ 		(trans room-9-square-30 room-9-square-20)
+ 		(trans room-9-square-30 room-9-square-41)
+ 
+  		 ;;; transitions for room-9-square-31
+ 		(trans room-9-square-31 room-9-square-30)
+ 		(trans room-9-square-31 room-9-square-32)
+ 		(trans room-9-square-31 room-9-square-21)
+ 		(trans room-9-square-31 room-9-square-42)
+ 
+  		 ;;; transitions for room-9-square-32
+ 		(trans room-9-square-32 room-9-square-31)
+ 		(trans room-9-square-32 room-9-square-33)
+ 		(trans room-9-square-32 room-9-square-22)
+ 		(trans room-9-square-32 room-9-square-43)
+ 
+  		 ;;; transitions for room-9-square-33
+ 		(trans room-9-square-33 room-9-square-32)
+ 		(trans room-9-square-33 room-9-square-34)
+ 		(trans room-9-square-33 room-9-square-23)
+ 		(trans room-9-square-33 room-9-square-44)
+ 
+  		 ;;; transitions for room-9-square-34
+ 		(trans room-9-square-34 room-9-square-33)
+ 		(trans room-9-square-34 room-9-square-35)
+ 		(trans room-9-square-34 room-9-square-24)
+ 		(trans room-9-square-34 room-9-square-45)
+ 
+  		 ;;; transitions for room-9-square-35
+ 		(trans room-9-square-35 room-9-square-34)
+ 		(trans room-9-square-35 room-9-square-25)
+ 		(trans room-9-square-35 room-9-square-46)
+ 		(trans room-9-square-35 room-9-square-47)
+ 
+  		 ;;; transitions for room-6-square-2
+ 		(trans room-6-square-2 room-5-square-12)
+ 		(trans room-6-square-2 room-6-square-6)
+ 		(trans room-6-square-2 room-6-square-7)
+ 
+  		 ;;; transitions for room-6-square-11
+ 		(trans room-6-square-11 room-6-square-10)
+ 		(trans room-6-square-11 room-9-square-36)
+ 		(trans room-6-square-11 room-9-square-26)
+ 		(trans room-6-square-11 room-6-square-18)
+ 
+  		 ;;; transitions for room-6-square-10
+ 		(trans room-6-square-10 room-6-square-11)
+ 		(trans room-6-square-10 room-6-square-9)
+ 		(trans room-6-square-10 room-6-square-18)
+ 
+  		 ;;; transitions for room-1-square-21
+ 		(trans room-1-square-21 room-1-square-22)
+ 		(trans room-1-square-21 room-1-square-16)
+ 
+  		 ;;; transitions for room-1-square-22
+ 		(trans room-1-square-22 room-1-square-21)
+ 		(trans room-1-square-22 room-1-square-23)
+ 		(trans room-1-square-22 room-1-square-17)
+ 
+  		 ;;; transitions for room-1-square-23
+ 		(trans room-1-square-23 room-1-square-22)
+ 		(trans room-1-square-23 room-1-square-19)
+ 		(trans room-1-square-23 room-1-square-18)
+ 
+  		 ;;; transitions for room-5-square-13
+ 		(trans room-5-square-13 room-5-square-12)
+ 		(trans room-5-square-13 room-6-square-6)
+ 
+  		 ;;; transitions for room-6-square-6
+ 		(trans room-6-square-6 room-5-square-13)
+ 		(trans room-6-square-6 room-6-square-7)
+ 		(trans room-6-square-6 room-6-square-2)
+ 		(trans room-6-square-6 room-6-square-12)
+ 		(trans room-6-square-6 room-6-square-14)
+ 		(trans room-6-square-6 room-5-square-12)
+ 
+  		 ;;; transitions for room-6-square-7
+ 		(trans room-6-square-7 room-6-square-6)
+ 		(trans room-6-square-7 room-6-square-2)
+ 		(trans room-6-square-7 room-6-square-8)
+ 		(trans room-6-square-7 room-6-square-3)
+ 		(trans room-6-square-7 room-6-square-15)
+ 
+  		 ;;; transitions for room-6-square-8
+ 		(trans room-6-square-8 room-6-square-7)
+ 		(trans room-6-square-8 room-6-square-9)
+ 		(trans room-6-square-8 room-6-square-4)
+ 		(trans room-6-square-8 room-6-square-16)
+ 
+  		 ;;; transitions for room-6-square-9
+ 		(trans room-6-square-9 room-6-square-8)
+ 		(trans room-6-square-9 room-6-square-5)
+ 		(trans room-6-square-9 room-6-square-10)
+ 		(trans room-6-square-9 room-6-square-17)
+ 
+  		 ;;; transitions for room-9-square-36
+ 		(trans room-9-square-36 room-6-square-11)
+ 		(trans room-9-square-36 room-9-square-37)
+ 		(trans room-9-square-36 room-9-square-26)
+ 		(trans room-9-square-36 room-9-square-48)
+ 
+  		 ;;; transitions for room-9-square-37
+ 		(trans room-9-square-37 room-9-square-36)
+ 		(trans room-9-square-37 room-9-square-38)
+ 		(trans room-9-square-37 room-9-square-26)
+ 		(trans room-9-square-37 room-9-square-48)
+ 
+  		 ;;; transitions for room-9-square-38
+ 		(trans room-9-square-38 room-9-square-37)
+ 		(trans room-9-square-38 room-9-square-39)
+ 		(trans room-9-square-38 room-9-square-27)
+ 		(trans room-9-square-38 room-9-square-49)
+ 
+  		 ;;; transitions for room-9-square-39
+ 		(trans room-9-square-39 room-9-square-38)
+ 		(trans room-9-square-39 room-9-square-40)
+ 		(trans room-9-square-39 room-9-square-28)
+ 		(trans room-9-square-39 room-9-square-50)
+ 
+  		 ;;; transitions for room-9-square-40
+ 		(trans room-9-square-40 room-9-square-39)
+ 		(trans room-9-square-40 room-9-square-41)
+ 		(trans room-9-square-40 room-9-square-29)
+ 		(trans room-9-square-40 room-9-square-51)
+ 
+  		 ;;; transitions for room-9-square-41
+ 		(trans room-9-square-41 room-9-square-40)
+ 		(trans room-9-square-41 room-9-square-42)
+ 		(trans room-9-square-41 room-9-square-30)
+ 		(trans room-9-square-41 room-9-square-52)
+ 
+  		 ;;; transitions for room-9-square-42
+ 		(trans room-9-square-42 room-9-square-41)
+ 		(trans room-9-square-42 room-9-square-43)
+ 		(trans room-9-square-42 room-9-square-31)
+ 		(trans room-9-square-42 room-9-square-53)
+ 
+  		 ;;; transitions for room-9-square-43
+ 		(trans room-9-square-43 room-9-square-42)
+ 		(trans room-9-square-43 room-9-square-44)
+ 		(trans room-9-square-43 room-9-square-32)
+ 		(trans room-9-square-43 room-9-square-54)
+ 
+  		 ;;; transitions for room-9-square-44
+ 		(trans room-9-square-44 room-9-square-43)
+ 		(trans room-9-square-44 room-9-square-45)
+ 		(trans room-9-square-44 room-9-square-33)
+ 		(trans room-9-square-44 room-9-square-55)
+ 
+  		 ;;; transitions for room-9-square-45
+ 		(trans room-9-square-45 room-9-square-44)
+ 		(trans room-9-square-45 room-9-square-46)
+ 		(trans room-9-square-45 room-9-square-34)
+ 		(trans room-9-square-45 room-9-square-56)
+ 
+  		 ;;; transitions for room-9-square-46
+ 		(trans room-9-square-46 room-9-square-45)
+ 		(trans room-9-square-46 room-9-square-47)
+ 		(trans room-9-square-46 room-9-square-35)
+ 		(trans room-9-square-46 room-9-square-57)
+ 
+  		 ;;; transitions for room-9-square-47
+ 		(trans room-9-square-47 room-9-square-46)
+ 		(trans room-9-square-47 room-9-square-35)
+ 		(trans room-9-square-47 room-9-square-57)
+ 
+  		 ;;; transitions for room-2-square-2
+ 		(trans room-2-square-2 room-1-square-20)
+ 		(trans room-2-square-2 room-2-square-1)
+ 		(trans room-2-square-2 room-2-square-3)
+ 		(trans room-2-square-2 room-2-square-4)
+ 		(trans room-2-square-2 room-2-square-10)
+ 
+  		 ;;; transitions for room-2-square-1
+ 		(trans room-2-square-1 room-1-square-20)
+ 		(trans room-2-square-1 room-2-square-2)
+ 		(trans room-2-square-1 room-2-square-3)
+ 
+  		 ;;; transitions for room-2-square-3
+ 		(trans room-2-square-3 room-1-square-20)
+ 		(trans room-2-square-3 room-2-square-2)
+ 		(trans room-2-square-3 room-2-square-1)
+ 		(trans room-2-square-3 room-2-square-8)
+ 		(trans room-2-square-3 room-2-square-9)
+ 
+  		 ;;; transitions for room-2-square-4
+ 		(trans room-2-square-4 room-6-square-12)
+ 		(trans room-2-square-4 room-2-square-2)
+ 		(trans room-2-square-4 room-2-square-11)
+ 
+  		 ;;; transitions for room-6-square-12
+ 		(trans room-6-square-12 room-2-square-4)
+ 		(trans room-6-square-12 room-6-square-6)
+ 		(trans room-6-square-12 room-6-square-13)
+ 
+  		 ;;; transitions for room-2-square-8
+ 		(trans room-2-square-8 room-2-square-3)
+ 		(trans room-2-square-8 room-2-square-7)
+ 		(trans room-2-square-8 room-2-square-9)
+ 		(trans room-2-square-8 room-2-square-13)
+ 
+  		 ;;; transitions for room-2-square-7
+ 		(trans room-2-square-7 room-2-square-8)
+ 		(trans room-2-square-7 room-2-square-6)
+ 		(trans room-2-square-7 room-2-square-13)
+ 
+  		 ;;; transitions for room-2-square-6
+ 		(trans room-2-square-6 room-2-square-7)
+ 		(trans room-2-square-6 room-2-square-5)
+ 		(trans room-2-square-6 room-2-square-12)
+ 
+  		 ;;; transitions for room-2-square-5
+ 		(trans room-2-square-5 room-2-square-6)
+ 		(trans room-2-square-5 room-2-square-12)
+ 
+  		 ;;; transitions for room-2-square-9
+ 		(trans room-2-square-9 room-2-square-8)
+ 		(trans room-2-square-9 room-2-square-10)
+ 		(trans room-2-square-9 room-2-square-3)
+ 
+  		 ;;; transitions for room-2-square-10
+ 		(trans room-2-square-10 room-2-square-9)
+ 		(trans room-2-square-10 room-2-square-11)
+ 		(trans room-2-square-10 room-2-square-2)
+ 
+  		 ;;; transitions for room-2-square-11
+ 		(trans room-2-square-11 room-2-square-10)
+ 		(trans room-2-square-11 room-6-square-13)
+ 		(trans room-2-square-11 room-2-square-4)
+ 
+  		 ;;; transitions for room-6-square-13
+ 		(trans room-6-square-13 room-2-square-11)
+ 		(trans room-6-square-13 room-6-square-14)
+ 		(trans room-6-square-13 room-6-square-12)
+ 		(trans room-6-square-13 room-6-square-19)
+ 
+  		 ;;; transitions for room-6-square-14
+ 		(trans room-6-square-14 room-6-square-13)
+ 		(trans room-6-square-14 room-6-square-15)
+ 		(trans room-6-square-14 room-6-square-6)
+ 		(trans room-6-square-14 room-6-square-19)
+ 
+  		 ;;; transitions for room-6-square-15
+ 		(trans room-6-square-15 room-6-square-14)
+ 		(trans room-6-square-15 room-6-square-16)
+ 		(trans room-6-square-15 room-6-square-7)
+ 		(trans room-6-square-15 room-6-square-19)
+ 		(trans room-6-square-15 room-4-square-1)
+ 		(trans room-6-square-15 room-7-square-1)
+ 
+  		 ;;; transitions for room-6-square-16
+ 		(trans room-6-square-16 room-6-square-15)
+ 		(trans room-6-square-16 room-6-square-17)
+ 		(trans room-6-square-16 room-6-square-8)
+ 		(trans room-6-square-16 room-7-square-2)
+ 
+  		 ;;; transitions for room-6-square-17
+ 		(trans room-6-square-17 room-6-square-16)
+ 		(trans room-6-square-17 room-6-square-18)
+ 		(trans room-6-square-17 room-6-square-9)
+ 		(trans room-6-square-17 room-7-square-3)
+ 
+  		 ;;; transitions for room-6-square-18
+ 		(trans room-6-square-18 room-6-square-17)
+ 		(trans room-6-square-18 room-6-square-11)
+ 		(trans room-6-square-18 room-6-square-10)
+ 
+  		 ;;; transitions for room-9-square-48
+ 		(trans room-9-square-48 room-9-square-36)
+ 		(trans room-9-square-48 room-9-square-49)
+ 		(trans room-9-square-48 room-9-square-37)
+ 		(trans room-9-square-48 room-9-square-58)
+ 
+  		 ;;; transitions for room-9-square-49
+ 		(trans room-9-square-49 room-9-square-48)
+ 		(trans room-9-square-49 room-9-square-50)
+ 		(trans room-9-square-49 room-9-square-38)
+ 		(trans room-9-square-49 room-9-square-58)
+ 
+  		 ;;; transitions for room-9-square-50
+ 		(trans room-9-square-50 room-9-square-49)
+ 		(trans room-9-square-50 room-9-square-51)
+ 		(trans room-9-square-50 room-9-square-39)
+ 		(trans room-9-square-50 room-9-square-59)
+ 
+  		 ;;; transitions for room-9-square-51
+ 		(trans room-9-square-51 room-9-square-50)
+ 		(trans room-9-square-51 room-9-square-52)
+ 		(trans room-9-square-51 room-9-square-40)
+ 		(trans room-9-square-51 room-9-square-60)
+ 
+  		 ;;; transitions for room-9-square-52
+ 		(trans room-9-square-52 room-9-square-51)
+ 		(trans room-9-square-52 room-9-square-53)
+ 		(trans room-9-square-52 room-9-square-41)
+ 		(trans room-9-square-52 room-9-square-61)
+ 
+  		 ;;; transitions for room-9-square-53
+ 		(trans room-9-square-53 room-9-square-52)
+ 		(trans room-9-square-53 room-9-square-54)
+ 		(trans room-9-square-53 room-9-square-42)
+ 		(trans room-9-square-53 room-9-square-62)
+ 
+  		 ;;; transitions for room-9-square-54
+ 		(trans room-9-square-54 room-9-square-53)
+ 		(trans room-9-square-54 room-9-square-55)
+ 		(trans room-9-square-54 room-9-square-43)
+ 		(trans room-9-square-54 room-9-square-63)
+ 
+  		 ;;; transitions for room-9-square-55
+ 		(trans room-9-square-55 room-9-square-54)
+ 		(trans room-9-square-55 room-9-square-56)
+ 		(trans room-9-square-55 room-9-square-44)
+ 		(trans room-9-square-55 room-9-square-64)
+ 
+  		 ;;; transitions for room-9-square-56
+ 		(trans room-9-square-56 room-9-square-55)
+ 		(trans room-9-square-56 room-9-square-57)
+ 		(trans room-9-square-56 room-9-square-45)
+ 		(trans room-9-square-56 room-9-square-65)
+ 
+  		 ;;; transitions for room-9-square-57
+ 		(trans room-9-square-57 room-9-square-56)
+ 		(trans room-9-square-57 room-9-square-47)
+ 		(trans room-9-square-57 room-9-square-65)
+ 		(trans room-9-square-57 room-9-square-46)
+ 
+  		 ;;; transitions for room-7-square-3
+ 		(trans room-7-square-3 room-6-square-17)
+ 		(trans room-7-square-3 room-7-square-2)
+ 		(trans room-7-square-3 room-7-square-5)
+ 
+  		 ;;; transitions for room-7-square-2
+ 		(trans room-7-square-2 room-6-square-16)
+ 		(trans room-7-square-2 room-7-square-3)
+ 		(trans room-7-square-2 room-7-square-1)
+ 		(trans room-7-square-2 room-7-square-4)
+ 
+  		 ;;; transitions for room-7-square-1
+ 		(trans room-7-square-1 room-7-square-2)
+ 		(trans room-7-square-1 room-6-square-15)
+ 		(trans room-7-square-1 room-7-square-4)
+ 
+  		 ;;; transitions for room-2-square-12
+ 		(trans room-2-square-12 room-2-square-13)
+ 		(trans room-2-square-12 room-2-square-6)
+ 		(trans room-2-square-12 room-3-square-1)
+ 		(trans room-2-square-12 room-3-square-4)
+ 		(trans room-2-square-12 room-2-square-5)
+ 
+  		 ;;; transitions for room-2-square-13
+ 		(trans room-2-square-13 room-2-square-12)
+ 		(trans room-2-square-13 room-2-square-8)
+ 		(trans room-2-square-13 room-2-square-7)
+ 		(trans room-2-square-13 room-3-square-2)
+ 
+  		 ;;; transitions for room-6-square-19
+ 		(trans room-6-square-19 room-6-square-13)
+ 		(trans room-6-square-19 room-6-square-15)
+ 		(trans room-6-square-19 room-6-square-14)
+ 		(trans room-6-square-19 room-4-square-1)
+ 
+  		 ;;; transitions for room-7-square-4
+ 		(trans room-7-square-4 room-7-square-5)
+ 		(trans room-7-square-4 room-7-square-2)
+ 		(trans room-7-square-4 room-7-square-6)
+ 		(trans room-7-square-4 room-7-square-1)
+ 
+  		 ;;; transitions for room-7-square-5
+ 		(trans room-7-square-5 room-7-square-4)
+ 		(trans room-7-square-5 room-7-square-3)
+ 		(trans room-7-square-5 room-7-square-7)
+ 
+  		 ;;; transitions for room-9-square-58
+ 		(trans room-9-square-58 room-9-square-48)
+ 		(trans room-9-square-58 room-9-square-59)
+ 		(trans room-9-square-58 room-9-square-49)
+ 		(trans room-9-square-58 room-9-square-66)
+ 
+  		 ;;; transitions for room-9-square-59
+ 		(trans room-9-square-59 room-9-square-58)
+ 		(trans room-9-square-59 room-9-square-60)
+ 		(trans room-9-square-59 room-9-square-50)
+ 		(trans room-9-square-59 room-9-square-66)
+ 
+  		 ;;; transitions for room-9-square-60
+ 		(trans room-9-square-60 room-9-square-59)
+ 		(trans room-9-square-60 room-9-square-61)
+ 		(trans room-9-square-60 room-9-square-51)
+ 		(trans room-9-square-60 room-9-square-67)
+ 
+  		 ;;; transitions for room-9-square-61
+ 		(trans room-9-square-61 room-9-square-60)
+ 		(trans room-9-square-61 room-9-square-62)
+ 		(trans room-9-square-61 room-9-square-52)
+ 		(trans room-9-square-61 room-9-square-68)
+ 
+  		 ;;; transitions for room-9-square-62
+ 		(trans room-9-square-62 room-9-square-61)
+ 		(trans room-9-square-62 room-9-square-63)
+ 		(trans room-9-square-62 room-9-square-53)
+ 		(trans room-9-square-62 room-9-square-69)
+ 
+  		 ;;; transitions for room-9-square-63
+ 		(trans room-9-square-63 room-9-square-62)
+ 		(trans room-9-square-63 room-9-square-64)
+ 		(trans room-9-square-63 room-9-square-54)
+ 		(trans room-9-square-63 room-9-square-70)
+ 
+  		 ;;; transitions for room-9-square-64
+ 		(trans room-9-square-64 room-9-square-63)
+ 		(trans room-9-square-64 room-9-square-65)
+ 		(trans room-9-square-64 room-9-square-55)
+ 		(trans room-9-square-64 room-9-square-71)
+ 
+  		 ;;; transitions for room-9-square-65
+ 		(trans room-9-square-65 room-9-square-64)
+ 		(trans room-9-square-65 room-9-square-57)
+ 		(trans room-9-square-65 room-9-square-71)
+ 		(trans room-9-square-65 room-9-square-56)
+ 
+  		 ;;; transitions for room-4-square-1
+ 		(trans room-4-square-1 room-6-square-19)
+ 		(trans room-4-square-1 room-6-square-15)
+ 		(trans room-4-square-1 room-4-square-2)
+ 		(trans room-4-square-1 room-4-square-10)
+ 		(trans room-4-square-1 room-4-square-9)
+ 
+  		 ;;; transitions for room-4-square-2
+ 		(trans room-4-square-2 room-4-square-1)
+ 		(trans room-4-square-2 room-4-square-3)
+ 		(trans room-4-square-2 room-4-square-8)
+ 
+  		 ;;; transitions for room-3-square-2
+ 		(trans room-3-square-2 room-2-square-13)
+ 		(trans room-3-square-2 room-3-square-1)
+ 		(trans room-3-square-2 room-3-square-4)
+ 		(trans room-3-square-2 room-3-square-5)
+ 
+  		 ;;; transitions for room-4-square-3
+ 		(trans room-4-square-3 room-4-square-2)
+ 		(trans room-4-square-3 room-4-square-4)
+ 		(trans room-4-square-3 room-4-square-7)
+ 
+  		 ;;; transitions for room-4-square-4
+ 		(trans room-4-square-4 room-4-square-3)
+ 		(trans room-4-square-4 room-4-square-5)
+ 		(trans room-4-square-4 room-4-square-6)
+ 
+  		 ;;; transitions for room-4-square-5
+ 		(trans room-4-square-5 room-4-square-4)
+ 		(trans room-4-square-5 room-4-square-6)
+ 		(trans room-4-square-5 room-4-square-11)
+ 
+  		 ;;; transitions for room-3-square-1
+ 		(trans room-3-square-1 room-2-square-12)
+ 		(trans room-3-square-1 room-3-square-2)
+ 		(trans room-3-square-1 room-3-square-4)
+ 
+  		 ;;; transitions for room-3-square-4
+ 		(trans room-3-square-4 room-3-square-2)
+ 		(trans room-3-square-4 room-3-square-1)
+ 		(trans room-3-square-4 room-3-square-3)
+ 		(trans room-3-square-4 room-3-square-5)
+ 		(trans room-3-square-4 room-3-square-6)
+ 		(trans room-3-square-4 room-2-square-12)
+ 
+  		 ;;; transitions for room-3-square-3
+ 		(trans room-3-square-3 room-3-square-4)
+ 		(trans room-3-square-3 room-3-square-6)
+ 
+  		 ;;; transitions for room-3-square-5
+ 		(trans room-3-square-5 room-3-square-4)
+ 		(trans room-3-square-5 room-3-square-7)
+ 		(trans room-3-square-5 room-3-square-2)
+ 
+  		 ;;; transitions for room-4-square-6
+ 		(trans room-4-square-6 room-4-square-5)
+ 		(trans room-4-square-6 room-4-square-7)
+ 		(trans room-4-square-6 room-4-square-4)
+ 		(trans room-4-square-6 room-4-square-12)
+ 
+  		 ;;; transitions for room-4-square-7
+ 		(trans room-4-square-7 room-4-square-6)
+ 		(trans room-4-square-7 room-4-square-8)
+ 		(trans room-4-square-7 room-4-square-3)
+ 		(trans room-4-square-7 room-4-square-13)
+ 
+  		 ;;; transitions for room-4-square-8
+ 		(trans room-4-square-8 room-4-square-7)
+ 		(trans room-4-square-8 room-4-square-9)
+ 		(trans room-4-square-8 room-4-square-2)
+ 		(trans room-4-square-8 room-4-square-14)
+ 
+  		 ;;; transitions for room-4-square-9
+ 		(trans room-4-square-9 room-4-square-8)
+ 		(trans room-4-square-9 room-4-square-10)
+ 		(trans room-4-square-9 room-4-square-1)
+ 		(trans room-4-square-9 room-4-square-15)
+ 
+  		 ;;; transitions for room-4-square-10
+ 		(trans room-4-square-10 room-4-square-9)
+ 		(trans room-4-square-10 room-4-square-1)
+ 		(trans room-4-square-10 room-4-square-16)
+ 
+  		 ;;; transitions for room-7-square-6
+ 		(trans room-7-square-6 room-7-square-7)
+ 		(trans room-7-square-6 room-7-square-4)
+ 		(trans room-7-square-6 room-8-square-1)
+ 		(trans room-7-square-6 room-8-square-2)
+ 
+  		 ;;; transitions for room-7-square-7
+ 		(trans room-7-square-7 room-7-square-6)
+ 		(trans room-7-square-7 room-7-square-5)
+ 		(trans room-7-square-7 room-8-square-3)
+ 
+  		 ;;; transitions for room-9-square-66
+ 		(trans room-9-square-66 room-9-square-58)
+ 		(trans room-9-square-66 room-9-square-67)
+ 		(trans room-9-square-66 room-9-square-59)
+ 
+  		 ;;; transitions for room-9-square-67
+ 		(trans room-9-square-67 room-9-square-66)
+ 		(trans room-9-square-67 room-9-square-68)
+ 		(trans room-9-square-67 room-9-square-60)
+ 		(trans room-9-square-67 room-9-square-72)
+ 
+  		 ;;; transitions for room-9-square-68
+ 		(trans room-9-square-68 room-9-square-67)
+ 		(trans room-9-square-68 room-9-square-69)
+ 		(trans room-9-square-68 room-9-square-61)
+ 		(trans room-9-square-68 room-9-square-72)
+ 
+  		 ;;; transitions for room-9-square-69
+ 		(trans room-9-square-69 room-9-square-68)
+ 		(trans room-9-square-69 room-9-square-70)
+ 		(trans room-9-square-69 room-9-square-62)
+ 		(trans room-9-square-69 room-9-square-73)
+ 
+  		 ;;; transitions for room-9-square-70
+ 		(trans room-9-square-70 room-9-square-69)
+ 		(trans room-9-square-70 room-9-square-71)
+ 		(trans room-9-square-70 room-9-square-63)
+ 		(trans room-9-square-70 room-9-square-74)
+ 
+  		 ;;; transitions for room-9-square-71
+ 		(trans room-9-square-71 room-9-square-70)
+ 		(trans room-9-square-71 room-9-square-65)
+ 		(trans room-9-square-71 room-13-square-2)
+ 		(trans room-9-square-71 room-13-square-1)
+ 		(trans room-9-square-71 room-9-square-74)
+ 		(trans room-9-square-71 room-9-square-64)
+ 
+  		 ;;; transitions for room-8-square-3
+ 		(trans room-8-square-3 room-7-square-7)
+ 		(trans room-8-square-3 room-8-square-1)
+ 		(trans room-8-square-3 room-8-square-2)
+ 		(trans room-8-square-3 room-8-square-4)
+ 		(trans room-8-square-3 room-8-square-6)
+ 
+  		 ;;; transitions for room-13-square-1
+ 		(trans room-13-square-1 room-9-square-71)
+ 		(trans room-13-square-1 room-13-square-2)
+ 
+  		 ;;; transitions for room-13-square-2
+ 		(trans room-13-square-2 room-13-square-1)
+ 		(trans room-13-square-2 room-13-square-3)
+ 		(trans room-13-square-2 room-9-square-71)
+ 
+  		 ;;; transitions for room-8-square-1
+ 		(trans room-8-square-1 room-7-square-6)
+ 		(trans room-8-square-1 room-8-square-3)
+ 		(trans room-8-square-1 room-8-square-2)
+ 
+  		 ;;; transitions for room-8-square-2
+ 		(trans room-8-square-2 room-7-square-6)
+ 		(trans room-8-square-2 room-8-square-3)
+ 		(trans room-8-square-2 room-8-square-1)
+ 		(trans room-8-square-2 room-8-square-5)
+ 
+  		 ;;; transitions for room-3-square-6
+ 		(trans room-3-square-6 room-3-square-7)
+ 		(trans room-3-square-6 room-3-square-4)
+ 		(trans room-3-square-6 room-3-square-8)
+ 		(trans room-3-square-6 room-3-square-3)
+ 
+  		 ;;; transitions for room-3-square-7
+ 		(trans room-3-square-7 room-3-square-6)
+ 		(trans room-3-square-7 room-3-square-5)
+ 		(trans room-3-square-7 room-3-square-9)
+ 
+  		 ;;; transitions for room-4-square-11
+ 		(trans room-4-square-11 room-4-square-12)
+ 		(trans room-4-square-11 room-4-square-5)
+ 		(trans room-4-square-11 room-4-square-17)
+ 
+  		 ;;; transitions for room-4-square-12
+ 		(trans room-4-square-12 room-4-square-11)
+ 		(trans room-4-square-12 room-4-square-13)
+ 		(trans room-4-square-12 room-4-square-6)
+ 		(trans room-4-square-12 room-4-square-18)
+ 
+  		 ;;; transitions for room-4-square-13
+ 		(trans room-4-square-13 room-4-square-12)
+ 		(trans room-4-square-13 room-4-square-14)
+ 		(trans room-4-square-13 room-4-square-7)
+ 		(trans room-4-square-13 room-4-square-19)
+ 
+  		 ;;; transitions for room-4-square-14
+ 		(trans room-4-square-14 room-4-square-13)
+ 		(trans room-4-square-14 room-4-square-15)
+ 		(trans room-4-square-14 room-4-square-8)
+ 		(trans room-4-square-14 room-4-square-20)
+ 
+  		 ;;; transitions for room-4-square-15
+ 		(trans room-4-square-15 room-4-square-14)
+ 		(trans room-4-square-15 room-4-square-16)
+ 		(trans room-4-square-15 room-4-square-9)
+ 		(trans room-4-square-15 room-4-square-21)
+ 
+  		 ;;; transitions for room-4-square-16
+ 		(trans room-4-square-16 room-4-square-15)
+ 		(trans room-4-square-16 room-4-square-10)
+ 		(trans room-4-square-16 room-4-square-22)
+ 
+  		 ;;; transitions for room-8-square-4
+ 		(trans room-8-square-4 room-8-square-3)
+ 		(trans room-8-square-4 room-8-square-8)
+ 		(trans room-8-square-4 room-8-square-7)
+ 
+  		 ;;; transitions for room-9-square-72
+ 		(trans room-9-square-72 room-9-square-67)
+ 		(trans room-9-square-72 room-9-square-73)
+ 		(trans room-9-square-72 room-9-square-68)
+ 		(trans room-9-square-72 room-9-square-75)
+ 
+  		 ;;; transitions for room-9-square-73
+ 		(trans room-9-square-73 room-9-square-72)
+ 		(trans room-9-square-73 room-9-square-74)
+ 		(trans room-9-square-73 room-9-square-69)
+ 		(trans room-9-square-73 room-9-square-75)
+ 
+  		 ;;; transitions for room-9-square-74
+ 		(trans room-9-square-74 room-9-square-73)
+ 		(trans room-9-square-74 room-9-square-71)
+ 		(trans room-9-square-74 room-9-square-76)
+ 		(trans room-9-square-74 room-9-square-70)
+ 
+  		 ;;; transitions for room-13-square-3
+ 		(trans room-13-square-3 room-13-square-2)
+ 
+  		 ;;; transitions for room-8-square-8
+ 		(trans room-8-square-8 room-8-square-4)
+ 		(trans room-8-square-8 room-8-square-7)
+ 		(trans room-8-square-8 room-8-square-13)
+ 		(trans room-8-square-8 room-8-square-12)
+ 
+  		 ;;; transitions for room-3-square-8
+ 		(trans room-3-square-8 room-3-square-9)
+ 		(trans room-3-square-8 room-3-square-6)
+ 		(trans room-3-square-8 room-3-square-10)
+ 
+  		 ;;; transitions for room-3-square-9
+ 		(trans room-3-square-9 room-3-square-8)
+ 		(trans room-3-square-9 room-3-square-7)
+ 		(trans room-3-square-9 room-3-square-11)
+ 
+  		 ;;; transitions for room-4-square-17
+ 		(trans room-4-square-17 room-4-square-18)
+ 		(trans room-4-square-17 room-4-square-11)
+ 		(trans room-4-square-17 room-4-square-23)
+ 
+  		 ;;; transitions for room-4-square-18
+ 		(trans room-4-square-18 room-4-square-17)
+ 		(trans room-4-square-18 room-4-square-19)
+ 		(trans room-4-square-18 room-4-square-12)
+ 		(trans room-4-square-18 room-4-square-23)
+ 
+  		 ;;; transitions for room-4-square-19
+ 		(trans room-4-square-19 room-4-square-18)
+ 		(trans room-4-square-19 room-4-square-20)
+ 		(trans room-4-square-19 room-4-square-13)
+ 		(trans room-4-square-19 room-4-square-24)
+ 
+  		 ;;; transitions for room-4-square-20
+ 		(trans room-4-square-20 room-4-square-19)
+ 		(trans room-4-square-20 room-4-square-21)
+ 		(trans room-4-square-20 room-4-square-14)
+ 		(trans room-4-square-20 room-4-square-25)
+ 
+  		 ;;; transitions for room-4-square-21
+ 		(trans room-4-square-21 room-4-square-20)
+ 		(trans room-4-square-21 room-4-square-22)
+ 		(trans room-4-square-21 room-4-square-15)
+ 		(trans room-4-square-21 room-4-square-26)
+ 
+  		 ;;; transitions for room-4-square-22
+ 		(trans room-4-square-22 room-4-square-21)
+ 		(trans room-4-square-22 room-4-square-16)
+ 		(trans room-4-square-22 room-4-square-27)
+ 
+  		 ;;; transitions for room-8-square-5
+ 		(trans room-8-square-5 room-8-square-6)
+ 		(trans room-8-square-5 room-8-square-2)
+ 		(trans room-8-square-5 room-8-square-9)
+ 
+  		 ;;; transitions for room-8-square-6
+ 		(trans room-8-square-6 room-8-square-5)
+ 		(trans room-8-square-6 room-8-square-7)
+ 		(trans room-8-square-6 room-8-square-3)
+ 		(trans room-8-square-6 room-8-square-10)
+ 
+  		 ;;; transitions for room-8-square-7
+ 		(trans room-8-square-7 room-8-square-6)
+ 		(trans room-8-square-7 room-8-square-8)
+ 		(trans room-8-square-7 room-8-square-4)
+ 		(trans room-8-square-7 room-8-square-11)
+ 
+  		 ;;; transitions for room-9-square-75
+ 		(trans room-9-square-75 room-9-square-72)
+ 		(trans room-9-square-75 room-9-square-76)
+ 		(trans room-9-square-75 room-9-square-73)
+ 		(trans room-9-square-75 room-9-square-77)
+ 
+  		 ;;; transitions for room-9-square-76
+ 		(trans room-9-square-76 room-9-square-75)
+ 		(trans room-9-square-76 room-9-square-74)
+ 		(trans room-9-square-76 room-9-square-78)
+ 
+  		 ;;; transitions for room-8-square-13
+ 		(trans room-8-square-13 room-8-square-8)
+ 		(trans room-8-square-13 room-8-square-12)
+ 		(trans room-8-square-13 room-8-square-18)
+ 		(trans room-8-square-13 room-8-square-17)
+ 
+  		 ;;; transitions for room-3-square-10
+ 		(trans room-3-square-10 room-3-square-11)
+ 		(trans room-3-square-10 room-3-square-8)
+ 		(trans room-3-square-10 room-2-square-14)
+ 
+  		 ;;; transitions for room-3-square-11
+ 		(trans room-3-square-11 room-3-square-10)
+ 		(trans room-3-square-11 room-3-square-9)
+ 
+  		 ;;; transitions for room-4-square-23
+ 		(trans room-4-square-23 room-4-square-24)
+ 		(trans room-4-square-23 room-4-square-18)
+ 		(trans room-4-square-23 room-4-square-17)
+ 
+  		 ;;; transitions for room-4-square-24
+ 		(trans room-4-square-24 room-4-square-23)
+ 		(trans room-4-square-24 room-4-square-25)
+ 		(trans room-4-square-24 room-4-square-19)
+ 
+  		 ;;; transitions for room-4-square-25
+ 		(trans room-4-square-25 room-4-square-24)
+ 		(trans room-4-square-25 room-4-square-26)
+ 		(trans room-4-square-25 room-4-square-20)
+ 
+  		 ;;; transitions for room-4-square-26
+ 		(trans room-4-square-26 room-4-square-25)
+ 		(trans room-4-square-26 room-4-square-27)
+ 		(trans room-4-square-26 room-4-square-21)
+ 
+  		 ;;; transitions for room-4-square-27
+ 		(trans room-4-square-27 room-4-square-26)
+ 		(trans room-4-square-27 room-4-square-22)
+ 
+  		 ;;; transitions for room-8-square-9
+ 		(trans room-8-square-9 room-8-square-10)
+ 		(trans room-8-square-9 room-8-square-5)
+ 		(trans room-8-square-9 room-8-square-14)
+ 
+  		 ;;; transitions for room-8-square-10
+ 		(trans room-8-square-10 room-8-square-9)
+ 		(trans room-8-square-10 room-8-square-11)
+ 		(trans room-8-square-10 room-8-square-6)
+ 		(trans room-8-square-10 room-8-square-14)
+ 
+  		 ;;; transitions for room-8-square-11
+ 		(trans room-8-square-11 room-8-square-10)
+ 		(trans room-8-square-11 room-8-square-12)
+ 		(trans room-8-square-11 room-8-square-7)
+ 		(trans room-8-square-11 room-8-square-15)
+ 
+  		 ;;; transitions for room-8-square-12
+ 		(trans room-8-square-12 room-8-square-11)
+ 		(trans room-8-square-12 room-8-square-13)
+ 		(trans room-8-square-12 room-8-square-8)
+ 		(trans room-8-square-12 room-8-square-16)
+ 
+  		 ;;; transitions for room-9-square-77
+ 		(trans room-9-square-77 room-9-square-75)
+ 		(trans room-9-square-77 room-9-square-78)
+ 		(trans room-9-square-77 room-9-square-79)
+ 		(trans room-9-square-77 room-12-square-2)
+ 
+  		 ;;; transitions for room-9-square-78
+ 		(trans room-9-square-78 room-9-square-77)
+ 		(trans room-9-square-78 room-9-square-76)
+ 		(trans room-9-square-78 room-12-square-1)
+ 		(trans room-9-square-78 room-12-square-3)
+ 
+  		 ;;; transitions for room-8-square-18
+ 		(trans room-8-square-18 room-8-square-13)
+ 		(trans room-8-square-18 room-8-square-17)
+ 		(trans room-8-square-18 room-8-square-19)
+ 		(trans room-8-square-18 room-8-square-23)
+ 
+  		 ;;; transitions for room-12-square-1
+ 		(trans room-12-square-1 room-9-square-78)
+ 		(trans room-12-square-1 room-12-square-3)
+ 
+  		 ;;; transitions for room-2-square-14
+ 		(trans room-2-square-14 room-3-square-10)
+ 
+  		 ;;; transitions for room-8-square-14
+ 		(trans room-8-square-14 room-8-square-9)
+ 		(trans room-8-square-14 room-8-square-15)
+ 		(trans room-8-square-14 room-8-square-10)
+ 		(trans room-8-square-14 room-8-square-20)
+ 
+  		 ;;; transitions for room-8-square-15
+ 		(trans room-8-square-15 room-8-square-14)
+ 		(trans room-8-square-15 room-8-square-16)
+ 		(trans room-8-square-15 room-8-square-11)
+ 		(trans room-8-square-15 room-8-square-20)
+ 
+  		 ;;; transitions for room-8-square-16
+ 		(trans room-8-square-16 room-8-square-15)
+ 		(trans room-8-square-16 room-8-square-17)
+ 		(trans room-8-square-16 room-8-square-12)
+ 		(trans room-8-square-16 room-8-square-21)
+ 
+  		 ;;; transitions for room-8-square-17
+ 		(trans room-8-square-17 room-8-square-16)
+ 		(trans room-8-square-17 room-8-square-18)
+ 		(trans room-8-square-17 room-8-square-13)
+ 		(trans room-8-square-17 room-8-square-22)
+ 
+  		 ;;; transitions for room-9-square-79
+ 		(trans room-9-square-79 room-12-square-2)
+ 		(trans room-9-square-79 room-9-square-77)
+ 
+  		 ;;; transitions for room-12-square-2
+ 		(trans room-12-square-2 room-9-square-79)
+ 		(trans room-12-square-2 room-12-square-3)
+ 		(trans room-12-square-2 room-9-square-77)
+ 		(trans room-12-square-2 room-12-square-7)
+ 		(trans room-12-square-2 room-12-square-8)
+ 
+  		 ;;; transitions for room-12-square-3
+ 		(trans room-12-square-3 room-12-square-2)
+ 		(trans room-12-square-3 room-12-square-10)
+ 		(trans room-12-square-3 room-12-square-9)
+ 		(trans room-12-square-3 room-12-square-1)
+ 		(trans room-12-square-3 room-9-square-78)
+ 
+  		 ;;; transitions for room-8-square-19
+ 		(trans room-8-square-19 room-8-square-18)
+ 		(trans room-8-square-19 room-12-square-4)
+ 		(trans room-8-square-19 room-8-square-25)
+ 		(trans room-8-square-19 room-8-square-24)
+ 
+  		 ;;; transitions for room-12-square-10
+ 		(trans room-12-square-10 room-12-square-3)
+ 		(trans room-12-square-10 room-12-square-9)
+ 		(trans room-12-square-10 room-12-square-14)
+ 
+  		 ;;; transitions for room-12-square-7
+ 		(trans room-12-square-7 room-12-square-6)
+ 		(trans room-12-square-7 room-12-square-2)
+ 		(trans room-12-square-7 room-12-square-8)
+ 	;;;(trans room-12-square-7 room-12-square-12)
+ 
+  		 ;;; transitions for room-12-square-6
+ 		(trans room-12-square-6 room-12-square-7)
+ 		(trans room-12-square-6 room-8-square-25)
+ 		(trans room-12-square-6 room-12-square-4)
+ 		(trans room-12-square-6 room-8-square-24)
+ 		(trans room-12-square-6 room-12-square-5)
+ 		(trans room-12-square-6 room-12-square-11)
+ 
+  		 ;;; transitions for room-12-square-4
+ 		(trans room-12-square-4 room-8-square-19)
+ 		(trans room-12-square-4 room-12-square-6)
+ 
+  		 ;;; transitions for room-8-square-20
+ 		(trans room-8-square-20 room-8-square-14)
+ 		(trans room-8-square-20 room-8-square-21)
+ 		(trans room-8-square-20 room-8-square-15)
+ 
+  		 ;;; transitions for room-8-square-21
+ 		(trans room-8-square-21 room-8-square-20)
+ 		(trans room-8-square-21 room-8-square-22)
+ 		(trans room-8-square-21 room-8-square-16)
+ 		(trans room-8-square-21 room-8-square-26)
+ 
+  		 ;;; transitions for room-8-square-22
+ 		(trans room-8-square-22 room-8-square-21)
+ 		(trans room-8-square-22 room-8-square-23)
+ 		(trans room-8-square-22 room-8-square-17)
+ 		(trans room-8-square-22 room-8-square-26)
+ 
+  		 ;;; transitions for room-8-square-23
+ 		(trans room-8-square-23 room-8-square-22)
+ 		(trans room-8-square-23 room-8-square-24)
+ 		(trans room-8-square-23 room-8-square-18)
+ 		(trans room-8-square-23 room-8-square-26)
+ 		(trans room-8-square-23 room-11-square-3)
+ 
+  		 ;;; transitions for room-8-square-24
+ 		(trans room-8-square-24 room-8-square-23)
+ 		(trans room-8-square-24 room-8-square-25)
+ 		(trans room-8-square-24 room-8-square-19)
+ 		(trans room-8-square-24 room-12-square-6)
+ 		(trans room-8-square-24 room-12-square-5)
+ 		(trans room-8-square-24 room-11-square-1)
+ 
+  		 ;;; transitions for room-8-square-25
+ 		(trans room-8-square-25 room-8-square-24)
+ 		(trans room-8-square-25 room-12-square-6)
+ 		(trans room-8-square-25 room-8-square-19)
+ 
+  		 ;;; transitions for room-12-square-8
+ 		(trans room-12-square-8 room-12-square-7)
+ 		(trans room-12-square-8 room-12-square-9)
+ 		(trans room-12-square-8 room-12-square-2)
+ 		(trans room-12-square-8 room-12-square-13)
+ 
+  		 ;;; transitions for room-12-square-9
+ 		(trans room-12-square-9 room-12-square-8)
+ 		(trans room-12-square-9 room-12-square-10)
+ 		(trans room-12-square-9 room-12-square-3)
+ 		(trans room-12-square-9 room-12-square-14)
+ 
+  		 ;;; transitions for room-12-square-5
+ 		(trans room-12-square-5 room-8-square-24)
+ 		(trans room-12-square-5 room-12-square-6)
+ 
+  		 ;;; transitions for room-11-square-3
+ 		(trans room-11-square-3 room-8-square-23)
+ 		(trans room-11-square-3 room-11-square-4)
+ 		(trans room-11-square-3 room-11-square-1)
+ 
+  		 ;;; transitions for room-11-square-1
+ 		(trans room-11-square-1 room-11-square-3)
+ 		(trans room-11-square-1 room-8-square-24)
+ 		(trans room-11-square-1 room-11-square-2)
+ 		(trans room-11-square-1 room-11-square-4)
+ 
+  		 ;;; transitions for room-11-square-2
+ 		(trans room-11-square-2 room-11-square-1)
+ 		(trans room-11-square-2 room-8-square-25)
+ 		(trans room-11-square-2 room-11-square-4)
+ 
+  		 ;;; transitions for room-8-square-26
+ 		(trans room-8-square-26 room-8-square-21)
+ 		(trans room-8-square-26 room-8-square-23)
+ 		(trans room-8-square-26 room-8-square-22)
+ 
+  		 ;;; transitions for room-11-square-4
+ 		(trans room-11-square-4 room-11-square-3)
+ 		(trans room-11-square-4 room-11-square-2)
+ 		(trans room-11-square-4 room-11-square-1)
+ 
+  		 ;;; transitions for room-12-square-11
+ 		(trans room-12-square-11 room-12-square-6)
+ 		(trans room-12-square-11 room-12-square-12)
+ 
+  		 ;;; transitions for room-12-square-12
+ 		(trans room-12-square-12 room-12-square-11)
+ 		(trans room-12-square-12 room-12-square-13)
+ 		(trans room-12-square-12 room-12-square-7)
+ 
+  		 ;;; transitions for room-12-square-13
+ 		(trans room-12-square-13 room-12-square-12)
+ 		(trans room-12-square-13 room-12-square-14)
+ 		(trans room-12-square-13 room-12-square-8)
+ 		(trans room-12-square-13 room-10-square-2)
+ 	;;;(trans room-12-square-13 room-10-square-3)
+ 
+  		 ;;; transitions for room-12-square-14
+ 		(trans room-12-square-14 room-12-square-13)
+ 		(trans room-12-square-14 room-12-square-10)
+ 	;;;(trans room-12-square-14 room-10-square-3)
+ 		(trans room-12-square-14 room-12-square-9)
+ 
+  		 ;;; transitions for room-10-square-8
+ 		(trans room-10-square-8 room-10-square-7)
+ 		(trans room-10-square-8 room-10-square-20)
+ 
+  		 ;;; transitions for room-10-square-7
+ 		(trans room-10-square-7 room-10-square-8)
+ 		(trans room-10-square-7 room-10-square-6)
+ 		(trans room-10-square-7 room-10-square-19)
+ 
+  		 ;;; transitions for room-10-square-6
+ 		(trans room-10-square-6 room-10-square-7)
+ 		(trans room-10-square-6 room-10-square-5)
+ 		(trans room-10-square-6 room-10-square-18)
+ 
+  		 ;;; transitions for room-10-square-5
+ 		(trans room-10-square-5 room-10-square-6)
+ 		(trans room-10-square-5 room-10-square-4)
+ 		(trans room-10-square-5 room-10-square-17)
+ 
+  		 ;;; transitions for room-10-square-4
+ 		(trans room-10-square-4 room-10-square-5)
+ 		(trans room-10-square-4 room-10-square-3)
+ 		(trans room-10-square-4 room-10-square-16)
+ 
+  		 ;;; transitions for room-10-square-3
+ 		(trans room-10-square-3 room-12-square-13)
+ 		(trans room-10-square-3 room-10-square-2)
+ 		(trans room-10-square-3 room-10-square-4)
+ 		(trans room-10-square-3 room-10-square-15)
+ 		(trans room-10-square-3 room-12-square-14)
+ 
+  		 ;;; transitions for room-10-square-2
+ 		(trans room-10-square-2 room-10-square-3)
+ 		(trans room-10-square-2 room-12-square-13)
+ 	;;;(trans room-10-square-2 room-10-square-1)
+ 		(trans room-10-square-2 room-10-square-14)
+ 
+  		 ;;; transitions for room-10-square-1
+ 	;;;(trans room-10-square-1 room-10-square-2)
+ 	;;;(trans room-10-square-1 room-10-square-12)
+ 		(trans room-10-square-1 room-10-square-13)
+ 
+  		 ;;; transitions for room-10-square-9
+ 		(trans room-10-square-9 room-10-square-10)
+ 		(trans room-10-square-9 room-10-square-21)
+ 
+  		 ;;; transitions for room-10-square-12
+ 	;;;(trans room-10-square-12 room-10-square-1)
+ 	;;;(trans room-10-square-12 room-10-square-11)
+ 	;;;(trans room-10-square-12 room-10-square-13)
+ 		(trans room-10-square-12 room-10-square-24)
+ 
+  		 ;;; transitions for room-9-square-80
+ 		(trans room-9-square-80 room-10-square-10)
+ 
+  		 ;;; transitions for room-10-square-11
+ 	;;;(trans room-10-square-11 room-10-square-12)
+ 	;;;(trans room-10-square-11 room-10-square-10)
+ 		(trans room-10-square-11 room-10-square-23)
+ 
+  		 ;;; transitions for room-10-square-10
+ 		(trans room-10-square-10 room-10-square-9)
+ 		(trans room-10-square-10 room-9-square-80)
+ 	;;;(trans room-10-square-10 room-10-square-11)
+ 		(trans room-10-square-10 room-10-square-22)
+ 
+  		 ;;; transitions for room-10-square-13
+ 	;;;(trans room-10-square-13 room-10-square-12)
+ 		(trans room-10-square-13 room-10-square-14)
+ 		(trans room-10-square-13 room-10-square-1)
+ 		(trans room-10-square-13 room-10-square-25)
+ 
+  		 ;;; transitions for room-10-square-14
+ 		(trans room-10-square-14 room-10-square-13)
+ 		(trans room-10-square-14 room-10-square-15)
+ 		(trans room-10-square-14 room-10-square-2)
+ 		(trans room-10-square-14 room-10-square-26)
+ 
+  		 ;;; transitions for room-10-square-15
+ 		(trans room-10-square-15 room-10-square-14)
+ 		(trans room-10-square-15 room-10-square-3)
+ 		(trans room-10-square-15 room-10-square-16)
+ 		(trans room-10-square-15 room-10-square-27)
+ 
+  		 ;;; transitions for room-10-square-16
+ 		(trans room-10-square-16 room-10-square-17)
+ 		(trans room-10-square-16 room-10-square-4)
+ 		(trans room-10-square-16 room-10-square-15)
+ 		(trans room-10-square-16 room-10-square-28)
+ 
+  		 ;;; transitions for room-10-square-17
+ 		(trans room-10-square-17 room-10-square-16)
+ 		(trans room-10-square-17 room-10-square-18)
+ 		(trans room-10-square-17 room-10-square-5)
+ 		(trans room-10-square-17 room-10-square-29)
+ 
+  		 ;;; transitions for room-10-square-18
+ 		(trans room-10-square-18 room-10-square-17)
+ 		(trans room-10-square-18 room-10-square-19)
+ 		(trans room-10-square-18 room-10-square-6)
+ 		(trans room-10-square-18 room-10-square-30)
+ 
+  		 ;;; transitions for room-10-square-19
+ 		(trans room-10-square-19 room-10-square-18)
+ 		(trans room-10-square-19 room-10-square-20)
+ 		(trans room-10-square-19 room-10-square-7)
+ 		(trans room-10-square-19 room-10-square-31)
+ 
+  		 ;;; transitions for room-10-square-20
+ 		(trans room-10-square-20 room-10-square-19)
+ 		(trans room-10-square-20 room-10-square-8)
+ 		(trans room-10-square-20 room-10-square-32)
+ 
+  		 ;;; transitions for room-10-square-21
+ 		(trans room-10-square-21 room-10-square-22)
+ 		(trans room-10-square-21 room-10-square-9)
+ 		(trans room-10-square-21 room-10-square-33)
+ 
+  		 ;;; transitions for room-10-square-22
+ 		(trans room-10-square-22 room-10-square-21)
+ 		(trans room-10-square-22 room-10-square-23)
+ 		(trans room-10-square-22 room-10-square-10)
+ 		(trans room-10-square-22 room-10-square-33)
+ 
+  		 ;;; transitions for room-10-square-23
+ 		(trans room-10-square-23 room-10-square-22)
+ 		(trans room-10-square-23 room-10-square-24)
+ 		(trans room-10-square-23 room-10-square-11)
+ 		(trans room-10-square-23 room-10-square-34)
+ 
+  		 ;;; transitions for room-10-square-24
+ 		(trans room-10-square-24 room-10-square-23)
+ 		(trans room-10-square-24 room-10-square-25)
+ 		(trans room-10-square-24 room-10-square-12)
+ 		(trans room-10-square-24 room-10-square-35)
+ 
+  		 ;;; transitions for room-10-square-25
+ 		(trans room-10-square-25 room-10-square-24)
+ 		(trans room-10-square-25 room-10-square-26)
+ 		(trans room-10-square-25 room-10-square-13)
+ 		(trans room-10-square-25 room-10-square-36)
+ 
+  		 ;;; transitions for room-10-square-26
+ 		(trans room-10-square-26 room-10-square-25)
+ 		(trans room-10-square-26 room-10-square-27)
+ 		(trans room-10-square-26 room-10-square-14)
+ 		(trans room-10-square-26 room-10-square-37)
+ 
+  		 ;;; transitions for room-10-square-27
+ 		(trans room-10-square-27 room-10-square-26)
+ 		(trans room-10-square-27 room-10-square-28)
+ 		(trans room-10-square-27 room-10-square-15)
+ 		(trans room-10-square-27 room-10-square-38)
+ 
+  		 ;;; transitions for room-10-square-28
+ 		(trans room-10-square-28 room-10-square-27)
+ 		(trans room-10-square-28 room-10-square-29)
+ 		(trans room-10-square-28 room-10-square-16)
+ 		(trans room-10-square-28 room-10-square-39)
+ 
+  		 ;;; transitions for room-10-square-29
+ 		(trans room-10-square-29 room-10-square-28)
+ 		(trans room-10-square-29 room-10-square-30)
+ 		(trans room-10-square-29 room-10-square-17)
+ 		(trans room-10-square-29 room-10-square-40)
+ 
+  		 ;;; transitions for room-10-square-30
+ 		(trans room-10-square-30 room-10-square-29)
+ 		(trans room-10-square-30 room-10-square-31)
+ 		(trans room-10-square-30 room-10-square-18)
+ 		(trans room-10-square-30 room-10-square-41)
+ 
+  		 ;;; transitions for room-10-square-31
+ 		(trans room-10-square-31 room-10-square-30)
+ 		(trans room-10-square-31 room-10-square-32)
+ 		(trans room-10-square-31 room-10-square-19)
+ 		(trans room-10-square-31 room-10-square-42)
+ 
+  		 ;;; transitions for room-10-square-32
+ 		(trans room-10-square-32 room-10-square-31)
+ 		(trans room-10-square-32 room-10-square-20)
+ 		(trans room-10-square-32 room-10-square-43)
+ 
+  		 ;;; transitions for room-10-square-33
+ 		(trans room-10-square-33 room-10-square-34)
+ 		(trans room-10-square-33 room-10-square-22)
+ 		(trans room-10-square-33 room-10-square-44)
+ 		(trans room-10-square-33 room-10-square-21)
+ 
+  		 ;;; transitions for room-10-square-34
+ 		(trans room-10-square-34 room-10-square-33)
+ 		(trans room-10-square-34 room-10-square-35)
+ 		(trans room-10-square-34 room-10-square-23)
+ 		(trans room-10-square-34 room-10-square-45)
+ 
+  		 ;;; transitions for room-10-square-35
+ 		(trans room-10-square-35 room-10-square-34)
+ 		(trans room-10-square-35 room-10-square-36)
+ 		(trans room-10-square-35 room-10-square-24)
+ 		(trans room-10-square-35 room-10-square-46)
+ 
+  		 ;;; transitions for room-10-square-36
+ 		(trans room-10-square-36 room-10-square-35)
+ 		(trans room-10-square-36 room-10-square-37)
+ 		(trans room-10-square-36 room-10-square-25)
+ 		(trans room-10-square-36 room-10-square-47)
+ 
+  		 ;;; transitions for room-10-square-37
+ 		(trans room-10-square-37 room-10-square-36)
+ 		(trans room-10-square-37 room-10-square-38)
+ 		(trans room-10-square-37 room-10-square-26)
+ 		(trans room-10-square-37 room-10-square-48)
+ 
+  		 ;;; transitions for room-10-square-38
+ 		(trans room-10-square-38 room-10-square-37)
+ 		(trans room-10-square-38 room-10-square-39)
+ 		(trans room-10-square-38 room-10-square-27)
+ 		(trans room-10-square-38 room-10-square-49)
+ 
+  		 ;;; transitions for room-10-square-39
+ 		(trans room-10-square-39 room-10-square-38)
+ 		(trans room-10-square-39 room-10-square-28)
+ 		(trans room-10-square-39 room-10-square-40)
+ 		(trans room-10-square-39 room-10-square-50)
+ 
+  		 ;;; transitions for room-10-square-40
+ 		(trans room-10-square-40 room-10-square-39)
+ 		(trans room-10-square-40 room-10-square-41)
+ 		(trans room-10-square-40 room-10-square-29)
+ 		(trans room-10-square-40 room-10-square-51)
+ 
+  		 ;;; transitions for room-10-square-41
+ 		(trans room-10-square-41 room-10-square-40)
+ 		(trans room-10-square-41 room-10-square-42)
+ 		(trans room-10-square-41 room-10-square-30)
+ 		(trans room-10-square-41 room-10-square-52)
+ 
+  		 ;;; transitions for room-10-square-42
+ 		(trans room-10-square-42 room-10-square-41)
+ 		(trans room-10-square-42 room-10-square-43)
+ 		(trans room-10-square-42 room-10-square-31)
+ 		(trans room-10-square-42 room-10-square-53)
+ 
+  		 ;;; transitions for room-10-square-43
+ 		(trans room-10-square-43 room-10-square-42)
+ 		(trans room-10-square-43 room-10-square-32)
+ 		(trans room-10-square-43 room-10-square-54)
+ 
+  		 ;;; transitions for room-10-square-44
+ 		(trans room-10-square-44 room-10-square-45)
+ 		(trans room-10-square-44 room-10-square-33)
+ 		(trans room-10-square-44 room-10-square-55)
+ 
+  		 ;;; transitions for room-10-square-45
+ 		(trans room-10-square-45 room-10-square-44)
+ 		(trans room-10-square-45 room-10-square-46)
+ 		(trans room-10-square-45 room-10-square-34)
+ 		(trans room-10-square-45 room-10-square-56)
+ 
+  		 ;;; transitions for room-10-square-46
+ 		(trans room-10-square-46 room-10-square-45)
+ 		(trans room-10-square-46 room-10-square-47)
+ 		(trans room-10-square-46 room-10-square-35)
+ 		(trans room-10-square-46 room-10-square-57)
+ 
+  		 ;;; transitions for room-10-square-47
+ 		(trans room-10-square-47 room-10-square-46)
+ 		(trans room-10-square-47 room-10-square-48)
+ 		(trans room-10-square-47 room-10-square-36)
+ 		(trans room-10-square-47 room-10-square-58)
+ 
+  		 ;;; transitions for room-10-square-48
+ 		(trans room-10-square-48 room-10-square-47)
+ 		(trans room-10-square-48 room-10-square-49)
+ 		(trans room-10-square-48 room-10-square-37)
+ 		(trans room-10-square-48 room-10-square-59)
+ 
+  		 ;;; transitions for room-10-square-49
+ 		(trans room-10-square-49 room-10-square-48)
+ 		(trans room-10-square-49 room-10-square-50)
+ 		(trans room-10-square-49 room-10-square-38)
+ 		(trans room-10-square-49 room-10-square-60)
+ 
+  		 ;;; transitions for room-10-square-50
+ 		(trans room-10-square-50 room-10-square-49)
+ 		(trans room-10-square-50 room-10-square-39)
+ 		(trans room-10-square-50 room-10-square-51)
+ 		(trans room-10-square-50 room-10-square-61)
+ 
+  		 ;;; transitions for room-10-square-51
+ 		(trans room-10-square-51 room-10-square-50)
+ 		(trans room-10-square-51 room-10-square-52)
+ 		(trans room-10-square-51 room-10-square-40)
+ 		(trans room-10-square-51 room-10-square-62)
+ 
+  		 ;;; transitions for room-10-square-52
+ 		(trans room-10-square-52 room-10-square-51)
+ 		(trans room-10-square-52 room-10-square-53)
+ 		(trans room-10-square-52 room-10-square-41)
+ 		(trans room-10-square-52 room-10-square-63)
+ 
+  		 ;;; transitions for room-10-square-53
+ 		(trans room-10-square-53 room-10-square-52)
+ 		(trans room-10-square-53 room-10-square-54)
+ 		(trans room-10-square-53 room-10-square-42)
+ 		(trans room-10-square-53 room-10-square-64)
+ 
+  		 ;;; transitions for room-10-square-54
+ 		(trans room-10-square-54 room-10-square-53)
+ 		(trans room-10-square-54 room-10-square-43)
+ 		(trans room-10-square-54 room-10-square-65)
+ 
+  		 ;;; transitions for room-10-square-55
+ 		(trans room-10-square-55 room-10-square-56)
+ 		(trans room-10-square-55 room-10-square-44)
+ 		(trans room-10-square-55 room-10-square-66)
+ 
+  		 ;;; transitions for room-10-square-56
+ 		(trans room-10-square-56 room-10-square-55)
+ 		(trans room-10-square-56 room-10-square-57)
+ 		(trans room-10-square-56 room-10-square-45)
+ 		(trans room-10-square-56 room-10-square-67)
+ 
+  		 ;;; transitions for room-10-square-57
+ 		(trans room-10-square-57 room-10-square-56)
+ 		(trans room-10-square-57 room-10-square-58)
+ 		(trans room-10-square-57 room-10-square-46)
+ 		(trans room-10-square-57 room-10-square-68)
+ 
+  		 ;;; transitions for room-10-square-58
+ 		(trans room-10-square-58 room-10-square-57)
+ 		(trans room-10-square-58 room-10-square-59)
+ 		(trans room-10-square-58 room-10-square-47)
+ 		(trans room-10-square-58 room-10-square-69)
+ 
+  		 ;;; transitions for room-10-square-59
+ 		(trans room-10-square-59 room-10-square-58)
+ 		(trans room-10-square-59 room-10-square-60)
+ 		(trans room-10-square-59 room-10-square-48)
+ 		(trans room-10-square-59 room-10-square-70)
+ 
+  		 ;;; transitions for room-10-square-60
+ 		(trans room-10-square-60 room-10-square-59)
+ 		(trans room-10-square-60 room-10-square-61)
+ 		(trans room-10-square-60 room-10-square-49)
+ 		(trans room-10-square-60 room-10-square-71)
+ 
+  		 ;;; transitions for room-10-square-61
+ 		(trans room-10-square-61 room-10-square-60)
+ 		(trans room-10-square-61 room-10-square-62)
+ 		(trans room-10-square-61 room-10-square-50)
+ 		(trans room-10-square-61 room-10-square-71)
+ 
+  		 ;;; transitions for room-10-square-62
+ 		(trans room-10-square-62 room-10-square-61)
+ 		(trans room-10-square-62 room-10-square-63)
+ 		(trans room-10-square-62 room-10-square-51)
+ 		(trans room-10-square-62 room-10-square-72)
+ 
+  		 ;;; transitions for room-10-square-63
+ 		(trans room-10-square-63 room-10-square-62)
+ 		(trans room-10-square-63 room-10-square-64)
+ 		(trans room-10-square-63 room-10-square-52)
+ 		(trans room-10-square-63 room-10-square-73)
+ 
+  		 ;;; transitions for room-10-square-64
+ 		(trans room-10-square-64 room-10-square-63)
+ 		(trans room-10-square-64 room-10-square-65)
+ 		(trans room-10-square-64 room-10-square-53)
+ 		(trans room-10-square-64 room-10-square-74)
+ 
+  		 ;;; transitions for room-10-square-65
+ 		(trans room-10-square-65 room-10-square-64)
+ 		(trans room-10-square-65 room-10-square-54)
+ 		(trans room-10-square-65 room-10-square-75)
+ 
+  		 ;;; transitions for room-10-square-66
+ 		(trans room-10-square-66 room-10-square-67)
+ 		(trans room-10-square-66 room-10-square-55)
+ 		(trans room-10-square-66 room-10-square-76)
+ 
+  		 ;;; transitions for room-10-square-67
+ 		(trans room-10-square-67 room-10-square-66)
+ 		(trans room-10-square-67 room-10-square-68)
+ 		(trans room-10-square-67 room-10-square-56)
+ 		(trans room-10-square-67 room-10-square-77)
+ 
+  		 ;;; transitions for room-10-square-68
+ 		(trans room-10-square-68 room-10-square-67)
+ 		(trans room-10-square-68 room-10-square-69)
+ 		(trans room-10-square-68 room-10-square-57)
+ 		(trans room-10-square-68 room-10-square-78)
+ 
+  		 ;;; transitions for room-10-square-69
+ 		(trans room-10-square-69 room-10-square-68)
+ 		(trans room-10-square-69 room-10-square-70)
+ 		(trans room-10-square-69 room-10-square-58)
+ 		(trans room-10-square-69 room-10-square-79)
+ 
+  		 ;;; transitions for room-10-square-70
+ 		(trans room-10-square-70 room-10-square-69)
+ 		(trans room-10-square-70 room-10-square-71)
+ 		(trans room-10-square-70 room-10-square-59)
+ 		(trans room-10-square-70 room-10-square-80)
+ 
+  		 ;;; transitions for room-10-square-71
+ 		(trans room-10-square-71 room-10-square-70)
+ 		(trans room-10-square-71 room-10-square-72)
+ 		(trans room-10-square-71 room-10-square-61)
+ 		(trans room-10-square-71 room-10-square-81)
+ 		(trans room-10-square-71 room-10-square-82)
+ 		(trans room-10-square-71 room-10-square-60)
+ 
+  		 ;;; transitions for room-10-square-72
+ 		(trans room-10-square-72 room-10-square-71)
+ 		(trans room-10-square-72 room-10-square-73)
+ 		(trans room-10-square-72 room-10-square-62)
+ 		(trans room-10-square-72 room-10-square-83)
+ 
+  		 ;;; transitions for room-10-square-73
+ 		(trans room-10-square-73 room-10-square-72)
+ 		(trans room-10-square-73 room-10-square-74)
+ 		(trans room-10-square-73 room-10-square-63)
+ 		(trans room-10-square-73 room-10-square-84)
+ 
+  		 ;;; transitions for room-10-square-74
+ 		(trans room-10-square-74 room-10-square-73)
+ 		(trans room-10-square-74 room-10-square-75)
+ 		(trans room-10-square-74 room-10-square-64)
+ 		(trans room-10-square-74 room-10-square-85)
+ 
+  		 ;;; transitions for room-10-square-75
+ 		(trans room-10-square-75 room-10-square-74)
+ 		(trans room-10-square-75 room-10-square-65)
+ 		(trans room-10-square-75 room-10-square-86)
+ 
+  		 ;;; transitions for room-10-square-76
+ 		(trans room-10-square-76 room-10-square-66)
+ 		(trans room-10-square-76 room-10-square-77)
+ 		(trans room-10-square-76 room-9-square-80)
+ 
+  		 ;;; transitions for room-10-square-77
+ 		(trans room-10-square-77 room-10-square-76)
+ 		(trans room-10-square-77 room-10-square-78)
+ 		(trans room-10-square-77 room-10-square-67)
+ 
+  		 ;;; transitions for room-10-square-78
+ 		(trans room-10-square-78 room-10-square-77)
+ 		(trans room-10-square-78 room-10-square-79)
+ 		(trans room-10-square-78 room-10-square-68)
+ 
+  		 ;;; transitions for room-10-square-79
+ 		(trans room-10-square-79 room-10-square-78)
+ 		(trans room-10-square-79 room-10-square-80)
+ 		(trans room-10-square-79 room-10-square-69)
+ 
+  		 ;;; transitions for room-10-square-80
+ 		(trans room-10-square-80 room-10-square-79)
+ 		(trans room-10-square-80 room-10-square-81)
+ 		(trans room-10-square-80 room-10-square-70)
+ 		(trans room-10-square-80 room-10-square-87)
+ 
+  		 ;;; transitions for room-10-square-81
+ 		(trans room-10-square-81 room-10-square-80)
+ 		(trans room-10-square-81 room-10-square-82)
+ 		(trans room-10-square-81 room-10-square-71)
+ 		(trans room-10-square-81 room-10-square-87)
+ 
+  		 ;;; transitions for room-10-square-82
+ 		(trans room-10-square-82 room-10-square-81)
+ 		(trans room-10-square-82 room-10-square-71)
+ 		(trans room-10-square-82 room-10-square-83)
+ 		(trans room-10-square-82 room-10-square-87)
+ 
+  		 ;;; transitions for room-10-square-83
+ 		(trans room-10-square-83 room-10-square-84)
+ 		(trans room-10-square-83 room-10-square-72)
+ 		(trans room-10-square-83 room-10-square-82)
+ 
+  		 ;;; transitions for room-10-square-84
+ 		(trans room-10-square-84 room-10-square-83)
+ 		(trans room-10-square-84 room-10-square-85)
+ 		(trans room-10-square-84 room-10-square-73)
+ 
+  		 ;;; transitions for room-10-square-85
+ 		(trans room-10-square-85 room-10-square-84)
+ 		(trans room-10-square-85 room-10-square-86)
+ 		(trans room-10-square-85 room-10-square-74)
+ 
+  		 ;;; transitions for room-10-square-86
+ 		(trans room-10-square-86 room-10-square-85)
+ 		(trans room-10-square-86 room-10-square-75)
+ 
+  		 ;;; transitions for room-10-square-87
+ 		(trans room-10-square-87 room-10-square-80)
+ 		(trans room-10-square-87 room-10-square-82)
+ 		(trans room-10-square-87 room-10-square-81)
+ 
+ 		(door-1-trans room-12-square-13 room-10-square-2)
+ 		(door-1-trans room-10-square-2 room-12-square-13)
  
  	 ;;; hard coded definitions
  		(is-robo cob4-1)
- 		(at the-cake room-9007)
- 		(at cob4-1 room-7007)
+ 		(is-user user)
+ 		(at the-cake room-10-square-10)
+ 		;;;(at the-cake room-10-square-11)
+ 		(at cob4-1 room-12-square-7)
+ 		(at user room-12-square-6)
+ 		;;;(at user room-10-square-48)
+ 		(neglected cob4-1)
+ 		;;;(nearby cob4-1 room-12-square-8)
+ 		(occupied room-10-square-2)
+ 		(occupied room-10-square-22)
+ 		(at the-box room-10-square-2)
+ 		(at the-box room-10-square-22)
+ 		;;;(door-1 room-12-square-13 room-10-square-2)
  	)
  
  
  	;;; goal definition
- 	(:goal (and (have cob4-1 the-cake) (at cob4-1 room-7007)))
+ 	(:goal (and (have user the-cake)))
+ 	;;;(:goal (and (at the-cake room-12-square-7)))
+ 	;;;(:goal (and (have cob4-1 the-cake) (at cob4-1 room-12-square-7)))
  )

@@ -89,13 +89,13 @@ class MapTesselation(object):
         rospy.loginfo("Initialize MapTesselation ...")
 #         self.map_srvs = rospy.Service('map_tesselation_service_server', RoomTesselation, self.handle_map_cb)
         
-        rospy.logwarn("Waiting for map_publisher_service_server to come available ...")
-        rospy.wait_for_service('map_publisher_server')
-        rospy.logwarn("Server online!")
-        try:
-            self.serviceMapPublisherClient = rospy.ServiceProxy('map_publisher_server', MapAnalyzer)
-        except rospy.ServiceException, e:
-            print "Service call failed: %s"%e
+#         rospy.logwarn("Waiting for map_publisher_service_server to come available ...")
+#         rospy.wait_for_service('map_publisher_server')
+#         rospy.logwarn("Server online!")
+#         try:
+#             self.serviceMapPublisherClient = rospy.ServiceProxy('map_publisher_server', MapAnalyzer)
+#         except rospy.ServiceException, e:
+#             print "Service call failed: %s"%e
 #             
         self.bridge = CvBridge()
         self.numbpix = 0
@@ -154,62 +154,62 @@ class MapTesselation(object):
             self._as.set_succeeded(self._result, "good job")
 
         
-    def handle_map_cb(self, input_map):
-        '''
-        if ipa_room_segmentation is used the incoming message has format 32SC1
-        if not the incoming message is a rgb grayscale picture which must be coverted
-        '''
-        print "encoding:"
-        print input_map.room_map.encoding
-        self.encoding = input_map.room_map.encoding
-        if input_map.room_map.encoding == "32SC1":
-            cv_img = self.bridge.imgmsg_to_cv2(input_map.room_map, desired_encoding="passthrough").copy()
-            # delete not segmented pixels (with no room membership)
-            cv_img[cv_img==65280]=0
-            n_img = cv_img.reshape(cv_img.shape[:2])
-        elif input_map.room_map.encoding == "rgb8":
-            rospy.loginfo("encoding is rgb8")
-            cv_img = self.bridge.imgmsg_to_cv2(input_map.room_map, desired_encoding="mono16").copy()
-            print cv_img.shape
-            print type(cv_img)
-            # delete small areas with no room membership
-            rospy.loginfo("use binary filter")
-#             n_img = np.asarray(cv_img, dtype=np.uint16)
-            n_img = cv_img.reshape(cv_img.shape[:2])
-            n_img[np.where(n_img>127)]=65500
-            n_img[np.where(n_img<128)]=0
-            print type(n_img)
-            print "dtype"
-            print n_img.dtype
-            print n_img.shape
-        
-        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(n_img)
-        answer = self.serviceMapPublisherClient(cv_enc_img_msg)
-        n_img = self.tesselateMap(n_img)
-        # create new sensor_msgs/Image:
-        output = Image()
-        output.header = input_map.room_map.header
-        output.encoding = input_map.room_map.encoding
-        output.height = input_map.room_map.height
-        output.width = input_map.room_map.width
-#         cv_enc_img_msg = self.bridge.cv2_to_imgmsg(cv_img)
-        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(n_img)
-        listOfAreas = self.debugmakeListOfColors(n_img)
-        listOfBalance = self.calcBalancePoints(n_img, listOfAreas)
-        print "listOfBalancePoints"
-        print listOfBalance
-        answer = self.serviceMapPublisherClient(cv_enc_img_msg)
-        print answer
-        for points in listOfBalance:
-            h = points[1][0]
-            w = points[1][1]
-            n_img[h,w] = 65499
-        cv_enc_img_msg = self.bridge.cv2_to_imgmsg(n_img)
-        answer22 = self.serviceMapPublisherClient(cv_enc_img_msg)
-        
-        response = RoomTesselationResponse()
-        response.tesselated_rooms = cv_enc_img_msg
-        return response
+#     def handle_map_cb(self, input_map):
+#         '''
+#         if ipa_room_segmentation is used the incoming message has format 32SC1
+#         if not the incoming message is a rgb grayscale picture which must be coverted
+#         '''
+#         print "encoding:"
+#         print input_map.room_map.encoding
+#         self.encoding = input_map.room_map.encoding
+#         if input_map.room_map.encoding == "32SC1":
+#             cv_img = self.bridge.imgmsg_to_cv2(input_map.room_map, desired_encoding="passthrough").copy()
+#             # delete not segmented pixels (with no room membership)
+#             cv_img[cv_img==65280]=0
+#             n_img = cv_img.reshape(cv_img.shape[:2])
+#         elif input_map.room_map.encoding == "rgb8":
+#             rospy.loginfo("encoding is rgb8")
+#             cv_img = self.bridge.imgmsg_to_cv2(input_map.room_map, desired_encoding="mono16").copy()
+#             print cv_img.shape
+#             print type(cv_img)
+#             # delete small areas with no room membership
+#             rospy.loginfo("use binary filter")
+# #             n_img = np.asarray(cv_img, dtype=np.uint16)
+#             n_img = cv_img.reshape(cv_img.shape[:2])
+#             n_img[np.where(n_img>127)]=65500
+#             n_img[np.where(n_img<128)]=0
+#             print type(n_img)
+#             print "dtype"
+#             print n_img.dtype
+#             print n_img.shape
+#         
+#         cv_enc_img_msg = self.bridge.cv2_to_imgmsg(n_img)
+#         answer = self.serviceMapPublisherClient(cv_enc_img_msg)
+#         n_img = self.tesselateMap(n_img)
+#         # create new sensor_msgs/Image:
+#         output = Image()
+#         output.header = input_map.room_map.header
+#         output.encoding = input_map.room_map.encoding
+#         output.height = input_map.room_map.height
+#         output.width = input_map.room_map.width
+# #         cv_enc_img_msg = self.bridge.cv2_to_imgmsg(cv_img)
+#         cv_enc_img_msg = self.bridge.cv2_to_imgmsg(n_img)
+#         listOfAreas = self.debugmakeListOfColors(n_img)
+#         listOfBalance = self.calcBalancePoints(n_img, listOfAreas)
+#         print "listOfBalancePoints"
+#         print listOfBalance
+#         answer = self.serviceMapPublisherClient(cv_enc_img_msg)
+#         print answer
+#         for points in listOfBalance:
+#             h = points[1][0]
+#             w = points[1][1]
+#             n_img[h,w] = 65499
+#         cv_enc_img_msg = self.bridge.cv2_to_imgmsg(n_img)
+#         answer22 = self.serviceMapPublisherClient(cv_enc_img_msg)
+#         
+#         response = RoomTesselationResponse()
+#         response.tesselated_rooms = cv_enc_img_msg
+#         return response
 
     def debugmakeListOfColors(self, map_img):
         listOfColors = []

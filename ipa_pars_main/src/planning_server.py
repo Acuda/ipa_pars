@@ -70,6 +70,8 @@ from yaml import load
 from ipa_pars_main.msg._LogicPlanAction import *
 from ipa_pars_main.msg._PlanSolverAction import *
 from ipa_pars_main.msg._KnowledgeParserAction import *
+from std_msgs.msg import String
+#from std_msgs import String[]
 # import numpy as np
 # from sensor_msgs.msg._Image import Image
 # import sensor_msgs.msg
@@ -106,16 +108,17 @@ class PlanningServer(object):
         rospy.loginfo("Executing a new goal!")
         rospy.loginfo("GOAL: %s , %s, %s " % (str(goal.goal_type), str(goal.what), str(goal.where)))
         rospy.loginfo("in progress ...")
-        knowledge_goal = ipa_pars_main.msg.KnowledgeParserGoal()
-        knowledge_goal.static_knowledge = self.readKnowledgeBase("knowledge-base-static-test-01.yaml")
-        knowledge_goal.dynamic_knowledge = self.readKnowledgeBase("knowledge-base-dynamic-test-01.yaml")
-        rospy.loginfo("Sending goal to KnowledgeParserServer ...")
-        self._knowledgeParserClient.send_goal(knowledge_goal)
-        rospy.loginfo("Waiting for result ...")
-        self._knowledgeParserClient.wait_for_result()
-        result = self._knowledgeParserClient.get_result()
-        rospy.loginfo("Received the result from KnowledgeParserServer!")
-        rospy.loginfo(result)
+#         knowledge_goal = ipa_pars_main.msg.KnowledgeParserGoal()
+#         knowledge_goal.static_knowledge = self.readKnowledgeBase("knowledge-base-static-test-01.yaml")
+#         print knowledge_goal.static_knowledge
+#         knowledge_goal.dynamic_knowledge = self.readKnowledgeBase("knowledge-base-dynamic-test-01.yaml")
+#         rospy.loginfo("Sending goal to KnowledgeParserServer ...")
+#         self._knowledgeParserClient.send_goal(knowledge_goal)
+#         rospy.loginfo("Waiting for result ...")
+#         self._knowledgeParserClient.wait_for_result()
+#         result = self._knowledgeParserClient.get_result()
+#         rospy.loginfo("Received the result from KnowledgeParserServer!")
+#         rospy.loginfo(result)
         
         
         goal = ipa_pars_main.msg.PlanSolverGoal()
@@ -172,7 +175,7 @@ class PlanningServer(object):
     def readKnowledgeBase(self, knowledge_yaml):
         listOfInput = []
         try:
-            fileObject = open(self.path_to_knowledge+knowledge_yaml, "r")
+            fileObject = open(self._path_to_knowledge+knowledge_yaml, "r")
             yamlfile = load(fileObject)
             fileObject.close()
         except IOError:

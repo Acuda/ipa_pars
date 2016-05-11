@@ -6,7 +6,6 @@
 		(object-is-at ?what ?where) 
 		(have ?who ?what) 
 		(is-robo ?who)
-		(occupied ?where)
 	(see ?who ?what)
 	(is-user ?who)
 	(neglected ?who)
@@ -19,7 +18,6 @@
 				   (is-robo ?who)
 				   (at ?who ?from)
 				   (trans ?from ?to)
-				   (not (occupied ?to))
 				   (neglected ?who)
 				   )
 		:effect (and (not (at ?who ?from)
@@ -28,19 +26,6 @@
 			     ;;;(neglected ?who)
 			     )
 	)
-	
-	;;;(:action move-user
-	;;;	:parameters (?who ?from ?to)
-	;;;	:precondition (and
-	;;;			 (is-user ?who)
-	;;;			 (at ?who ?from)
-	;;;			 (trans ?from ?to)
-	;;;			 (not (occupied ?to))
-	;;;		      )
-	;;;	:effect (and (not (at ?who ?from))
-	;;;		     (at ?who ?to)
-	;;;		)
-	;;;)
 
 	;;;(:action be-close-to
 	;;;	:parameters (?who ?from ?close-to)
@@ -98,25 +83,22 @@
 				   )
 		:effect (and 	(neglected ?who)
 				(have ?who ?what)
-				(not (occupied ?from))
 				(not (at ?what ?from))
 				(not (see ?who ?what))
 			)
 	)
 	
-	(:action put-it
-		:parameters (?who ?what ?where ?to)
-		:precondition (and (is-robo ?who)
-				   ;;;(is-user ?pers)
-				   (at ?who ?where)
-				   (have ?who ?what)
-				   (trans ?where ?to)
-				   ;;;(at ?pers ?where)
-				)
-		:effect (and (at ?what ?to)
-			      (occupied ?to)
-			      (not (have ?who ?what)))
-	)
+	;;;(:action put-it
+	;;;	:parameters (?who ?what ?where)
+	;;;	:precondition (and (is-robo ?who)
+	;;;			   ;;;(is-user ?pers)
+	;;;			   (at ?who ?where)
+	;;;			   (have ?who ?what)
+	;;;			   ;;;(at ?pers ?where)
+	;;;			)
+	;;;	:effect (and (at ?what ?where)
+	;;;		      (not (have ?who ?what)))
+	;;;)
 	
 	(:action deliver-to
 		:parameters (?pers ?what ?who ?where ?to)
@@ -145,8 +127,7 @@
 			     (not (see ?who ?pers))
 			)
 	)
-	
-	;;; next todo is make free arms !!!
+
 	;;;(:action talk-to-user
 	;;;	:parameters (?who ?what)
 	;;;	:precondition (and (is-robo ?who)
