@@ -33,7 +33,7 @@ HEADERS = \
           variable.h \
 
 SOURCES = planner.cc $(HEADERS:%.h=%.cc)
-TARGET = preprocess
+TARGET = ../preprocess
 
 default: release
 
