@@ -131,9 +131,14 @@ class KnowledgeExtractorServer(object):
         print "============================== List of Room transitions ========================="
         print listOfTransitions_asstring
         yaml_content = listOfTransitions_asstring
-        #print yaml_content
-        with open(self.path_to_static_knowledge+"static-knowledge-base0.yaml", 'w') as yaml_file:
-            yaml_file.write(yaml_content)
+        
+        if (len(listOfTransitionsAsList)) > 20:
+            #print yaml_content
+            with open(self.path_to_static_knowledge+"static-knowledge-base0.yaml", 'w') as yaml_file:
+                yaml_file.write(yaml_content)
+        else:
+            with open(self.path_to_static_knowledge+"static-knowledge-base0-justrooms.yaml", 'w') as yaml_file:
+                yaml_file.write(yaml_content)
         
         
         index = 1
@@ -170,8 +175,12 @@ class KnowledgeExtractorServer(object):
         yaml_content = yaml.dump(dict_of_locations, default_flow_style=False)
         print "this is the list of received balance points in knowledge extractor"
         print yaml_content
-        with open(self.path_to_static_knowledge+"static-knowledge-base.yaml", 'w') as yaml_file:
-            yaml_file.write(yaml_content)
+        if (len(listOfTransitionsAsList) > 20):
+            with open(self.path_to_static_knowledge+"static-knowledge-base.yaml", 'w') as yaml_file:
+                yaml_file.write(yaml_content)
+        else:
+            with open(self.path_to_static_knowledge+"static-knowledge-base-onlyrooms.yaml", 'w') as yaml_file:
+                yaml_file.write(yaml_content)
             
             
         
@@ -224,13 +233,19 @@ class KnowledgeExtractorServer(object):
         listOfTransAsStrings = []
         print "listOfSingleTransitions"
         print listOfRoomInformations
+        if (len(listOfRoomInformations)) > 20:
         # translate to stringlist:
-        for (rooms, transitions) in listOfRoomInformations:
-            trans_as_string = []
-            for trans in transitions:
-                trans_as_string.append("room-"+str(trans/1000)+"-square-"+str(trans%1000))
-            listOfTransAsStrings.append(("room-"+str(rooms/1000)+"-square-"+str(rooms%1000) , trans_as_string))
-        
+            for (rooms, transitions) in listOfRoomInformations:
+                trans_as_string = []
+                for trans in transitions:
+                    trans_as_string.append("room-"+str(trans/1000)+"-square-"+str(trans%1000))
+                listOfTransAsStrings.append(("room-"+str(rooms/1000)+"-square-"+str(rooms%1000) , trans_as_string))
+        else:
+            for (rooms, transitions) in listOfRoomInformations:
+                trans_as_string = []
+                for trans in transitions:
+                    trans_as_string.append("room-"+str(trans))
+                listOfTransAsStrings.append(("room-"+str(rooms), trans_as_string))
         # translate to string:
         stringOfTransitions = ""
         for (room, transi) in listOfTransAsStrings:
