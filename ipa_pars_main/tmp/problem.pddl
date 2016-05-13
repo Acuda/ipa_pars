@@ -6,7 +6,7 @@
   		 ;;; fixed locations 
  		 room-1 room-2 room-3 room-4 room-5
  		 room-6 room-7 room-8 room-9 room-10
- 		 room-11 room-12 room-13
+ 		 room-11 room-12 room-13 - room
   
  		 ;;; fixed things for interaction
  		 ;;;arm-left
@@ -15,9 +15,13 @@
  		 ;;;door-1
   		 ;;; movable things 
   		
- 		 ;;;the-cake 
- 		 cob4-1
- 		 ;;;the-box
+ 		;;; dynamically added trash-bins:
+ 		;;;trash-bin-1 trash-bin-2 trash-bin-3 trash-bin-4 - trash-bin
+ 		;;;dirt-1 dirt-2 dirt-3 dirt-4 - dirt 
+ 		;;;the-cake 
+ 		cob4-1 - robot
+ 		rmbce - user
+ 		;;;the-box
  		)
  
  
@@ -77,13 +81,34 @@
  	 ;;; hard coded definitions
  		(is-robo cob4-1)
  		(at cob4-1 room-1)
+ 		(is-user rmbce)
+ 		(at rmbce room-13)
  		
  		
  	)
  
  
  	;;; goal definition
- 	(:goal (and (cleaned room-4)))
+ 	;;;(:goal (and (cleaned room-5)))
+ 	;;;(:goal (and (cleaned room-1)
+ 	;;;	    (cleaned room-2)
+ 	;;;	    (cleaned room-3)
+ 	;;;	    (cleaned room-4)
+ 	;;;	    (cleaned room-5)
+ 	;;;	    (cleaned room-6)
+ 	;;;	    (cleaned room-7)
+ 	;;;	    (cleaned room-8)
+ 	;;;	    (cleaned room-9)
+ 	;;;	    (cleaned room-10)
+ 	;;;	    (cleaned room-11)
+ 	;;;	    (cleaned room-12)
+ 	;;;	    (cleaned room-13)
+ 	;;;	)
+ 	;;;)
+ 	(:goal (and (forall (?r - room) (inspected ?r)
+ 		    )
+ 		)
+ 	)
  	;;;(:goal (and (at the-cake room-12-square-7)))
  	;;;(:goal (and (have cob4-1 the-cake) (at cob4-1 room-12-square-7)))
  )

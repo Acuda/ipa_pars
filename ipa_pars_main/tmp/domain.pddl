@@ -1,41 +1,92 @@
 (define (domain cob-test-domain-01)
- 	(:requirements :strips)
+ 	;;;(:requirements :strips :typing :adl :open-world :procedural-attachment :universal-preconditions)
+ 	(:requirements :strips :typing :adl )
+ 	(:types room phys-obj
+ 		box agent - phys-obj
+ 		robot user - agent
+ 		;;;trash-bin dirt - room-clean-tasks	
+ 	)
  	(:predicates
- 		(trans ?location-1 ?location-2)
- 		(at ?what ?location)
+ 		(trans ?location-1 ?location-2 - room)
+ 		(at ?what - phys-obj ?location - room)
  		;;;(object-is-at ?what ?where) 
  		;;;(have ?who ?what) 
- 		(is-robo ?who)
+ 		(is-robo ?who - robot)
  		;;;(occupied ?where)
  		;;;(see ?who ?what)
- 		;;;(is-user ?who)
+ 		(is-user ?who - user)
  		;;;(neglected ?who)
- 		(cleaned ?where)
- 
+ 		(inspected ?where - room)
+ 		(detect-trash-bins-on ?where - room)
+ 		(detect-dirt-on ?where - room)
  		;;; gripper
  		;;;(gripper ?x)
  		;;;(free ?x)
  		;;;(carry ?what ?withwhat)
  	)
- 
- 	(:action clean-room
- 		:parameters (?who ?where)
+ 	
+ 	(:action inspect-room
+ 		:parameters (?who - robot ?where - room)
  		:precondition (and
- 				   (is-robo ?who)
+ 				   ;;;(is-robo ?who)
  				   (at ?who ?where)
- 				   (not (cleaned ?where))
+ 				   (not (inspected ?where))
+ 				   (detect-trash-bins-on ?where)
+ 				   (detect-dirt-on ?where)
  				)	
- 		:effect (and (cleaned ?where))
+ 		:effect (and (inspected ?where))
+ 	)
+ 	
+ 	(:action detect-trash-bins-off
+ 		:parameters (?who - robot ?where - room)
+ 		:precondition (and
+ 				   (at ?who ?where)
+ 				   (detect-trash-bins-on ?where)
+ 				)
+ 		:effect (and (not (detect-trash-bins-on ?where))
+ 			)
  	)
  
- 	(:action move-robo-to
- 		:parameters (?who ?from ?to)
+ 	(:action detect-trash-bins-on
+ 		:parameters (?who - robot ?where - room)
+ 		:precondition (and
+ 				   (at ?who ?where)
+ 				   (not (inspected ?where))
+ 				   (not (detect-trash-bins-on ?where))
+ 				)
+ 		:effect (and (detect-trash-bins-on ?where))
+ 	)
+ 
+ 	(:action detect-dirt-off
+ 		:parameters (?who - robot ?where - room)
+ 		:precondition (and
+ 				   (at ?who ?where)
+ 				   (detect-dirt-on ?where)
+ 				)
+ 		:effect (and (not (detect-dirt-on ?where))
+ 			)
+ 	)
+ 	
+ 	(:action detect-dirt-on
+ 		:parameters (?who - robot ?where - room)
+ 		:precondition (and
+ 				  (at ?who ?where)
+ 				  (not (inspected ?where))
+ 				  (not (detect-dirt-on ?where))
+ 			      )
+ 		:effect (and (detect-dirt-on ?where))
+ 	)
+ 
+ 	(:action move-to
+ 		:parameters (?who - agent ?from ?to - room)
  		:precondition (and 
- 				   (is-robo ?who)
+ 				   ;;;(is-robo ?who)
  				   (at ?who ?from)
  				   (trans ?from ?to)
  				   ;;;(not (occupied ?to))
  				   ;;;(neglected ?who)
+ 				   (not (detect-dirt-on ?from))
+ 				   (not (detect-trash-bins-on ?from))
  				   )
  		:effect (and (not (at ?who ?from)
  				  )
@@ -44,13 +95,13 @@
  			     )
  	)
  	
- 	;;;(:action move-user
- 	;;;	:parameters (?who ?from ?to)
+ 	;;;(:action move-user-to
+ 	;;;	:parameters (?who - user ?from ?to - room)
  	;;;	:precondition (and
  	;;;			 (is-user ?who)
  	;;;			 (at ?who ?from)
  	;;;			 (trans ?from ?to)
- 	;;;			 (not (occupied ?to))
+ 	;;;			 ;;;(not (occupied ?to))
  	;;;		      )
  	;;;	:effect (and (not (at ?who ?from))
  	;;;		     (at ?who ?to)
