@@ -145,7 +145,8 @@
  			     (not (see ?who ?pers))
  			)
  	)
- 
+ 	
+ 	;;; next todo is make free arms !!!
  	;;;(:action talk-to-user
  	;;;	:parameters (?who ?what)
  	;;;	:precondition (and (is-robo ?who)
