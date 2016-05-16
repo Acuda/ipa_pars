@@ -1,0 +1,105 @@
+location-data:
+- center:
+    X: 444
+    Y: 146
+    Z: 0
+  name: room-9
+  transitions:
+  - room-6
+  - room-13
+  - room-12
+- center:
+    X: 213
+    Y: 97
+    Z: 0
+  name: room-5
+  transitions:
+  - room-6
+- center:
+    X: 131
+    Y: 105
+    Z: 0
+  name: room-1
+  transitions:
+  - room-2
+- center:
+    X: 271
+    Y: 149
+    Z: 0
+  name: room-6
+  transitions:
+  - room-5
+  - room-9
+  - room-2
+  - room-7
+  - room-4
+- center:
+    X: 154
+    Y: 167
+    Z: 0
+  name: room-2
+  transitions:
+  - room-1
+  - room-6
+  - room-3
+- center:
+    X: 275
+    Y: 194
+    Z: 0
+  name: room-7
+  transitions:
+  - room-6
+  - room-8
+- center:
+    X: 200
+    Y: 230
+    Z: 0
+  name: room-4
+  transitions:
+  - room-6
+- center:
+    X: 120
+    Y: 236
+    Z: 0
+  name: room-3
+  transitions:
+  - room-2
+- center:
+    X: 321
+    Y: 275
+    Z: 0
+  name: room-8
+  transitions:
+  - room-7
+  - room-12
+  - room-11
+- center:
+    X: 516
+    Y: 230
+    Z: 0
+  name: room-13
+  transitions:
+  - room-9
+- center:
+    X: 447
+    Y: 312
+    Z: 0
+  name: room-12
+  transitions:
+  - room-9
+  - room-8
+  - room-10
+- center:
+    X: 382
+    Y: 331
+    Z: 0
+  name: room-11
+  transitions:
+  - room-8
+- center:
+    X: 467
+    Y: 421
+    Z: 0
+  name: room-10
+  transitions:
+  - room-12

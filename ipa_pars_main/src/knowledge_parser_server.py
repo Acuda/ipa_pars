@@ -201,7 +201,7 @@ class KnowledgeParserServer(object):
     
     def load_static_knowledge_from_yaml(self):
         # beachte: YAMl verwendet nur dicts und lists
-        f = open(self.path_to_inputfiles+"knowledge-base-static-test-01.yaml", 'r')
+        f = open(self.path_to_inputfiles+"roomcleaning/static-knowledge-base-onlyrooms.yaml", 'r')
         yamlfile = load(f)
         f.close()
         return yamlfile

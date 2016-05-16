@@ -183,6 +183,8 @@ class MapAnalyzerServer(object):
         self._feedback.status = 2
         response = self.serviceMapLoggerClient(segmented_map_response.segmented_map)
         print response
+        # send segmented map tu KnowledgeExtracturServer
+        knowledge_result = self.useKnowledgeExtractor(segmented_map_response.segmented_map)
         # goal to MapTesselationServer
         tesselated_map_response = self.useRoomTesselation(segmented_map_response)
         print "this should be a resolution"
