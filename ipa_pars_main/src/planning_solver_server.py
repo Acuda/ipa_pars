@@ -70,7 +70,7 @@ import numpy as np
 import actionlib
 
 from ipa_pars_main.msg._PlanSolverAction import *
-
+from std_msgs.msg import String
 
 class PlanningSolverServer(object):
     _feedback = ipa_pars_main.msg.PlanSolverFeedback()
@@ -85,22 +85,35 @@ class PlanningSolverServer(object):
         rospy.loginfo("PlanningSolverServer initialize finished")
         
     def execute_cb(self, goal):
-        rospy.loginfo("Solving a new problem!")
-        rospy.loginfo("Received the following goal:")
-        print goal
+        rospy.loginfo("=======================================================")
+        rospy.loginfo("|                Solving a new problem!               |")
+        rospy.loginfo("|             Received the following goal:            |")
+        #print goal
         domain_text = goal.domain.data
         problem_text = goal.problem.data
         self.save_domain_file(domain_text)
         self.save_problem_file(problem_text)
         self.workOnPlan(self.path_to_outputfile)
-        
         actionsAsString = self.readPlanFile()
+        if len(actionsAsString) < 1:
+            rospy.loginfo("We found no solution for this task. No action plan!")
+            #success = False
+            self._result.success = False
+            self._result.action_list = None
+            self._as.set_aborted(self._result, "no action plan found")
+            
         list_of_actions = actionsAsString.splitlines()
+        del list_of_actions[-1] # delete the last element in the list
+        newoutput = []
+        for outputline in list_of_actions:
+            newoutputline = String()
+            newoutputline.data = outputline
+            newoutput.append(newoutputline)
         success = True
         self._result.success = True
-        self._result.action_list = list_of_actions
-        print self._result
-        rospy.sleep(5)
+        self._result.action_list = newoutput
+        #print self._result
+        #rospy.sleep(5)
         #===========================
         if self._as.is_preempt_requested():
             rospy.loginfo('%s: Preempted' % 'planning_solver_server')
@@ -136,31 +149,43 @@ class PlanningSolverServer(object):
 #         response.success = True
 #         response.message = "Error Answer"
 #         return response
-    
+
+    def write_to_logfile(self, log_text):
+        #print "save to logfile"
+        try:
+            with open(self.path_to_outputfile+"planner-log.txt", "a") as myfile:
+                myfile.seek(0)
+                myfile.write(log_text)
+            myfile.close()
+            #rospy.loginfo("wrote logfile successfully!")
+        except IOError:
+            rospy.loginfo("writing logfile failed!")
+        
+        
     def save_domain_file(self, domain_text):
-        print "save domain file"
+        #print "save domain file"
         try:
             with open(self.path_to_outputfile+"domain.pddl", "w") as myfile:
                 myfile.seek(0)
                 myfile.write(domain_text)
             myfile.close()
-            rospy.loginfo("wrote domain file successfully!")
+            #rospy.loginfo("wrote domain file successfully!")
         except IOError:
             rospy.loginfo("writing domain.pddl failed!")
     
     def save_problem_file(self, problem_text):
-        print "save problem file"
+        #print "save problem file"
         try:
             with open(self.path_to_outputfile+"problem.pddl", "w") as myfile:
                 myfile.seek(0)
                 myfile.write(problem_text)
             myfile.close()
-            rospy.loginfo("wrote problem file successfully!")
+            #rospy.loginfo("wrote problem file successfully!")
         except IOError:
             rospy.loginfo("writing problem.pddl failed!")
 
     def readPlanFile(self):
-        print "reading input file"
+        #print "reading input file"
         listOfInput = []
         try:
             fileObject = open(self.path_to_outputfile+"sas_plan", "r")
@@ -169,6 +194,7 @@ class PlanningSolverServer(object):
             fileObject.close()
         except IOError:
             rospy.loginfo("open file failed or readline error in readPlanFile!")
+            return listOfInput
             
         stringOfObjects = str(" ").join(map(str, listOfInput))
         return stringOfObjects
@@ -192,17 +218,20 @@ class PlanningSolverServer(object):
     #===========================================================================
     def sendCommand(self, command):
         rospy.loginfo("sending command to shell")
-        print command
+        #TODO: Change commands. Send commands to shell directly and dont use bash scripts above!
+        #print command
         shell_output = subprocess.check_output([command],shell=True)
-        print shell_output
+        self.write_to_logfile(shell_output)
+        #print shell_output
         rospy.loginfo("done")
         
     def deleteOldPlanFiles(self, path_to_files):
-        print "deleting old plan file"
+        #print "deleting old plan file"
         try:
             os.remove(path_to_files+"output")
             os.remove(path_to_files+"output.sas")
             os.remove(path_to_files+"sas_plan")
+            os.remove(path_to_files+"planner-log.txt")
             rospy.loginfo("old planner files successfully removed")
         except OSError:
             rospy.logerr("deleting old plan files failed!")

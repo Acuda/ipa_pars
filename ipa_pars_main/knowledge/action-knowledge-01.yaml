@@ -1,0 +1,12 @@
+actions:
+- name: move-robo-to
+  scenario: fetch-and-carry
+  types:
+          - robot
+          - room
+  used-predicates:
+          - trans
+          - at
+          - occupied
+          - neglected
+

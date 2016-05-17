@@ -627,7 +627,7 @@
 		(at the-box-4 room-10-square-36)
 		(at the-box-5 room-10-square-27)
 		(at the-box-6 room-10-square-3)
-		(at the-box-7 room-12-square-9)
+		(at the-box-7 room-10-square-9)
 
 		;;; gripper
 		(which-gripper arm-left)
