@@ -133,7 +133,13 @@ class PlanningServer(object):
         self._planSolverClient.wait_for_result()
         result = self._planSolverClient.get_result()
         rospy.loginfo("Received the result from Solver:")
-        rospy.loginfo(result)
+        print result
+        
+        if not (result.success):
+            rospy.loginfo("no valid plan found. I cannot solve this problem alone!")
+            self._result.success = False
+            self._as.set_aborted(self._result, "bad job")
+        #rospy.loginfo(result)
 #         r = rospy.Rate(1)
 #         # change herer TODO:
 #         #===========================
