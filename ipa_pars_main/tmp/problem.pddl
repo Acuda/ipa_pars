@@ -4,7 +4,7 @@
   		 ;;; available objects 
   
   		 ;;; fixed locations 
-<<<<<<< HEAD
+ <<<<<<< HEAD
  		 room-1 room-2 room-3 - room
   
  		 ;;; dynamically added trash-bins
@@ -17,7 +17,7 @@
  		 cob4-1 - robot
  		 vacuum-cleaner - tool
  	)
-=======
+ =======
  		 room-12-square-1 room-12-square-2 
  		 room-12-square-3 room-12-square-10 room-12-square-7 
  		 room-12-square-6 room-12-square-4
@@ -56,7 +56,7 @@
  		 cob4-1 - robot
  		 the-box-1 the-box-2 the-box-3 the-box-4 the-box-5 the-box-6 the-box-7  - phys-obj
  		)
->>>>>>> github-ce/indigo_dev
+ >>>>>>> github-ce/indigo_dev
  
  
  	(:init  
@@ -320,17 +320,17 @@
  		(trans room-10-square-34 room-10-square-23)
  		(trans room-10-square-34 room-10-square-45)
  
-<<<<<<< HEAD
+ <<<<<<< HEAD
   		 ;;; transitions for room-2
  		(trans room-2 room-1)
  		(trans room-2 room-3)
-=======
+ =======
   		 ;;; transitions for room-10-square-35
  		(trans room-10-square-35 room-10-square-34)
  		(trans room-10-square-35 room-10-square-36)
  		(trans room-10-square-35 room-10-square-24)
  		(trans room-10-square-35 room-10-square-46)
->>>>>>> github-ce/indigo_dev
+ >>>>>>> github-ce/indigo_dev
  
   		 ;;; transitions for room-10-square-36
  		(trans room-10-square-36 room-10-square-35)
@@ -338,7 +338,7 @@
  		(trans room-10-square-36 room-10-square-25)
  		(trans room-10-square-36 room-10-square-47)
  
-<<<<<<< HEAD
+ <<<<<<< HEAD
  		;;; dynamically added locations
  		(at trash-bin-1 room-1)
  		(at trash-bin-2 room-1)
@@ -349,7 +349,7 @@
  
  		;;; inital robot location
  		(at cob4-1 room-2)
-=======
+ =======
   		 ;;; transitions for room-10-square-37
  		(trans room-10-square-37 room-10-square-36)
  		(trans room-10-square-37 room-10-square-38)
@@ -660,7 +660,7 @@
  		(at the-box-4 room-10-square-36)
  		(at the-box-5 room-10-square-27)
  		(at the-box-6 room-10-square-3)
- 		(at the-box-7 room-10-square-9)
+ 		(at the-box-7 room-12-square-9)
  
  		;;; gripper
  		(which-gripper arm-left)
@@ -670,12 +670,12 @@
  
  		
  		;;;(door-1 room-12-square-13 room-10-square-2)
->>>>>>> github-ce/indigo_dev
+ >>>>>>> github-ce/indigo_dev
  	)
  
  
  	;;; goal definition
-<<<<<<< HEAD
+ <<<<<<< HEAD
  	(:goal (and (forall (?r - room) (inspected ?r))
  		    (forall (?t - trash-bin) (cleared ?t))
  		    (forall (?d - dirt) (and (cleaned ?d) (verify-cleaning-success ?d)))
@@ -683,9 +683,9 @@
  		    
  		)
  	)
-=======
+ =======
  	(:goal (and (have the-boss the-cake)))
  	;;;(:goal (and (at the-cake room-12-square-7)))
  	;;;(:goal (and (have cob4-1 the-cake) (at cob4-1 room-12-square-7)))
->>>>>>> github-ce/indigo_dev
+ >>>>>>> github-ce/indigo_dev
  )
