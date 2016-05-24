@@ -32,56 +32,6 @@
 			     )
 	)
 	
-	;;;(:action move-user
-	;;;	:parameters (?who ?from ?to)
-	;;;	:precondition (and
-	;;;			 (is-user ?who)
-	;;;			 (at ?who ?from)
-	;;;			 (trans ?from ?to)
-	;;;			 (not (occupied ?to))
-	;;;		      )
-	;;;	:effect (and (not (at ?who ?from))
-	;;;		     (at ?who ?to)
-	;;;		)
-	;;;)
-
-	;;;(:action be-close-to
-	;;;	:parameters (?who ?from ?close-to)
-	;;;	:precondition (and
-	;;;			  (is-robo ?who)
-	;;;			  (at ?who ?from)
-	;;;			  (trans ?from ?close-to)
-	;;;			  )
-	;;;	:effect: (and (nearby ?who ?close-to)
-	;;;)
-
-	;;;(:action move-robo-to
-	;;;	:parameters (?who ?from ?to)
-	;;;	:precondition (and
-	;;;			   (is-robo ?who)
-	;;;			   (at ?who ?from)
-	;;;			   (trans ?from ?to))
-	;;;	:effect (and (not (at ?who ?from))
-	;;;			(at ?who ?to))
-	;;;)
-
-	;;;(:action take
-	;;;	:parameters (?who - robot ?what - phys-obj ?where - room ?close-to - room)
-	;;;	:precondition (and ;;;(is-robo ?who)
-	;;;			   (at ?who ?where)
-	;;;			   (at ?what ?close-to)
-	;;;			   (trans ?where ?close-to)
-	;;;			   ;;;(nearby ?who ?close-to)
-	;;;			   )
-	;;;	:effect (and (have ?who ?what)
-	;;;		     (not (at ?what ?close-to))
-	;;;		     ;;;(gripper arm-left)
-	;;;		     ;;;(carry ?what arm-left)
-	;;;		)
-	;;;)
-
-
-	
 	(:action look-at
 		:parameters (?who - robot ?what - phys-obj ?where - room ?close-to - room)
 		:precondition (and
