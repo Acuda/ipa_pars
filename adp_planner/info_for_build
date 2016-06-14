@@ -1,7 +1,0 @@
-# infos if buid fails
-# add version of g++ and gcc multilib matching your desktop version:
-
-sudo apt-get install gcc-4.8-multilib
-sudo apt-get install g++-4.8-multilib
-
-
