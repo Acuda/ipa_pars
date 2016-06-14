@@ -1,5 +1,0 @@
-#! /bin/bash
-
-cd "$(dirname "$0")" # $0 is the path to this script. dirname cuts the last peace and cd "" executes it: so this command changes in the directory where the script is
-
-
