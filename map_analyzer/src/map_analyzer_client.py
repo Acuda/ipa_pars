@@ -76,7 +76,7 @@ import map_analyzer
 class MapAnalyzerClient(object):
     def __init__(self, path_to_map):
         rospy.loginfo("Initialize MapAnalyzerClient ...")
-        self.path_to_map = path_to_map+"lab_ipa4.png"
+        self.path_to_map = path_to_map+"lab_e.png"
         rospy.loginfo(path_to_map)
         rospy.loginfo("... loading map from file")
         self.input_map = cv2.imread(self.path_to_map, cv2.IMREAD_GRAYSCALE)
@@ -130,5 +130,5 @@ if __name__ == '__main__':
     try:
         mAC.sendGoalAndWait()
     except rospy.ROSInterruptException:
-        print "dome_map_init_client_node was interrupted!"
+        print "demo_map_init_client_node was interrupted!"
         
