@@ -5,6 +5,7 @@
 *.cproject
 *.settings
 *.swp
+*.o
 output
 output.sas
 sas_plan

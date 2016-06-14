@@ -130,5 +130,5 @@ if __name__ == '__main__':
     try:
         mAC.sendGoalAndWait()
     except rospy.ROSInterruptException:
-        print "dome_map_init_client_node was interrupted!"
+        print "demo_map_init_client_node was interrupted!"
         

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<launch>
+	
+	<param name="/use_sim_time" value="false"/>
+	<arg name="robot" default="$(optenv ROBOT !!NO_ROBOT_SET!!)"/>
+	<arg name="robot_env" default="$(optenv ROBOT_ENV !!NO_ROBOT_ENV_SET!!)"/>
+	<arg name="pkg_env_config" default="$(find cob_default_env_config)"/>
+
+	<!-- SPAWN FETCH AND CARRY BOXES -->
+
+	<node pkg="gazebo_ros" type="spawn_model" name="spawn_the_box1" args="-file $(find ipa_pars_main)/scripts/the-box-1.sdf -sdf -model box1" respawn="false" output="screen" />
+
+	<node pkg="gazebo_ros" type="spawn_model" name="spawn_the_box2" args="-file $(find ipa_pars_main)/scripts/the-box-2.sdf -sdf -model box2" respawn="false" output="screen" />
+	<node pkg="gazebo_ros" type="spawn_model" name="spawn_the_box3" args="-file $(find ipa_pars_main)/scripts/the-box-3.sdf -sdf -model box3" respawn="false" output="screen" />
+
+	<node pkg="gazebo_ros" type="spawn_model" name="spawn_the_box4" args="-file $(find ipa_pars_main)/scripts/the-box-4.sdf -sdf -model box4" respawn="false" output="screen" />
+
+	<node pkg="gazebo_ros" type="spawn_model" name="spawn_the_box5" args="-file $(find ipa_pars_main)/scripts/the-box-5.sdf -sdf -model box5" respawn="false" output="screen" />
+
+	<node pkg="gazebo_ros" type="spawn_model" name="spawn_the_box6" args="-file $(find ipa_pars_main)/scripts/the-box-5.sdf -sdf -model box5 -x 0.5 -y 0.5 -z 0.0" respawn="false" output="screen" />
+
+	<node pkg="gazebo_ros" type="spawn_model" name="spawn_ragdoll" args="-file /home/cme-intel/.gazebo/models/ragdoll/model-1_4.sdf -sdf -model ragdoll -x -3.8 -y -1.7 -z 0.0 -Y -1.5" respawn="false" output="screen" />
+</launch>	
+
