@@ -75,10 +75,8 @@ from std_msgs.msg import String
 class PlanningSolverServer(object):
     _feedback = ipa_pars_main.msg.PlanSolverFeedback()
     _result = ipa_pars_main.msg.PlanSolverResult()
-    def __init__(self, path_to_outputfile):
+    def __init__(self):
         rospy.loginfo("Initialize PlanningSolverServer ...")
-        self.path_to_outputfile = path_to_outputfile
-        rospy.loginfo(path_to_outputfile)
         self._as = actionlib.SimpleActionServer('planning_solver_server', ipa_pars_main.msg.PlanSolverAction, execute_cb=self.execute_cb, auto_start=False)
         self._as.start()
         rospy.loginfo("PlaningSolverServer running! Waiting for a new problem to solve ...")
@@ -91,8 +89,8 @@ class PlanningSolverServer(object):
         #print goal
         domain_text = goal.domain.data
         problem_text = goal.problem.data
-        self.save_domain_file(domain_text)
-        self.save_problem_file(problem_text)
+#         self.save_domain_file(domain_text)
+#         self.save_problem_file(problem_text)
         self.workOnPlan(self.path_to_outputfile)
         actionsAsString = self.readPlanFile()
         if len(actionsAsString) < 1:
@@ -153,7 +151,9 @@ class PlanningSolverServer(object):
     def write_to_logfile(self, log_text):
         #print "save to logfile"
         try:
-            with open(self.path_to_outputfile+"planner-log.txt", "a") as myfile:
+            if not os.path.isdir("ipa_pars/log"):
+                os.mkdir("ipa_pars/log")
+            with open("ipa_pars/log/planner-log.txt", "a") as myfile:
                 myfile.seek(0)
                 myfile.write(log_text)
             myfile.close()
@@ -162,36 +162,37 @@ class PlanningSolverServer(object):
             rospy.loginfo("writing logfile failed!")
         
         
-    def save_domain_file(self, domain_text):
-        #print "save domain file"
-        try:
-            with open(self.path_to_outputfile+"domain.pddl", "w") as myfile:
-                myfile.seek(0)
-                myfile.write(domain_text)
-            myfile.close()
-            #rospy.loginfo("wrote domain file successfully!")
-        except IOError:
-            rospy.loginfo("writing domain.pddl failed!")
-    
-    def save_problem_file(self, problem_text):
-        #print "save problem file"
-        try:
-            with open(self.path_to_outputfile+"problem.pddl", "w") as myfile:
-                myfile.seek(0)
-                myfile.write(problem_text)
-            myfile.close()
-            #rospy.loginfo("wrote problem file successfully!")
-        except IOError:
-            rospy.loginfo("writing problem.pddl failed!")
+#     def save_domain_file(self, domain_text):
+#         #print "save domain file"
+#         try:
+#             with open(self.path_to_outputfile+"domain.pddl", "w") as myfile:
+#                 myfile.seek(0)
+#                 myfile.write(domain_text)
+#             myfile.close()
+#             #rospy.loginfo("wrote domain file successfully!")
+#         except IOError:
+#             rospy.loginfo("writing domain.pddl failed!")
+#     
+#     def save_problem_file(self, problem_text):
+#         #print "save problem file"
+#         try:
+#             with open(self.path_to_outputfile+"problem.pddl", "w") as myfile:
+#                 myfile.seek(0)
+#                 myfile.write(problem_text)
+#             myfile.close()
+#             #rospy.loginfo("wrote problem file successfully!")
+#         except IOError:
+#             rospy.loginfo("writing problem.pddl failed!")
 
     def readPlanFile(self):
         #print "reading input file"
         listOfInput = []
         try:
-            fileObject = open(self.path_to_outputfile+"sas_plan", "r")
-            with fileObject as listOfText:
-                listOfInput = listOfText.readlines()
-            fileObject.close()
+            if os.path.isdir("ipa_pars/output/"):
+                fileObject = open("ipa_pars/output/sas_plan", "r")
+                with fileObject as listOfText:
+                    listOfInput = listOfText.readlines()
+                fileObject.close()
         except IOError:
             rospy.loginfo("open file failed or readline error in readPlanFile!")
             return listOfInput
@@ -225,13 +226,15 @@ class PlanningSolverServer(object):
         #print shell_output
         rospy.loginfo("done")
         
-    def deleteOldPlanFiles(self, path_to_files):
+    def deleteOldPlanFiles(self):
         #print "deleting old plan file"
         try:
-            os.remove(path_to_files+"output")
-            os.remove(path_to_files+"output.sas")
-            os.remove(path_to_files+"sas_plan")
-            os.remove(path_to_files+"planner-log.txt")
+            if os.path.isdir("ipa_pars/output/"):
+                os.remove("ipa_pars/output/output")
+                os.remove("ipa_pars/output/output.sas")
+                os.remove("ipa_pars/output/sas_plan")
+            if os.path.isdir("ipa_pars/log/"):
+                os.remove("ipa_pars/log/planner-log.txt")
             rospy.loginfo("old planner files successfully removed")
         except OSError:
             rospy.logerr("deleting old plan files failed!")
@@ -239,5 +242,5 @@ class PlanningSolverServer(object):
     
 if __name__ == '__main__':
     rospy.init_node('planning_solver_server_node', anonymous=False)
-    pSS = PlanningSolverServer(sys.argv[1])
+    pSS = PlanningSolverServer()
     rospy.spin()
