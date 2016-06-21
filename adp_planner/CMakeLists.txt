@@ -105,7 +105,6 @@ message(STATUS "done tarball")
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 	INCLUDE_DIRS
-		common/include
 	LIBRARIES
 		adp
 	CATKIN_DEPENDS
