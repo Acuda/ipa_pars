@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 '''
-Created on Feb 04, 2016
+Created on Jun 21, 2016
 
 @author: cme
 '''
@@ -19,14 +19,14 @@ Created on Feb 04, 2016
 # \note
 # ROS stack name: ipa_pars
 # \note
-# ROS package name: planning_domain
+# ROS package name: ipa_pars_main
 #
 # \author
 # Author: Christian Ehrmann
 # \author
 # Supervised by: Richard Bormann
 #
-# \date Date of creation: 02.2016
+# \date Date of creation: 05.2016
 #
 # \brief
 #
@@ -62,53 +62,54 @@ Created on Feb 04, 2016
 #
 #****************************************************************/
 import rospy
-import sys
-import cv2
-import numpy as np
-from sensor_msgs.msg import Image
-#from sensor_msgs.msg._Image import Image
-
 import actionlib
+import sys, os
 
-from cob_srvs.srv._SetString import SetString
-from cob_srvs.srv._SetString import SetStringResponse
+import yaml
+from yaml import load
+
+from ipa_pars_main.msg._KnowledgeParserAction import *
 
 
-class PlanDomainClass(object):
+class KnowledgeParserClient(object):
     def __init__(self):
-        rospy.loginfo("Initialize PlanDomainClass ...")
-        self.domain_srv = rospy.Service('planning_domain_server', SetString, self.handle_domain_cb)
-        self.domain_info = ""
+        rospy.loginfo("Initialize KnowledgeParserClient ...")
+        rospy.loginfo("... starting knowledge_parser_server")
+        self._knowledgeParserClient = actionlib.SimpleActionClient('knowledge_parser_server', KnowledgeParserAction)
+        rospy.logwarn("Waiting for KnowledgeParserServer to come available ...")
+        self._knowledgeParserClient.wait_for_server()
+        rospy.logwarn("Server is online!")
+        rospy.loginfo("KnowledgeParserClient initialize finished")
+
         
-        rospy.logwarn("Waiting for planning_solver_domain_server to come available ...")
-        rospy.wait_for_service('planning_solver_domain_server')
-        rospy.logwarn("Server online!")
-        try:
-            self.domain_solver_client = rospy.ServiceProxy('planning_solver_domain_server', SetString)
-        except rospy.ServiceException, e:
-            print "Service call failed: %s"%e
-        
-        rospy.loginfo("PlanDomainServer is running, waiting for new problems to plan ...")
-        rospy.loginfo("... finished")
-        
-    def handle_domain_cb(self, domain_info):
-        print "domain_info"
-        print domain_info
-        self.domain_info = domain_info
-        print self.domain_info
-        
-        answer = self.domain_solver_client(self.domain_info)
-        
-        print answer
-        response = SetStringResponse()
-        response.success = True
-        response.message = "ErrorAnswer"
-        
-        return response
+    def sendGoal(self):
+        knowledge_goal = ipa_pars_main.msg.KnowledgeParserGoal()
+        knowledge_goal.static_knowledge.data = yaml.dump(self.readKnowledgeBase("static-knowledge-base.yaml"))
+        print knowledge_goal.static_knowledge.data
+        knowledge_goal.dynamic_knowledge.data = yaml.dump(self.readKnowledgeBase("dynamic-knowledge-base.yaml"))
+        rospy.loginfo("Sending goal to KnowledgeParserServer ...")
+        self._knowledgeParserClient.send_goal(knowledge_goal)
+        rospy.loginfo("Waiting for result ...")
+        self._knowledgeParserClient.wait_for_result()
+        result = self._knowledgeParserClient.get_result()
+        rospy.loginfo("Received the result from KnowledgeParserServer!")
+        rospy.loginfo(result)
     
-
-
+    def readKnowledgeBase(self, knowledge_yaml):
+        listOfInput = []
+        try:
+            if os.path.isdir("ipa_pars/knowledge/"):
+                fileObject = open("ipa_pars/knowledge/"+knowledge_yaml, "r")
+                yamlfile = load(fileObject)
+                fileObject.close()
+                return yamlfile
+        except IOError:
+            rospy.loginfo("Reading %s base failed!" % knowledge_yaml)
+        return None
+    
+        
 if __name__ == '__main__':
-    rospy.init_node('planning_domain_node', anonymous=False)
-    pDC = PlanDomainClass()
-    rospy.spin()
+    rospy.init_node('knowledge_parser_client_node', anonymous=False)
+    kPC = KnowledgeParserClient()
+    kPC.sendGoal()
+    #kPS.createProblemPDDL()

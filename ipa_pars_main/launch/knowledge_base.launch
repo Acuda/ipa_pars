@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- ipa_planning_and_reasoning_system -->
+
+	<!-- ipa_pars -->
+	<group ns = "ipa_pars">
+	
+	<!-- nodes to start -->
+	<node pkg="ipa_pars_main" type="knowledge_parser_server.py" name="knowledge_parser_server_spawner" respawn="false" output="screen"/>
+
+	<node pkg="ipa_pars_main" type="knowledge_parser_client.py" name="knowledge_parser_client_spawner" respawn="false" output="screen"/>
+
+	</group>
+</launch>

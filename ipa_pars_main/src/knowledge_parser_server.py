@@ -63,7 +63,7 @@ Created on Apr 15, 2016
 #****************************************************************/
 import rospy
 import actionlib
-import sys
+import sys, os
 
 import yaml
 from yaml import load
@@ -74,10 +74,10 @@ from ipa_pars_main.msg._KnowledgeParserAction import *
 class KnowledgeParserServer(object):
     _feedback = ipa_pars_main.msg.KnowledgeParserFeedback()
     _result = ipa_pars_main.msg.KnowledgeParserResult()
-    def __init__(self, path_to_inputfiles):
+    def __init__(self):
         rospy.loginfo("Initialize KnowledgePaserServer ...")
-        self.path_to_inputfiles = path_to_inputfiles
-        self.yamlfile_static_knowledge = self.load_static_knowledge_from_yaml()
+#         self.path_to_inputfiles = path_to_inputfiles
+#         self.yamlfile_static_knowledge = self.load_static_knowledge_from_yaml()
         self.goal_info = "static goal info"
         
         self._as = actionlib.SimpleActionServer('knowledge_parser_server', ipa_pars_main.msg.KnowledgeParserAction, execute_cb=self.execute_cb, auto_start=False)
@@ -87,6 +87,8 @@ class KnowledgeParserServer(object):
 
     def execute_cb(self, goal):
         rospy.loginfo("Received a new goal:")
+        self.yamlfile_static_knowledge = yaml.load(goal.static_knowledge.data)
+        self.createProblemPDDL()
         print goal
         
     def parseLocationInfoFromYaml(self):
@@ -96,7 +98,6 @@ class KnowledgeParserServer(object):
             name_of_square = squares["name"]
             transitions = str(" ").join(map(str, squares["transitions"]))
             listOfTransitions.append(name_of_square+" "+transitions)
-            
         return listOfTransitions
     
     def createProblemPDDL(self):
@@ -114,7 +115,9 @@ class KnowledgeParserServer(object):
     def save_problem_file(self, problem_text):
         print "save problem file"
         try:
-            with open(self.path_to_inputfiles+"problem.pddl", "w") as myfile:
+            if not os.path.isdir("ipa_pars/pddl/"):
+                os.mkdir("ipa_pars/pddl")
+            with open("ipa_pars/pddl/problem.pddl", "w") as myfile:
                 myfile.seek(0)
                 myfile.write(problem_text)
             myfile.close()
@@ -139,11 +142,16 @@ class KnowledgeParserServer(object):
             if counter == 4:
                 counter = 0
 
+        listOfObjects.append(" - room \n")
+        listOfObjects.append("\n \t\t ;;; fixed things for interaction")
+        listOfObjects.append("\n\t\t arm-left arm-right - gripper")
+        listOfObjects.append("\n \t\t the-boss - user")
         listOfObjects.append("\n")
         listOfObjects.append("\n \t\t ;;; movable things")
         listOfObjects.append("\n")
-        listOfObjects.append("\n\t\t the-cake")
-        listOfObjects.append("\n\t\t cob4-1")
+        listOfObjects.append("\n\t\t the-cake - phys-obj")
+        listOfObjects.append("\n\t\t cob4-1 - robot")
+        listOfObjects.append("\n\t\t the-box-1 the-box-2 the-box-3 the-box-4 the-box-4 the-box-5 the-box-5 the-box-7 - phys-obj \n")
         StringOfObjects = str(" ").join(map(str, listOfObjects))
 
         return StringOfObjects
@@ -167,11 +175,25 @@ class KnowledgeParserServer(object):
         listOfLines.append("\t(:init  "+StringOfTransitions)
         #====== 6 =======
         listOfLines.append("\n\t ;;; hard coded definitions")
-        listOfLines.append("\t\t(is-robo cob4-1)")
         #listOfLines.append("\t\t(at the-cake room-9)")
         # test with two cake locations!
         listOfLines.append("\t\t(at the-cake room-10-square-10)")
         listOfLines.append("\t\t(at cob4-1 room-13-square-7)")
+        listOfLines.append("\t\t(at the-box-1 room-10-square-2)")
+        listOfLines.append("\t\t(at the-box-2 room-10-square-22)")
+        listOfLines.append("\t\t(at the-box-3 room-10-square-13)")
+        listOfLines.append("\t\t(at the-box-4 room-10-square-36)")
+        listOfLines.append("\t\t(at the-box-5 room-10-square-27)")
+        listOfLines.append("\t\t(at the-box-6 room-10-square-3)")
+        listOfLines.append("\t\t(at the-box-7 room-10-square-9)")
+        listOfLines.append("\t\t(neglected cob4-1)")
+        listOfLines.append("\t\t(occupied room-10-square-2)")
+        listOfLines.append("\t\t(occupied room-10-square-22)")
+        listOfLines.append("\t\t ;;; gripper")
+        listOfLines.append("\t\t(which-gripper arm-left)")
+        listOfLines.append("\t\t(which-gripper arm-right)")
+        listOfLines.append("\t\t(gripper-free arm-left)")
+        listOfLines.append("\t\t(gripper-free arm-right)")
         listOfLines.append("\t)")
         listOfLines.append("\n")
 
@@ -183,7 +205,7 @@ class KnowledgeParserServer(object):
         print goal_informations
         
         listOfLines.append("\t;;; goal definition")
-        listOfLines.append("\t(:goal (and (have cob4-1 the-cake) (at cob4-1 room-13-square-7)))")
+        listOfLines.append("\t(:goal (and (have the-boss the-cake) ))")
         listOfLines.append(")")
         return listOfLines
     
@@ -199,15 +221,15 @@ class KnowledgeParserServer(object):
         StringOfTransitions = str("\n").join(map(str, listOfTransitions))
         return StringOfTransitions
     
-    def load_static_knowledge_from_yaml(self):
-        # beachte: YAMl verwendet nur dicts und lists
-        f = open(self.path_to_inputfiles+"roomcleaning/static-knowledge-base-onlyrooms.yaml", 'r')
-        yamlfile = load(f)
-        f.close()
-        return yamlfile
+#     def load_static_knowledge_from_yaml(self):
+#         # beachte: YAMl verwendet nur dicts und lists
+#         f = open(self.path_to_inputfiles+"roomcleaning/static-knowledge-base-onlyrooms.yaml", 'r')
+#         yamlfile = load(f)
+#         f.close()
+#         return yamlfile
         
 if __name__ == '__main__':
     rospy.init_node('knowledge_parser_server_node', anonymous=False)
-    kPS = KnowledgeParserServer(sys.argv[1])
+    kPS = KnowledgeParserServer()
     rospy.spin()
     #kPS.createProblemPDDL()

@@ -1,6 +1,6 @@
 # Define the goal
-std_msgs/String[] static_knowledge
-std_msgs/String[] dynamic_knowledge
+std_msgs/String static_knowledge
+std_msgs/String dynamic_knowledge
 
 ---
 # Define a result

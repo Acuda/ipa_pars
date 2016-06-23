@@ -1529,7 +1529,6 @@ location-data:
   transitions:
   - room-6-square-20
   - room-7-square-1
-  - room-7-square-3
   - room-7-square-5
 - center:
     X: 107
@@ -1609,15 +1608,6 @@ location-data:
   - room-4-square-10
   - room-4-square-22
 - center:
-    X: 309
-    Y: 231
-    Z: 0
-  name: room-7-square-3
-  transitions:
-  - room-7-square-2
-  - room-7-square-7
-  - room-7-square-6
-- center:
     X: 430
     Y: 229
     Z: 0
@@ -1660,7 +1650,6 @@ location-data:
     Z: 0
   name: room-7-square-7
   transitions:
-  - room-7-square-3
   - room-7-square-6
   - room-7-square-12
   - room-7-square-11
@@ -1767,7 +1756,6 @@ location-data:
   transitions:
   - room-7-square-5
   - room-7-square-7
-  - room-7-square-3
   - room-7-square-10
 - center:
     X: 451
@@ -1778,7 +1766,6 @@ location-data:
   - room-8-square-74
   - room-8-square-76
   - room-11-square-1
-  - room-8-square-78
   - room-11-square-2
   - room-8-square-75
 - center:
@@ -1901,20 +1888,11 @@ location-data:
   - room-7-square-7
   - room-7-square-15
 - center:
-    X: 440
-    Y: 260
-    Z: 0
-  name: room-8-square-78
-  transitions:
-  - room-8-square-77
-  - room-11-square-2
-- center:
     X: 450
     Y: 269
     Z: 0
   name: room-11-square-2
   transitions:
-  - room-8-square-78
   - room-11-square-3
   - room-11-square-1
   - room-11-square-4
@@ -2002,8 +1980,6 @@ location-data:
   name: room-7-square-18
   transitions:
   - room-7-square-17
-  - room-10-square-1
-  - room-7-square-24
   - room-7-square-23
 - center:
     X: 484
@@ -2049,19 +2025,8 @@ location-data:
   name: room-10-square-3
   transitions:
   - room-10-square-4
-  - room-7-square-24
-  - room-10-square-1
   - room-7-square-23
-  - room-10-square-2
   - room-10-square-8
-- center:
-    X: 402
-    Y: 299
-    Z: 0
-  name: room-10-square-1
-  transitions:
-  - room-7-square-18
-  - room-10-square-3
 - center:
     X: 312
     Y: 306
@@ -2109,28 +2074,8 @@ location-data:
   name: room-7-square-23
   transitions:
   - room-7-square-22
-  - room-7-square-24
   - room-7-square-18
-  - room-10-square-3
-  - room-10-square-2
   - room-7-square-27
-- center:
-    X: 401
-    Y: 313
-    Z: 0
-  name: room-7-square-24
-  transitions:
-  - room-7-square-23
-  - room-10-square-3
-  - room-7-square-18
-- center:
-    X: 400
-    Y: 308
-    Z: 0
-  name: room-10-square-2
-  transitions:
-  - room-7-square-23
-  - room-10-square-3
 - center:
     X: 351
     Y: 329
@@ -2155,7 +2100,6 @@ location-data:
   name: room-7-square-27
   transitions:
   - room-7-square-26
-  - room-7-square-24
   - room-7-square-23
 - center:
     X: 413
@@ -2183,8 +2127,6 @@ location-data:
   - room-10-square-9
   - room-10-square-11
   - room-10-square-5
-  - room-9-square-1
-  - room-9-square-5
   - room-9-square-4
 - center:
     X: 474
@@ -2194,8 +2136,6 @@ location-data:
   transitions:
   - room-10-square-10
   - room-10-square-7
-  - room-9-square-2
-  - room-9-square-5
   - room-10-square-6
 - center:
     X: 567
@@ -2224,13 +2164,6 @@ location-data:
   - room-9-square-7
   - room-9-square-20
 - center:
-    X: 469
-    Y: 335
-    Z: 0
-  name: room-9-square-2
-  transitions:
-  - room-10-square-11
-- center:
     X: 510
     Y: 347
     Z: 0
@@ -2245,7 +2178,6 @@ location-data:
     Z: 0
   name: room-9-square-5
   transitions:
-  - room-10-square-11
   - room-10-square-10
   - room-9-square-1
   - room-9-square-6
@@ -2260,14 +2192,6 @@ location-data:
   - room-9-square-7
   - room-9-square-5
   - room-9-square-18
-- center:
-    X: 449
-    Y: 338
-    Z: 0
-  name: room-9-square-1
-  transitions:
-  - room-10-square-10
-  - room-9-square-4
 - center:
     X: 430
     Y: 349
@@ -2307,13 +2231,6 @@ location-data:
   - room-9-square-15
   - room-9-square-26
 - center:
-    X: 368
-    Y: 366
-    Z: 0
-  name: room-8-square-79
-  transitions:
-  - room-9-square-12
-- center:
     X: 390
     Y: 369
     Z: 0
@@ -2329,7 +2246,6 @@ location-data:
   name: room-9-square-12
   transitions:
   - room-9-square-11
-  - room-8-square-79
   - room-9-square-13
   - room-9-square-24
 - center:
@@ -2962,7 +2878,6 @@ location-data:
   transitions:
   - room-9-square-68
   - room-9-square-79
-  - room-8-square-79
 - center:
     X: 390
     Y: 491
