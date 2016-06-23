@@ -1,2 +1,0 @@
-geometry_msgs/Polygon room_min_max
-geometry_msgs/Point32 room_center
