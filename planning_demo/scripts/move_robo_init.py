@@ -21,7 +21,7 @@ if __name__ == "__main__":
         gripper_left_open = [[0,0]]
         carry_left = [[-2.8,-1.56,1.35,0.06,1.25,0.7,0.57]]
         carry_right = [[2.8,1.56,-1.35,-0.06,-1.25,-0.7,-0.57]]
-        sss.move("base",[-3.6,-2.1,1.5])
+        sss.move("base",[-3.6,-2.1,1.5]) 
         sss.move("arm_left",gripper_preparation_left)
         sss.move("arm_right",gripper_preparation_right)
         sss.move("arm_right",gripping_arm_right)

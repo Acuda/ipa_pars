@@ -89,6 +89,18 @@ class PlanningExecutorServer(object):
         self.path_to_inputfile = path_to_inputfile
         rospy.loginfo(path_to_inputfile)
         # read yaml file static knowledge base
+        
+        #predefine positions for demonstration:
+        self.gripper_preparation_left = [[-2.5,-1.36,1.35,0.06,0.75,0.7,0.57]]
+        self.gripper_preparation_right = [[2.5,1.36,-1.35,-0.06,-0.75,-0.7,-0.57]]
+        self.gripping_arm_left = [[-2.5,-1.56,1.35,0.06,1.25,0.7,0.57]]
+        self.gripping_arm_right = [[2.5,1.56,-1.35,-0.06,-1.25,-0.7,-0.57]]
+        self.gripping_gripper_left = [[0.3,0.3]]
+        self.gripping_gripper_right = [[0.3,0.3]]
+        self.gripper_right_open = [[0,0]]
+        self.gripper_left_open = [[0,0]]
+        self.carry_left = [[-2.8,-1.56,1.35,0.06,1.25,0.7,0.57]]
+        self.carry_right = [[2.8,1.56,-1.35,-0.06,-1.25,-0.7,-0.57]]
         self.yamlfile_static_knowledge = self.load_static_knowledge_from_yaml()
         
         self._as = actionlib.SimpleActionServer('plan_executor_server', ipa_pars_main.msg.PlanExecutorAction, execute_cb=self.execute_cb, auto_start=False)
@@ -106,9 +118,9 @@ class PlanningExecutorServer(object):
         for squares in location_data:
             if (squares["name"] == target_name):
                 point_coordinates = squares["center"]
-                _new_pose.position.x = point_coordinates["X"]
-                _new_pose.position.y = point_coordinates["Y"]
-                _new_pose.position.z = point_coordinates["Z"]
+                _new_pose.position.x = point_coordinates["X"] * 0.05
+                _new_pose.position.y = point_coordinates["Y"] * 0.05
+                _new_pose.position.z = point_coordinates["Z"] * 0.05
                 _new_pose.orientation.x = 0
                 _new_pose.orientation.y = 0
                 _new_pose.orientation.z = 0
@@ -121,6 +133,17 @@ class PlanningExecutorServer(object):
             rospy.logerr("For the location %s we found no data to set move-base parameters!" % target_name)
             return _new_pose
 
+    def getTargetPosition(self, target_name):
+        position = []
+        location_data = self.yamlfile_static_knowledge["location-data"]
+        for squares in location_data:
+            if (squares["name"] == target_name):
+                point_coordinates = squares["center"]
+                position.append(point_coordinates["X"] * 0.05)
+                position.append(point_coordinates["Y"] * 0.05)
+                # last parameter is angle not position!
+                position.append(point_coordinates["Z"] * 0.05)
+        return position
         
     def execute_cb(self, goal):
         rospy.loginfo("Executing a new list of goals!")
@@ -136,29 +159,36 @@ class PlanningExecutorServer(object):
                 print "this is a move-base action call"
                 print "robot should move to pose: "
                 #print split_input[3]
-                print self.getTargetPose(split_input[3])
-                print "connecting to move_base server"
-                self.moveBaseClient = actionlib.SimpleActionClient('move_base', MoveBaseAction)
-#                 print "waiting for move_base server ..."
-#                 self.moveBaseClient.wait_for_server()
-                target_pose = PoseStamped()
-                target_pose.header.stamp = rospy.Time.now()
-                target_pose.header.frame_id = "map"
-                target_pose.pose = self.getTargetPose(split_input[3])
-                target_goal = MoveBaseGoal(target_pose)
-                print "I would like to send this goal to move_base:"
-                print target_goal
+#                 print self.getTargetPose(split_input[3])
+                target_position = self.getTargetPosition(split_input[3])
+                print "sending move command to robot"
+                print target_position
+                sss.move("base",target_position)
+                print "reached position"
+#                 self.moveBaseClient = actionlib.SimpleActionClient('move_base', MoveBaseAction)
+# #                 print "waiting for move_base server ..."
+# #                 self.moveBaseClient.wait_for_server()
+#                 target_pose = PoseStamped()
+#                 target_pose.header.stamp = rospy.Time.now()
+#                 target_pose.header.frame_id = "map"
+#                 target_pose.pose = self.getTargetPose(split_input[3])
+#                 target_goal = MoveBaseGoal(target_pose)
+#                 print "I would like to send this goal to move_base:"
+#                 print target_goal
 #                 self.moveBaseClient.send_goal(target_goal)
 #                 print "sending goal to move_base: Waiting for result"
 #                 result = self.moveBaseClient.wait_for_result(rospy.Duration.from_sec(30.0))
 #                 print "result is"
 #                 print result
                 print "========================================================"
-            if (split_input[0] == "take"):
+            if (split_input[0] == "look-at"):
                 print "========================================================"
-                print "this is a take action call"
-                print "the robot should take"
-                print split_input[2]
+                print "this is a look-at action call"
+                print "the robot should look-at position"
+                print split_input[4]
+                print "moving sensorring"
+                sss.move("sensorring",[[1.5]])
+                print "reached position"
 #                 sss.say("sound", ["hello"])
 #                 component_name = "arm_left"
 #                 sss.move(component_name,["base_link", [0,0,0],[0,0,0]])
@@ -167,28 +197,74 @@ class PlanningExecutorServer(object):
 #                 success = smi.moveit_joint_goal("arm", config)
 #                 print success
                 print "========================================================"
-            if (split_input[0] == "look-at"):
+            if (split_input[0] == "grip-it"):
                 print "========================================================"
-                print "this is a look-at action call"
-                print "the robot should look-at"
-                print split_input[2]
-                obj_name = "nameOfObject"
-                goal = DetectObjectsActionGoal()
-                goal.object_name = obj_name
-                print "connecting to object_detection server"
-                self.objectDetectionClient = actionlib.SimpleActionClient('detect', DetectObjectsAction)
-#                 print "waiting for detect server ..."
-#                 self.objectDetectionClient.wait_for_server()
-                print goal
-#                 self.objectDetectionlient.send_goal(goal)
-#                 print "sending goal to detect: Waiting for result"
-#                 result = self.objectDetectionClient.wait_for_result(rospy.Duration.from_sec(30.0))
-#                 print "result is a DetectionArray object list with poses"
-#                 print result
+                print "this is a grip-it action call"
+                print split_input[2] #what
+                print split_input[5] #arm
+#                 arm = "arm_not_specified"
+#                 if (split_input[5] == "arm-left"):
+#                     arm = "arm_left"
+#                 if (split_input[5] == "arm-right"):
+#                     arm = "arm_right"
+                sss.move("arm_left", self.gripper_preparation_left)
+                sss.move("arm_right", self.gripper_preparation_right)
+                sss.move("arm_right", self.gripping_arm_right)
+                sss.move("arm_left", self.gripping_arm_left)
+                sss.move("gripper_right", self.gripping_gripper_right)
+                sss.move("gripper_left", self.gripping_gripper_left)
+                sss.move("arm_right", self.carry_right)
+                sss.move("arm_left", self.carry_left)
+#                 sss.say("sound", ["hello"])
+#                 component_name = "arm_left"
+#                 sss.move(component_name,["base_link", [0,0,0],[0,0,0]])
+#                 config = smi.get_goal_from_server("arm", "home")
+#                 print config
+#                 success = smi.moveit_joint_goal("arm", config)
+#                 print success
+                print "========================================================"
+            if (split_input[0] == "put-it"):
+                print "========================================================"
+                print "this is a put-it action call"
+                print "the robot should put"
+                print split_input[2] #waht
+                print split_input[4] #where
+                print split_input[5] #arm
+                obj_name = split_input[2]
+                sss.move("arm_left", self.gripping_gripper_left)
+                sss.move("arm_right", self.gripping_gripper_right)
+                sss.move("gripper_right", self.gripper_right_open)
+                sss.move("gripper_left", self.gripper_left_open)
+                sss.move("arm_left", self.gripper_preparation_left)
+                sss.move("arm_right", self.gripper_preparation_right)
+                sss.move("arm_left","side")
+                sss.move("arm_right","side")
                 
                 print "========================================================"
-
-
+            if (split_input[0] == "deliver-to"):
+                print "========================================================"
+                print "this is a look-at action call"
+                sss.move("arm_left", self.gripping_gripper_left)
+                sss.move("arm_right", self.gripping_gripper_right)
+                sss.move("gripper_right", self.gripper_right_open)
+                sss.move("gripper_left", self.gripper_left_open)
+                sss.move("arm_left", self.gripper_preparation_left)
+                sss.move("arm_right", self.gripper_preparation_right)
+                sss.move("arm_left","side")
+                sss.move("arm_right","side")
+                print "========================================================"
+            if (split_input[0] == "take"):
+                print "========================================================"
+                print "this is a take action call"
+                sss.move("arm_left", self.gripper_preparation_left)
+                sss.move("arm_right", self.gripper_preparation_right)
+                sss.move("arm_right", self.gripping_arm_right)
+                sss.move("arm_left", self.gripping_arm_left)
+                sss.move("gripper_right", self.gripping_gripper_right)
+                sss.move("gripper_left", self.gripping_gripper_left)
+                sss.move("arm_right", self.carry_right)
+                sss.move("arm_left", self.carry_left)
+                print "========================================================"
 
         success = True
         self._result.success = True
