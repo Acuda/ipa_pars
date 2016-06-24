@@ -1,0 +1,161 @@
+[rospy.client][INFO] 2016-06-20 13:47:44,602: init_node, name[/cob_console], pid[13458]
+[xmlrpc][INFO] 2016-06-20 13:47:44,603: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-20 13:47:44,603: Started XML-RPC server [http://cmeintel-desktop:44132/]
+[rospy.impl.masterslave][INFO] 2016-06-20 13:47:44,603: _ready: http://cmeintel-desktop:44132/
+[rospy.init][INFO] 2016-06-20 13:47:44,603: ROS Slave URI: [http://cmeintel-desktop:44132/]
+[rospy.registration][INFO] 2016-06-20 13:47:44,604: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-20 13:47:44,604: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-20 13:47:44,704: registered with master
+[rospy.rosout][INFO] 2016-06-20 13:47:44,704: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-20 13:47:44,706: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-20 13:47:44,707: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-20 13:47:44,709: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-20 13:47:44,720: topic[/clock] adding connection to [http://cmeintel-desktop:36790/], count 0
+[rospy.internal][INFO] 2016-06-20 13:47:44,909: topic[/rosout] adding connection to [/rosout], count 0
+[rosout][INFO] 2016-06-20 13:49:43,230: Move <<sensorring>> to <<front>>
+[rospy.internal][INFO] 2016-06-20 13:49:43,254: topic[/sensorring/joint_trajectory_controller/state] adding connection to [http://cmeintel-desktop:36790/], count 0
+[rospy.internal][INFO] 2016-06-20 13:49:43,307: topic impl's ref count is zero, deleting topic /sensorring/joint_trajectory_controller/state...
+[rospy.internal][INFO] 2016-06-20 13:49:43,307: topic[/sensorring/joint_trajectory_controller/state] removing connection to http://cmeintel-desktop:36790/
+[rospy.internal][INFO] 2016-06-20 13:49:43,319: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/status] adding connection to [http://cmeintel-desktop:36790/], count 0
+[rospy.internal][INFO] 2016-06-20 13:49:43,323: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/result] adding connection to [http://cmeintel-desktop:36790/], count 0
+[rospy.internal][INFO] 2016-06-20 13:49:43,324: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/feedback] adding connection to [http://cmeintel-desktop:36790/], count 0
+[rospy.internal][INFO] 2016-06-20 13:49:43,478: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/goal] adding connection to [/gazebo], count 0
+[rospy.internal][INFO] 2016-06-20 13:49:43,580: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/cancel] adding connection to [/gazebo], count 0
+[rosout][INFO] 2016-06-20 13:49:43,587: Wait for <<sensorring>> reaching <<front>>...
+[rosout][INFO] 2016-06-20 13:49:43,824: ...<<sensorring>> reached <<front>>
+[rosout][INFO] 2016-06-20 13:50:06,710: Move <<sensorring>> to <<back>>
+[rospy.internal][INFO] 2016-06-20 13:50:06,743: topic[/sensorring/joint_trajectory_controller/state] adding connection to [http://cmeintel-desktop:36790/], count 0
+[rospy.internal][INFO] 2016-06-20 13:50:06,838: topic impl's ref count is zero, deleting topic /sensorring/joint_trajectory_controller/state...
+[rospy.internal][INFO] 2016-06-20 13:50:06,838: topic[/sensorring/joint_trajectory_controller/state] removing connection to http://cmeintel-desktop:36790/
+[rosout][INFO] 2016-06-20 13:50:06,843: Wait for <<sensorring>> reaching <<back>>...
+[rosout][INFO] 2016-06-20 13:50:14,254: ...<<sensorring>> reached <<back>>
+[rospy.core][INFO] 2016-06-20 13:50:22,655: signal_shutdown [atexit]
+[rospy.internal][INFO] 2016-06-20 13:50:22,658: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/goal] removing connection to /gazebo
+[rospy.internal][INFO] 2016-06-20 13:50:22,658: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/cancel] removing connection to /gazebo
+[rospy.internal][INFO] 2016-06-20 13:50:22,659: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-20 13:50:22,659: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/result] removing connection to http://cmeintel-desktop:36790/
+[rospy.internal][INFO] 2016-06-20 13:50:22,659: topic[/clock] removing connection to http://cmeintel-desktop:36790/
+[rospy.internal][INFO] 2016-06-20 13:50:22,659: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/feedback] removing connection to http://cmeintel-desktop:36790/
+[rospy.internal][INFO] 2016-06-20 13:50:22,659: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/status] removing connection to http://cmeintel-desktop:36790/
+[rospy.impl.masterslave][INFO] 2016-06-20 13:50:22,659: atexit
+[rospy.client][INFO] 2016-06-20 13:52:55,855: init_node, name[/cob_console], pid[13973]
+[xmlrpc][INFO] 2016-06-20 13:52:55,855: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-20 13:52:55,855: Started XML-RPC server [http://cmeintel-desktop:40600/]
+[rospy.impl.masterslave][INFO] 2016-06-20 13:52:55,855: _ready: http://cmeintel-desktop:40600/
+[rospy.init][INFO] 2016-06-20 13:52:55,856: ROS Slave URI: [http://cmeintel-desktop:40600/]
+[rospy.registration][INFO] 2016-06-20 13:52:55,856: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-20 13:52:55,857: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-20 13:52:55,956: registered with master
+[rospy.rosout][INFO] 2016-06-20 13:52:55,956: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-20 13:52:55,958: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-20 13:52:55,959: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-20 13:52:55,962: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-20 13:52:55,971: topic[/clock] adding connection to [http://cmeintel-desktop:36790/], count 0
+[rospy.internal][INFO] 2016-06-20 13:52:56,193: topic[/rosout] adding connection to [/rosout], count 0
+[rosout][INFO] 2016-06-20 13:53:16,204: Move <<sensorring>> to <<[1.5]>>
+[rosout][ERROR] 2016-06-20 13:53:16,206: no valid parameter for sensorring: not a list of lists or strings, aborting...
+[rospy.core][INFO] 2016-06-20 13:53:19,808: signal_shutdown [signal-2]
+[rospy.internal][INFO] 2016-06-20 13:53:19,810: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-20 13:53:19,810: topic[/clock] removing connection to http://cmeintel-desktop:36790/
+[rospy.impl.masterslave][INFO] 2016-06-20 13:53:19,811: signal-2
+[rosout][INFO] 2016-06-20 13:53:31,908: Move <<sensorring>> to <<[[1.5]]>>
+[rosout][WARNING] 2016-06-20 13:53:31,911: no joint states received from sensorring within timeout of 3.0sec. using default point time of 8sec.
+[rosout][ERROR] 2016-06-20 13:53:31,919: ActionServer /sensorring/joint_trajectory_controller/follow_joint_trajectory not ready within timeout, aborting...
+[rosout][INFO] 2016-06-20 13:53:46,732: Move <<sensorring>> to <<[[1.5, 0.0, 0.0]]>>
+[rosout][ERROR] 2016-06-20 13:53:46,733: no valid parameter for sensorring: dimension should be 1 and is 3, aborting...
+[rospy.core][INFO] 2016-06-20 13:53:57,751: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:53:59,442: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:53:59,993: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:00,282: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:00,529: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:00,771: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:07,158: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:07,478: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:07,691: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:10,924: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:11,191: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:11,411: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:11,599: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:11,787: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:15,250: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:15,451: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:20,899: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:21,143: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:21,344: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:21,540: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:23,075: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:28,613: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:28,830: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:29,015: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:29,197: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:29,393: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:29,571: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:54:29,744: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:12,070: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:12,248: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:12,405: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:12,567: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:12,722: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:28,934: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:29,242: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:29,520: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:29,735: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:29,955: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:30,182: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:30,390: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:39,954: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:40,395: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:40,704: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:40,930: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:44,182: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:44,376: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:44,553: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:52,378: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:52,575: signal_shutdown [signal-2]
+[rospy.core][INFO] 2016-06-20 13:55:52,750: signal_shutdown [signal-2]
+[rospy.client][INFO] 2016-06-20 13:56:03,150: init_node, name[/cob_console], pid[14350]
+[xmlrpc][INFO] 2016-06-20 13:56:03,150: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-20 13:56:03,151: Started XML-RPC server [http://cmeintel-desktop:35886/]
+[rospy.impl.masterslave][INFO] 2016-06-20 13:56:03,151: _ready: http://cmeintel-desktop:35886/
+[rospy.init][INFO] 2016-06-20 13:56:03,151: ROS Slave URI: [http://cmeintel-desktop:35886/]
+[rospy.registration][INFO] 2016-06-20 13:56:03,152: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-20 13:56:03,152: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-20 13:56:03,252: registered with master
+[rospy.rosout][INFO] 2016-06-20 13:56:03,252: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-20 13:56:03,256: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-20 13:56:03,258: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-20 13:56:03,260: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-20 13:56:03,266: topic[/clock] adding connection to [http://cmeintel-desktop:36790/], count 0
+[rospy.internal][INFO] 2016-06-20 13:56:03,513: topic[/rosout] adding connection to [/rosout], count 0
+[rosout][INFO] 2016-06-20 13:56:19,355: Move <<sensorring>> to <<[[1.5]]>>
+[rospy.internal][INFO] 2016-06-20 13:56:19,387: topic[/sensorring/joint_trajectory_controller/state] adding connection to [http://cmeintel-desktop:36790/], count 0
+[rospy.internal][INFO] 2016-06-20 13:56:19,405: topic impl's ref count is zero, deleting topic /sensorring/joint_trajectory_controller/state...
+[rospy.internal][INFO] 2016-06-20 13:56:19,405: topic[/sensorring/joint_trajectory_controller/state] removing connection to http://cmeintel-desktop:36790/
+[rospy.internal][INFO] 2016-06-20 13:56:19,438: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/result] adding connection to [http://cmeintel-desktop:36790/], count 0
+[rospy.internal][INFO] 2016-06-20 13:56:19,439: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/status] adding connection to [http://cmeintel-desktop:36790/], count 0
+[rospy.internal][INFO] 2016-06-20 13:56:19,439: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/feedback] adding connection to [http://cmeintel-desktop:36790/], count 0
+[rospy.internal][INFO] 2016-06-20 13:56:19,646: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/cancel] adding connection to [/gazebo], count 0
+[rospy.internal][INFO] 2016-06-20 13:56:19,646: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/goal] adding connection to [/gazebo], count 0
+[rosout][INFO] 2016-06-20 13:56:19,656: Wait for <<sensorring>> reaching <<[[1.5]]>>...
+[rosout][INFO] 2016-06-20 13:56:23,693: ...<<sensorring>> reached <<[[1.5]]>>
+[rospy.core][INFO] 2016-06-20 14:45:23,089: signal_shutdown [atexit]
+[rospy.internal][INFO] 2016-06-20 14:45:23,093: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/goal] removing connection to /gazebo
+[rospy.internal][INFO] 2016-06-20 14:45:23,093: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/cancel] removing connection to /gazebo
+[rospy.internal][INFO] 2016-06-20 14:45:23,093: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-20 14:45:23,093: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/result] removing connection to http://cmeintel-desktop:36790/
+[rospy.internal][INFO] 2016-06-20 14:45:23,093: topic[/clock] removing connection to http://cmeintel-desktop:36790/
+[rospy.internal][INFO] 2016-06-20 14:45:23,093: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/feedback] removing connection to http://cmeintel-desktop:36790/
+[rospy.internal][INFO] 2016-06-20 14:45:23,100: topic[/sensorring/joint_trajectory_controller/follow_joint_trajectory/status] removing connection to http://cmeintel-desktop:36790/
+[rospy.impl.masterslave][INFO] 2016-06-20 14:45:23,100: atexit
+[rospy.internal][WARNING] 2016-06-20 14:45:23,115: Unknown error initiating TCP/IP socket to cmeintel-desktop:43650 (http://cmeintel-desktop:36790/): Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 558, in connect
+    self.local_endpoint = self.socket.getsockname()
+AttributeError: 'NoneType' object has no attribute 'getsockname'
+
+[rospy.internal][ERROR] 2016-06-20 14:45:23,115: Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 698, in receive_once
+    self.stat_bytes += recv_buff(sock, b, p.buff_size)
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 103, in recv_buff
+    d = sock.recv(buff_size)
+error: [Errno 104] Connection reset by peer
+

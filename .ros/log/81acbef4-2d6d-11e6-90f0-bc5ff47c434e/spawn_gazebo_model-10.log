@@ -1,0 +1,22 @@
+[rospy.client][INFO] 2016-06-08 13:38:29,852: init_node, name[/spawn_gazebo_model], pid[12116]
+[xmlrpc][INFO] 2016-06-08 13:38:29,853: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-08 13:38:29,853: Started XML-RPC server [http://cmeintel-desktop:39968/]
+[rospy.impl.masterslave][INFO] 2016-06-08 13:38:29,853: _ready: http://cmeintel-desktop:39968/
+[rospy.registration][INFO] 2016-06-08 13:38:29,853: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-08 13:38:29,854: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-08 13:38:29,856: ROS Slave URI: [http://cmeintel-desktop:39968/]
+[rospy.init][INFO] 2016-06-08 13:38:29,856: registered with master
+[rospy.rosout][INFO] 2016-06-08 13:38:29,856: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-08 13:38:29,871: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-08 13:38:29,874: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-08 13:38:29,893: connected to core topic /clock
+[rosout][INFO] 2016-06-08 13:38:29,940: Loading model xml from ros parameter
+[rosout][INFO] 2016-06-08 13:38:29,969: Waiting for service /gazebo/spawn_urdf_model
+[rospy.internal][INFO] 2016-06-08 13:38:30,156: topic[/rosout] adding connection to [/rosout], count 0
+[rosout][INFO] 2016-06-08 13:38:31,221: Calling service /gazebo/spawn_urdf_model
+[rospy.internal][INFO] 2016-06-08 13:38:31,296: topic[/clock] adding connection to [http://cmeintel-desktop:32904/], count 0
+[rosout][INFO] 2016-06-08 13:38:34,739: Spawn status: SpawnModel: Successfully spawned model
+[rospy.core][INFO] 2016-06-08 13:38:34,739: signal_shutdown [atexit]
+[rospy.internal][INFO] 2016-06-08 13:38:34,743: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-08 13:38:34,743: topic[/clock] removing connection to http://cmeintel-desktop:32904/
+[rospy.impl.masterslave][INFO] 2016-06-08 13:38:34,743: atexit

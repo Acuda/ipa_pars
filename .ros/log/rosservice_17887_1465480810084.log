@@ -1,0 +1,15 @@
+[rospy.client][INFO] 2016-06-09 16:00:10,124: init_node, name[/rosservice_17887_1465480810084], pid[17887]
+[xmlrpc][INFO] 2016-06-09 16:00:10,124: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-09 16:00:10,124: Started XML-RPC server [http://cmeintel-desktop:42560/]
+[rospy.init][INFO] 2016-06-09 16:00:10,124: ROS Slave URI: [http://cmeintel-desktop:42560/]
+[rospy.impl.masterslave][INFO] 2016-06-09 16:00:10,124: _ready: http://cmeintel-desktop:42560/
+[rospy.registration][INFO] 2016-06-09 16:00:10,125: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-09 16:00:10,125: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-09 16:00:10,225: registered with master
+[rospy.rosout][INFO] 2016-06-09 16:00:10,225: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-09 16:00:10,226: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-09 16:00:10,228: /use_sim_time is not set, will not subscribe to simulated time [/clock] topic
+[rospy.internal][INFO] 2016-06-09 16:00:10,518: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.core][INFO] 2016-06-09 16:00:10,547: signal_shutdown [atexit]
+[rospy.internal][INFO] 2016-06-09 16:00:10,549: topic[/rosout] removing connection to /rosout
+[rospy.impl.masterslave][INFO] 2016-06-09 16:00:10,549: atexit

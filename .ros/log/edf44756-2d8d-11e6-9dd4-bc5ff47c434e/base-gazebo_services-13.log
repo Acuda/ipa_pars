@@ -1,0 +1,27 @@
+[rospy.client][INFO] 2016-06-08 17:30:35,773: init_node, name[/base/gazebo_services], pid[29029]
+[xmlrpc][INFO] 2016-06-08 17:30:35,773: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-08 17:30:35,773: Started XML-RPC server [http://cmeintel-desktop:37375/]
+[rospy.impl.masterslave][INFO] 2016-06-08 17:30:35,773: _ready: http://cmeintel-desktop:37375/
+[rospy.registration][INFO] 2016-06-08 17:30:35,774: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-08 17:30:35,774: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-08 17:30:35,775: ROS Slave URI: [http://cmeintel-desktop:37375/]
+[rospy.init][INFO] 2016-06-08 17:30:35,775: registered with master
+[rospy.rosout][INFO] 2016-06-08 17:30:35,775: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-08 17:30:35,806: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-08 17:30:35,811: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-08 17:30:35,845: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-08 17:30:36,001: topic[/rosout] adding connection to [/rosout], count 0
+[rosout][INFO] 2016-06-08 17:30:36,020: gazebo_services running
+[rospy.internal][INFO] 2016-06-08 17:30:37,953: topic[/clock] adding connection to [http://cmeintel-desktop:45336/], count 0
+[rospy.core][INFO] 2016-06-08 17:31:06,704: signal_shutdown [signal-2]
+[rospy.internal][INFO] 2016-06-08 17:31:06,707: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-08 17:31:06,707: topic[/clock] removing connection to http://cmeintel-desktop:45336/
+[rospy.impl.masterslave][INFO] 2016-06-08 17:31:06,707: signal-2
+[rospy.internal][ERROR] 2016-06-08 17:31:06,709: Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 698, in receive_once
+    self.stat_bytes += recv_buff(sock, b, p.buff_size)
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 103, in recv_buff
+    d = sock.recv(buff_size)
+error: [Errno 104] Connection reset by peer
+
+[rospy.core][INFO] 2016-06-08 17:31:06,840: signal_shutdown [atexit]

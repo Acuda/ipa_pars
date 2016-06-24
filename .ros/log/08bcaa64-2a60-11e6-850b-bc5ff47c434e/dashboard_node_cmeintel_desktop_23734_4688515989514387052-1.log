@@ -1,0 +1,27 @@
+[rospy.client][INFO] 2016-06-04 16:25:23,092: init_node, name[/dashboard_node_cmeintel_desktop_23734_4688515989514387052], pid[23752]
+[xmlrpc][INFO] 2016-06-04 16:25:23,093: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-04 16:25:23,093: Started XML-RPC server [http://cmeintel-desktop:36302/]
+[rospy.impl.masterslave][INFO] 2016-06-04 16:25:23,093: _ready: http://cmeintel-desktop:36302/
+[rospy.registration][INFO] 2016-06-04 16:25:23,093: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-04 16:25:23,093: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-04 16:25:23,094: ROS Slave URI: [http://cmeintel-desktop:36302/]
+[rospy.init][INFO] 2016-06-04 16:25:23,094: registered with master
+[rospy.rosout][INFO] 2016-06-04 16:25:23,094: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-04 16:25:23,096: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-04 16:25:23,097: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-04 16:25:23,100: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-04 16:25:23,104: topic[/clock] adding connection to [http://cmeintel-desktop:35019/], count 0
+[rospy.internal][INFO] 2016-06-04 16:25:23,364: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.internal][INFO] 2016-06-04 16:25:23,604: topic[/rosout_agg] adding connection to [http://cmeintel-desktop:46526/], count 0
+[rospy.internal][INFO] 2016-06-04 16:25:23,825: topic[/diagnostics_toplevel_state] adding connection to [http://cmeintel-desktop:33520/], count 0
+[rospy.internal][INFO] 2016-06-04 16:25:24,045: topic[/dashboard_agg] adding connection to [http://cmeintel-desktop:43023/], count 0
+[rospy.internal][INFO] 2016-06-04 16:28:00,411: topic impl's ref count is zero, deleting topic /diagnostics_toplevel_state...
+[rospy.internal][INFO] 2016-06-04 16:28:00,411: topic[/diagnostics_toplevel_state] removing connection to http://cmeintel-desktop:33520/
+[rospy.internal][INFO] 2016-06-04 16:28:00,413: topic impl's ref count is zero, deleting topic /rosout_agg...
+[rospy.internal][INFO] 2016-06-04 16:28:00,413: topic[/rosout_agg] removing connection to http://cmeintel-desktop:46526/
+[rospy.internal][INFO] 2016-06-04 16:28:00,414: topic impl's ref count is zero, deleting topic /dashboard_agg...
+[rospy.internal][INFO] 2016-06-04 16:28:00,414: topic[/dashboard_agg] removing connection to http://cmeintel-desktop:43023/
+[rospy.core][INFO] 2016-06-04 16:28:00,433: signal_shutdown [atexit]
+[rospy.internal][INFO] 2016-06-04 16:28:00,436: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-04 16:28:00,436: topic[/clock] removing connection to http://cmeintel-desktop:35019/
+[rospy.impl.masterslave][INFO] 2016-06-04 16:28:00,437: atexit

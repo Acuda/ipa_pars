@@ -1,0 +1,27 @@
+[rospy.client][INFO] 2016-06-10 12:13:42,247: init_node, name[/spawn_urdf_world], pid[7252]
+[xmlrpc][INFO] 2016-06-10 12:13:42,247: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-10 12:13:42,247: Started XML-RPC server [http://cmeintel-desktop:44953/]
+[rospy.impl.masterslave][INFO] 2016-06-10 12:13:42,247: _ready: http://cmeintel-desktop:44953/
+[rospy.init][INFO] 2016-06-10 12:13:42,247: ROS Slave URI: [http://cmeintel-desktop:44953/]
+[rospy.registration][INFO] 2016-06-10 12:13:42,251: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-10 12:13:42,251: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-10 12:13:42,348: registered with master
+[rospy.rosout][INFO] 2016-06-10 12:13:42,348: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-10 12:13:42,365: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-10 12:13:42,391: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-10 12:13:42,455: connected to core topic /clock
+[rosout][INFO] 2016-06-10 12:13:42,484: Loading model xml from ros parameter
+[rosout][INFO] 2016-06-10 12:13:42,534: Waiting for service /gazebo/spawn_urdf_model
+[rospy.internal][INFO] 2016-06-10 12:13:42,700: topic[/rosout] adding connection to [/rosout], count 0
+[rosout][INFO] 2016-06-10 12:13:44,446: Calling service /gazebo/spawn_urdf_model
+[rospy.internal][INFO] 2016-06-10 12:13:44,467: topic[/clock] adding connection to [http://cmeintel-desktop:38548/], count 0
+[rosout][INFO] 2016-06-10 12:13:44,843: Spawn status: SpawnModel: Successfully spawned model
+[rospy.core][INFO] 2016-06-10 12:13:44,844: signal_shutdown [atexit]
+[rospy.internal][INFO] 2016-06-10 12:13:44,846: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-10 12:13:44,846: topic[/clock] removing connection to http://cmeintel-desktop:38548/
+[rospy.impl.masterslave][INFO] 2016-06-10 12:13:44,846: atexit
+[rospy.internal][WARNING] 2016-06-10 12:13:44,846: Unknown error initiating TCP/IP socket to cmeintel-desktop:46903 (http://cmeintel-desktop:38548/): Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 558, in connect
+    self.local_endpoint = self.socket.getsockname()
+AttributeError: 'NoneType' object has no attribute 'getsockname'
+

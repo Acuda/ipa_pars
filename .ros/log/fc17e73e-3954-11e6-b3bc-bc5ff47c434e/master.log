@@ -1,0 +1,60 @@
+[rosmaster.main][INFO] 2016-06-23 17:13:05,583: initialization complete, waiting for shutdown
+[rosmaster.main][INFO] 2016-06-23 17:13:05,584: Starting ROS Master Node
+[xmlrpc][INFO] 2016-06-23 17:13:05,585: XML-RPC server binding to 0.0.0.0:11311
+[xmlrpc][INFO] 2016-06-23 17:13:05,585: Started XML-RPC server [http://cmeintel-desktop:11311/]
+[rosmaster.master][INFO] 2016-06-23 17:13:05,585: Master initialized: port[11311], uri[http://cmeintel-desktop:11311/]
+[xmlrpc][INFO] 2016-06-23 17:13:05,585: xml rpc node: starting XML-RPC server
+[rosmaster.master][INFO] 2016-06-23 17:13:05,654: +PARAM [/run_id] by /roslaunch
+[rosmaster.master][INFO] 2016-06-23 17:13:05,656: +PARAM [/roslaunch/uris/host_cmeintel_desktop__43841] by /roslaunch
+[rosmaster.master][INFO] 2016-06-23 17:13:05,794: +PARAM [/rosversion] by /roslaunch
+[rosmaster.master][INFO] 2016-06-23 17:13:05,794: +PARAM [/rosdistro] by /roslaunch
+[rosmaster.master][INFO] 2016-06-23 17:13:05,798: +SERVICE [/rosout/get_loggers] /rosout http://cmeintel-desktop:41359/
+[rosmaster.master][INFO] 2016-06-23 17:13:05,799: +SERVICE [/rosout/set_logger_level] /rosout http://cmeintel-desktop:41359/
+[rosmaster.master][INFO] 2016-06-23 17:13:05,800: +PUB [/rosout_agg] /rosout http://cmeintel-desktop:41359/
+[rosmaster.master][INFO] 2016-06-23 17:13:05,805: +SUB [/rosout] /rosout http://cmeintel-desktop:41359/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,057: +PUB [/rosout] /ipa_pars/knowledge_parser_server_spawner http://cmeintel-desktop:42088/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,061: +SERVICE [/ipa_pars/knowledge_parser_server_spawner/get_loggers] /ipa_pars/knowledge_parser_server_spawner http://cmeintel-desktop:42088/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,062: +SERVICE [/ipa_pars/knowledge_parser_server_spawner/set_logger_level] /ipa_pars/knowledge_parser_server_spawner http://cmeintel-desktop:42088/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,063: +PUB [/rosout] /ipa_pars/knowledge_parser_client_spawner http://cmeintel-desktop:36152/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,064: +PUB [/ipa_pars/knowledge_parser_server/status] /ipa_pars/knowledge_parser_server_spawner http://cmeintel-desktop:42088/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,066: +PUB [/ipa_pars/knowledge_parser_server/result] /ipa_pars/knowledge_parser_server_spawner http://cmeintel-desktop:42088/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,067: +SERVICE [/ipa_pars/knowledge_parser_client_spawner/get_loggers] /ipa_pars/knowledge_parser_client_spawner http://cmeintel-desktop:36152/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,068: +PUB [/ipa_pars/knowledge_parser_server/feedback] /ipa_pars/knowledge_parser_server_spawner http://cmeintel-desktop:42088/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,068: +SERVICE [/ipa_pars/knowledge_parser_client_spawner/set_logger_level] /ipa_pars/knowledge_parser_client_spawner http://cmeintel-desktop:36152/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,070: +SUB [/ipa_pars/knowledge_parser_server/goal] /ipa_pars/knowledge_parser_server_spawner http://cmeintel-desktop:42088/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,071: +PUB [/ipa_pars/knowledge_parser_server/goal] /ipa_pars/knowledge_parser_client_spawner http://cmeintel-desktop:36152/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,072: +PUB [/ipa_pars/knowledge_parser_server/cancel] /ipa_pars/knowledge_parser_client_spawner http://cmeintel-desktop:36152/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,073: +SUB [/ipa_pars/knowledge_parser_server/cancel] /ipa_pars/knowledge_parser_server_spawner http://cmeintel-desktop:42088/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,075: +SUB [/ipa_pars/knowledge_parser_server/status] /ipa_pars/knowledge_parser_client_spawner http://cmeintel-desktop:36152/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,078: +SUB [/ipa_pars/knowledge_parser_server/result] /ipa_pars/knowledge_parser_client_spawner http://cmeintel-desktop:36152/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,080: +SUB [/ipa_pars/knowledge_parser_server/feedback] /ipa_pars/knowledge_parser_client_spawner http://cmeintel-desktop:36152/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,084: publisherUpdate[/rosout] -> http://cmeintel-desktop:41359/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,085: publisherUpdate[/ipa_pars/knowledge_parser_server/goal] -> http://cmeintel-desktop:42088/
+[rosmaster.master][INFO] 2016-06-23 17:13:06,086: publisherUpdate[/rosout] -> http://cmeintel-desktop:41359/
+[rosmaster.master][INFO] 2016-06-23 17:13:07,512: -SUB [/ipa_pars/knowledge_parser_server/result] /ipa_pars/knowledge_parser_client_spawner http://cmeintel-desktop:36152/
+[rosmaster.master][INFO] 2016-06-23 17:13:07,513: -SUB [/ipa_pars/knowledge_parser_server/status] /ipa_pars/knowledge_parser_client_spawner http://cmeintel-desktop:36152/
+[rosmaster.master][INFO] 2016-06-23 17:13:07,513: -SUB [/ipa_pars/knowledge_parser_server/feedback] /ipa_pars/knowledge_parser_client_spawner http://cmeintel-desktop:36152/
+[rosmaster.master][INFO] 2016-06-23 17:13:07,513: -PUB [/rosout] /ipa_pars/knowledge_parser_client_spawner http://cmeintel-desktop:36152/
+[rosmaster.master][INFO] 2016-06-23 17:13:07,513: -PUB [/ipa_pars/knowledge_parser_server/cancel] /ipa_pars/knowledge_parser_client_spawner http://cmeintel-desktop:36152/
+[rosmaster.master][INFO] 2016-06-23 17:13:07,513: -PUB [/ipa_pars/knowledge_parser_server/goal] /ipa_pars/knowledge_parser_client_spawner http://cmeintel-desktop:36152/
+[rosmaster.master][INFO] 2016-06-23 17:13:07,513: -SERVICE [/ipa_pars/knowledge_parser_client_spawner/get_loggers] /ipa_pars/knowledge_parser_client_spawner rosrpc://cmeintel-desktop:45864
+[rosmaster.master][INFO] 2016-06-23 17:13:07,514: -SERVICE [/ipa_pars/knowledge_parser_client_spawner/set_logger_level] /ipa_pars/knowledge_parser_client_spawner rosrpc://cmeintel-desktop:45864
+[rosmaster.master][INFO] 2016-06-23 17:13:07,587: publisherUpdate[/rosout] -> http://cmeintel-desktop:41359/
+[rosmaster.master][INFO] 2016-06-23 17:13:07,588: publisherUpdate[/ipa_pars/knowledge_parser_server/cancel] -> http://cmeintel-desktop:42088/
+[rosmaster.master][INFO] 2016-06-23 17:13:07,591: publisherUpdate[/ipa_pars/knowledge_parser_server/goal] -> http://cmeintel-desktop:42088/
+[rosmaster.master][INFO] 2016-06-23 17:13:11,950: -SUB [/ipa_pars/knowledge_parser_server/cancel] /ipa_pars/knowledge_parser_server_spawner http://cmeintel-desktop:42088/
+[rosmaster.master][INFO] 2016-06-23 17:13:11,950: -SUB [/ipa_pars/knowledge_parser_server/goal] /ipa_pars/knowledge_parser_server_spawner http://cmeintel-desktop:42088/
+[rosmaster.master][INFO] 2016-06-23 17:13:11,951: -PUB [/ipa_pars/knowledge_parser_server/result] /ipa_pars/knowledge_parser_server_spawner http://cmeintel-desktop:42088/
+[rosmaster.master][INFO] 2016-06-23 17:13:11,951: -PUB [/rosout] /ipa_pars/knowledge_parser_server_spawner http://cmeintel-desktop:42088/
+[rosmaster.master][INFO] 2016-06-23 17:13:11,951: -PUB [/ipa_pars/knowledge_parser_server/status] /ipa_pars/knowledge_parser_server_spawner http://cmeintel-desktop:42088/
+[rosmaster.master][INFO] 2016-06-23 17:13:11,951: -PUB [/ipa_pars/knowledge_parser_server/feedback] /ipa_pars/knowledge_parser_server_spawner http://cmeintel-desktop:42088/
+[rosmaster.master][INFO] 2016-06-23 17:13:11,951: -SERVICE [/ipa_pars/knowledge_parser_server_spawner/set_logger_level] /ipa_pars/knowledge_parser_server_spawner rosrpc://cmeintel-desktop:32973
+[rosmaster.master][INFO] 2016-06-23 17:13:11,952: -SERVICE [/ipa_pars/knowledge_parser_server_spawner/get_loggers] /ipa_pars/knowledge_parser_server_spawner rosrpc://cmeintel-desktop:32973
+[rosmaster.master][INFO] 2016-06-23 17:13:11,995: publisherUpdate[/rosout] -> http://cmeintel-desktop:41359/
+[rosmaster.master][INFO] 2016-06-23 17:13:12,296: -PUB [/rosout_agg] /rosout http://cmeintel-desktop:41359/
+[rosmaster.master][INFO] 2016-06-23 17:13:12,297: -SUB [/rosout] /rosout http://cmeintel-desktop:41359/
+[rosmaster.master][INFO] 2016-06-23 17:13:12,298: -SERVICE [/rosout/get_loggers] /rosout rosrpc://cmeintel-desktop:49553
+[rosmaster.master][INFO] 2016-06-23 17:13:12,299: -SERVICE [/rosout/set_logger_level] /rosout rosrpc://cmeintel-desktop:49553
+[rosmaster.main][INFO] 2016-06-23 17:13:12,350: keyboard interrupt, will exit
+[rosmaster.main][INFO] 2016-06-23 17:13:12,350: stopping master...
+[rospy.core][INFO] 2016-06-23 17:13:12,351: signal_shutdown [atexit]

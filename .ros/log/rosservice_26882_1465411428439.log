@@ -1,0 +1,23 @@
+[rospy.client][INFO] 2016-06-08 20:43:48,488: init_node, name[/rosservice_26882_1465411428439], pid[26882]
+[xmlrpc][INFO] 2016-06-08 20:43:48,488: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-08 20:43:48,488: Started XML-RPC server [http://cmeintel-desktop:44143/]
+[rospy.init][INFO] 2016-06-08 20:43:48,488: ROS Slave URI: [http://cmeintel-desktop:44143/]
+[rospy.impl.masterslave][INFO] 2016-06-08 20:43:48,489: _ready: http://cmeintel-desktop:44143/
+[rospy.registration][INFO] 2016-06-08 20:43:48,489: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-08 20:43:48,491: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-08 20:43:48,589: registered with master
+[rospy.rosout][INFO] 2016-06-08 20:43:48,589: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-08 20:43:48,591: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-08 20:43:48,592: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-08 20:43:48,593: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-08 20:43:48,618: topic[/clock] adding connection to [http://cmeintel-desktop:46374/], count 0
+[rospy.core][INFO] 2016-06-08 20:43:48,653: signal_shutdown [atexit]
+[rospy.internal][INFO] 2016-06-08 20:43:48,659: topic[/clock] removing connection to http://cmeintel-desktop:46374/
+[rospy.impl.masterslave][INFO] 2016-06-08 20:43:48,659: atexit
+[rospy.internal][ERROR] 2016-06-08 20:43:48,659: Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 698, in receive_once
+    self.stat_bytes += recv_buff(sock, b, p.buff_size)
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 103, in recv_buff
+    d = sock.recv(buff_size)
+error: [Errno 104] Connection reset by peer
+

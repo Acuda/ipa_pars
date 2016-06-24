@@ -1,0 +1,27 @@
+[rospy.client][INFO] 2016-06-08 16:29:44,002: init_node, name[/torso/gazebo_services], pid[17796]
+[xmlrpc][INFO] 2016-06-08 16:29:44,003: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-08 16:29:44,003: Started XML-RPC server [http://cmeintel-desktop:32992/]
+[rospy.impl.masterslave][INFO] 2016-06-08 16:29:44,003: _ready: http://cmeintel-desktop:32992/
+[rospy.registration][INFO] 2016-06-08 16:29:44,004: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-08 16:29:44,004: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-08 16:29:44,004: ROS Slave URI: [http://cmeintel-desktop:32992/]
+[rospy.init][INFO] 2016-06-08 16:29:44,004: registered with master
+[rospy.rosout][INFO] 2016-06-08 16:29:44,004: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-08 16:29:44,240: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-08 16:29:44,244: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-08 16:29:44,267: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-08 16:29:44,529: topic[/rosout] adding connection to [/rosout], count 0
+[rosout][INFO] 2016-06-08 16:29:45,352: gazebo_services running
+[rospy.internal][INFO] 2016-06-08 16:29:45,886: topic[/clock] adding connection to [http://cmeintel-desktop:36048/], count 0
+[rospy.core][INFO] 2016-06-08 16:38:48,117: signal_shutdown [signal-2]
+[rospy.internal][INFO] 2016-06-08 16:38:48,120: topic[/rosout] removing connection to /rosout
+[rospy.internal][ERROR] 2016-06-08 16:38:48,120: Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 698, in receive_once
+    self.stat_bytes += recv_buff(sock, b, p.buff_size)
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 103, in recv_buff
+    d = sock.recv(buff_size)
+error: [Errno 104] Connection reset by peer
+
+[rospy.internal][INFO] 2016-06-08 16:38:48,122: topic[/clock] removing connection to http://cmeintel-desktop:36048/
+[rospy.impl.masterslave][INFO] 2016-06-08 16:38:48,123: signal-2
+[rospy.core][INFO] 2016-06-08 16:38:48,741: signal_shutdown [atexit]

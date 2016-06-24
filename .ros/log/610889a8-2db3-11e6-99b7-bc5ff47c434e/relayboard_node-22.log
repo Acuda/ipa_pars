@@ -1,0 +1,26 @@
+[rospy.client][INFO] 2016-06-08 21:58:40,065: init_node, name[/relayboard_node], pid[14479]
+[xmlrpc][INFO] 2016-06-08 21:58:40,065: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-08 21:58:40,065: Started XML-RPC server [http://cmeintel-desktop:41081/]
+[rospy.impl.masterslave][INFO] 2016-06-08 21:58:40,066: _ready: http://cmeintel-desktop:41081/
+[rospy.init][INFO] 2016-06-08 21:58:40,066: ROS Slave URI: [http://cmeintel-desktop:41081/]
+[rospy.registration][INFO] 2016-06-08 21:58:40,066: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-08 21:58:40,066: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-08 21:58:40,166: registered with master
+[rospy.rosout][INFO] 2016-06-08 21:58:40,166: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-08 21:58:40,197: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-08 21:58:40,214: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-08 21:58:40,241: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-08 21:58:40,427: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.internal][INFO] 2016-06-08 21:58:42,306: topic[/clock] adding connection to [http://cmeintel-desktop:40601/], count 0
+[rospy.internal][INFO] 2016-06-08 21:58:43,437: topic[/emergency_stop_state] adding connection to [/dashboard_aggregator], count 0
+[rospy.core][INFO] 2016-06-09 00:17:05,788: signal_shutdown [signal-2]
+[rospy.internal][INFO] 2016-06-09 00:17:05,791: topic[/emergency_stop_state] removing connection to /dashboard_aggregator
+[rospy.internal][INFO] 2016-06-09 00:17:05,791: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-09 00:17:05,792: topic[/clock] removing connection to http://cmeintel-desktop:40601/
+[rospy.impl.masterslave][INFO] 2016-06-09 00:17:05,792: signal-2
+[rospy.internal][WARNING] 2016-06-09 00:17:05,802: Unknown error initiating TCP/IP socket to cmeintel-desktop:38203 (http://cmeintel-desktop:40601/): Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 558, in connect
+    self.local_endpoint = self.socket.getsockname()
+AttributeError: 'NoneType' object has no attribute 'getsockname'
+
+[rospy.core][INFO] 2016-06-09 00:17:05,961: signal_shutdown [atexit]

@@ -1,0 +1,35 @@
+[rospy.client][INFO] 2016-06-04 16:20:16,820: init_node, name[/joint_state_publisher], pid[11481]
+[xmlrpc][INFO] 2016-06-04 16:20:16,821: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-04 16:20:16,821: Started XML-RPC server [http://cmeintel-desktop:45965/]
+[rospy.impl.masterslave][INFO] 2016-06-04 16:20:16,821: _ready: http://cmeintel-desktop:45965/
+[rospy.registration][INFO] 2016-06-04 16:20:16,822: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-04 16:20:16,822: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-04 16:20:16,832: ROS Slave URI: [http://cmeintel-desktop:45965/]
+[rospy.init][INFO] 2016-06-04 16:20:16,832: registered with master
+[rospy.rosout][INFO] 2016-06-04 16:20:16,832: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-04 16:20:16,844: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-04 16:20:16,853: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-04 16:20:16,905: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-04 16:20:17,183: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.internal][INFO] 2016-06-04 16:20:18,695: topic[/clock] adding connection to [http://cmeintel-desktop:35444/], count 0
+[rospy.internal][INFO] 2016-06-04 16:20:18,720: topic[/joint_states] adding connection to [/robot_state_publisher], count 0
+[rospy.internal][INFO] 2016-06-04 16:20:27,636: topic[/base/joint_states] adding connection to [http://cmeintel-desktop:35444/], count 0
+[rospy.internal][INFO] 2016-06-04 16:20:27,636: topic[/torso/joint_states] adding connection to [http://cmeintel-desktop:35444/], count 0
+[rospy.internal][INFO] 2016-06-04 16:20:27,750: topic[/sensorring/joint_states] adding connection to [http://cmeintel-desktop:35444/], count 0
+[rospy.internal][INFO] 2016-06-04 16:20:28,163: topic[/arm_left/joint_states] adding connection to [http://cmeintel-desktop:35444/], count 0
+[rospy.internal][INFO] 2016-06-04 16:20:28,227: topic[/arm_right/joint_states] adding connection to [http://cmeintel-desktop:35444/], count 0
+[rospy.internal][INFO] 2016-06-04 16:20:30,231: topic[/gripper_right/joint_states] adding connection to [http://cmeintel-desktop:35444/], count 0
+[rospy.internal][INFO] 2016-06-04 16:20:30,346: topic[/gripper_left/joint_states] adding connection to [http://cmeintel-desktop:35444/], count 0
+[rospy.core][INFO] 2016-06-04 16:21:36,369: signal_shutdown [signal-2]
+[rospy.internal][INFO] 2016-06-04 16:21:36,383: topic[/joint_states] removing connection to /robot_state_publisher
+[rospy.internal][INFO] 2016-06-04 16:21:36,383: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-04 16:21:36,383: topic[/arm_right/joint_states] removing connection to http://cmeintel-desktop:35444/
+[rospy.internal][INFO] 2016-06-04 16:21:36,383: topic[/torso/joint_states] removing connection to http://cmeintel-desktop:35444/
+[rospy.internal][INFO] 2016-06-04 16:21:36,383: topic[/sensorring/joint_states] removing connection to http://cmeintel-desktop:35444/
+[rospy.internal][INFO] 2016-06-04 16:21:36,383: topic[/clock] removing connection to http://cmeintel-desktop:35444/
+[rospy.internal][INFO] 2016-06-04 16:21:36,383: topic[/base/joint_states] removing connection to http://cmeintel-desktop:35444/
+[rospy.internal][INFO] 2016-06-04 16:21:36,384: topic[/gripper_left/joint_states] removing connection to http://cmeintel-desktop:35444/
+[rospy.internal][INFO] 2016-06-04 16:21:36,384: topic[/arm_left/joint_states] removing connection to http://cmeintel-desktop:35444/
+[rospy.internal][INFO] 2016-06-04 16:21:36,384: topic[/gripper_right/joint_states] removing connection to http://cmeintel-desktop:35444/
+[rospy.impl.masterslave][INFO] 2016-06-04 16:21:36,384: signal-2
+[rospy.core][INFO] 2016-06-04 16:21:36,999: signal_shutdown [atexit]

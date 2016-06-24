@@ -1,0 +1,39 @@
+[rospy.client][INFO] 2016-06-10 12:13:43,080: init_node, name[/dashboard_aggregator], pid[7887]
+[xmlrpc][INFO] 2016-06-10 12:13:43,082: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-10 12:13:43,082: Started XML-RPC server [http://cmeintel-desktop:34689/]
+[rospy.impl.masterslave][INFO] 2016-06-10 12:13:43,082: _ready: http://cmeintel-desktop:34689/
+[rospy.init][INFO] 2016-06-10 12:13:43,083: ROS Slave URI: [http://cmeintel-desktop:34689/]
+[rospy.registration][INFO] 2016-06-10 12:13:43,084: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-10 12:13:43,084: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-10 12:13:43,183: registered with master
+[rospy.rosout][INFO] 2016-06-10 12:13:43,184: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-10 12:13:43,188: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-10 12:13:43,192: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-10 12:13:43,201: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-10 12:13:43,333: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.internal][INFO] 2016-06-10 12:13:44,513: topic[/clock] adding connection to [http://cmeintel-desktop:38548/], count 0
+[rospy.internal][INFO] 2016-06-10 12:13:46,628: topic[/diagnostics_toplevel_state] adding connection to [http://cmeintel-desktop:40260/], count 0
+[rospy.internal][INFO] 2016-06-10 12:13:46,628: topic[/emergency_stop_state] adding connection to [http://cmeintel-desktop:41403/], count 0
+[rospy.core][INFO] 2016-06-10 12:34:35,594: signal_shutdown [signal-2]
+[rospy.internal][INFO] 2016-06-10 12:34:35,610: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-10 12:34:35,610: topic[/diagnostics_toplevel_state] removing connection to http://cmeintel-desktop:40260/
+[rospy.internal][INFO] 2016-06-10 12:34:35,611: topic[/clock] removing connection to http://cmeintel-desktop:38548/
+[rospy.internal][INFO] 2016-06-10 12:34:35,611: topic[/emergency_stop_state] removing connection to http://cmeintel-desktop:41403/
+[rospy.impl.masterslave][INFO] 2016-06-10 12:34:35,611: signal-2
+[rospy.internal][WARNING] 2016-06-10 12:34:35,611: Unknown error initiating TCP/IP socket to cmeintel-desktop:34593 (http://cmeintel-desktop:41403/): Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 557, in connect
+    self.read_header()
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 619, in read_header
+    self._validate_header(read_ros_handshake_header(sock, self.read_buff, self.protocol.buff_size))
+AttributeError: 'NoneType' object has no attribute 'buff_size'
+
+[rospy.internal][WARNING] 2016-06-10 12:34:35,789: Unknown error initiating TCP/IP socket to cmeintel-desktop:34832 (http://cmeintel-desktop:40260/): Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 557, in connect
+    self.read_header()
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 619, in read_header
+    self._validate_header(read_ros_handshake_header(sock, self.read_buff, self.protocol.buff_size))
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rosgraph/network.py", line 363, in read_ros_handshake_header
+    d = sock.recv(buff_size)
+error: [Errno 104] Connection reset by peer
+
+[rospy.core][INFO] 2016-06-10 12:34:36,230: signal_shutdown [atexit]

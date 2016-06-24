@@ -1,0 +1,35 @@
+[rospy.client][INFO] 2016-06-09 15:32:15,011: init_node, name[/elevator], pid[14733]
+[xmlrpc][INFO] 2016-06-09 15:32:15,011: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-09 15:32:15,011: Started XML-RPC server [http://cmeintel-desktop:45623/]
+[rospy.impl.masterslave][INFO] 2016-06-09 15:32:15,012: _ready: http://cmeintel-desktop:45623/
+[rospy.registration][INFO] 2016-06-09 15:32:15,012: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-09 15:32:15,012: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-09 15:32:15,024: ROS Slave URI: [http://cmeintel-desktop:45623/]
+[rospy.init][INFO] 2016-06-09 15:32:15,024: registered with master
+[rospy.rosout][INFO] 2016-06-09 15:32:15,024: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-09 15:32:15,026: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-09 15:32:15,027: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-09 15:32:15,028: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-09 15:32:15,259: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.internal][INFO] 2016-06-09 15:32:15,708: topic[/clock] adding connection to [http://cmeintel-desktop:37211/], count 0
+[rospy.internal][INFO] 2016-06-09 15:32:16,272: topic[/elevator_button1_bumper] adding connection to [http://cmeintel-desktop:37211/], count 0
+[rospy.core][INFO] 2016-06-09 15:33:20,271: signal_shutdown [signal-2]
+[rospy.internal][INFO] 2016-06-09 15:33:20,273: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-09 15:33:20,274: topic[/clock] removing connection to http://cmeintel-desktop:37211/
+[rospy.internal][WARNING] 2016-06-09 15:33:20,274: Unknown error initiating TCP/IP socket to cmeintel-desktop:50086 (http://cmeintel-desktop:37211/): Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 557, in connect
+    self.read_header()
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 619, in read_header
+    self._validate_header(read_ros_handshake_header(sock, self.read_buff, self.protocol.buff_size))
+AttributeError: 'NoneType' object has no attribute 'buff_size'
+
+[rospy.topics][ERROR] 2016-06-09 15:33:20,274: Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/topics.py", line 307, in close
+    c.close()
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 807, in close
+    self.socket.close()
+AttributeError: 'NoneType' object has no attribute 'close'
+
+[rospy.internal][INFO] 2016-06-09 15:33:20,274: topic[/elevator_button1_bumper] removing connection to http://cmeintel-desktop:37211/
+[rospy.impl.masterslave][INFO] 2016-06-09 15:33:20,275: signal-2
+[rospy.core][INFO] 2016-06-09 15:33:20,390: signal_shutdown [atexit]

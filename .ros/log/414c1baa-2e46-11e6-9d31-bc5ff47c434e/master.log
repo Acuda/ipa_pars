@@ -1,0 +1,249 @@
+[rosmaster.main][INFO] 2016-06-09 15:29:57,635: initialization complete, waiting for shutdown
+[rosmaster.main][INFO] 2016-06-09 15:29:57,636: Starting ROS Master Node
+[xmlrpc][INFO] 2016-06-09 15:29:57,637: XML-RPC server binding to 0.0.0.0:11311
+[xmlrpc][INFO] 2016-06-09 15:29:57,637: Started XML-RPC server [http://cmeintel-desktop:11311/]
+[xmlrpc][INFO] 2016-06-09 15:29:57,637: xml rpc node: starting XML-RPC server
+[rosmaster.master][INFO] 2016-06-09 15:29:57,637: Master initialized: port[11311], uri[http://cmeintel-desktop:11311/]
+[rosmaster.master][INFO] 2016-06-09 15:29:57,684: +PARAM [/run_id] by /roslaunch
+[rosmaster.master][INFO] 2016-06-09 15:29:57,686: +PARAM [/roslaunch/uris/host_cmeintel_desktop__37021] by /roslaunch
+[rosmaster.master][INFO] 2016-06-09 15:29:57,798: +PARAM [/world_description] by /roslaunch
+[rosmaster.master][INFO] 2016-06-09 15:29:57,798: +PARAM [/use_sim_time] by /roslaunch
+[rosmaster.master][INFO] 2016-06-09 15:29:57,799: +PARAM [/rosdistro] by /roslaunch
+[rosmaster.master][INFO] 2016-06-09 15:29:57,799: +PARAM [/world/elevator_left_joint_position_controller/joint] by /roslaunch
+[rosmaster.master][INFO] 2016-06-09 15:29:57,799: +PARAM [/world/elevator_right_joint_position_controller/type] by /roslaunch
+[rosmaster.master][INFO] 2016-06-09 15:29:57,799: +PARAM [/world/elevator_button2_joint_position_controller/joint] by /roslaunch
+[rosmaster.master][INFO] 2016-06-09 15:29:57,799: +PARAM [/world/world_joint_state_controller/type] by /roslaunch
+[rosmaster.master][INFO] 2016-06-09 15:29:57,799: +SERVICE [/rosout/get_loggers] /rosout http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:29:57,799: +PARAM [/world/elevator_left_joint_position_controller/type] by /roslaunch
+[rosmaster.master][INFO] 2016-06-09 15:29:57,800: +PARAM [/world/elevator_button1_joint_position_controller/type] by /roslaunch
+[rosmaster.master][INFO] 2016-06-09 15:29:57,800: +PARAM [/world/elevator_button2_joint_position_controller/type] by /roslaunch
+[rosmaster.master][INFO] 2016-06-09 15:29:57,800: +SERVICE [/rosout/set_logger_level] /rosout http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:29:57,800: +PARAM [/rosversion] by /roslaunch
+[rosmaster.master][INFO] 2016-06-09 15:29:57,801: +PARAM [/world/joint_names] by /roslaunch
+[rosmaster.master][INFO] 2016-06-09 15:29:57,801: +PARAM [/world/world_joint_state_controller/publish_rate] by /roslaunch
+[rosmaster.master][INFO] 2016-06-09 15:29:57,801: +PARAM [/world/elevator_right_joint_position_controller/joint] by /roslaunch
+[rosmaster.master][INFO] 2016-06-09 15:29:57,802: +PARAM [/world/elevator_button1_joint_position_controller/joint] by /roslaunch
+[rosmaster.master][INFO] 2016-06-09 15:29:57,805: +SUB [/clock] /rosout http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:29:57,805: +PUB [/rosout_agg] /rosout http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:29:57,809: +SUB [/rosout] /rosout http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:29:57,831: +PUB [/rosout] /world_state_publisher http://cmeintel-desktop:37326/
+[rosmaster.master][INFO] 2016-06-09 15:29:57,831: +SERVICE [/world_state_publisher/get_loggers] /world_state_publisher http://cmeintel-desktop:37326/
+[rosmaster.master][INFO] 2016-06-09 15:29:57,832: +SERVICE [/world_state_publisher/set_logger_level] /world_state_publisher http://cmeintel-desktop:37326/
+[rosmaster.master][INFO] 2016-06-09 15:29:57,840: publisherUpdate[/rosout] -> http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:29:57,846: +SUB [/clock] /world_state_publisher http://cmeintel-desktop:37326/
+[rosmaster.master][INFO] 2016-06-09 15:29:57,863: +PUB [/tf] /world_state_publisher http://cmeintel-desktop:37326/
+[rosmaster.master][INFO] 2016-06-09 15:29:57,868: +PUB [/tf_static] /world_state_publisher http://cmeintel-desktop:37326/
+[rosmaster.master][INFO] 2016-06-09 15:29:57,873: +SUB [/world/joint_states] /world_state_publisher http://cmeintel-desktop:37326/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,124: +PUB [/rosout] /elevator http://cmeintel-desktop:41374/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,126: +SUB [/clock] /elevator http://cmeintel-desktop:41374/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,128: +SERVICE [/elevator/get_loggers] /elevator http://cmeintel-desktop:41374/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,128: +SERVICE [/elevator/set_logger_level] /elevator http://cmeintel-desktop:41374/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,130: +SUB [/elevator_button1_bumper] /elevator http://cmeintel-desktop:41374/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,141: publisherUpdate[/rosout] -> http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,155: +PUB [/rosout] /spawn_urdf_world http://cmeintel-desktop:39126/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,158: +SUB [/clock] /spawn_urdf_world http://cmeintel-desktop:39126/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,160: +SERVICE [/spawn_urdf_world/get_loggers] /spawn_urdf_world http://cmeintel-desktop:39126/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,161: +SERVICE [/spawn_urdf_world/set_logger_level] /spawn_urdf_world http://cmeintel-desktop:39126/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,202: +PUB [/rosout] /world_tf_publisher http://cmeintel-desktop:44400/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,206: +SUB [/clock] /world_tf_publisher http://cmeintel-desktop:44400/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,208: +SERVICE [/world_tf_publisher/get_loggers] /world_tf_publisher http://cmeintel-desktop:44400/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,208: +SERVICE [/world_tf_publisher/set_logger_level] /world_tf_publisher http://cmeintel-desktop:44400/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,209: +PUB [/tf] /world_tf_publisher http://cmeintel-desktop:44400/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,242: publisherUpdate[/rosout] -> http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,242: publisherUpdate[/rosout] -> http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,251: +PUB [/rosout] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,252: +SERVICE [/gazebo/get_loggers] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,252: +SERVICE [/gazebo/set_logger_level] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,255: +SUB [/clock] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,342: publisherUpdate[/rosout] -> http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,810: +PUB [/clock] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,811: +SERVICE [/gazebo/spawn_gazebo_model] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,812: +SERVICE [/gazebo/spawn_sdf_model] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,813: +SERVICE [/gazebo/spawn_urdf_model] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,813: +SERVICE [/gazebo/delete_model] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,813: +SERVICE [/gazebo/get_model_properties] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,814: +SERVICE [/gazebo/get_model_state] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,815: +SERVICE [/gazebo/get_world_properties] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,816: +SERVICE [/gazebo/get_joint_properties] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,817: +SERVICE [/gazebo/get_link_properties] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,818: +SERVICE [/gazebo/get_link_state] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,819: +SERVICE [/gazebo/get_physics_properties] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,820: +PUB [/gazebo/link_states] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,821: +PUB [/gazebo/model_states] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,822: +SERVICE [/gazebo/set_link_properties] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,823: +SERVICE [/gazebo/set_physics_properties] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,824: +SERVICE [/gazebo/set_model_state] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,825: +SERVICE [/gazebo/set_model_configuration] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,825: +SERVICE [/gazebo/set_joint_properties] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,826: +SERVICE [/gazebo/set_link_state] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,829: +SUB [/gazebo/set_link_state] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,832: +SUB [/gazebo/set_model_state] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,833: +SERVICE [/gazebo/pause_physics] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,833: +SERVICE [/gazebo/unpause_physics] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,834: +SERVICE [/gazebo/apply_body_wrench] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,835: +SERVICE [/gazebo/apply_joint_effort] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,835: +SERVICE [/gazebo/clear_joint_forces] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,836: +SERVICE [/gazebo/clear_body_wrenches] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,837: +SERVICE [/gazebo/reset_simulation] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,837: +SERVICE [/gazebo/reset_world] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,838: +PARAM [/use_sim_time] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,843: publisherUpdate[/clock] -> http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,844: publisherUpdate[/clock] -> http://cmeintel-desktop:37326/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,844: publisherUpdate[/clock] -> http://cmeintel-desktop:41374/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,845: publisherUpdate[/clock] -> http://cmeintel-desktop:39126/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,845: publisherUpdate[/clock] -> http://cmeintel-desktop:44400/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,846: publisherUpdate[/clock] -> http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,864: +SERVICE [/gazebo/set_parameters] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,865: +PUB [/gazebo/parameter_descriptions] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,865: +PUB [/gazebo/parameter_updates] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:58,873: +PARAM [/gazebo/time_step] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,874: +PARAM [/gazebo/max_update_rate] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,874: +PARAM [/gazebo/gravity_x] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,875: +PARAM [/gazebo/gravity_y] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,876: +PARAM [/gazebo/gravity_z] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,876: +PARAM [/gazebo/auto_disable_bodies] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,877: +PARAM [/gazebo/sor_pgs_precon_iters] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,877: +PARAM [/gazebo/sor_pgs_iters] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,878: +PARAM [/gazebo/sor_pgs_w] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,879: +PARAM [/gazebo/sor_pgs_rms_error_tol] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,879: +PARAM [/gazebo/cfm] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,880: +PARAM [/gazebo/erp] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,881: +PARAM [/gazebo/contact_surface_layer] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,881: +PARAM [/gazebo/contact_max_correcting_vel] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,882: +PARAM [/gazebo/max_contacts] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,884: +PARAM [/gazebo/time_step] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,884: +PARAM [/gazebo/max_update_rate] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,885: +PARAM [/gazebo/gravity_x] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,885: +PARAM [/gazebo/gravity_y] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,886: +PARAM [/gazebo/gravity_z] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,886: +PARAM [/gazebo/auto_disable_bodies] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,887: +PARAM [/gazebo/sor_pgs_precon_iters] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,888: +PARAM [/gazebo/sor_pgs_iters] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,888: +PARAM [/gazebo/sor_pgs_w] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,889: +PARAM [/gazebo/sor_pgs_rms_error_tol] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,889: +PARAM [/gazebo/cfm] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,890: +PARAM [/gazebo/erp] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,890: +PARAM [/gazebo/contact_surface_layer] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,891: +PARAM [/gazebo/contact_max_correcting_vel] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:58,891: +PARAM [/gazebo/max_contacts] by /gazebo
+[rosmaster.master][INFO] 2016-06-09 15:29:59,599: +PUB [/elevator_button1_bumper] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:59,601: +PUB [/elevator_button2_bumper] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:59,621: -SUB [/clock] /spawn_urdf_world http://cmeintel-desktop:39126/
+[rosmaster.master][INFO] 2016-06-09 15:29:59,621: -PUB [/rosout] /spawn_urdf_world http://cmeintel-desktop:39126/
+[rosmaster.master][INFO] 2016-06-09 15:29:59,622: -SERVICE [/spawn_urdf_world/set_logger_level] /spawn_urdf_world rosrpc://cmeintel-desktop:40906
+[rosmaster.master][INFO] 2016-06-09 15:29:59,622: -SERVICE [/spawn_urdf_world/get_loggers] /spawn_urdf_world rosrpc://cmeintel-desktop:40906
+[rosmaster.master][INFO] 2016-06-09 15:29:59,648: publisherUpdate[/elevator_button1_bumper] -> http://cmeintel-desktop:41374/
+[rosmaster.master][INFO] 2016-06-09 15:29:59,648: publisherUpdate[/rosout] -> http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:29:59,890: +SERVICE [/world/controller_manager/list_controllers] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:59,890: +SERVICE [/world/controller_manager/list_controller_types] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:59,891: +SERVICE [/world/controller_manager/load_controller] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:59,892: +SERVICE [/world/controller_manager/unload_controller] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:59,892: +SERVICE [/world/controller_manager/switch_controller] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:29:59,893: +SERVICE [/world/controller_manager/reload_controller_libraries] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:30:00,049: +PUB [/world/joint_states] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:30:00,149: publisherUpdate[/world/joint_states] -> http://cmeintel-desktop:37326/
+[rosmaster.master][INFO] 2016-06-09 15:30:00,193: +SUB [/world/elevator_left_joint_position_controller/command] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:30:00,207: +SUB [/world/elevator_right_joint_position_controller/command] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:30:00,214: +SUB [/world/elevator_button1_joint_position_controller/command] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:30:00,219: +SUB [/world/elevator_button2_joint_position_controller/command] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:30:09,393: +PUB [/rosout] /spawn_model http://cmeintel-desktop:35239/
+[rosmaster.master][INFO] 2016-06-09 15:30:09,397: +SUB [/clock] /spawn_model http://cmeintel-desktop:35239/
+[rosmaster.master][INFO] 2016-06-09 15:30:09,398: +SERVICE [/spawn_model/get_loggers] /spawn_model http://cmeintel-desktop:35239/
+[rosmaster.master][INFO] 2016-06-09 15:30:09,400: +SERVICE [/spawn_model/set_logger_level] /spawn_model http://cmeintel-desktop:35239/
+[rosmaster.master][INFO] 2016-06-09 15:30:09,459: publisherUpdate[/rosout] -> http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:30:19,545: -SUB [/clock] /spawn_model http://cmeintel-desktop:35239/
+[rosmaster.master][INFO] 2016-06-09 15:30:19,545: -PUB [/rosout] /spawn_model http://cmeintel-desktop:35239/
+[rosmaster.master][INFO] 2016-06-09 15:30:19,546: -SERVICE [/spawn_model/set_logger_level] /spawn_model rosrpc://cmeintel-desktop:45910
+[rosmaster.master][INFO] 2016-06-09 15:30:19,546: -SERVICE [/spawn_model/get_loggers] /spawn_model rosrpc://cmeintel-desktop:45910
+[rosmaster.master][INFO] 2016-06-09 15:30:19,571: publisherUpdate[/rosout] -> http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:30:41,985: +PUB [/rosout] /spawn_model http://cmeintel-desktop:35512/
+[rosmaster.master][INFO] 2016-06-09 15:30:41,988: +SUB [/clock] /spawn_model http://cmeintel-desktop:35512/
+[rosmaster.master][INFO] 2016-06-09 15:30:41,990: +SERVICE [/spawn_model/get_loggers] /spawn_model http://cmeintel-desktop:35512/
+[rosmaster.master][INFO] 2016-06-09 15:30:41,991: +SERVICE [/spawn_model/set_logger_level] /spawn_model http://cmeintel-desktop:35512/
+[rosmaster.master][INFO] 2016-06-09 15:30:41,998: publisherUpdate[/rosout] -> http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:30:52,128: -SUB [/clock] /spawn_model http://cmeintel-desktop:35512/
+[rosmaster.master][INFO] 2016-06-09 15:30:52,128: -PUB [/rosout] /spawn_model http://cmeintel-desktop:35512/
+[rosmaster.master][INFO] 2016-06-09 15:30:52,128: -SERVICE [/spawn_model/set_logger_level] /spawn_model rosrpc://cmeintel-desktop:37994
+[rosmaster.master][INFO] 2016-06-09 15:30:52,128: -SERVICE [/spawn_model/get_loggers] /spawn_model rosrpc://cmeintel-desktop:37994
+[rosmaster.master][INFO] 2016-06-09 15:30:52,211: publisherUpdate[/rosout] -> http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,705: -SUB [/clock] /elevator http://cmeintel-desktop:41374/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,705: -SUB [/elevator_button1_bumper] /elevator http://cmeintel-desktop:41374/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,705: -PUB [/rosout] /elevator http://cmeintel-desktop:41374/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,706: -SERVICE [/elevator/set_logger_level] /elevator rosrpc://cmeintel-desktop:43081
+[rosmaster.master][INFO] 2016-06-09 15:31:16,706: -SERVICE [/elevator/get_loggers] /elevator rosrpc://cmeintel-desktop:43081
+[rosmaster.master][INFO] 2016-06-09 15:31:16,707: -SUB [/clock] /world_tf_publisher http://cmeintel-desktop:44400/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,707: -PUB [/rosout] /world_tf_publisher http://cmeintel-desktop:44400/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,707: -PUB [/tf] /world_tf_publisher http://cmeintel-desktop:44400/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,707: -SERVICE [/world_tf_publisher/set_logger_level] /world_tf_publisher rosrpc://cmeintel-desktop:38825
+[rosmaster.master][INFO] 2016-06-09 15:31:16,707: -SERVICE [/world_tf_publisher/get_loggers] /world_tf_publisher rosrpc://cmeintel-desktop:38825
+[rosmaster.master][INFO] 2016-06-09 15:31:16,740: publisherUpdate[/rosout] -> http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,741: -PUB [/rosout] /world_state_publisher http://cmeintel-desktop:37326/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,741: publisherUpdate[/rosout] -> http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,742: -PUB [/tf] /world_state_publisher http://cmeintel-desktop:37326/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,742: publisherUpdate[/rosout] -> http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,743: -PUB [/tf_static] /world_state_publisher http://cmeintel-desktop:37326/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,743: -SUB [/clock] /world_state_publisher http://cmeintel-desktop:37326/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,744: -SUB [/world/joint_states] /world_state_publisher http://cmeintel-desktop:37326/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,745: -SERVICE [/world_state_publisher/get_loggers] /world_state_publisher rosrpc://cmeintel-desktop:35349
+[rosmaster.master][INFO] 2016-06-09 15:31:16,745: -SERVICE [/world_state_publisher/set_logger_level] /world_state_publisher rosrpc://cmeintel-desktop:35349
+[rosmaster.master][INFO] 2016-06-09 15:31:16,897: -SUB [/gazebo/set_link_state] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,898: -SUB [/gazebo/set_model_state] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,899: -PUB [/clock] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,901: -PUB [/gazebo/link_states] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,901: -PUB [/gazebo/model_states] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,902: -SERVICE [/gazebo/spawn_gazebo_model] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,903: -SERVICE [/gazebo/spawn_sdf_model] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,904: -SERVICE [/gazebo/spawn_urdf_model] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,905: -SERVICE [/gazebo/delete_model] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,906: -SERVICE [/gazebo/get_model_properties] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,907: -SERVICE [/gazebo/get_model_state] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,908: -SERVICE [/gazebo/get_world_properties] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,909: -SERVICE [/gazebo/get_joint_properties] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,909: -SERVICE [/gazebo/get_link_properties] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,910: -SERVICE [/gazebo/get_link_state] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,911: -SERVICE [/gazebo/get_physics_properties] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,912: -SERVICE [/gazebo/set_link_properties] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,913: -SERVICE [/gazebo/set_physics_properties] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,914: -SERVICE [/gazebo/set_model_state] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,916: -SERVICE [/gazebo/set_model_configuration] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,918: -SERVICE [/gazebo/set_joint_properties] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,919: -SERVICE [/gazebo/set_link_state] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,921: -SERVICE [/gazebo/pause_physics] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,923: -SERVICE [/gazebo/unpause_physics] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,924: -SERVICE [/gazebo/apply_body_wrench] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,925: -SERVICE [/gazebo/apply_joint_effort] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,927: -SERVICE [/gazebo/clear_joint_forces] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,927: -SERVICE [/gazebo/clear_body_wrenches] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,928: -SERVICE [/gazebo/reset_simulation] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,929: -SERVICE [/gazebo/reset_world] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,931: -PUB [/gazebo/parameter_descriptions] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,931: -PUB [/gazebo/parameter_updates] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,932: -SERVICE [/gazebo/set_parameters] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,940: publisherUpdate[/clock] -> http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,941: publisherUpdate[/clock] -> http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,944: -SERVICE [/world/controller_manager/reload_controller_libraries] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,945: -SERVICE [/world/controller_manager/switch_controller] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,946: -SERVICE [/world/controller_manager/unload_controller] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,946: -SERVICE [/world/controller_manager/load_controller] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,947: -SERVICE [/world/controller_manager/list_controller_types] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,948: -SERVICE [/world/controller_manager/list_controllers] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:16,949: -PUB [/world/joint_states] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,949: -SUB [/world/elevator_left_joint_position_controller/command] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,950: -SUB [/world/elevator_right_joint_position_controller/command] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,951: -SUB [/world/elevator_button1_joint_position_controller/command] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,952: -SUB [/world/elevator_button2_joint_position_controller/command] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,953: -PUB [/elevator_button1_bumper] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:31:16,954: -PUB [/elevator_button2_bumper] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:31:17,043: -PUB [/rosout] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:31:17,043: publisherUpdate[/rosout] -> http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:31:17,044: -SUB [/clock] /gazebo http://cmeintel-desktop:35777/
+[rosmaster.master][INFO] 2016-06-09 15:31:17,045: -SERVICE [/gazebo/get_loggers] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:17,046: -SERVICE [/gazebo/set_logger_level] /gazebo rosrpc://cmeintel-desktop:43336
+[rosmaster.master][INFO] 2016-06-09 15:31:17,345: -PUB [/rosout_agg] /rosout http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:31:17,345: -SUB [/clock] /rosout http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:31:17,346: -SUB [/rosout] /rosout http://cmeintel-desktop:33492/
+[rosmaster.master][INFO] 2016-06-09 15:31:17,347: -SERVICE [/rosout/get_loggers] /rosout rosrpc://cmeintel-desktop:42257
+[rosmaster.master][INFO] 2016-06-09 15:31:17,347: -SERVICE [/rosout/set_logger_level] /rosout rosrpc://cmeintel-desktop:42257
+[rosmaster.main][INFO] 2016-06-09 15:31:17,408: keyboard interrupt, will exit
+[rosmaster.main][INFO] 2016-06-09 15:31:17,408: stopping master...
+[rospy.core][INFO] 2016-06-09 15:31:17,408: signal_shutdown [atexit]

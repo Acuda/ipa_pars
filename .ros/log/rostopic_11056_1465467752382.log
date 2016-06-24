@@ -1,0 +1,24 @@
+[rospy.client][INFO] 2016-06-09 12:22:32,422: init_node, name[/rostopic_11056_1465467752382], pid[11056]
+[xmlrpc][INFO] 2016-06-09 12:22:32,423: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-09 12:22:32,423: Started XML-RPC server [http://cmeintel-desktop:35043/]
+[rospy.impl.masterslave][INFO] 2016-06-09 12:22:32,423: _ready: http://cmeintel-desktop:35043/
+[rospy.init][INFO] 2016-06-09 12:22:32,423: ROS Slave URI: [http://cmeintel-desktop:35043/]
+[rospy.registration][INFO] 2016-06-09 12:22:32,423: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-09 12:22:32,424: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-09 12:22:32,524: registered with master
+[rospy.rosout][INFO] 2016-06-09 12:22:32,524: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-09 12:22:32,525: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-09 12:22:32,526: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-09 12:22:32,529: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-09 12:22:32,545: topic[/clock] adding connection to [http://cmeintel-desktop:38681/], count 0
+[rospy.internal][INFO] 2016-06-09 12:22:32,739: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.core][INFO] 2016-06-09 12:22:34,813: signal_shutdown [signal-2]
+[rospy.internal][INFO] 2016-06-09 12:22:34,815: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-09 12:22:34,816: topic[/clock] removing connection to http://cmeintel-desktop:38681/
+[rospy.impl.masterslave][INFO] 2016-06-09 12:22:34,816: signal-2
+[rospy.internal][WARNING] 2016-06-09 12:22:34,820: Unknown error initiating TCP/IP socket to cmeintel-desktop:40458 (http://cmeintel-desktop:38681/): Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 558, in connect
+    self.local_endpoint = self.socket.getsockname()
+AttributeError: 'NoneType' object has no attribute 'getsockname'
+
+[rospy.core][INFO] 2016-06-09 12:22:34,980: signal_shutdown [atexit]

@@ -1,0 +1,25 @@
+[rospy.client][INFO] 2016-06-08 13:34:46,204: init_node, name[/arm_right/gazebo_services], pid[5720]
+[xmlrpc][INFO] 2016-06-08 13:34:46,204: XML-RPC server binding to 0.0.0.0:0
+[rospy.init][INFO] 2016-06-08 13:34:46,205: ROS Slave URI: [http://cmeintel-desktop:34182/]
+[xmlrpc][INFO] 2016-06-08 13:34:46,205: Started XML-RPC server [http://cmeintel-desktop:34182/]
+[rospy.impl.masterslave][INFO] 2016-06-08 13:34:46,205: _ready: http://cmeintel-desktop:34182/
+[rospy.registration][INFO] 2016-06-08 13:34:46,205: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-08 13:34:46,206: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-08 13:34:46,305: registered with master
+[rospy.rosout][INFO] 2016-06-08 13:34:46,305: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-08 13:34:46,309: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-08 13:34:46,320: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-08 13:34:46,327: connected to core topic /clock
+[rosout][INFO] 2016-06-08 13:34:46,359: gazebo_services running
+[rospy.internal][INFO] 2016-06-08 13:34:46,607: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.internal][INFO] 2016-06-08 13:34:51,082: topic[/clock] adding connection to [http://cmeintel-desktop:38557/], count 0
+[rospy.core][INFO] 2016-06-08 13:37:45,046: signal_shutdown [signal-2]
+[rospy.internal][INFO] 2016-06-08 13:37:45,050: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-08 13:37:45,050: topic[/clock] removing connection to http://cmeintel-desktop:38557/
+[rospy.impl.masterslave][INFO] 2016-06-08 13:37:45,050: signal-2
+[rospy.internal][WARNING] 2016-06-08 13:37:45,050: Unknown error initiating TCP/IP socket to cmeintel-desktop:43876 (http://cmeintel-desktop:38557/): Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 558, in connect
+    self.local_endpoint = self.socket.getsockname()
+AttributeError: 'NoneType' object has no attribute 'getsockname'
+
+[rospy.core][INFO] 2016-06-08 13:37:45,154: signal_shutdown [atexit]

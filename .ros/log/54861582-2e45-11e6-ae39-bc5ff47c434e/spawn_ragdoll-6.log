@@ -1,0 +1,28 @@
+[rospy.client][INFO] 2016-06-09 15:23:53,206: init_node, name[/spawn_ragdoll], pid[12482]
+[xmlrpc][INFO] 2016-06-09 15:23:53,206: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-09 15:23:53,206: Started XML-RPC server [http://cmeintel-desktop:43582/]
+[rospy.init][INFO] 2016-06-09 15:23:53,206: ROS Slave URI: [http://cmeintel-desktop:43582/]
+[rospy.impl.masterslave][INFO] 2016-06-09 15:23:53,206: _ready: http://cmeintel-desktop:43582/
+[xmlrpc][INFO] 2016-06-09 15:23:53,207: xml rpc node: starting XML-RPC server
+[rospy.registration][INFO] 2016-06-09 15:23:53,207: Registering with master node http://localhost:11311
+[rospy.init][INFO] 2016-06-09 15:23:53,307: registered with master
+[rospy.rosout][INFO] 2016-06-09 15:23:53,307: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-09 15:23:53,309: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-09 15:23:53,314: /use_sim_time is not set, will not subscribe to simulated time [/clock] topic
+[rosout][INFO] 2016-06-09 15:23:53,316: Loading model xml from file
+[rospy.core][INFO] 2016-06-09 15:23:53,316: signal_shutdown [atexit]
+[rospy.impl.masterslave][INFO] 2016-06-09 15:23:53,322: atexit
+[rospy.client][INFO] 2016-06-09 15:25:02,981: init_node, name[/spawn_ragdoll], pid[12792]
+[xmlrpc][INFO] 2016-06-09 15:25:02,982: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-09 15:25:02,982: Started XML-RPC server [http://cmeintel-desktop:39875/]
+[rospy.impl.masterslave][INFO] 2016-06-09 15:25:02,982: _ready: http://cmeintel-desktop:39875/
+[rospy.registration][INFO] 2016-06-09 15:25:02,983: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-09 15:25:02,983: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-09 15:25:02,985: ROS Slave URI: [http://cmeintel-desktop:39875/]
+[rospy.init][INFO] 2016-06-09 15:25:02,985: registered with master
+[rospy.rosout][INFO] 2016-06-09 15:25:02,986: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-09 15:25:02,987: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-09 15:25:02,989: /use_sim_time is not set, will not subscribe to simulated time [/clock] topic
+[rosout][INFO] 2016-06-09 15:25:02,998: Loading model xml from file
+[rospy.core][INFO] 2016-06-09 15:25:02,998: signal_shutdown [atexit]
+[rospy.impl.masterslave][INFO] 2016-06-09 15:25:03,000: atexit

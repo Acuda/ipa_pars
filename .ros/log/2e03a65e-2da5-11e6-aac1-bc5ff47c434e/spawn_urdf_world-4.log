@@ -1,0 +1,29 @@
+[rospy.client][INFO] 2016-06-08 20:17:01,466: init_node, name[/spawn_urdf_world], pid[10695]
+[xmlrpc][INFO] 2016-06-08 20:17:01,466: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-08 20:17:01,470: Started XML-RPC server [http://cmeintel-desktop:36869/]
+[rospy.impl.masterslave][INFO] 2016-06-08 20:17:01,470: _ready: http://cmeintel-desktop:36869/
+[rospy.init][INFO] 2016-06-08 20:17:01,470: ROS Slave URI: [http://cmeintel-desktop:36869/]
+[rospy.registration][INFO] 2016-06-08 20:17:01,474: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-08 20:17:01,474: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-08 20:17:01,571: registered with master
+[rospy.rosout][INFO] 2016-06-08 20:17:01,571: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-08 20:17:01,610: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-08 20:17:01,619: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-08 20:17:01,631: connected to core topic /clock
+[rosout][INFO] 2016-06-08 20:17:01,656: Loading model xml from ros parameter
+[rosout][INFO] 2016-06-08 20:17:01,719: Waiting for service /gazebo/spawn_urdf_model
+[rospy.internal][INFO] 2016-06-08 20:17:01,859: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.internal][INFO] 2016-06-08 20:17:04,622: topic[/clock] adding connection to [http://cmeintel-desktop:43625/], count 0
+[rosout][INFO] 2016-06-08 20:17:04,630: Calling service /gazebo/spawn_urdf_model
+[rospy.core][INFO] 2016-06-08 20:17:33,762: signal_shutdown [signal-2]
+[rospy.internal][INFO] 2016-06-08 20:17:33,764: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-08 20:17:33,764: topic[/clock] removing connection to http://cmeintel-desktop:43625/
+[rospy.impl.masterslave][INFO] 2016-06-08 20:17:33,764: signal-2
+[rospy.internal][ERROR] 2016-06-08 20:17:33,880: Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 698, in receive_once
+    self.stat_bytes += recv_buff(sock, b, p.buff_size)
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 103, in recv_buff
+    d = sock.recv(buff_size)
+error: [Errno 4] Interrupted system call
+
+[rospy.core][INFO] 2016-06-08 20:17:33,889: signal_shutdown [atexit]

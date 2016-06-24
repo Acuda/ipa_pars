@@ -1,0 +1,23 @@
+[rospy.client][INFO] 2016-06-08 17:33:50,755: init_node, name[/rosservice_10296_1465400030649], pid[10296]
+[xmlrpc][INFO] 2016-06-08 17:33:50,755: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-08 17:33:50,755: Started XML-RPC server [http://cmeintel-desktop:46128/]
+[rospy.impl.masterslave][INFO] 2016-06-08 17:33:50,756: _ready: http://cmeintel-desktop:46128/
+[rospy.init][INFO] 2016-06-08 17:33:50,756: ROS Slave URI: [http://cmeintel-desktop:46128/]
+[rospy.registration][INFO] 2016-06-08 17:33:50,756: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-08 17:33:50,756: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-08 17:33:50,856: registered with master
+[rospy.rosout][INFO] 2016-06-08 17:33:50,856: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-08 17:33:50,857: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-08 17:33:50,859: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-08 17:33:50,860: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-08 17:33:50,871: topic[/clock] adding connection to [http://cmeintel-desktop:42622/], count 0
+[rospy.core][INFO] 2016-06-08 17:33:51,006: signal_shutdown [atexit]
+[rospy.internal][INFO] 2016-06-08 17:33:51,009: topic[/clock] removing connection to http://cmeintel-desktop:42622/
+[rospy.impl.masterslave][INFO] 2016-06-08 17:33:51,009: atexit
+[rospy.internal][WARNING] 2016-06-08 17:33:51,010: Unknown error initiating TCP/IP socket to cmeintel-desktop:58393 (http://cmeintel-desktop:42622/): Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 557, in connect
+    self.read_header()
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 619, in read_header
+    self._validate_header(read_ros_handshake_header(sock, self.read_buff, self.protocol.buff_size))
+AttributeError: 'NoneType' object has no attribute 'buff_size'
+

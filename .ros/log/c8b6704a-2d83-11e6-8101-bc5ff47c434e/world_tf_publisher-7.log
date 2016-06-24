@@ -1,0 +1,57 @@
+[rospy.client][INFO] 2016-06-08 16:17:58,018: init_node, name[/world_tf_publisher], pid[860]
+[xmlrpc][INFO] 2016-06-08 16:17:58,018: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-08 16:17:58,018: Started XML-RPC server [http://cmeintel-desktop:40510/]
+[rospy.impl.masterslave][INFO] 2016-06-08 16:17:58,018: _ready: http://cmeintel-desktop:40510/
+[rospy.registration][INFO] 2016-06-08 16:17:58,019: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-08 16:17:58,019: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-08 16:17:58,022: ROS Slave URI: [http://cmeintel-desktop:40510/]
+[rospy.init][INFO] 2016-06-08 16:17:58,022: registered with master
+[rospy.rosout][INFO] 2016-06-08 16:17:58,022: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-08 16:17:58,049: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-08 16:17:58,052: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-08 16:17:58,103: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-08 16:17:58,232: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.internal][INFO] 2016-06-08 16:17:58,434: topic[/tf] adding connection to [/arm_right/frame_tracker], count 0
+[rospy.internal][INFO] 2016-06-08 16:17:58,448: topic[/tf] adding connection to [/arm_left/frame_tracker], count 1
+[rospy.internal][INFO] 2016-06-08 16:17:58,665: topic[/tf] adding connection to [/image_flip_torso_cam3d_right/image_flip_torso_cam3d_right], count 2
+[rospy.internal][INFO] 2016-06-08 16:17:58,776: topic[/tf] adding connection to [/image_flip_sensorring_cam3d/image_flip_sensorring_cam3d], count 3
+[rospy.internal][INFO] 2016-06-08 16:17:59,012: topic[/tf] adding connection to [/torso/twist_controller], count 4
+[rospy.internal][INFO] 2016-06-08 16:17:59,044: topic[/tf] adding connection to [/scan_unifier], count 5
+[rospy.internal][INFO] 2016-06-08 16:17:59,220: topic[/tf] adding connection to [/torso/obstacle_distance], count 6
+[rospy.internal][INFO] 2016-06-08 16:17:59,220: topic[/tf] adding connection to [/arm_left/interactive_target], count 7
+[rospy.internal][INFO] 2016-06-08 16:17:59,259: topic[/tf] adding connection to [/arm_left/twist_controller], count 8
+[rospy.internal][INFO] 2016-06-08 16:17:59,260: topic[/tf] adding connection to [/arm_left/obstacle_distance], count 9
+[rospy.internal][INFO] 2016-06-08 16:17:59,431: topic[/tf] adding connection to [/arm_right/twist_controller], count 10
+[rospy.internal][INFO] 2016-06-08 16:17:59,439: topic[/tf] adding connection to [/arm_right/obstacle_distance], count 11
+[rospy.internal][INFO] 2016-06-08 16:17:59,571: topic[/tf] adding connection to [/image_flip_torso_cam3d_left/image_flip_torso_cam3d_left], count 12
+[rospy.internal][INFO] 2016-06-08 16:17:59,615: topic[/clock] adding connection to [http://cmeintel-desktop:43043/], count 0
+[rospy.internal][INFO] 2016-06-08 16:18:00,023: topic[/tf] adding connection to [/torso/interactive_target], count 13
+[rospy.internal][INFO] 2016-06-08 16:18:00,115: topic[/tf] adding connection to [/torso/frame_tracker], count 14
+[rospy.internal][INFO] 2016-06-08 16:18:00,271: topic[/tf] adding connection to [/arm_right/interactive_target], count 15
+[rospy.internal][INFO] 2016-06-08 16:23:41,273: topic[/tf] adding connection to [/rviz_cmeintel_desktop_7757_7522169894785362133], count 16
+[rospy.internal][INFO] 2016-06-08 16:24:03,601: topic[/tf] removing connection to /rviz_cmeintel_desktop_7757_7522169894785362133
+[rospy.internal][INFO] 2016-06-08 16:24:33,675: topic[/tf] adding connection to [/amcl], count 16
+[rospy.internal][INFO] 2016-06-08 16:24:33,676: topic[/tf] adding connection to [/move_base], count 17
+[rospy.internal][INFO] 2016-06-08 16:24:36,723: topic[/tf] removing connection to /move_base
+[rospy.internal][INFO] 2016-06-08 16:24:42,714: topic[/tf] removing connection to /amcl
+[rospy.core][INFO] 2016-06-08 16:24:49,757: signal_shutdown [signal-2]
+[rospy.internal][INFO] 2016-06-08 16:24:49,761: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-08 16:24:49,761: topic[/tf] removing connection to /arm_right/frame_tracker
+[rospy.internal][INFO] 2016-06-08 16:24:49,762: topic[/tf] removing connection to /arm_left/frame_tracker
+[rospy.internal][INFO] 2016-06-08 16:24:49,762: topic[/tf] removing connection to /image_flip_torso_cam3d_right/image_flip_torso_cam3d_right
+[rospy.internal][INFO] 2016-06-08 16:24:49,762: topic[/tf] removing connection to /image_flip_sensorring_cam3d/image_flip_sensorring_cam3d
+[rospy.internal][INFO] 2016-06-08 16:24:49,762: topic[/tf] removing connection to /torso/twist_controller
+[rospy.internal][INFO] 2016-06-08 16:24:49,762: topic[/tf] removing connection to /scan_unifier
+[rospy.internal][INFO] 2016-06-08 16:24:49,763: topic[/tf] removing connection to /torso/obstacle_distance
+[rospy.internal][INFO] 2016-06-08 16:24:49,763: topic[/tf] removing connection to /arm_left/interactive_target
+[rospy.internal][INFO] 2016-06-08 16:24:49,763: topic[/tf] removing connection to /arm_left/twist_controller
+[rospy.internal][INFO] 2016-06-08 16:24:49,763: topic[/tf] removing connection to /arm_left/obstacle_distance
+[rospy.internal][INFO] 2016-06-08 16:24:49,763: topic[/tf] removing connection to /arm_right/twist_controller
+[rospy.internal][INFO] 2016-06-08 16:24:49,767: topic[/tf] removing connection to /arm_right/obstacle_distance
+[rospy.internal][INFO] 2016-06-08 16:24:49,767: topic[/tf] removing connection to /image_flip_torso_cam3d_left/image_flip_torso_cam3d_left
+[rospy.internal][INFO] 2016-06-08 16:24:49,767: topic[/tf] removing connection to /torso/interactive_target
+[rospy.internal][INFO] 2016-06-08 16:24:49,767: topic[/tf] removing connection to /torso/frame_tracker
+[rospy.internal][INFO] 2016-06-08 16:24:49,768: topic[/tf] removing connection to /arm_right/interactive_target
+[rospy.internal][INFO] 2016-06-08 16:24:49,768: topic[/clock] removing connection to http://cmeintel-desktop:43043/
+[rospy.impl.masterslave][INFO] 2016-06-08 16:24:49,768: signal-2
+[rospy.core][INFO] 2016-06-08 16:24:49,876: signal_shutdown [atexit]

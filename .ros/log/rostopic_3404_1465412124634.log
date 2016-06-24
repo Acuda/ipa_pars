@@ -1,0 +1,14 @@
+[rospy.client][INFO] 2016-06-08 20:55:24,690: init_node, name[/rostopic_3404_1465412124634], pid[3404]
+[xmlrpc][INFO] 2016-06-08 20:55:24,691: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-08 20:55:24,691: Started XML-RPC server [http://cmeintel-desktop:43894/]
+[rospy.init][INFO] 2016-06-08 20:55:24,691: ROS Slave URI: [http://cmeintel-desktop:43894/]
+[rospy.impl.masterslave][INFO] 2016-06-08 20:55:24,691: _ready: http://cmeintel-desktop:43894/
+[rospy.registration][INFO] 2016-06-08 20:55:24,692: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-08 20:55:24,692: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-08 20:55:24,791: registered with master
+[rospy.internal][INFO] 2016-06-08 20:55:25,055: topic[/initialpose] adding connection to [/amcl], count 0
+[rospy.core][INFO] 2016-06-09 00:20:32,207: signal_shutdown [signal-15]
+[rospy.registration][WARNING] 2016-06-09 00:20:32,208: cannot unregister with master due to network issues
+[rospy.internal][INFO] 2016-06-09 00:20:32,208: topic[/initialpose] removing connection to /amcl
+[rospy.impl.masterslave][INFO] 2016-06-09 00:20:32,208: signal-15
+[rospy.core][INFO] 2016-06-09 00:20:32,340: signal_shutdown [atexit]

@@ -1,0 +1,24 @@
+[rospy.client][INFO] 2016-06-10 11:58:32,797: init_node, name[/behavior], pid[2070]
+[xmlrpc][INFO] 2016-06-10 11:58:32,797: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-10 11:58:32,798: Started XML-RPC server [http://cmeintel-desktop:35163/]
+[rospy.impl.masterslave][INFO] 2016-06-10 11:58:32,798: _ready: http://cmeintel-desktop:35163/
+[rospy.registration][INFO] 2016-06-10 11:58:32,798: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-10 11:58:32,798: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-10 11:58:32,799: ROS Slave URI: [http://cmeintel-desktop:35163/]
+[rospy.init][INFO] 2016-06-10 11:58:32,799: registered with master
+[rospy.rosout][INFO] 2016-06-10 11:58:32,799: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-10 11:58:32,801: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-10 11:58:32,802: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-10 11:58:32,805: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-10 11:58:33,051: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.internal][INFO] 2016-06-10 11:58:33,170: topic[/clock] adding connection to [http://cmeintel-desktop:44180/], count 0
+[rospy.core][INFO] 2016-06-10 12:07:00,422: signal_shutdown [signal-2]
+[rospy.internal][INFO] 2016-06-10 12:07:00,442: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-10 12:07:00,442: topic[/clock] removing connection to http://cmeintel-desktop:44180/
+[rospy.impl.masterslave][INFO] 2016-06-10 12:07:00,442: signal-2
+[rospy.internal][WARNING] 2016-06-10 12:07:00,467: Unknown error initiating TCP/IP socket to cmeintel-desktop:41519 (http://cmeintel-desktop:44180/): Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 558, in connect
+    self.local_endpoint = self.socket.getsockname()
+AttributeError: 'NoneType' object has no attribute 'getsockname'
+
+[rospy.core][INFO] 2016-06-10 12:07:00,550: signal_shutdown [atexit]

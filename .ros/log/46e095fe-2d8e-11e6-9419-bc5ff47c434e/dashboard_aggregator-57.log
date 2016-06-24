@@ -1,0 +1,23 @@
+[rospy.client][INFO] 2016-06-08 17:33:05,883: init_node, name[/dashboard_aggregator], pid[4029]
+[xmlrpc][INFO] 2016-06-08 17:33:05,883: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-08 17:33:05,884: Started XML-RPC server [http://cmeintel-desktop:35683/]
+[rospy.impl.masterslave][INFO] 2016-06-08 17:33:05,884: _ready: http://cmeintel-desktop:35683/
+[rospy.init][INFO] 2016-06-08 17:33:05,884: ROS Slave URI: [http://cmeintel-desktop:35683/]
+[rospy.registration][INFO] 2016-06-08 17:33:05,885: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-08 17:33:05,886: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-08 17:33:05,985: registered with master
+[rospy.rosout][INFO] 2016-06-08 17:33:05,985: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-08 17:33:05,989: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-08 17:33:05,993: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-08 17:33:05,999: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-08 17:33:06,263: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.internal][INFO] 2016-06-08 17:33:06,917: topic[/clock] adding connection to [http://cmeintel-desktop:42622/], count 0
+[rospy.internal][INFO] 2016-06-08 17:33:09,387: topic[/diagnostics_toplevel_state] adding connection to [http://cmeintel-desktop:32993/], count 0
+[rospy.internal][INFO] 2016-06-08 17:33:09,387: topic[/emergency_stop_state] adding connection to [http://cmeintel-desktop:42514/], count 0
+[rospy.core][INFO] 2016-06-08 17:34:11,154: signal_shutdown [signal-2]
+[rospy.internal][INFO] 2016-06-08 17:34:11,159: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-08 17:34:11,159: topic[/diagnostics_toplevel_state] removing connection to http://cmeintel-desktop:32993/
+[rospy.internal][INFO] 2016-06-08 17:34:11,159: topic[/clock] removing connection to http://cmeintel-desktop:42622/
+[rospy.internal][INFO] 2016-06-08 17:34:11,159: topic[/emergency_stop_state] removing connection to http://cmeintel-desktop:42514/
+[rospy.impl.masterslave][INFO] 2016-06-08 17:34:11,160: signal-2
+[rospy.core][INFO] 2016-06-08 17:34:11,267: signal_shutdown [atexit]

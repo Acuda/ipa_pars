@@ -1,0 +1,36 @@
+[rospy.client][INFO] 2016-06-06 20:56:56,080: init_node, name[/spawn_gazebo_model], pid[5150]
+[xmlrpc][INFO] 2016-06-06 20:56:56,080: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-06 20:56:56,081: Started XML-RPC server [http://cmeintel-desktop:36019/]
+[rospy.init][INFO] 2016-06-06 20:56:56,081: ROS Slave URI: [http://cmeintel-desktop:36019/]
+[rospy.impl.masterslave][INFO] 2016-06-06 20:56:56,081: _ready: http://cmeintel-desktop:36019/
+[xmlrpc][INFO] 2016-06-06 20:56:56,081: xml rpc node: starting XML-RPC server
+[rospy.registration][INFO] 2016-06-06 20:56:56,081: Registering with master node http://localhost:11311
+[rospy.init][INFO] 2016-06-06 20:56:56,181: registered with master
+[rospy.rosout][INFO] 2016-06-06 20:56:56,181: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-06 20:56:56,184: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-06 20:56:56,185: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-06 20:56:56,191: connected to core topic /clock
+[rosout][INFO] 2016-06-06 20:56:56,197: Loading model xml from ros parameter
+[rosout][INFO] 2016-06-06 20:56:56,207: Waiting for service /gazebo/spawn_urdf_model
+[rospy.internal][INFO] 2016-06-06 20:56:56,418: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.internal][INFO] 2016-06-06 20:56:59,466: topic[/clock] adding connection to [http://cmeintel-desktop:41055/], count 0
+[rosout][INFO] 2016-06-06 20:56:59,532: Calling service /gazebo/spawn_urdf_model
+[rosout][INFO] 2016-06-06 20:57:03,194: Spawn status: SpawnModel: Successfully spawned model
+[rospy.core][INFO] 2016-06-06 20:57:03,195: signal_shutdown [atexit]
+[rospy.internal][INFO] 2016-06-06 20:57:03,197: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-06 20:57:03,197: topic[/clock] removing connection to http://cmeintel-desktop:41055/
+[rospy.internal][WARNING] 2016-06-06 20:57:03,197: Unknown error initiating TCP/IP socket to cmeintel-desktop:47256 (http://cmeintel-desktop:41055/): Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 557, in connect
+    self.read_header()
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 619, in read_header
+    self._validate_header(read_ros_handshake_header(sock, self.read_buff, self.protocol.buff_size))
+AttributeError: 'NoneType' object has no attribute 'buff_size'
+
+[rospy.topics][ERROR] 2016-06-06 20:57:03,197: Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/topics.py", line 307, in close
+    c.close()
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 807, in close
+    self.socket.close()
+AttributeError: 'NoneType' object has no attribute 'close'
+
+[rospy.impl.masterslave][INFO] 2016-06-06 20:57:03,197: atexit

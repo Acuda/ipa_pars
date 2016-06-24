@@ -1,0 +1,51 @@
+[rospy.client][INFO] 2016-06-09 13:35:01,361: init_node, name[/world_tf_publisher], pid[21888]
+[xmlrpc][INFO] 2016-06-09 13:35:01,362: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-09 13:35:01,362: Started XML-RPC server [http://cmeintel-desktop:33758/]
+[rospy.impl.masterslave][INFO] 2016-06-09 13:35:01,362: _ready: http://cmeintel-desktop:33758/
+[rospy.registration][INFO] 2016-06-09 13:35:01,362: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-09 13:35:01,362: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-09 13:35:01,365: ROS Slave URI: [http://cmeintel-desktop:33758/]
+[rospy.init][INFO] 2016-06-09 13:35:01,365: registered with master
+[rospy.rosout][INFO] 2016-06-09 13:35:01,365: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-09 13:35:02,367: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-09 13:35:02,372: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-09 13:35:02,391: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-09 13:35:02,616: topic[/tf] adding connection to [/arm_right/frame_tracker], count 0
+[rospy.internal][INFO] 2016-06-09 13:35:02,616: topic[/tf] adding connection to [/torso/frame_tracker], count 1
+[rospy.internal][INFO] 2016-06-09 13:35:02,617: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.internal][INFO] 2016-06-09 13:35:02,637: topic[/tf] adding connection to [/arm_left/interactive_target], count 2
+[rospy.internal][INFO] 2016-06-09 13:35:02,708: topic[/tf] adding connection to [/torso/obstacle_distance], count 3
+[rospy.internal][INFO] 2016-06-09 13:35:02,708: topic[/tf] adding connection to [/torso/interactive_target], count 4
+[rospy.internal][INFO] 2016-06-09 13:35:02,709: topic[/tf] adding connection to [/arm_left/obstacle_distance], count 5
+[rospy.internal][INFO] 2016-06-09 13:35:02,709: topic[/tf] adding connection to [/image_flip_sensorring_cam3d/image_flip_sensorring_cam3d], count 6
+[rospy.internal][INFO] 2016-06-09 13:35:02,725: topic[/tf] adding connection to [/image_flip_torso_cam3d_left/image_flip_torso_cam3d_left], count 7
+[rospy.internal][INFO] 2016-06-09 13:35:02,927: topic[/tf] adding connection to [/arm_right/twist_controller], count 8
+[rospy.internal][INFO] 2016-06-09 13:35:02,928: topic[/tf] adding connection to [/torso/twist_controller], count 9
+[rospy.internal][INFO] 2016-06-09 13:35:02,933: topic[/tf] adding connection to [/arm_left/frame_tracker], count 10
+[rospy.internal][INFO] 2016-06-09 13:35:03,024: topic[/tf] adding connection to [/arm_right/interactive_target], count 11
+[rospy.internal][INFO] 2016-06-09 13:35:03,079: topic[/tf] adding connection to [/arm_right/obstacle_distance], count 12
+[rospy.internal][INFO] 2016-06-09 13:35:03,190: topic[/tf] adding connection to [/image_flip_torso_cam3d_right/image_flip_torso_cam3d_right], count 13
+[rospy.internal][INFO] 2016-06-09 13:35:03,559: topic[/clock] adding connection to [http://cmeintel-desktop:41031/], count 0
+[rospy.internal][INFO] 2016-06-09 13:35:03,762: topic[/tf] adding connection to [/arm_left/twist_controller], count 14
+[rospy.internal][INFO] 2016-06-09 13:35:03,884: topic[/tf] adding connection to [/scan_unifier], count 15
+[rospy.internal][INFO] 2016-06-09 13:35:15,185: topic[/tf] removing connection to /arm_left/obstacle_distance
+[rospy.internal][INFO] 2016-06-09 13:42:46,693: topic[/tf] removing connection to /image_flip_sensorring_cam3d/image_flip_sensorring_cam3d
+[rospy.internal][INFO] 2016-06-09 13:42:46,694: topic[/tf] removing connection to /image_flip_torso_cam3d_left/image_flip_torso_cam3d_left
+[rospy.internal][INFO] 2016-06-09 13:42:46,695: topic[/tf] removing connection to /arm_right/twist_controller
+[rospy.internal][INFO] 2016-06-09 13:42:46,695: topic[/tf] removing connection to /arm_right/interactive_target
+[rospy.internal][INFO] 2016-06-09 13:42:46,695: topic[/tf] removing connection to /arm_right/obstacle_distance
+[rospy.internal][INFO] 2016-06-09 13:42:46,696: topic[/tf] removing connection to /image_flip_torso_cam3d_right/image_flip_torso_cam3d_right
+[rospy.internal][INFO] 2016-06-09 13:42:46,696: topic[/tf] removing connection to /arm_right/frame_tracker
+[rospy.core][INFO] 2016-06-09 13:42:46,908: signal_shutdown [signal-2]
+[rospy.internal][INFO] 2016-06-09 13:42:46,911: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-09 13:42:46,911: topic[/tf] removing connection to /torso/frame_tracker
+[rospy.internal][INFO] 2016-06-09 13:42:46,911: topic[/tf] removing connection to /arm_left/interactive_target
+[rospy.internal][INFO] 2016-06-09 13:42:46,911: topic[/tf] removing connection to /torso/obstacle_distance
+[rospy.internal][INFO] 2016-06-09 13:42:46,911: topic[/tf] removing connection to /torso/interactive_target
+[rospy.internal][INFO] 2016-06-09 13:42:46,911: topic[/tf] removing connection to /torso/twist_controller
+[rospy.internal][INFO] 2016-06-09 13:42:46,911: topic[/tf] removing connection to /arm_left/frame_tracker
+[rospy.internal][INFO] 2016-06-09 13:42:46,911: topic[/tf] removing connection to /arm_left/twist_controller
+[rospy.internal][INFO] 2016-06-09 13:42:46,912: topic[/tf] removing connection to /scan_unifier
+[rospy.internal][INFO] 2016-06-09 13:42:46,912: topic[/clock] removing connection to http://cmeintel-desktop:41031/
+[rospy.impl.masterslave][INFO] 2016-06-09 13:42:46,912: signal-2
+[rospy.core][INFO] 2016-06-09 13:42:47,047: signal_shutdown [atexit]

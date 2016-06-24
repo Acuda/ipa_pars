@@ -151,7 +151,7 @@ class KnowledgeParserServer(object):
         listOfObjects.append("\n")
         listOfObjects.append("\n\t\t the-cake - phys-obj")
         listOfObjects.append("\n\t\t cob4-1 - robot")
-        listOfObjects.append("\n\t\t the-box-1 the-box-2 the-box-3 the-box-4 the-box-4 the-box-5 the-box-5 the-box-7 - phys-obj \n")
+        listOfObjects.append("\n\t\t the-box-1 the-box-2 the-box-3 the-box-4 the-box-5 the-box-7 - phys-obj \n")
         StringOfObjects = str(" ").join(map(str, listOfObjects))
 
         return StringOfObjects

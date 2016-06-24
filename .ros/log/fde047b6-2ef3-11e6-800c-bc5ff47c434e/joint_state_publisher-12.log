@@ -1,0 +1,45 @@
+[rospy.client][INFO] 2016-06-10 12:13:42,512: init_node, name[/joint_state_publisher], pid[7297]
+[xmlrpc][INFO] 2016-06-10 12:13:42,522: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-10 12:13:42,522: Started XML-RPC server [http://cmeintel-desktop:37495/]
+[rospy.impl.masterslave][INFO] 2016-06-10 12:13:42,522: _ready: http://cmeintel-desktop:37495/
+[rospy.registration][INFO] 2016-06-10 12:13:42,523: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-10 12:13:42,523: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-10 12:13:42,523: ROS Slave URI: [http://cmeintel-desktop:37495/]
+[rospy.init][INFO] 2016-06-10 12:13:42,523: registered with master
+[rospy.rosout][INFO] 2016-06-10 12:13:42,523: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-10 12:13:42,535: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-10 12:13:42,570: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-10 12:13:42,624: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-10 12:13:42,823: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.internal][INFO] 2016-06-10 12:13:44,043: topic[/joint_states] adding connection to [/robot_state_publisher], count 0
+[rospy.internal][INFO] 2016-06-10 12:13:44,486: topic[/clock] adding connection to [http://cmeintel-desktop:38548/], count 0
+[rospy.internal][INFO] 2016-06-10 12:13:53,492: topic[/base/joint_states] adding connection to [http://cmeintel-desktop:38548/], count 0
+[rospy.internal][INFO] 2016-06-10 12:13:53,906: topic[/torso/joint_states] adding connection to [http://cmeintel-desktop:38548/], count 0
+[rospy.internal][INFO] 2016-06-10 12:13:53,907: topic[/sensorring/joint_states] adding connection to [http://cmeintel-desktop:38548/], count 0
+[rospy.internal][INFO] 2016-06-10 12:13:54,221: topic[/arm_right/joint_states] adding connection to [http://cmeintel-desktop:38548/], count 0
+[rospy.internal][INFO] 2016-06-10 12:13:54,335: topic[/arm_left/joint_states] adding connection to [http://cmeintel-desktop:38548/], count 0
+[rospy.internal][INFO] 2016-06-10 12:13:55,149: topic[/gripper_right/joint_states] adding connection to [http://cmeintel-desktop:38548/], count 0
+[rospy.internal][INFO] 2016-06-10 12:13:55,213: topic[/gripper_left/joint_states] adding connection to [http://cmeintel-desktop:38548/], count 0
+[rospy.core][INFO] 2016-06-10 12:34:36,796: signal_shutdown [signal-2]
+[rospy.internal][INFO] 2016-06-10 12:34:36,801: topic[/joint_states] removing connection to /robot_state_publisher
+[rospy.internal][INFO] 2016-06-10 12:34:36,801: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-10 12:34:36,801: topic[/arm_right/joint_states] removing connection to http://cmeintel-desktop:38548/
+[rospy.internal][INFO] 2016-06-10 12:34:36,801: topic[/torso/joint_states] removing connection to http://cmeintel-desktop:38548/
+[rospy.internal][INFO] 2016-06-10 12:34:36,801: topic[/sensorring/joint_states] removing connection to http://cmeintel-desktop:38548/
+[rospy.internal][INFO] 2016-06-10 12:34:36,802: topic[/clock] removing connection to http://cmeintel-desktop:38548/
+[rospy.internal][INFO] 2016-06-10 12:34:36,802: topic[/base/joint_states] removing connection to http://cmeintel-desktop:38548/
+[rospy.internal][INFO] 2016-06-10 12:34:36,802: topic[/gripper_left/joint_states] removing connection to http://cmeintel-desktop:38548/
+[rospy.internal][INFO] 2016-06-10 12:34:36,802: topic[/arm_left/joint_states] removing connection to http://cmeintel-desktop:38548/
+[rospy.internal][WARNING] 2016-06-10 12:34:36,802: Unknown error initiating TCP/IP socket to cmeintel-desktop:46903 (http://cmeintel-desktop:38548/): Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 558, in connect
+    self.local_endpoint = self.socket.getsockname()
+AttributeError: 'NoneType' object has no attribute 'getsockname'
+
+[rospy.internal][INFO] 2016-06-10 12:34:36,803: topic[/gripper_right/joint_states] removing connection to http://cmeintel-desktop:38548/
+[rospy.internal][WARNING] 2016-06-10 12:34:36,803: Unknown error initiating TCP/IP socket to cmeintel-desktop:46903 (http://cmeintel-desktop:38548/): Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 558, in connect
+    self.local_endpoint = self.socket.getsockname()
+AttributeError: 'NoneType' object has no attribute 'getsockname'
+
+[rospy.impl.masterslave][INFO] 2016-06-10 12:34:36,803: signal-2
+[rospy.core][INFO] 2016-06-10 12:34:36,924: signal_shutdown [atexit]

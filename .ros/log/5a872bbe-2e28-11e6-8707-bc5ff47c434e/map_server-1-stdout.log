@@ -1,0 +1,3 @@
+[0m[ INFO] [1465467418.962476540]: Loading map from image "/opt/ros/indigo/share/cob_default_env_config/ipa-apartment/map.pgm"[0m
+[0m[ INFO] [1465467418.997722601]: Read a 544 X 768 map @ 0.050 m/cell[0m
+[0m[ INFO] [1465467419.049961477]: Sending map[0m

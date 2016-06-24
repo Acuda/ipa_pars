@@ -1,0 +1,23 @@
+[rospy.client][INFO] 2016-06-08 17:30:35,893: init_node, name[/relayboard_node], pid[29139]
+[xmlrpc][INFO] 2016-06-08 17:30:35,893: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-08 17:30:35,894: Started XML-RPC server [http://cmeintel-desktop:40203/]
+[rospy.impl.masterslave][INFO] 2016-06-08 17:30:35,894: _ready: http://cmeintel-desktop:40203/
+[rospy.registration][INFO] 2016-06-08 17:30:35,894: Registering with master node http://localhost:11311
+[xmlrpc][INFO] 2016-06-08 17:30:35,894: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2016-06-08 17:30:35,895: ROS Slave URI: [http://cmeintel-desktop:40203/]
+[rospy.init][INFO] 2016-06-08 17:30:35,895: registered with master
+[rospy.rosout][INFO] 2016-06-08 17:30:35,895: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-08 17:30:35,919: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-08 17:30:35,940: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-08 17:30:36,008: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-08 17:30:36,105: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.internal][INFO] 2016-06-08 17:30:37,973: topic[/clock] adding connection to [http://cmeintel-desktop:45336/], count 0
+[rospy.internal][INFO] 2016-06-08 17:30:39,062: topic[/emergency_stop_state] adding connection to [/dashboard_aggregator], count 0
+[rospy.internal][INFO] 2016-06-08 17:31:05,614: topic[/emergency_stop_state] adding connection to [/dashboard_aggregator], count 1
+[rospy.internal][INFO] 2016-06-08 17:31:05,614: topic[/emergency_stop_state] removing connection to /dashboard_aggregator
+[rospy.core][INFO] 2016-06-08 17:31:06,498: signal_shutdown [signal-2]
+[rospy.internal][INFO] 2016-06-08 17:31:06,503: topic[/emergency_stop_state] removing connection to /dashboard_aggregator
+[rospy.internal][INFO] 2016-06-08 17:31:06,503: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-08 17:31:06,503: topic[/clock] removing connection to http://cmeintel-desktop:45336/
+[rospy.impl.masterslave][INFO] 2016-06-08 17:31:06,503: signal-2
+[rospy.core][INFO] 2016-06-08 17:31:07,117: signal_shutdown [atexit]

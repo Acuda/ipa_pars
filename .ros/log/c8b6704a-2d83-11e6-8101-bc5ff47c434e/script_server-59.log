@@ -1,0 +1,20 @@
+[rospy.client][INFO] 2016-06-08 16:18:00,274: init_node, name[/script_server], pid[1643]
+[xmlrpc][INFO] 2016-06-08 16:18:00,275: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2016-06-08 16:18:00,275: Started XML-RPC server [http://cmeintel-desktop:39526/]
+[rospy.impl.masterslave][INFO] 2016-06-08 16:18:00,275: _ready: http://cmeintel-desktop:39526/
+[rospy.init][INFO] 2016-06-08 16:18:00,275: ROS Slave URI: [http://cmeintel-desktop:39526/]
+[xmlrpc][INFO] 2016-06-08 16:18:00,276: xml rpc node: starting XML-RPC server
+[rospy.registration][INFO] 2016-06-08 16:18:00,276: Registering with master node http://localhost:11311
+[rospy.init][INFO] 2016-06-08 16:18:00,376: registered with master
+[rospy.rosout][INFO] 2016-06-08 16:18:00,377: initializing /rosout core topic
+[rospy.rosout][INFO] 2016-06-08 16:18:00,398: connected to core topic /rosout
+[rospy.simtime][INFO] 2016-06-08 16:18:00,412: initializing /clock core topic
+[rospy.simtime][INFO] 2016-06-08 16:18:00,428: connected to core topic /clock
+[rospy.internal][INFO] 2016-06-08 16:18:00,443: topic[/clock] adding connection to [http://cmeintel-desktop:43043/], count 0
+[rosout][INFO] 2016-06-08 16:18:00,512: script_server is running
+[rospy.internal][INFO] 2016-06-08 16:18:00,548: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.core][INFO] 2016-06-08 16:24:48,633: signal_shutdown [signal-2]
+[rospy.internal][INFO] 2016-06-08 16:24:48,640: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2016-06-08 16:24:48,641: topic[/clock] removing connection to http://cmeintel-desktop:43043/
+[rospy.impl.masterslave][INFO] 2016-06-08 16:24:48,641: signal-2
+[rospy.core][INFO] 2016-06-08 16:24:49,139: signal_shutdown [atexit]
