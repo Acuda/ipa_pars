@@ -112,7 +112,10 @@ class KnowledgeParserServer(object):
                     listOfProps.append("\t\t(occupied "+location_of_object+")")
             
         self.listOfObjectNames = listOfObjects
-        self.lostOfProps = listOfProps
+        self.listOfProps = listOfProps
+        self.listOfAts = listOfAts
+        print self.listOfObjectNames
+        print self.listOfProps
         
     def parseLocationInfoFromYaml(self):
         location_data = self.yamlfile_static_knowledge["location-data"]
@@ -125,6 +128,7 @@ class KnowledgeParserServer(object):
     
     def createProblemPDDL(self):
         listOfTransitions = self.parseLocationInfoFromYaml()
+        self.parseObjectInfoFromYaml()
         #print listOfTransitions
         linesAsList = self.assembleProblemFileText(listOfTransitions)
         print linesAsList
@@ -168,13 +172,15 @@ class KnowledgeParserServer(object):
         listOfObjects.append(" - room \n")
         listOfObjects.append("\n \t\t ;;; fixed things for interaction")
         listOfObjects.append("\n\t\t arm-left arm-right - gripper")
-        listOfObjects.append("\n \t\t the-boss - user")
+        #listOfObjects.append("\n \t\t the-boss - user")
         listOfObjects.append("\n")
         listOfObjects.append("\n \t\t ;;; movable things")
         listOfObjects.append("\n")
-        listOfObjects.append("\n\t\t the-cake - phys-obj")
+        #listOfObjects.append("\n\t\t the-cake - phys-obj")
         listOfObjects.append("\n\t\t cob4-1 - robot")
-        listOfObjects.append("\n\t\t the-box-1 the-box-2 the-box-3 the-box-4 the-box-5 the-box-7 - phys-obj \n")
+        listOfObjects.append("\n\t\t")
+        listOfObjects.append("\n\t\t ".join(self.listOfObjectNames))
+        #listOfObjects.append("\n\t\t the-box-1 the-box-2 the-box-3 the-box-4 the-box-5 the-box-7 - phys-obj \n")
         StringOfObjects = str(" ").join(map(str, listOfObjects))
 
         return StringOfObjects
@@ -200,23 +206,29 @@ class KnowledgeParserServer(object):
         listOfLines.append("\n\t ;;; hard coded definitions")
         #listOfLines.append("\t\t(at the-cake room-9)")
         # test with two cake locations!
-        listOfLines.append("\t\t(at the-cake room-10-square-10)")
-        listOfLines.append("\t\t(at cob4-1 room-13-square-7)")
-        listOfLines.append("\t\t(at the-box-1 room-10-square-2)")
-        listOfLines.append("\t\t(at the-box-2 room-10-square-22)")
-        listOfLines.append("\t\t(at the-box-3 room-10-square-13)")
-        listOfLines.append("\t\t(at the-box-4 room-10-square-36)")
-        listOfLines.append("\t\t(at the-box-5 room-10-square-27)")
-        listOfLines.append("\t\t(at the-box-6 room-10-square-3)")
-        listOfLines.append("\t\t(at the-box-7 room-10-square-9)")
+        
         listOfLines.append("\t\t(neglected cob4-1)")
-        listOfLines.append("\t\t(occupied room-10-square-2)")
-        listOfLines.append("\t\t(occupied room-10-square-22)")
         listOfLines.append("\t\t ;;; gripper")
         listOfLines.append("\t\t(which-gripper arm-left)")
         listOfLines.append("\t\t(which-gripper arm-right)")
         listOfLines.append("\t\t(gripper-free arm-left)")
         listOfLines.append("\t\t(gripper-free arm-right)")
+        
+        listOfLines.append("\n\t ;;; definitions from dynamic knowledge")
+        listOfLines.append(str("\n").join(self.listOfAts))
+        listOfLines.append(str("\n").join(self.listOfProps))
+        #listOfLines.append("\t\t(at the-cake room-10-square-10)")
+        listOfLines.append("\t\t(at cob4-1 room-10-square-4)")
+        #listOfLines.append("\t\t(at the-box-1 room-10-square-2)")
+        #listOfLines.append("\t\t(at the-box-2 room-10-square-22)")
+        #listOfLines.append("\t\t(at the-box-3 room-10-square-13)")
+        #listOfLines.append("\t\t(at the-box-4 room-10-square-36)")
+        #listOfLines.append("\t\t(at the-box-5 room-10-square-27)")
+        #listOfLines.append("\t\t(at the-box-6 room-10-square-3)")
+        #listOfLines.append("\t\t(at the-box-7 room-10-square-9)")
+        
+        #listOfLines.append("\t\t(occupied room-10-square-2)")
+        #listOfLines.append("\t\t(occupied room-10-square-22)")
         listOfLines.append("\t)")
         listOfLines.append("\n")
 
