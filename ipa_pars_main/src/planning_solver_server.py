@@ -91,7 +91,7 @@ class PlanningSolverServer(object):
         problem_text = goal.problem.data
 #         self.save_domain_file(domain_text)
 #         self.save_problem_file(problem_text)
-        self.workOnPlan(self.path_to_outputfile)
+        self.workOnPlan()
         actionsAsString = self.readPlanFile()
         if len(actionsAsString) < 1:
             rospy.loginfo("We found no solution for this task. No action plan!")
@@ -200,14 +200,14 @@ class PlanningSolverServer(object):
         stringOfObjects = str(" ").join(map(str, listOfInput))
         return stringOfObjects
 
-    def workOnPlan(self, path_to_plan):
+    def workOnPlan(self):
         rospy.loginfo("starting planner scripts: Using fast-downward and adp planner packages")
-        self.deleteOldPlanFiles(path_to_plan)
-        translate_command = "bash ~/git/catkin_ws/src/ipa_pars/ipa_pars_main/scripts/translate.bash"
+        self.deleteOldPlanFiles()
+        translate_command = "bash ~/git/catkin_ws/src/ipa_pars/adp_planner/scripts/translate.bash"
         self.sendCommand(translate_command)
-        preprocess_command = "bash ~/git/catkin_ws/src/ipa_pars/ipa_pars_main/scripts/preprocess.bash"
+        preprocess_command = "bash ~/git/catkin_ws/src/ipa_pars/adp_planner/scripts/preprocess.bash"
         self.sendCommand(preprocess_command)
-        fast_downward_command = "bash ~/git/catkin_ws/src/ipa_pars/ipa_pars_main/scripts/fast-downward.bash"
+        fast_downward_command = "bash ~/git/catkin_ws/src/ipa_pars/adp_planner/scripts/fast-downward.bash"
         self.sendCommand(fast_downward_command)
         print "all command transmitted successfully!"
         print "script exit"
@@ -223,7 +223,7 @@ class PlanningSolverServer(object):
         #print command
         shell_output = subprocess.check_output([command],shell=True)
         self.write_to_logfile(shell_output)
-        #print shell_output
+        print shell_output
         rospy.loginfo("done")
         
     def deleteOldPlanFiles(self):

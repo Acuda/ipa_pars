@@ -1,6 +1,0 @@
-[0m[ INFO] [1465395873.496061935]: Requesting the map...[0m
-[33m[ WARN] [1465395873.497225194]: Request for map failed; trying again...[0m
-[0m[ INFO] [1465395874.750573090, 174.586000000]: Received a 544 X 768 map @ 0.050 m/pix
-[0m
-[0m[ INFO] [1465395874.765230164, 174.590000000]: Initializing likelihood field model; this can take some time on large maps...[0m
-[0m[ INFO] [1465395874.819224873, 174.612000000]: Done initializing likelihood field model.[0m

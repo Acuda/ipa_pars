@@ -1,7 +1,0 @@
-[0m[ INFO] [1465400009.012758277]: Requesting the map...[0m
-[0m[ INFO] [1465400009.037032820]: Received a 544 X 768 map @ 0.050 m/pix
-[0m
-[0m[ INFO] [1465400009.046521117]: Initializing likelihood field model; this can take some time on large maps...[0m
-[0m[ INFO] [1465400009.093204639]: Done initializing likelihood field model.[0m
-[33m[ WARN] [1465400032.214673632, 15.034000000]: Failed to transform initial pose in time (Lookup would require extrapolation into the future.  Requested time 1465400030.767651081 but the latest data is at time 15.033000000, when looking up transform from frame [odom_combined] to frame [base_footprint])[0m
-[0m[ INFO] [1465400032.214707723, 15.034000000]: Setting pose (15.034000): -3.600 -2.100 0.000[0m

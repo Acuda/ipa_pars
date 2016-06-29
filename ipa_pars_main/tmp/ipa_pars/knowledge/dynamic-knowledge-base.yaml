@@ -1,0 +1,89 @@
+environment-data:
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-boss
+  location: room-10-square-3
+  properties:
+  - occupied
+  type: user
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-cake
+  location: room-9-square-13
+  properties:
+  - moveable
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-1
+  location: room-9-square-25
+  properties:
+  - moveable
+  - occupied
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-2
+  location: room-9-square-4
+  properties:
+  - moveable
+  - occupied
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-3
+  location: room-9-square-15
+  properties:
+  - moveable
+  - occupied
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-4
+  location: room-9-square-38
+  properties:
+   - moveable
+   - occupied
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-5
+  location: room-9-square-40
+  properties:
+  - moveable
+  - occupied
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-6
+  location: room-9-square-36
+  properties:
+  - moveable
+  - occupied
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-7
+  location: room-10-square-6
+  properties:
+  - moveable
+  - occupied
+  type: phys-obj

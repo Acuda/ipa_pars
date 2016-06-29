@@ -88,8 +88,31 @@ class KnowledgeParserServer(object):
     def execute_cb(self, goal):
         rospy.loginfo("Received a new goal:")
         self.yamlfile_static_knowledge = yaml.load(goal.static_knowledge.data)
+        self.yamlfile_dynamic_knowledge = yaml.load(goal.dynamic_knowledge.data)
         self.createProblemPDDL()
         print goal
+        
+    def parseObjectInfoFromYaml(self):
+        object_data = self.yamlfile_dynamic_knowledge["environment-data"]
+        listOfObjects = []
+        listOfAts = []
+        listOfProps = []
+        for obj in object_data:
+            name_of_object = obj["name"]
+            type_of_object = obj["type"]
+            location_of_object = obj["location"]
+            listOfObjects.append(name_of_object+" - "+type_of_object)
+            #listOfLines.append("\t\t(at the-box-1 room-10-square-2)")
+            listOfAts.append("\t\t(at "+name_of_object+" "+location_of_object+")")
+            list_of_propterties = obj["properties"]
+            occupied = False
+            for props in list_of_propterties:
+                if props == "occupied":
+                    occupied = True
+                    listOfProps.append("\t\t(occupied "+location_of_object+")")
+            
+        self.listOfObjectNames = listOfObjects
+        self.lostOfProps = listOfProps
         
     def parseLocationInfoFromYaml(self):
         location_data = self.yamlfile_static_knowledge["location-data"]

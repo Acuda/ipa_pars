@@ -89,10 +89,10 @@ class PlanningSolverClient(object):
         goal.domain.data = domain_text
         
         rospy.loginfo("Sending goal to solver ...")
-        self._planSolverClient.send_goal(goal)
+        self._planningSolverClient.send_goal(goal)
         rospy.loginfo("Waiting for result ...")
-        self._planSolverClient.wait_for_result()
-        result = self._planSolverClient.get_result()
+        self._planningSolverClient.wait_for_result()
+        result = self._planningSolverClient.get_result()
         rospy.loginfo("Received the result from Solver:")
         print result
         
