@@ -65,11 +65,13 @@ import actionlib
 import rospy
 import sys
 import cv2
+import yaml
 from yaml import load
 # from cv_bridge import CvBridge, CvBridgeError
 from ipa_pars_main.msg._LogicPlanAction import *
 from ipa_pars_main.msg._PlanSolverAction import *
 from ipa_pars_main.msg._KnowledgeParserAction import *
+from ipa_pars_main.msg._PlanExecutorAction import *
 from std_msgs.msg import String
 #from std_msgs import String[]
 # import numpy as np
@@ -85,13 +87,8 @@ from std_msgs.msg import String
 class PlanningServer(object):
     _feedback = ipa_pars_main.msg.LogicPlanFeedback()
     _result = ipa_pars_main.msg.LogicPlanResult()
-    def __init__(self, path_to_domain, path_to_knowledge):
+    def __init__(self):
         rospy.loginfo("Initialize PlanningServer ...")
-        self._path_to_domain = path_to_domain
-        self._path_to_problem = path_to_domain
-        self._path_to_knowledge = path_to_knowledge
-        rospy.loginfo("path_to_knowledge: %s " % path_to_knowledge)
-        rospy.loginfo("path_to_domain: %s" % path_to_domain)
         self._planSolverClient = actionlib.SimpleActionClient('planning_solver_server', PlanSolverAction)
         rospy.logwarn("Waiting for PlanSolverServer to come available ...")
         self._planSolverClient.wait_for_server()
@@ -100,6 +97,10 @@ class PlanningServer(object):
         rospy.logwarn("Waiting for KnowledgeParserServer to come available ...")
         self._knowledgeParserClient.wait_for_server()
         rospy.logwarn("KnowledgeParserServer is online!")
+        self._planExecutorClient = actionlib.SimpleActionClient('planning_executor_server', PlanExecutorAction)
+        rospy.logwarn("Waiting for PlanExecutorServer to come available ...")
+        self._planexecutorClient.wait_for_server()
+        rospy.logwarn("PlanExecutorServer is online!")
         self._as = actionlib.SimpleActionServer('planning_server', ipa_pars_main.msg.LogicPlanAction, execute_cb=self.execute_cb, auto_start=False)
         self._as.start()
         rospy.loginfo("PlanningServer running! Waiting for a new goal.")
@@ -108,17 +109,7 @@ class PlanningServer(object):
         rospy.loginfo("Executing a new goal!")
         rospy.loginfo("GOAL: %s , %s, %s " % (str(goal.goal_type), str(goal.what), str(goal.where)))
         rospy.loginfo("in progress ...")
-#         knowledge_goal = ipa_pars_main.msg.KnowledgeParserGoal()
-#         knowledge_goal.static_knowledge = self.readKnowledgeBase("knowledge-base-static-test-01.yaml")
-#         print knowledge_goal.static_knowledge
-#         knowledge_goal.dynamic_knowledge = self.readKnowledgeBase("knowledge-base-dynamic-test-01.yaml")
-#         rospy.loginfo("Sending goal to KnowledgeParserServer ...")
-#         self._knowledgeParserClient.send_goal(knowledge_goal)
-#         rospy.loginfo("Waiting for result ...")
-#         self._knowledgeParserClient.wait_for_result()
-#         result = self._knowledgeParserClient.get_result()
-#         rospy.loginfo("Received the result from KnowledgeParserServer!")
-#         rospy.loginfo(result)
+
         
         
         goal = ipa_pars_main.msg.PlanSolverGoal()
@@ -140,30 +131,7 @@ class PlanningServer(object):
             self._result.success = False
             self._as.set_aborted(self._result, "bad job")
         #rospy.loginfo(result)
-#         r = rospy.Rate(1)
-#         # change herer TODO:
-#         #===========================
-#         # robot stuff here
-#         room_information = self.sendImageToMapAnalyzerServer()
-        #room_information = MapAnalyzerResponse()
-        #room_information.answer.data = "room-1 room-2\nroom-2 room-1 room-3 room-4 room-5 room-10\nroom-3 room-2\nroom-4 room-2\nroom-5 room-2\nroom-6 room-7 room-10 room-11\nroom-7 room-10 room-11\nroom-8 room-9 room-11\nroom-9 room-8\nroom-10 room-2 room-6 room-7\nroom-11 room-6 room-7 room-8"
 
-        #controller_request = PlanDataRequest()
-        #controller_request.goal_data.data = str(goal.goal_type)
-        #controller_request.room_data.data = room_information.answer.data
-        #controller_request.domain_data.data = self.generate_debug_domain()
-        #answer0 = self.planning_controller_server(controller_request)
-        #print answer0
-        #==========================================================
-        #answer1 = self.room_info_client(room_information.answer.data)
-        #print answer1
-        #planning_goal_text = str(goal.goal_type)+" "+str(goal.what)+" "+goal.where
-        #answer2 = self.planning_goal_server(planning_goal_text)
-        #print answer2
-        #planning_domain_text = "this is my domain information"
-        #answer3 = self.planning_domain_server(planning_domain_text)
-        #print answer3
-        #==============================================
         print "i am sleeping now"
         success = True
         rospy.sleep(5)
@@ -178,47 +146,32 @@ class PlanningServer(object):
             rospy.loginfo("Succeeded the Logic Plan")
             self._as.set_succeeded(self._result, "good job")
 
+    def workOnKnowledge(self):
+        knowledge_goal = ipa_pars_main.msg.KnowledgeParserGoal()
+        knowledge_goal.static_knowledge.data = yaml.dump(self.readKnowledgeBase("static-knowledge-base.yaml"))
+        print knowledge_goal.static_knowledge.data
+        knowledge_goal.dynamic_knowledge.data = yaml.dump(self.readKnowledgeBase("dynamic-knowledge-base.yaml"))
+        rospy.loginfo("Sending goal to KnowledgeParserServer ...")
+        self._knowledgeParserClient.send_goal(knowledge_goal)
+        rospy.loginfo("Waiting for result ...")
+        self._knowledgeParserClient.wait_for_result()
+        result = self._knowledgeParserClient.get_result()
+        rospy.loginfo("Received the result from KnowledgeParserServer!")
+        rospy.loginfo(result)
+    
     def readKnowledgeBase(self, knowledge_yaml):
         listOfInput = []
         try:
-            fileObject = open(self._path_to_knowledge+knowledge_yaml, "r")
-            yamlfile = load(fileObject)
-            fileObject.close()
+            if os.path.isdir("ipa_pars/knowledge/"):
+                fileObject = open("ipa_pars/knowledge/"+knowledge_yaml, "r")
+                yamlfile = load(fileObject)
+                fileObject.close()
+                return yamlfile
         except IOError:
             rospy.loginfo("Reading %s base failed!" % knowledge_yaml)
-        return yamlfile
-
-        
-    def generate_debug_domain(self):
-        print "read input file"
-        listOfInput = []
-        try:
-            fileObject = open(self._path_to_domain+"domain.pddl", "r")
-            with fileObject as listOfText:
-                listOfInput = listOfText.readlines()
-            fileObject.close()
-        except IOError:
-            rospy.loginfo("open file failed or readLine error")
-        StringOfObjects = str(" ").join(map(str, listOfInput))
-        domain_text = StringOfObjects
-        return domain_text
-
-    
-    def generate_debug_problem(self):
-        print "read input file"
-        listOfInput = []
-        try:
-            fileObject = open(self._path_to_problem+"problem.pddl", "r")
-            with fileObject as listOfText:
-                listOfInput = listOfText.readlines()
-            fileObject.close()
-        except IOError:
-            rospy.loginfo("open file failed or readLine error")
-        StringOfObjects = str(" ").join(map(str, listOfInput))
-        problem_text = StringOfObjects
-        return problem_text
+        return None
 
 if __name__ == '__main__':
     rospy.init_node('planning_server_node', anonymous=False)
-    pS = PlanningServer(sys.argv[1], sys.argv[2])
+    pS = PlanningServer()
     rospy.spin()

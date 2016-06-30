@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 '''
-Created on Jan 28, 2016
+Created on Jun 30, 2016
 
 @author: cme
 '''
@@ -26,7 +26,7 @@ Created on Jan 28, 2016
 # \author
 # Supervised by: Richard Bormann
 #
-# \date Date of creation: 03.2016
+# \date Date of creation: 06.2016
 #
 # \brief
 #
@@ -64,57 +64,42 @@ Created on Jan 28, 2016
 import rospy
 import actionlib
 
-from ipa_pars_main.msg._PlanExecutorAction import *
+from ipa_pars_main.msg._PlanSimulatorAction import *
 
-from geometry_msgs.msg import Pose
-from std_msgs.msg import String
-
-class PlanningExecutorClient(object):
+class PlanningSimulatorServer(object):
+    _feedback = ipa_pars_main.msg.PlanSimulatorFeedback()
+    _result = ipa_pars_main.msg.PlanSimulatorResult()
     def __init__(self):
-        rospy.loginfo("Initialize PlanExecutorClient ...")
-        rospy.loginfo("... starting plan_executor_server")
-        self._planExecutorClient = actionlib.SimpleActionClient('plan_executor_server', PlanExecutorAction)
-        rospy.logwarn("Waiting for PlanExecutorServer to come available ...")
-        self._planExecutorClient.wait_for_server()
-        rospy.logwarn("Server is online!")
-        rospy.loginfo("PlanExecutorClient initialize finished")
+        rospy.loginfo("Initialize PlanSimulatorServer ...")
+        self._as = actionlib.SimpleActionServer('plan_simulator_server', ipa_pars_main.msg.PlanSimulatorAction, execute_cb=self.execute_cb, auto_start=False)
+        self._as.start()
 
-    def sendGoal(self):
-        goal = ipa_pars_main.msg.PlanExecutorGoal()
-        #read goals for debug from file
-        listOfInput = []
-        try:
-            fileObject = open("ipa_pars/output/sas_plan", "r")
-            with fileObject as listOfText:
-                listOfInput = listOfText.readlines()
-            fileObject.close()
-        except IOError:
-            rospy.loginfo("open file failed or readLine error")
+
+        rospy.loginfo("PlanSimulatorServer running! Waiting for a new action list to execute ...")
+        rospy.loginfo("PlanSimulatorServer initialize finished")
+
+    def execute_cb(self, goal):
+        rospy.loginfo("Executing a new goal!")
+        print goal.action.data
+        if (goal.action.data == "move-robo-to cob4-1 room-9-square-26 room-9-square-25\n"):
+            rospy.logerr("Goal failed! Position not reached!")
+            self._result.success = False
+        else:
+            self._result.success = True
         
-        print "this is the action list to send"
-        #delete last element
-        del listOfInput[-1:]
-        print listOfInput
-
-        listOfOutput = []
-        for action_exe in listOfInput:
-            new_action = String()
-            new_action.data = action_exe.replace("(","").replace(")","")
-            listOfOutput.append(new_action)
-            
-        print listOfOutput
-        goal.action_list = listOfOutput
-        rospy.loginfo("Send action list to PlanExecutorServer ...")
-        self._planExecutorClient.send_goal(goal)
-        rospy.loginfo("Waiting for result of PlanExecutorServer ...")
-        self._planExecutorClient.wait_for_result()
-        result = self._planExecutorClient.get_result()
-        rospy.loginfo("Received a result from PlanExecutorServer!")
-        print result
-
+        
+        success = True
+        #self._result.success = True
+        rospy.sleep(2)
+        #===========================
+        if self._as.is_preempt_requested():
+            rospy.loginfo('%s: Preempted' % 'planning_simulator_server')
+        if success:
+            rospy.loginfo("Plan Simulator attained goal")
+            self._as.set_succeeded(self._result, "great job")
 
 if __name__ == '__main__':
-    rospy.init_node('planning_executor_client_node', anonymous=False)
-    pEC = PlanningExecutorClient()
-    pEC.sendGoal()
+    rospy.init_node('planning_executor_simulator_node', anonymous=False)
+    pSS = PlanningSimulatorServer()
+    rospy.spin()
         

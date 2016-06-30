@@ -65,6 +65,7 @@ import rospy
 import actionlib
 
 from ipa_pars_main.msg._PlanExecutorAction import *
+from ipa_pars_main.msg._PlanSimulatorAction import *
 from move_base_msgs.msg._MoveBaseAction import *
 from move_base_msgs.msg import MoveBaseGoal
 import simple_moveit_interface as smi
@@ -84,12 +85,13 @@ from geometry_msgs.msg import Pose, PoseStamped
 class PlanningExecutorServer(object):
     _feedback = ipa_pars_main.msg.PlanExecutorFeedback()
     _result = ipa_pars_main.msg.PlanExecutorResult()
-    def __init__(self, path_to_inputfile):
+    def __init__(self):
         rospy.loginfo("Initialize PlanExecutorServer ...")
-        self.path_to_inputfile = path_to_inputfile
-        rospy.loginfo(path_to_inputfile)
         # read yaml file static knowledge base
-        
+        self._planSimulatorClient = actionlib.SimpleActionClient('plan_simulator_server', PlanSimulatorAction)
+        rospy.logwarn("Waiting for PlanSimulatorServer to come available ...")
+        self._planSimulatorClient.wait_for_server()
+        rospy.logwarn("Server is online!")
         #predefine positions for demonstration:
         self.gripper_preparation_left = [[-2.5,-1.36,1.35,0.06,0.75,0.7,0.57]]
         self.gripper_preparation_right = [[2.5,1.36,-1.35,-0.06,-0.75,-0.7,-0.57]]
@@ -102,7 +104,8 @@ class PlanningExecutorServer(object):
         self.carry_left = [[-2.8,-1.56,1.35,0.06,1.25,0.7,0.57]]
         self.carry_right = [[2.8,1.56,-1.35,-0.06,-1.25,-0.7,-0.57]]
         self.yamlfile_static_knowledge = self.load_static_knowledge_from_yaml()
-        
+        self.yamlfile_dynamic_knowledge = self.load_dynamic_knowledge_from_yaml()
+        self.number_of_box = 1
         self._as = actionlib.SimpleActionServer('plan_executor_server', ipa_pars_main.msg.PlanExecutorAction, execute_cb=self.execute_cb, auto_start=False)
         self._as.start()
 
@@ -148,7 +151,7 @@ class PlanningExecutorServer(object):
     def execute_cb(self, goal):
         rospy.loginfo("Executing a new list of goals!")
         print goal.action_list
-        
+        last_goal = None
         
         for action_goal in goal.action_list:
             #print action_goal.data
@@ -163,8 +166,42 @@ class PlanningExecutorServer(object):
                 target_position = self.getTargetPosition(split_input[3])
                 print "sending move command to robot"
                 print target_position
-                sss.move("base",target_position)
-                print "reached position"
+                goal = ipa_pars_main.msg.PlanSimulatorGoal()
+                goal.action.data = action_goal.data
+                self._planSimulatorClient.send_goal_and_wait(goal)
+                result = self._planSimulatorClient.get_result()
+                print "result of simulator call:"
+                print result
+                if not result.success:
+                    print "++++++++++++++++++++++++++++++++++++++++++++++++++"
+                    print "started exception handling!!!!!!!!!!!!!!"
+                    print "recover to last valid position"
+                    goal = ipa_pars_main.msg.PlanSimulatorGoal()
+                    goal.action.data = last_goal.data
+                    self._planSimulatorClient.send_goal_and_wait(goal)
+                    result = self._planSimulatorClient.get_result()
+                    if result.success:
+                        print "look-at failed position"
+                        goal = ipa_pars_main.msg.PlanSimulatorGoal()
+                        goal.action.data = "look-at cob4-1 place "+last_goal.data.split()[3]+" "+action_goal.data.split()[3]
+                        self._planSimulatorClient.send_goal_and_wait(goal)
+                        result = self._planSimulatorClient.get_result()
+                        print "change dynamic knowledge about this object I just found!"
+                        name_of_new_object = "the-new-box-"+str(self.number_of_box)
+                        self.number_of_box += 1
+                        name_of_location = action_goal.data.split()[3]
+                        self.yamlfile_dynamic_knowledge["environment-data"].append({'center': {'Y': 999, 'X': 999, 'Z': 0}, 'type': 'phys-obj', 'properties': ['occupied','moveable','new'], 'name': name_of_new_object , 'location': name_of_location })
+                        #print self.yamlfile_dynamic_knowledge
+                        new_yaml = yaml.dump(self.yamlfile_dynamic_knowledge)
+                        print new_yaml
+                        rospy.loginfo("Plan Executor failed and will start replanning")
+                        self._result.replanning = True
+                        self._result.success = False
+                        self._as.set_succeeded(self._result, "perfect job")
+                    print "++++++++++++++++++++++++++++++++++++++++++++++++++"
+                    
+                #sss.move("base",target_position)
+                #print "reached position"
 #                 self.moveBaseClient = actionlib.SimpleActionClient('move_base', MoveBaseAction)
 # #                 print "waiting for move_base server ..."
 # #                 self.moveBaseClient.wait_for_server()
@@ -187,7 +224,13 @@ class PlanningExecutorServer(object):
                 print "the robot should look-at position"
                 print split_input[4]
                 print "moving sensorring"
-                sss.move("sensorring",[[1.5]])
+                #sss.move("sensorring",[[1.5]])
+                goal = ipa_pars_main.msg.PlanSimulatorGoal()
+                goal.action.data = action_goal.data
+                self._planSimulatorClient.send_goal_and_wait(goal)
+                result = self._planSimulatorClient.get_result()
+                print "result of simulator call:"
+                print result
                 print "reached position"
 #                 sss.say("sound", ["hello"])
 #                 component_name = "arm_left"
@@ -202,19 +245,25 @@ class PlanningExecutorServer(object):
                 print "this is a grip-it action call"
                 print split_input[2] #what
                 print split_input[5] #arm
+                goal = ipa_pars_main.msg.PlanSimulatorGoal()
+                goal.action.data = action_goal.data
+                self._planSimulatorClient.send_goal_and_wait(goal)
+                result = self._planSimulatorClient.get_result()
+                print "result of simulator call:"
+                print result
 #                 arm = "arm_not_specified"
 #                 if (split_input[5] == "arm-left"):
 #                     arm = "arm_left"
 #                 if (split_input[5] == "arm-right"):
 #                     arm = "arm_right"
-                sss.move("arm_left", self.gripper_preparation_left)
-                sss.move("arm_right", self.gripper_preparation_right)
-                sss.move("arm_right", self.gripping_arm_right)
-                sss.move("arm_left", self.gripping_arm_left)
-                sss.move("gripper_right", self.gripping_gripper_right)
-                sss.move("gripper_left", self.gripping_gripper_left)
-                sss.move("arm_right", self.carry_right)
-                sss.move("arm_left", self.carry_left)
+#                 sss.move("arm_left", self.gripper_preparation_left)
+#                 sss.move("arm_right", self.gripper_preparation_right)
+#                 sss.move("arm_right", self.gripping_arm_right)
+#                 sss.move("arm_left", self.gripping_arm_left)
+#                 sss.move("gripper_right", self.gripping_gripper_right)
+#                 sss.move("gripper_left", self.gripping_gripper_left)
+#                 sss.move("arm_right", self.carry_right)
+#                 sss.move("arm_left", self.carry_left)
 #                 sss.say("sound", ["hello"])
 #                 component_name = "arm_left"
 #                 sss.move(component_name,["base_link", [0,0,0],[0,0,0]])
@@ -231,47 +280,66 @@ class PlanningExecutorServer(object):
                 print split_input[4] #where
                 print split_input[5] #arm
                 obj_name = split_input[2]
-                sss.move("arm_left", self.gripping_gripper_left)
-                sss.move("arm_right", self.gripping_gripper_right)
-                sss.move("gripper_right", self.gripper_right_open)
-                sss.move("gripper_left", self.gripper_left_open)
-                sss.move("arm_left", self.gripper_preparation_left)
-                sss.move("arm_right", self.gripper_preparation_right)
-                sss.move("arm_left","side")
-                sss.move("arm_right","side")
+                goal = ipa_pars_main.msg.PlanSimulatorGoal()
+                goal.action.data = action_goal.data
+                self._planSimulatorClient.send_goal_and_wait(goal)
+                result = self._planSimulatorClient.get_result()
+                print "result of simulator call:"
+                print result
+#                 sss.move("arm_left", self.gripping_gripper_left)
+#                 sss.move("arm_right", self.gripping_gripper_right)
+#                 sss.move("gripper_right", self.gripper_right_open)
+#                 sss.move("gripper_left", self.gripper_left_open)
+#                 sss.move("arm_left", self.gripper_preparation_left)
+#                 sss.move("arm_right", self.gripper_preparation_right)
+#                 sss.move("arm_left","side")
+#                 sss.move("arm_right","side")
                 
                 print "========================================================"
             if (split_input[0] == "deliver-to"):
                 print "========================================================"
                 print "this is a look-at action call"
-                sss.move("arm_left", self.gripping_gripper_left)
-                sss.move("arm_right", self.gripping_gripper_right)
-                sss.move("gripper_right", self.gripper_right_open)
-                sss.move("gripper_left", self.gripper_left_open)
-                sss.move("arm_left", self.gripper_preparation_left)
-                sss.move("arm_right", self.gripper_preparation_right)
-                sss.move("arm_left","side")
-                sss.move("arm_right","side")
+                goal = ipa_pars_main.msg.PlanSimulatorGoal()
+                goal.action.data = action_goal.data
+                self._planSimulatorClient.send_goal_and_wait(goal)
+                result = self._planSimulatorClient.get_result()
+                print "result of simulator call:"
+                print result
+#                 sss.move("arm_left", self.gripping_gripper_left)
+#                 sss.move("arm_right", self.gripping_gripper_right)
+#                 sss.move("gripper_right", self.gripper_right_open)
+#                 sss.move("gripper_left", self.gripper_left_open)
+#                 sss.move("arm_left", self.gripper_preparation_left)
+#                 sss.move("arm_right", self.gripper_preparation_right)
+#                 sss.move("arm_left","side")
+#                 sss.move("arm_right","side")
                 print "========================================================"
             if (split_input[0] == "take"):
                 print "========================================================"
                 print "this is a take action call"
-                sss.move("arm_left", self.gripper_preparation_left)
-                sss.move("arm_right", self.gripper_preparation_right)
-                sss.move("arm_right", self.gripping_arm_right)
-                sss.move("arm_left", self.gripping_arm_left)
-                sss.move("gripper_right", self.gripping_gripper_right)
-                sss.move("gripper_left", self.gripping_gripper_left)
-                sss.move("arm_right", self.carry_right)
-                sss.move("arm_left", self.carry_left)
+                goal = ipa_pars_main.msg.PlanSimulatorGoal()
+                goal.action.data = action_goal.data
+                self._planSimulatorClient.send_goal_and_wait(goal)
+                result = self._planSimulatorClient.get_result()
+                print "result of simulator call:"
+                print result
+#                 sss.move("arm_left", self.gripper_preparation_left)
+#                 sss.move("arm_right", self.gripper_preparation_right)
+#                 sss.move("arm_right", self.gripping_arm_right)
+#                 sss.move("arm_left", self.gripping_arm_left)
+#                 sss.move("gripper_right", self.gripping_gripper_right)
+#                 sss.move("gripper_left", self.gripping_gripper_left)
+#                 sss.move("arm_right", self.carry_right)
+#                 sss.move("arm_left", self.carry_left)
                 print "========================================================"
-
+            last_goal = action_goal
+            
         success = True
         self._result.success = True
         rospy.sleep(5)
         #===========================
         if self._as.is_preempt_requested():
-            rospy.loginfo('%s: Preempted' % 'map_analyzer_server')
+            rospy.loginfo('%s: Preempted' % 'planning_execution_server')
         if success:
             rospy.loginfo("Plan Executor attained all goals")
             self._as.set_succeeded(self._result, "perfect job")
@@ -279,13 +347,19 @@ class PlanningExecutorServer(object):
     def load_static_knowledge_from_yaml(self):
         # beachte: YAMl verwendet nur dicts und lists
         # verwende die entsprechenden methoden richtig
-        f = open(self.path_to_inputfile+"knowledge-base-static-test-01.yaml", 'r')
+        f = open("ipa_pars/knowledge/static-knowledge-base.yaml", 'r')
+        yamlfile = load(f)
+        f.close()
+        return yamlfile
+    
+    def load_dynamic_knowledge_from_yaml(self):
+        f = open("ipa_pars/knowledge/dynamic-knowledge-base.yaml", 'r')
         yamlfile = load(f)
         f.close()
         return yamlfile
         
 if __name__ == '__main__':
     rospy.init_node('planning_executor_server_node', anonymous=False)
-    pES = PlanningExecutorServer(sys.argv[1])
+    pES = PlanningExecutorServer()
     rospy.spin()
         

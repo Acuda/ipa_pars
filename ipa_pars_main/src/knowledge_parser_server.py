@@ -105,11 +105,11 @@ class KnowledgeParserServer(object):
             #listOfLines.append("\t\t(at the-box-1 room-10-square-2)")
             listOfAts.append("\t\t(at "+name_of_object+" "+location_of_object+")")
             list_of_propterties = obj["properties"]
-            occupied = False
             for props in list_of_propterties:
                 if props == "occupied":
-                    occupied = True
                     listOfProps.append("\t\t(occupied "+location_of_object+")")
+                if props == "moveable":
+                    listOfProps.append("\t\t(moveable "+name_of_object+")")
             
         self.listOfObjectNames = listOfObjects
         self.listOfProps = listOfProps
@@ -177,7 +177,7 @@ class KnowledgeParserServer(object):
         listOfObjects.append("\n \t\t ;;; movable things")
         listOfObjects.append("\n")
         #listOfObjects.append("\n\t\t the-cake - phys-obj")
-        listOfObjects.append("\n\t\t cob4-1 - robot")
+        #listOfObjects.append("\n\t\t cob4-1 - robot")
         listOfObjects.append("\n\t\t")
         listOfObjects.append("\n\t\t ".join(self.listOfObjectNames))
         #listOfObjects.append("\n\t\t the-box-1 the-box-2 the-box-3 the-box-4 the-box-5 the-box-7 - phys-obj \n")
@@ -210,15 +210,15 @@ class KnowledgeParserServer(object):
         listOfLines.append("\t\t(neglected cob4-1)")
         listOfLines.append("\t\t ;;; gripper")
         listOfLines.append("\t\t(which-gripper arm-left)")
-        listOfLines.append("\t\t(which-gripper arm-right)")
+        #listOfLines.append("\t\t(which-gripper arm-right)")
         listOfLines.append("\t\t(gripper-free arm-left)")
-        listOfLines.append("\t\t(gripper-free arm-right)")
+        #listOfLines.append("\t\t(gripper-free arm-right)")
         
         listOfLines.append("\n\t ;;; definitions from dynamic knowledge")
         listOfLines.append(str("\n").join(self.listOfAts))
         listOfLines.append(str("\n").join(self.listOfProps))
         #listOfLines.append("\t\t(at the-cake room-10-square-10)")
-        listOfLines.append("\t\t(at cob4-1 room-10-square-4)")
+        #listOfLines.append("\t\t(at cob4-1 room-10-square-4)")
         #listOfLines.append("\t\t(at the-box-1 room-10-square-2)")
         #listOfLines.append("\t\t(at the-box-2 room-10-square-22)")
         #listOfLines.append("\t\t(at the-box-3 room-10-square-13)")

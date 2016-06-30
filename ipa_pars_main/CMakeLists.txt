@@ -69,6 +69,7 @@ add_service_files(
    LogicPlan.action
    PlanExecutor.action
    PlanSolver.action
+   PlanSimulator.action
    KnowledgeParser.action
  )
 

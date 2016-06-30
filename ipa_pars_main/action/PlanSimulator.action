@@ -1,10 +1,9 @@
 # Define the goal
 
-std_msgs/String[] action_list
+std_msgs/String action
 
 ---
 # Define a result
-bool replanning
 bool success
 
 ---
