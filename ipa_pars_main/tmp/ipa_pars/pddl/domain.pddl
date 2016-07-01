@@ -10,6 +10,7 @@
 		(at ?what - phys-obj ?location - room)
 		(have ?who - agent ?what - phys-obj)
 		(occupied ?where - room)
+		(moveable ?what - phys-obj)
 		(see ?who - robot ?what - phys-obj)
 		(neglected ?who - robot)
 
@@ -54,6 +55,7 @@
 				   (trans ?where ?from)
 				   (at ?what ?from)
 				   (not (neglected ?who))
+				   (moveable ?what)
 	
 				   ;;; gripper
 				   (which-gripper ?withwhat)
@@ -74,6 +76,7 @@
 		:precondition (and
 				   (at ?who ?where)
 				   (trans ?where ?to)
+				   (not (occupied ?to))
 				   (which-gripper ?withwhat)
 				   (carry ?what ?withwhat)
 				)

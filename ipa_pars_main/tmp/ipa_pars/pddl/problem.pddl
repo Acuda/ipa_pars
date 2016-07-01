@@ -87,14 +87,21 @@
  
  		 ;;; fixed things for interaction 
 		 arm-left arm-right - gripper 
- 		 the-boss - user 
  
  		 ;;; movable things 
  
-		 the-cake - phys-obj 
-		 cob4-1 - robot 
-		 the-box-1 the-box-2 the-box-3 the-box-4 the-box-5 the-box-7 - phys-obj 
-)
+		 the-boss - user
+		 cob4-1 - robot
+		 the-cake - phys-obj
+		 the-box-2 - phys-obj
+		 the-box-3 - phys-obj
+		 the-box-4 - phys-obj
+		 the-box-5 - phys-obj
+		 the-box-6 - phys-obj
+		 the-box-7 - phys-obj
+		 the-box-8 - phys-obj
+		 the-box-9 - phys-obj
+		 the-box-10 - phys-obj)
 
 
 	(:init  
@@ -1888,23 +1895,41 @@
 		(trans room-9-square-89 room-9-square-83)
 
 	 ;;; hard coded definitions
-		(at the-cake room-10-square-10)
-		(at cob4-1 room-13-square-7)
-		(at the-box-1 room-10-square-2)
-		(at the-box-2 room-10-square-22)
-		(at the-box-3 room-10-square-13)
-		(at the-box-4 room-10-square-36)
-		(at the-box-5 room-10-square-27)
-		(at the-box-6 room-10-square-3)
-		(at the-box-7 room-10-square-9)
 		(neglected cob4-1)
-		(occupied room-10-square-2)
-		(occupied room-10-square-22)
 		 ;;; gripper
 		(which-gripper arm-left)
-		(which-gripper arm-right)
 		(gripper-free arm-left)
-		(gripper-free arm-right)
+
+	 ;;; definitions from dynamic knowledge
+		(at the-boss room-10-square-3)
+		(at cob4-1 room-10-square-4)
+		(at the-cake room-9-square-13)
+		(at the-box-2 room-9-square-4)
+		(at the-box-3 room-9-square-15)
+		(at the-box-4 room-9-square-38)
+		(at the-box-5 room-9-square-14)
+		(at the-box-6 room-9-square-3)
+		(at the-box-7 room-10-square-6)
+		(at the-box-8 room-11-square-4)
+		(at the-box-9 room-10-square-11)
+		(at the-box-10 room-10-square-8)
+		(occupied room-10-square-3)
+		(occupied room-10-square-4)
+		(moveable the-cake)
+		(moveable the-box-2)
+		(occupied room-9-square-4)
+		(moveable the-box-3)
+		(occupied room-9-square-15)
+		(moveable the-box-4)
+		(occupied room-9-square-38)
+		(occupied room-9-square-14)
+		(occupied room-9-square-3)
+		(moveable the-box-7)
+		(occupied room-10-square-6)
+		(moveable the-box-8)
+		(occupied room-11-square-4)
+		(occupied room-10-square-11)
+		(occupied room-10-square-8)
 	)
 
 

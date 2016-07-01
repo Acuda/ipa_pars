@@ -12,20 +12,19 @@ environment-data:
     X: 123
     Y: 234
     Z: 345
-  name: the-cake
-  location: room-9-square-13
+  name: cob4-1
+  location: room-10-square-4
   properties:
-  - moveable
-  type: phys-obj
+  - occupied
+  type: robot
 - center:
     X: 123
     Y: 234
     Z: 345
-  name: the-box-1
-  location: room-9-square-25
+  name: the-cake
+  location: room-9-square-13
   properties:
   - moveable
-  - occupied
   type: phys-obj
 - center:
     X: 123
@@ -62,9 +61,8 @@ environment-data:
     Y: 234
     Z: 345
   name: the-box-5
-  location: room-9-square-40
+  location: room-9-square-14
   properties:
-  - moveable
   - occupied
   type: phys-obj
 - center:
@@ -72,9 +70,8 @@ environment-data:
     Y: 234
     Z: 345
   name: the-box-6
-  location: room-9-square-36
+  location: room-9-square-3
   properties:
-  - moveable
   - occupied
   type: phys-obj
 - center:
@@ -85,5 +82,33 @@ environment-data:
   location: room-10-square-6
   properties:
   - moveable
+  - occupied
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-8
+  location: room-11-square-4
+  properties:
+  - moveable
+  - occupied
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-9
+  location: room-10-square-11
+  properties:
+  - occupied
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-10
+  location: room-10-square-8
+  properties:
   - occupied
   type: phys-obj
