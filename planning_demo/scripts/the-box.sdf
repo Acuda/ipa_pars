@@ -3,7 +3,7 @@
   <model name="the-box-1">
     <static>true</static>
     <link name="chassis">
-      <pose>1.5 -2.5 0.25 0 0 0</pose>
+      <pose>0.0 0.0 0.0 0 0 0</pose>
       <collision name="collision">
         <geometry>
           <box>

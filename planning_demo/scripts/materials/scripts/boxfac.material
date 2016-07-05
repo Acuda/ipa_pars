@@ -1,0 +1,15 @@
+material boxfac/Orange
+{
+  receive_shadows on
+  technique
+  {
+    pass
+    {
+      ambient 1.000 0.40 0.000 1.000
+      diffuse 1.000 0.40 0.000 1.000
+      specular 1.000 0.40 0.000 1.000
+      emissive 0.000 0.0 0.000 1.000
+      shading gouraud
+    }
+  }
+}

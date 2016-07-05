@@ -78,6 +78,7 @@ sss = simple_script_server()
 
 
 import yaml
+import tf
 from yaml import load
 
 from geometry_msgs.msg import Pose, PoseStamped
@@ -106,6 +107,8 @@ class PlanningExecutorServer(object):
         self.yamlfile_static_knowledge = self.load_static_knowledge_from_yaml()
         self.yamlfile_dynamic_knowledge = self.load_dynamic_knowledge_from_yaml()
         self.number_of_box = 1
+        
+        self.getTransformationForInit('base_link', 'map')
         self._as = actionlib.SimpleActionServer('plan_executor_server', ipa_pars_main.msg.PlanExecutorAction, execute_cb=self.execute_cb, auto_start=False)
         self._as.start()
 
@@ -113,7 +116,22 @@ class PlanningExecutorServer(object):
         rospy.loginfo("PlanExecutorServer running! Waiting for a new action list to execute ...")
         rospy.loginfo("PlanExecutorServer initialize finished")
     
-    
+#     def getTransformationForInit(self, target_frame, frame):
+#         transform_available = False
+#         while not transform_available:
+#             try:
+#                 (trans,rot) = self.listener.lookupTransform(target_frame, frame , rospy.Time(0))
+#             except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
+#                 rospy.logwarn("Waiting for transform...")
+#                 if rospy.is_shutdown():
+#                     break
+# 
+#                 rospy.sleep(0.5)
+#                 continue
+#             transform_available = True
+#         rospy.loginfo("Init transformation from target "+target_frame+" to frame "+frame+" successfully received!")
+        
+        
     def getTargetPose(self, target_name):
         pose_is_set = False
         _new_pose = Pose()
@@ -121,8 +139,8 @@ class PlanningExecutorServer(object):
         for squares in location_data:
             if (squares["name"] == target_name):
                 point_coordinates = squares["center"]
-                _new_pose.position.x = point_coordinates["X"] * 0.05
-                _new_pose.position.y = point_coordinates["Y"] * 0.05
+                _new_pose.position.x = ((point_coordinates["Y"] - 379) * 0.05)
+                _new_pose.position.y = ((point_coordinates["X"] - 388) * 0.05)
                 _new_pose.position.z = point_coordinates["Z"] * 0.05
                 _new_pose.orientation.x = 0
                 _new_pose.orientation.y = 0
@@ -142,8 +160,8 @@ class PlanningExecutorServer(object):
         for squares in location_data:
             if (squares["name"] == target_name):
                 point_coordinates = squares["center"]
-                position.append(point_coordinates["X"] * 0.05)
-                position.append(point_coordinates["Y"] * 0.05)
+                position.append((point_coordinates["Y"] - 380) * 0.05)
+                position.append((point_coordinates["X"] - 388) * 0.05)
                 # last parameter is angle not position!
                 position.append(point_coordinates["Z"] * 0.05)
         return position
