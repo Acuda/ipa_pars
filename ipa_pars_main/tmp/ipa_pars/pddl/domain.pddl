@@ -31,6 +31,7 @@
 		:effect (and (not (at ?who ?from))
 			     (at ?who ?to)
 			     (neglected ?who)
+			     (not (occupied ?from))
 			     )
 	)
 	

@@ -112,3 +112,13 @@ environment-data:
   properties:
   - occupied
   type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-11
+  location: room-11-square-4
+  properties:
+  - occupied
+  - moveable
+  type: phys-obj

@@ -63,27 +63,27 @@
 		 room-7-square-27 room-10-square-8 room-10-square-9 room-10-square-10 
 		 room-10-square-11 room-9-square-10 room-9-square-9 room-9-square-8 
 		 room-9-square-2 room-9-square-7 room-9-square-5 room-9-square-6 
-		 room-9-square-1 room-9-square-3 room-9-square-4 room-9-square-11 
-		 room-9-square-14 room-8-square-79 room-9-square-13 room-9-square-12 
-		 room-9-square-15 room-9-square-16 room-9-square-17 room-9-square-18 
-		 room-9-square-19 room-9-square-20 room-9-square-21 room-9-square-22 
-		 room-9-square-23 room-9-square-24 room-9-square-25 room-9-square-26 
-		 room-9-square-27 room-9-square-28 room-9-square-29 room-9-square-30 
-		 room-9-square-31 room-9-square-32 room-9-square-33 room-9-square-34 
-		 room-9-square-35 room-9-square-36 room-9-square-37 room-9-square-38 
-		 room-9-square-39 room-9-square-40 room-9-square-41 room-9-square-42 
-		 room-9-square-43 room-9-square-44 room-9-square-45 room-9-square-46 
-		 room-9-square-47 room-9-square-48 room-9-square-49 room-9-square-50 
-		 room-9-square-51 room-9-square-52 room-9-square-53 room-9-square-54 
-		 room-9-square-55 room-9-square-56 room-9-square-57 room-9-square-58 
-		 room-9-square-59 room-9-square-60 room-9-square-61 room-9-square-62 
-		 room-9-square-63 room-9-square-64 room-9-square-65 room-9-square-66 
-		 room-9-square-67 room-9-square-68 room-9-square-69 room-9-square-70 
-		 room-9-square-71 room-9-square-72 room-9-square-73 room-9-square-74 
-		 room-9-square-75 room-9-square-76 room-9-square-77 room-9-square-78 
-		 room-9-square-79 room-9-square-80 room-9-square-81 room-9-square-82 
-		 room-9-square-83 room-9-square-84 room-9-square-85 room-9-square-86 
-		 room-9-square-87 room-9-square-88 room-9-square-89  - room 
+		 room-9-square-3 room-9-square-4 room-9-square-11 room-9-square-14 
+		 room-8-square-79 room-9-square-13 room-9-square-12 room-9-square-15 
+		 room-9-square-16 room-9-square-17 room-9-square-18 room-9-square-19 
+		 room-9-square-20 room-9-square-21 room-9-square-22 room-9-square-23 
+		 room-9-square-24 room-9-square-25 room-9-square-26 room-9-square-27 
+		 room-9-square-28 room-9-square-29 room-9-square-30 room-9-square-31 
+		 room-9-square-32 room-9-square-33 room-9-square-34 room-9-square-35 
+		 room-9-square-36 room-9-square-37 room-9-square-38 room-9-square-39 
+		 room-9-square-40 room-9-square-41 room-9-square-42 room-9-square-43 
+		 room-9-square-44 room-9-square-45 room-9-square-46 room-9-square-47 
+		 room-9-square-48 room-9-square-49 room-9-square-50 room-9-square-51 
+		 room-9-square-52 room-9-square-53 room-9-square-54 room-9-square-55 
+		 room-9-square-56 room-9-square-57 room-9-square-58 room-9-square-59 
+		 room-9-square-60 room-9-square-61 room-9-square-62 room-9-square-63 
+		 room-9-square-64 room-9-square-65 room-9-square-66 room-9-square-67 
+		 room-9-square-68 room-9-square-69 room-9-square-70 room-9-square-71 
+		 room-9-square-72 room-9-square-73 room-9-square-74 room-9-square-75 
+		 room-9-square-76 room-9-square-77 room-9-square-78 room-9-square-79 
+		 room-9-square-80 room-9-square-81 room-9-square-82 room-9-square-83 
+		 room-9-square-84 room-9-square-85 room-9-square-86 room-9-square-87 
+		 room-9-square-88 room-9-square-89  - room 
  
  		 ;;; fixed things for interaction 
 		 arm-left arm-right - gripper 
@@ -101,7 +101,8 @@
 		 the-box-7 - phys-obj
 		 the-box-8 - phys-obj
 		 the-box-9 - phys-obj
-		 the-box-10 - phys-obj)
+		 the-box-10 - phys-obj
+		 the-box-11 - phys-obj)
 
 
 	(:init  
@@ -1369,15 +1370,12 @@
 
  		 ;;; transitions for room-10-square-9
 		(trans room-10-square-9 room-10-square-8)
-		(trans room-10-square-9 room-10-square-10)
 		(trans room-10-square-9 room-10-square-4)
 
  		 ;;; transitions for room-10-square-10
 		(trans room-10-square-10 room-10-square-9)
 		(trans room-10-square-10 room-10-square-11)
 		(trans room-10-square-10 room-10-square-5)
-		(trans room-10-square-10 room-9-square-1)
-		(trans room-10-square-10 room-9-square-5)
 		(trans room-10-square-10 room-9-square-4)
 
  		 ;;; transitions for room-10-square-11
@@ -1411,9 +1409,6 @@
 
  		 ;;; transitions for room-9-square-5
 		(trans room-9-square-5 room-10-square-11)
-		(trans room-9-square-5 room-10-square-10)
-		(trans room-9-square-5 room-9-square-1)
-		(trans room-9-square-5 room-9-square-6)
 		(trans room-9-square-5 room-9-square-4)
 		(trans room-9-square-5 room-9-square-17)
 
@@ -1421,10 +1416,6 @@
 		(trans room-9-square-6 room-9-square-7)
 		(trans room-9-square-6 room-9-square-5)
 		(trans room-9-square-6 room-9-square-18)
-
- 		 ;;; transitions for room-9-square-1
-		(trans room-9-square-1 room-10-square-10)
-		(trans room-9-square-1 room-9-square-4)
 
  		 ;;; transitions for room-9-square-3
 		(trans room-9-square-3 room-9-square-4)
@@ -1434,7 +1425,6 @@
  		 ;;; transitions for room-9-square-4
 		(trans room-9-square-4 room-9-square-3)
 		(trans room-9-square-4 room-9-square-5)
-		(trans room-9-square-4 room-9-square-1)
 		(trans room-9-square-4 room-9-square-16)
 		(trans room-9-square-4 room-10-square-10)
 
@@ -1913,6 +1903,7 @@
 		(at the-box-8 room-11-square-4)
 		(at the-box-9 room-10-square-11)
 		(at the-box-10 room-10-square-8)
+		(at the-box-11 room-11-square-4)
 		(occupied room-10-square-3)
 		(occupied room-10-square-4)
 		(moveable the-cake)
@@ -1930,6 +1921,8 @@
 		(occupied room-11-square-4)
 		(occupied room-10-square-11)
 		(occupied room-10-square-8)
+		(occupied room-11-square-4)
+		(moveable the-box-11)
 	)
 
 

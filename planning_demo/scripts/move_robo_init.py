@@ -10,8 +10,8 @@ if __name__ == "__main__":
 	#sss.move("torso","home")
         sss.move("arm_left","side")
         sss.move("arm_right","side")
-        sss.move("base",[-3.6,-2.1,1.5]) 
-        #sss.move("base",[-3.6,-2.1,1.5])
+        sss.move("base",[-3.6,-2.1,1.5])
+
         gripper_preparation_left = [[-2.5,-1.36,1.35,0.06,0.75,0.7,0.57]]
         gripper_preparation_right = [[2.5,1.36,-1.35,-0.06,-0.75,-0.7,-0.57]]
         gripping_arm_left = [[-2.5,-1.56,1.35,0.06,1.25,0.7,0.57]]
