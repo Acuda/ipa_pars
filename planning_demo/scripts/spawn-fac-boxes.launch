@@ -28,6 +28,6 @@
 
 	<node pkg="gazebo_ros" type="spawn_model" name="spawn_the_box10" args="-file $(find planning_demo)/scripts/the-box.sdf -sdf -model box10 -x -2.5 -y -4.5 -z 0.25" respawn="false" output="screen" />
 
-	<node pkg="gazebo_ros" type="spawn_model" name="spawn_ragdoll" args="-file /home/cme-intel/.gazebo/models/ragdoll/model-1_4.sdf -sdf -model ragdoll -x -3.8 -y -1.7 -z 0.0 -Y -1.5" respawn="false" output="screen" />
+	<node pkg="gazebo_ros" type="spawn_model" name="spawn_ragdoll" args="-file /home/rmbce/.gazebo/models/ragdoll/model-1_4.sdf -sdf -model ragdoll -x -3.8 -y -1.7 -z 0.0 -Y -1.5" respawn="false" output="screen" />
 </launch>	
 

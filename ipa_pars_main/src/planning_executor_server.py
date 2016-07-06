@@ -63,15 +63,16 @@ Created on Jan 28, 2016
 #****************************************************************/
 import rospy
 import actionlib
+import subprocess
 
 from ipa_pars_main.msg._PlanExecutorAction import *
 from ipa_pars_main.msg._PlanSimulatorAction import *
 from move_base_msgs.msg._MoveBaseAction import *
 from move_base_msgs.msg import MoveBaseGoal
 import simple_moveit_interface as smi
-from cob_perception_msgs.msg import Detection
-from cob_object_detection_msgs.msg import DetectObjectsActionGoal
-from cob_object_detection_msgs.msg import DetectObjectsAction
+# from cob_perception_msgs.msg import Detection
+# from cob_object_detection_msgs.msg import DetectObjectsActionGoal
+# from cob_object_detection_msgs.msg import DetectObjectsAction
 
 from simple_script_server import *
 sss = simple_script_server()
@@ -111,7 +112,7 @@ class PlanningExecutorServer(object):
         self.yamlfile_static_knowledge = self.load_static_knowledge_from_yaml()
         self.yamlfile_dynamic_knowledge = self.load_dynamic_knowledge_from_yaml()
         self.number_of_box = 1
-        
+        self.nothandledbefore = True
 #         self.getTransformationForInit('base_link', 'map')
         self._as = actionlib.SimpleActionServer('plan_executor_server', ipa_pars_main.msg.PlanExecutorAction, execute_cb=self.execute_cb, auto_start=False)
         self._as.start()
@@ -194,6 +195,30 @@ class PlanningExecutorServer(object):
                     sss.move("base",[-3.6,-3.3,0.0])
                 elif split_input[3] == "room-10-square-10":
                     sss.move("base",[-2.8,-3.4,0.0])
+                elif split_input[3] == "room-9-square-4":
+                    sss.move("base",[-1.6,-3.7,0.0])
+                elif split_input[3] == "room-9-square-16":
+                    sss.move("base",[-0.6,-3.7,0.0])
+                elif split_input[3] == "room-9-square-28":
+                    sss.move("base",[+0.4,-3.7,1.5])
+                elif split_input[3] == "room-9-square-27":
+                    sss.move("base",[0.4,-2.7,1.5])
+                elif split_input[3] == "room-9-square-26":
+                    sss.move("base",[0.4,-1.7,1.5])
+                elif split_input[3] == "room-9-square-25":
+                    if self.nothandledbefore:
+                        print "exception handling because square can not be reached!"
+                        print "add to knowledge base and start replanning!"
+                        self.nothandledbefore = False
+                        self.yamlfile_dynamic_knowledge["environment-data"].append({'center': {'Y': 999, 'X': 999, 'Z': 0}, 'type': 'phys-obj', 'properties': ['occupied','moveable','new'], 'name': name_of_new_object , 'location': name_of_location })
+                        print self.yamlfile_dynamic_knowledge
+                        new_yaml = yaml.dump(self.yamlfile_dynamic_knowledge)
+                        rospy.loginfo("Plan Executor attained all goals")
+                        self._result.dynamic_knowledge = new_yaml
+                        self._result.replanning = True
+                        self._result.success = False
+                        self._as.set_succeeded(self._result, "replanning message sent")
+                        break
 #                 target_pose = PoseStamped()
 #                 target_pose.header.stamp = rospy.Time.now()
 #                 target_pose.header.frame_id = "map"
@@ -303,12 +328,27 @@ class PlanningExecutorServer(object):
 #                 if (split_input[5] == "arm-right"):
 #                     arm = "arm_right"
 #                 sss.move("arm_left", self.gripper_preparation_left)
-                sss.move("arm_right", self.gripper_preparation_right)
+                #sss.move("arm_right", self.gripper_preparation_right)
                 sss.move("arm_right", self.gripping_arm_right)
 #                 sss.move("arm_left", self.gripping_arm_left)
-                sss.move("gripper_right", self.gripping_gripper_right)
+                #sss.move("gripper_right", self.gripping_gripper_right)
 #                 sss.move("gripper_left", self.gripping_gripper_left)
                 sss.move("arm_right", self.carry_right)
+                sss.move("arm_right","side")
+                
+                if split_input[2] == "the-box-2":
+                    command = "rosservice call /gazebo/delete_model '{model_name: box5}'"
+                    shell_output = subprocess.check_output([command],shell=True)
+                    #self.write_to_logfile(shell_output)
+                    print shell_output
+                    command = "rosservice call /move_base/clear_costmaps"
+                    shell_output = subprocess.check_output([command],shell=True)
+                    #self.write_to_logfile(shell_output)
+                    print shell_output
+                    
+                if split_input[4] == "room-9-square-4":
+                    sss.move("base",[-3.1,-3.4,0.0])
+                    sss.move("base",[-3.6,-3.3,0.7])
 #                 sss.move("arm_left", self.carry_left)
 #                 sss.say("sound", ["hello"])
 #                 component_name = "arm_left"
@@ -322,7 +362,7 @@ class PlanningExecutorServer(object):
                 print "========================================================"
                 print "this is a put-it action call"
                 print "the robot should put"
-                print split_input[2] #waht
+                print split_input[2] #what
                 print split_input[4] #where
                 print split_input[5] #arm
                 obj_name = split_input[2]
@@ -333,24 +373,34 @@ class PlanningExecutorServer(object):
 #                 print "result of simulator call:"
 #                 print result
 #                 sss.move("arm_left", self.gripping_gripper_left)
-                sss.move("arm_right", self.gripping_gripper_right)
+                sss.move("arm_right", self.gripping_arm_right)
                 sss.move("gripper_right", self.gripper_right_open)
 #                 sss.move("gripper_left", self.gripper_left_open)
 #                 sss.move("arm_left", self.gripper_preparation_left)
-                sss.move("arm_right", self.gripper_preparation_right)
+                #sss.move("arm_right", self.gripper_preparation_right)
 #                 sss.move("arm_left","side")
+                
+                if split_input[2] == "the-box-2":
+                    command = "rosrun gazebo_ros spawn_model -file ~/git/catkin_ws/src/ipa_pars/planning_demo/scripts/the-box.sdf -sdf -model box5 -x -2.5 -y -2.5 -z 0.25"
+                    shell_output = subprocess.check_output([command],shell=True)
+                    #self.write_to_logfile(shell_output)
+                    print shell_output
+                
+                if split_input[4] == "room-10-square-10":
+                    sss.move("base",[-2.8,-3.7,0.0])
+                   
                 sss.move("arm_right","side")
                 
                 print "========================================================"
             if (split_input[0] == "deliver-to"):
                 print "========================================================"
                 print "this is a look-at action call"
-                goal = ipa_pars_main.msg.PlanSimulatorGoal()
-                goal.action.data = action_goal.data
-                self._planSimulatorClient.send_goal_and_wait(goal)
-                result = self._planSimulatorClient.get_result()
-                print "result of simulator call:"
-                print result
+#                 goal = ipa_pars_main.msg.PlanSimulatorGoal()
+#                 goal.action.data = action_goal.data
+#                 self._planSimulatorClient.send_goal_and_wait(goal)
+#                 result = self._planSimulatorClient.get_result()
+#                 print "result of simulator call:"
+#                 print result
 #                 sss.move("arm_left", self.gripping_gripper_left)
 #                 sss.move("arm_right", self.gripping_gripper_right)
 #                 sss.move("gripper_right", self.gripper_right_open)
@@ -363,12 +413,12 @@ class PlanningExecutorServer(object):
             if (split_input[0] == "take"):
                 print "========================================================"
                 print "this is a take action call"
-                goal = ipa_pars_main.msg.PlanSimulatorGoal()
-                goal.action.data = action_goal.data
-                self._planSimulatorClient.send_goal_and_wait(goal)
-                result = self._planSimulatorClient.get_result()
-                print "result of simulator call:"
-                print result
+#                 goal = ipa_pars_main.msg.PlanSimulatorGoal()
+#                 goal.action.data = action_goal.data
+#                 self._planSimulatorClient.send_goal_and_wait(goal)
+#                 result = self._planSimulatorClient.get_result()
+#                 print "result of simulator call:"
+#                 print result
 #                 sss.move("arm_left", self.gripper_preparation_left)
 #                 sss.move("arm_right", self.gripper_preparation_right)
 #                 sss.move("arm_right", self.gripping_arm_right)

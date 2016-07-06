@@ -209,10 +209,10 @@ class KnowledgeParserServer(object):
         
         listOfLines.append("\t\t(neglected cob4-1)")
         listOfLines.append("\t\t ;;; gripper")
-        listOfLines.append("\t\t(which-gripper arm-left)")
-        #listOfLines.append("\t\t(which-gripper arm-right)")
-        listOfLines.append("\t\t(gripper-free arm-left)")
-        #listOfLines.append("\t\t(gripper-free arm-right)")
+#         listOfLines.append("\t\t(which-gripper arm-left)")
+        listOfLines.append("\t\t(which-gripper arm-right)")
+#         listOfLines.append("\t\t(gripper-free arm-left)")
+        listOfLines.append("\t\t(gripper-free arm-right)")
         
         listOfLines.append("\n\t ;;; definitions from dynamic knowledge")
         listOfLines.append(str("\n").join(self.listOfAts))
