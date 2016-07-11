@@ -89,8 +89,11 @@ class KnowledgeParserServer(object):
         rospy.loginfo("Received a new goal:")
         self.yamlfile_static_knowledge = yaml.load(goal.static_knowledge.data)
         self.yamlfile_dynamic_knowledge = yaml.load(goal.dynamic_knowledge.data)
-        self.createProblemPDDL()
-        print goal
+        problem_text = self.createProblemPDDL()
+        self._result.problem_pddl.data = problem_text
+        self._result.domain_pddl.data = "empty test"
+        rospy.loginfo("Succeeded the knowledge parsing")
+        self._as.set_succeeded(self._result, "good job")
         
     def parseObjectInfoFromYaml(self):
         object_data = self.yamlfile_dynamic_knowledge["environment-data"]
@@ -133,11 +136,13 @@ class KnowledgeParserServer(object):
         linesAsList = self.assembleProblemFileText(listOfTransitions)
         print linesAsList
         linesAsList = self.appendGoalDefinition(linesAsList, self.goal_info)
-        print "linesAsString"
         linesAsString = ("\n").join(linesAsList)
-        print linesAsString
+        #print "++++++++++++++++++++++++++++++ TEST 1 +++++++++++++++++++++++"
+        #print linesAsString
+        #StringOfProblem = str(" ").join(map(str, linesAsString))
         problem_text = linesAsString
         self.save_problem_file(problem_text)
+        return problem_text
 
     def save_problem_file(self, problem_text):
         print "save problem file"
@@ -240,7 +245,7 @@ class KnowledgeParserServer(object):
         print goal_informations
         
         listOfLines.append("\t;;; goal definition")
-        listOfLines.append("\t(:goal (and (have the-boss the-cake) ))")
+        listOfLines.append("\t(:goal (and (have the-boss the-beer) ))")
         listOfLines.append(")")
         return listOfLines
     

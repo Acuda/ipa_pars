@@ -73,7 +73,7 @@ class PlanningExecutorClient(object):
     def __init__(self):
         rospy.loginfo("Initialize PlanExecutorClient ...")
         rospy.loginfo("... starting plan_executor_server")
-        self._planExecutorClient = actionlib.SimpleActionClient('plan_executor_server', PlanExecutorAction)
+        self._planExecutorClient = actionlib.SimpleActionClient('planning_executor_server', PlanExecutorAction)
         rospy.logwarn("Waiting for PlanExecutorServer to come available ...")
         self._planExecutorClient.wait_for_server()
         rospy.logwarn("Server is online!")

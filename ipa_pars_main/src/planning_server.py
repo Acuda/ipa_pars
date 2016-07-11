@@ -66,6 +66,7 @@ import rospy
 import sys
 import cv2
 import yaml
+import os
 from yaml import load
 # from cv_bridge import CvBridge, CvBridgeError
 from ipa_pars_main.msg._LogicPlanAction import *
@@ -83,23 +84,25 @@ from std_msgs.msg import String
 # from ipa_pars_main.srv._PlanData import PlanData, PlanDataRequest
 
 
-
 class PlanningServer(object):
     _feedback = ipa_pars_main.msg.LogicPlanFeedback()
     _result = ipa_pars_main.msg.LogicPlanResult()
     def __init__(self):
         rospy.loginfo("Initialize PlanningServer ...")
-        self._planSolverClient = actionlib.SimpleActionClient('planning_solver_server', PlanSolverAction)
+        self._planningSolverClient = actionlib.SimpleActionClient('planning_solver_server', PlanSolverAction)
         rospy.logwarn("Waiting for PlanSolverServer to come available ...")
-        self._planSolverClient.wait_for_server()
+        self._planningSolverClient.wait_for_server()
         rospy.logwarn("PlanningSolverServer is online!")
         self._knowledgeParserClient = actionlib.SimpleActionClient('knowledge_parser_server', KnowledgeParserAction)
         rospy.logwarn("Waiting for KnowledgeParserServer to come available ...")
         self._knowledgeParserClient.wait_for_server()
+        rospy.loginfo("Read static and dynamic knowledge from file")
+        self._static_knowledge = yaml.dump(self.readKnowledgeBase("static-knowledge-base.yaml"))
+        self._dynamic_knowledge = yaml.dump(self.readKnowledgeBase("dynamic-knowledge-base.yaml"))
         rospy.logwarn("KnowledgeParserServer is online!")
-        self._planExecutorClient = actionlib.SimpleActionClient('planning_executor_server', PlanExecutorAction)
+        self._planningExecutorClient = actionlib.SimpleActionClient('planning_executor_server', PlanExecutorAction)
         rospy.logwarn("Waiting for PlanExecutorServer to come available ...")
-        self._planexecutorClient.wait_for_server()
+        self._planningExecutorClient.wait_for_server()
         rospy.logwarn("PlanExecutorServer is online!")
         self._as = actionlib.SimpleActionServer('planning_server', ipa_pars_main.msg.LogicPlanAction, execute_cb=self.execute_cb, auto_start=False)
         self._as.start()
@@ -110,27 +113,20 @@ class PlanningServer(object):
         rospy.loginfo("GOAL: %s , %s, %s " % (str(goal.goal_type), str(goal.what), str(goal.where)))
         rospy.loginfo("in progress ...")
 
+        success = False
         
-        
-        goal = ipa_pars_main.msg.PlanSolverGoal()
-        problem_text = self.generate_debug_problem()
-        goal.problem.data = problem_text
-        domain_text = self.generate_debug_domain()
-        goal.domain.data = domain_text
-        
-        rospy.loginfo("Sending goal to solver ...")
-        self._planSolverClient.send_goal(goal)
-        rospy.loginfo("Waiting for result ...")
-        self._planSolverClient.wait_for_result()
-        result = self._planSolverClient.get_result()
-        rospy.loginfo("Received the result from Solver:")
-        print result
-        
-        if not (result.success):
-            rospy.loginfo("no valid plan found. I cannot solve this problem alone!")
-            self._result.success = False
-            self._as.set_aborted(self._result, "bad job")
-        #rospy.loginfo(result)
+        while not (success):
+            knowledge_parser_result = self.workOnKnowledge()
+            print knowledge_parser_result
+            planning_solver_result = self.workOnPlan(knowledge_parser_result.problem_pddl.data, knowledge_parser_result.domain_pddl.data)
+            print planning_solver_result
+            planning_executor_result = self.executeActionPlan(planning_solver_result.action_list)
+            print "This came back from PlanningExecutor:"
+            print planning_executor_result
+            self._dynamic_knowledge = planning_executor_result.dynamic_knowledge.data
+            if planning_executor_result.success:
+                success = True
+                break
 
         print "i am sleeping now"
         success = True
@@ -139,8 +135,7 @@ class PlanningServer(object):
         if self._as.is_preempt_requested():
             rospy.loginfo('%s: Preempted' % 'pars_server')
             success = False
-        
-        
+
         if success:
             self._result.success = True
             rospy.loginfo("Succeeded the Logic Plan")
@@ -148,17 +143,17 @@ class PlanningServer(object):
 
     def workOnKnowledge(self):
         knowledge_goal = ipa_pars_main.msg.KnowledgeParserGoal()
-        knowledge_goal.static_knowledge.data = yaml.dump(self.readKnowledgeBase("static-knowledge-base.yaml"))
+        knowledge_goal.static_knowledge.data = self._static_knowledge
         print knowledge_goal.static_knowledge.data
-        knowledge_goal.dynamic_knowledge.data = yaml.dump(self.readKnowledgeBase("dynamic-knowledge-base.yaml"))
+        knowledge_goal.dynamic_knowledge.data = self._dynamic_knowledge
         rospy.loginfo("Sending goal to KnowledgeParserServer ...")
         self._knowledgeParserClient.send_goal(knowledge_goal)
         rospy.loginfo("Waiting for result ...")
         self._knowledgeParserClient.wait_for_result()
         result = self._knowledgeParserClient.get_result()
         rospy.loginfo("Received the result from KnowledgeParserServer!")
-        rospy.loginfo(result)
-    
+        return result
+
     def readKnowledgeBase(self, knowledge_yaml):
         listOfInput = []
         try:
@@ -170,6 +165,48 @@ class PlanningServer(object):
         except IOError:
             rospy.loginfo("Reading %s base failed!" % knowledge_yaml)
         return None
+
+    def workOnPlan(self, domain, problem):
+        goal = ipa_pars_main.msg.PlanSolverGoal()
+        goal.problem.data = problem
+        goal.domain.data = domain
+
+        rospy.loginfo("Sending goal to solver ...")
+        self._planningSolverClient.send_goal(goal)
+        rospy.loginfo("Waiting for result ...")
+        self._planningSolverClient.wait_for_result()
+        result = self._planningSolverClient.get_result()
+        rospy.loginfo("Received the result from Solver:")
+        return result
+
+    def executeActionPlan(self, actionplan):
+        goal = ipa_pars_main.msg.PlanExecutorGoal()
+        #read goals for debug from file
+        listOfInput = []
+        for itm in actionplan:
+            listOfInput.append(itm.data)
+
+        print "this is the action list to send"
+        #delete last element
+        #del listOfInput[-1:]
+        print listOfInput
+
+        listOfOutput = []
+        for action_exe in listOfInput:
+            new_action = String()
+            new_action.data = action_exe.replace("(","").replace(")","")
+            listOfOutput.append(new_action)
+
+        print listOfOutput
+        goal.action_list = listOfOutput
+        rospy.loginfo("Send action list to PlanExecutorServer ...")
+        self._planningExecutorClient.send_goal(goal)
+        rospy.loginfo("Waiting for result of PlanExecutorServer ...")
+        self._planningExecutorClient.wait_for_result()
+        result = self._planningExecutorClient.get_result()
+        rospy.loginfo("Received a result from PlanExecutorServer!")
+        print result
+        return result
 
 if __name__ == '__main__':
     rospy.init_node('planning_server_node', anonymous=False)

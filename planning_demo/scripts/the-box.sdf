@@ -1,5 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version="1.4">
+
   <model name="the-box-1">
     <static>true</static>
     <link name="chassis">
@@ -17,7 +18,8 @@
             <size>.5 .5 .5</size>
           </box>
         </geometry>
-        <material>Gazebo/Blue</material>
+        <material>
+	</material>
       </visual>
       <gravity>1</gravity>
     </link>

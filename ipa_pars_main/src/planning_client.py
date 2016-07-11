@@ -70,7 +70,7 @@ class PlanningClient(object):
     def __init__(self):
         rospy.loginfo("Initialize PlanningClient ...")
         self._planningClient = actionlib.SimpleActionClient('planning_server', LogicPlanAction)
-        rospy.logwarn("Waiting for PlanSolverServer to come available ...")
+        rospy.logwarn("Waiting for PlanningServer to come available ...")
         self._planningClient.wait_for_server()
         rospy.logwarn("PlanningClient is online!")
 
