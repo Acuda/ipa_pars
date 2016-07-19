@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!-- Revolute-Revolute Manipulator -->
+<robot name="rrbot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Import Rviz colors -->
+  <xacro:include filename="$(find rrbot_description)/urdf/materials.xacro" />
+
+
+  <!-- Used for fixing robot to Gazebo 'base_link' -->
+  <link name="world"/>
+
+<model name="the-box-1">
+    <static>true</static>
+    <link name="chassis">
+      <pose>0.0 0.0 0.0 0 0 0</pose>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>.5 .5 .5</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>.5 .5 .5</size>
+          </box>
+        </geometry>
+        <material>Gazebo/Orange</material>
+      </visual>
+      <gravity>1</gravity>
+    </link>
+  </model>
+
+</robot>

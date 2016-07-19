@@ -304,6 +304,15 @@ class PlanningExecutorServer(object):
                 print "the robot should look-at position"
                 print split_input[4]
                 print "moving sensorring"
+                if (split_input[4] == "room-9-square-25"):
+                    command = "rosservice call /gazebo/delete_model '{model_name: box1}'"
+                    shell_output = subprocess.check_output([command],shell=True)
+                    #self.write_to_logfile(shell_output)
+                    print shell_output#
+                    command = "rosrun gazebo_ros spawn_model -file ~/git/catkin_ws/src/ipa_pars/planning_demo/scripts/yellow_box/model-1_4.sdf -sdf -model box1 -x +0.5 -y -0.5 -z 0.0"
+                    shell_output = subprocess.check_output([command],shell=True)
+                    #self.write_to_logfile(shell_output)
+                    print shell_output
                 #sss.move("sensorring",[[1.5]])
 #                 goal = ipa_pars_main.msg.PlanSimulatorGoal()
 #                 goal.action.data = action_goal.data
@@ -426,7 +435,7 @@ class PlanningExecutorServer(object):
                     sss.move("base",[-3.6,-3.3,0.7])
                     sss.move("arm_right", self.gripping_arm_right)
                     sss.move("gripper_right", self.gripper_right_open)
-                    command = "rosrun gazebo_ros spawn_model -file ~/git/catkin_ws/src/ipa_pars/planning_demo/scripts/the-box.sdf -sdf -model box5 -x -2.5 -y -2.5 -z 0.25"
+                    command = "rosrun gazebo_ros spawn_model -file ~/git/catkin_ws/src/ipa_pars/planning_demo/scripts/yellow_box/model-1_4.sdf -sdf -model box5 -x -2.5 -y -2.5 -z 0.0"
                     shell_output = subprocess.check_output([command],shell=True)
                     #self.write_to_logfile(shell_output)
                     print shell_output
@@ -435,7 +444,7 @@ class PlanningExecutorServer(object):
                     sss.move("base",[0.4,-1.7,0.0])
                     sss.move("arm_right", self.gripping_arm_right)
                     sss.move("gripper_right", self.gripper_right_open)
-                    command = "rosrun gazebo_ros spawn_model -file ~/git/catkin_ws/src/ipa_pars/planning_demo/scripts/the-box.sdf -sdf -model box1 -x +1.5 -y -1.5 -z 0.25"
+                    command = "rosrun gazebo_ros spawn_model -file ~/git/catkin_ws/src/ipa_pars/planning_demo/scripts/yellow_box/model-1_4.sdf -sdf -model box1 -x +1.5 -y -1.5 -z 0.0"
                     shell_output = subprocess.check_output([command],shell=True)
                     #self.write_to_logfile(shell_output)
                     print shell_output
