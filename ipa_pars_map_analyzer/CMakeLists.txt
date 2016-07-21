@@ -1,12 +1,30 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(ipa_pars_map_analyzer)
 
+set(catkin_RUN_PACKAGES
+	roscpp
+	roslib
+	actionlib
+	actionlib_msgs
+	std_msgs
+	sensor_msgs
+	geometry_msgs
+	cv_bridge
+)
+
+set(catkin_BUILD_PACKAGES
+	${catkin_RUN_PACKAGES}
+	cmake_modules
+	message_generation
+)
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS actionlib_msgs actionlib geometry_msgs message_generation roscpp sensor_msgs std_msgs)
+find_package(catkin REQUIRED COMPONENTS ${catkin_BUILD_PACKAGES} genmsg actionlib_msgs)
 
 ## System dependencies are found with CMake's conventions
+find_package(OpenCV REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -97,10 +115,14 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES ipa_pars_map_analyzer_client
-  CATKIN_DEPENDS actionlib_msgs actionlib geometry_msgs message_runtime roscpp sensor_msgs std_msgs
-  DEPENDS Boost
+  INCLUDE_DIRS 
+	common/include
+	ros/include
+  LIBRARIES #ipa_pars_map_analyzer_server
+  CATKIN_DEPENDS ${catkin_RUN_PACKAGES} actionlib_msgs message_runtime
+  DEPENDS
+	OpenCV
+	Boost
 )
 
 ###########
@@ -110,51 +132,72 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
-include_directories(include include/ipa_pars_map_analyzer ${catkin_INCLUDE_DIRS})
+include_directories(
+	common/include
+	ros/include
+	${catkin_INCLUDE_DIRS}
+	${OpenCV_INCLUDE_DIRS}
+	${Boost_INCLUDE_DIRS}
+)
 
-add_library(ipa_pars_map_analyzer_client src/ipa_pars_map_analyzer_client.cpp)
-add_dependencies(ipa_pars_map_analyzer_client ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(ipa_pars_map_analyzer_client ${catkin_LIBRARIES})
+add_executable(ipa_pars_map_analyzer_server
+	ros/src/ipa_pars_map_analyzer_server.cpp)
 
-## Declare a C++ executable
-add_executable(ipa_pars_map_analyzer_client_node src/ipa_pars_map_analyzer_client_node.cpp)
-target_link_libraries(ipa_pars_map_analyzer_client_node ipa_pars_map_analyzer_client ${catkin_LIBRARIES})
+target_link_libraries(ipa_pars_map_analyzer_server
+	${catkin_LIBRARIES} 
+	${OpenCV_LIBRARIES})
+add_dependencies(ipa_pars_map_analyzer_server
+	${catkin_EXPORTED_TARGETS}
+	${${PROJECT_NAME}_EXPORTED_TARGETS})
+
+### client for testing purpose
+add_executable(ipa_pars_map_analyzer_client ros/src/ipa_pars_map_analyzer_client.cpp)
+target_link_libraries(ipa_pars_map_analyzer_client
+	${catkin_LIBRARIES} 
+	${OpenCV_LIBRARIES})
+add_dependencies(ipa_pars_map_analyzer_client
+	${catkin_EXPORTED_TARGETS}
+	${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 
 #############
 ## Install ##
 #############
-
-# all install targets should use catkin DESTINATION variables
-# See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
-
-## Mark executable scripts (Python etc.) for installation
-## in contrast to setup.py, you can choose the destination
-# install(PROGRAMS
-#   scripts/my_python_script
-#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
-
 ## Mark executables and/or libraries for installation
-install(TARGETS ipa_pars_map_analyzer_client ipa_pars_map_analyzer_client_node
+install(TARGETS ipa_pars_map_analyzer_client #ipa_pars_map_analyzer_server
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-## Mark cpp header files for installation
-install(DIRECTORY include/${PROJECT_NAME}/
-   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-   FILES_MATCHING PATTERN "*.h"
-   PATTERN ".svn" EXCLUDE
+##uncomment this if you have a common-directory with header-files
+install(DIRECTORY common/include/${PROJECT_NAME}/
+	DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+	FILES_MATCHING PATTERN "*.h"
+	PATTERN ".svn" EXCLUDE
 )
 
-## Mark other files for installation (e.g. launch and bag files, etc.)
-# install(FILES
-#   # myfile1
-#   # myfile2
-#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-# )
+##uncomment this if you have header-files in your project
+install(DIRECTORY ros/include/${PROJECT_NAME}/
+	DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+	FILES_MATCHING PATTERN "*.h"
+	PATTERN ".svn" EXCLUDE
+)
+
+#install(DIRECTORY scripts
+#	DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+#	PATTERN ".svn" EXCLUDE
+#)
+
+#install(DIRECTORY ros/launch
+#	DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/ros
+#	PATTERN ".svn" EXCLUDE
+#)
+
+#install(DIRECTORY common/files
+#	DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/common
+#	PATTERN ".svn" EXCLUDE
+#)
 
 #############
 ## Testing ##
