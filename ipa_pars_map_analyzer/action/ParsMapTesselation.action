@@ -1,0 +1,21 @@
+# Map Tesselation action
+# Provides interface to get the tesselated map
+
+# goal definition
+sensor_msgs/Image input_map
+float32 map_resolution
+geometry_msgs/Pose map_origin
+
+---
+
+# result definition
+sensor_msgs/Image tesselated_map
+float32 map_resolution
+geometry_msgs/Pose map_origin
+#map_analyzer/RoomBalancePoints[] room_balance_points
+
+---
+
+# feedback definition
+
+sensor_msgs/Image status

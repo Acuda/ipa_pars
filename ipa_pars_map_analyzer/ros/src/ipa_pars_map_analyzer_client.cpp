@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 	cv_image.toImageMsg(output_img);
 	// create the action client
 	// true causes the client to spin its own thread
-	actionlib::SimpleActionClient<ipa_pars_map_analyzer::ParsMapAnalyzerAction> ac("/ipa_pars_map_analyzer_server", true);
+	actionlib::SimpleActionClient<ipa_pars_map_analyzer::ParsMapAnalyzerAction> ac("ipa_pars_map_analyzer_server", true);
 	ROS_INFO("Waiting for action server to start.");
 	// wait for the action server to start
 	ac.waitForServer(); //will wait for infinite time

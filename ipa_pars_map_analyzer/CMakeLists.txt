@@ -73,7 +73,7 @@ find_package(Boost REQUIRED COMPONENTS system)
 ## Generate actions in the 'action' folder
 add_action_files(
    DIRECTORY action
-   FILES ParsMapAnalyzer.action
+   FILES ParsMapAnalyzer.action ParsMapTesselation.action
 )
 
 ## Generate added messages and services with any dependencies listed here
@@ -140,6 +140,7 @@ include_directories(
 	${Boost_INCLUDE_DIRS}
 )
 
+## map analyzer main server
 add_executable(ipa_pars_map_analyzer_server
 	ros/src/ipa_pars_map_analyzer_server.cpp)
 
@@ -147,6 +148,17 @@ target_link_libraries(ipa_pars_map_analyzer_server
 	${catkin_LIBRARIES} 
 	${OpenCV_LIBRARIES})
 add_dependencies(ipa_pars_map_analyzer_server
+	${catkin_EXPORTED_TARGETS}
+	${${PROJECT_NAME}_EXPORTED_TARGETS})
+
+## map tesselation server
+add_executable(ipa_pars_map_tesselation_server
+	ros/src/ipa_pars_map_tesselation_server.cpp)
+
+target_link_libraries(ipa_pars_map_tesselation_server
+	${catkin_LIBRARIES}
+	${OpenCV_LIBRARIES})
+add_dependencies(ipa_pars_map_tesselation_server
 	${catkin_EXPORTED_TARGETS}
 	${${PROJECT_NAME}_EXPORTED_TARGETS})
 
