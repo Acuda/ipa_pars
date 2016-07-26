@@ -80,7 +80,7 @@ protected:
 	void execute_map_tesselation_server(const ipa_pars_map_analyzer::ParsMapTesselationGoalConstPtr &goal);
 
 	//Tesselation function
-	void tesselate_map(const cv::Mat& map_to_tesselate, cv::Mat& tesselated_map);
+	void tesselate_map(const cv::Mat& map_to_tesselate, cv::Mat& tesselated_map, std::vector<int> labelcount);
 
 	//!!Important!!
 	// define the Nodehandle before the action server, or else the server won't start

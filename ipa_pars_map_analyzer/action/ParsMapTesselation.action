@@ -12,6 +12,7 @@ geometry_msgs/Pose map_origin
 sensor_msgs/Image tesselated_map
 float32 map_resolution
 geometry_msgs/Pose map_origin
+std_msgs/Int32MultiArray labels
 #map_analyzer/RoomBalancePoints[] room_balance_points
 
 ---

@@ -75,6 +75,7 @@
 #include <actionlib/client/terminal_state.h>
 #include <ipa_pars_map_analyzer/ParsMapTesselationAction.h>
 
+#include "std_msgs/Int32MultiArray.h"
 
 ParsMapTesselationServer::ParsMapTesselationServer(ros::NodeHandle nh, std::string name_of_the_action) :
 	node_handle_(nh),
@@ -108,6 +109,7 @@ void ParsMapTesselationServer::execute_map_tesselation_server(const ipa_pars_map
 	cv_img.encoding = "32SC1";
 	cv::Mat output_img = original_img.clone();
 	cv::Mat corrected_img = original_img.clone();
+	cv::Mat tesselated_img = original_img.clone();
 	// delete errors
 	for (int y = 0; y < original_img.rows; ++y)
 	{
@@ -118,27 +120,59 @@ void ParsMapTesselationServer::execute_map_tesselation_server(const ipa_pars_map
 				corrected_img.at<int>(y,x) = 0;
 		}
 	}
-
-	ParsMapTesselationServer::tesselate_map(corrected_img, output_img);
-
-
+	std::vector <int> labelcount;
+	ParsMapTesselationServer::tesselate_map(corrected_img, tesselated_img, labelcount);
 
 
-	output_img.convertTo(original_img, CV_32SC1, 256, 0);
+
+
+	output_img.convertTo(tesselated_img, CV_32SC1, 256, 0);
 	cv_img.image = output_img;
 	cv_img.toImageMsg(map_tesselation_action_result_.tesselated_map);
 
 	map_tesselation_action_result_.map_resolution = goal->map_resolution;
 	map_tesselation_action_result_.map_origin = goal->map_origin;
+	map_tesselation_action_result_.labels.data = labelcount;
 
 	ipa_pars_map_tesselation_server_.setSucceeded(map_tesselation_action_result_);
 
 }
 
-void ParsMapTesselationServer::tesselate_map(const cv::Mat& map_to_tesselate, cv::Mat& tesselated_map)
+void ParsMapTesselationServer::tesselate_map(const cv::Mat& map_to_tesselate, cv::Mat& tesselated_map, std::vector <int> labelcount)
 {
 	cv::Mat temporary_map_to_work = map_to_tesselate.clone();
+	// create squares
+	std::vector<int> labelcounter;
+	double label = 1.0;
+	int countery = 1;
+	int counterx = 1;
+	labelcounter.push_back(label);
+	for (int y = 0; y < map_to_tesselate.rows; ++y)
+	{
+		countery++;
+		if (countery > 19)
+			countery = 0;
+			label = label + 1.0;
+			labelcounter.push_back(label);
+		for (int x = 0; x < map_to_tesselate.cols; ++x)
+		{
+			counterx++;
+			if (counterx > 19)
+				counterx = 0;
+				label = label + 100.0;
+				labelcounter.push_back(label);
+			if (map_to_tesselate.at<int>(y,x) != 0)
+				temporary_map_to_work.at<int>(y,x) = static_cast<int>(label);
+		}
+	}
 
+	std::string output;
+	for (int i = 0; i<labelcounter.size()-1; i++)
+		std::string out = boost::lexical_cast<std::string>(labelcounter[i]);
+		output.append(out.c_str());
+	ROS_INFO_STREAM("aaaassssssssssa: " << output.c_str());
+	tesselated_map = temporary_map_to_work.clone();
+	labelcount = labelcounter;
 }
 
 int main(int argc, char** argv)

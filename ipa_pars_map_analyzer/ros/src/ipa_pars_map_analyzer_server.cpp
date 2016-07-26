@@ -230,7 +230,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 			cv::Mat colour_tesselated_map = tesselated_map.clone();
 			colour_tesselated_map.convertTo(colour_tesselated_map, CV_8U);
 			cv::cvtColor(colour_tesselated_map, colour_tesselated_map, CV_GRAY2BGR);
-			for(size_t i = 1; i <= result_seg->room_information_in_pixel.size(); ++i) //todo! true seg has no room information!
+			for(size_t i = 1; i <= result_tess->labels.data.size(); ++i)
 			{
 				//choose random color for each room
 				int blue = (rand() % 250) + 1;
