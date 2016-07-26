@@ -1,8 +1,0 @@
-sensor_msgs/Image segmented_map
-float32 map_resolution
-geometry_msgs/Pose map_origin
-knowledge_base/RoomInfo[] room_information_in_pixel
-knowledge_base/RoomInfo[] room_information_in_meter
-# notice: this should just be message type MapSegmentationResult!
----
-bool success

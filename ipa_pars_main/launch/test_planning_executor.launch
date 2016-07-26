@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- ipa_planning_and_reasoning_system -->
+
+
+
+	<!-- nodes to start -->
+	<node pkg="ipa_pars_main" type="planning_executor_server.py" name="planning_executor_server_spawner" respawn="false" output="screen" />
+	<node pkg="ipa_pars_main" type="planning_executor_client.py" name="planning_executor_client_spawner" respawn="false" output="screen" />
+	<node pkg="ipa_pars_main" type="planning_executor_simulator.py" name="planning_executor_simulator_spawner" respawn="false" output="screen" />
+
+</launch>

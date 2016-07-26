@@ -70,7 +70,7 @@ from ipa_pars_main.msg._LogicPlanAction import *
 class PlanningDemo(object):
     def __init__(self):
         rospy.loginfo("Initialize PlanningDemo ...")
-        self._aclient = actionlib.SimpleActionClient('pars_server', ipa_pars_main.msg.LogicPlanAction)
+        self._aclient = actionlib.SimpleActionClient('planning_server', ipa_pars_main.msg.LogicPlanAction)
         rospy.logwarn("Waiting for Action Server to come available ...")
         self._aclient.wait_for_server()
         rospy.logwarn("Server is online.")

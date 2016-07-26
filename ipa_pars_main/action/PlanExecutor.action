@@ -1,0 +1,15 @@
+# Define the goal
+
+std_msgs/String[] action_list
+std_msgs/String static_knowledge
+std_msgs/String dynamic_knowledge
+
+---
+# Define a result
+std_msgs/String dynamic_knowledge
+bool replanning
+bool success
+
+---
+# Define a feedback message
+

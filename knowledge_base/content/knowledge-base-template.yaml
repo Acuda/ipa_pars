@@ -1,9 +1,0 @@
-location-data:
- - name: room-1
-   transitions: [room-2, room-3, room-4]
-   center: {X: 103.0, Y: 97.4, Z: 0.0}
-   min-max: {min: {X: 55.0, Y: 35.0, Z: 0.0}, max: {X: 150.0, Y: 200.0, Z: 0.0 }}
- - name: room-2
-   transitions: [room-3, room-4]
-   center: {X: 123.0, Y: 324.0, Z: 0.0}
-   min-max:  {min: {X: 231.0, Y: 240.0, Z: 0.0 }}

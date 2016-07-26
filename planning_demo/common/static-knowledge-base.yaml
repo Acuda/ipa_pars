@@ -1,0 +1,3066 @@
+location-data:
+- center:
+    X: 450
+    Y: 47
+    Z: 0
+  name: room-8-square-3
+  transitions:
+  - room-8-square-2
+  - room-8-square-4
+  - room-8-square-7
+- center:
+    X: 430
+    Y: 48
+    Z: 0
+  name: room-8-square-2
+  transitions:
+  - room-8-square-3
+  - room-8-square-1
+  - room-8-square-6
+- center:
+    X: 413
+    Y: 51
+    Z: 0
+  name: room-8-square-1
+  transitions:
+  - room-8-square-2
+  - room-8-square-5
+- center:
+    X: 467
+    Y: 53
+    Z: 0
+  name: room-8-square-4
+  transitions:
+  - room-8-square-3
+  - room-8-square-9
+  - room-8-square-8
+- center:
+    X: 231
+    Y: 66
+    Z: 0
+  name: room-5-square-3
+  transitions:
+  - room-5-square-2
+  - room-5-square-6
+- center:
+    X: 210
+    Y: 66
+    Z: 0
+  name: room-5-square-2
+  transitions:
+  - room-5-square-3
+  - room-5-square-1
+  - room-5-square-5
+- center:
+    X: 190
+    Y: 67
+    Z: 0
+  name: room-5-square-1
+  transitions:
+  - room-5-square-2
+  - room-5-square-4
+- center:
+    X: 169
+    Y: 68
+    Z: 0
+  name: room-1-square-3
+  transitions:
+  - room-1-square-2
+  - room-1-square-10
+- center:
+    X: 150
+    Y: 69
+    Z: 0
+  name: room-1-square-2
+  transitions:
+  - room-1-square-3
+  - room-1-square-1
+  - room-1-square-9
+- center:
+    X: 405
+    Y: 70
+    Z: 0
+  name: room-8-square-5
+  transitions:
+  - room-8-square-6
+  - room-8-square-1
+  - room-8-square-10
+  - room-8-square-11
+- center:
+    X: 430
+    Y: 69
+    Z: 0
+  name: room-8-square-6
+  transitions:
+  - room-8-square-5
+  - room-8-square-7
+  - room-8-square-2
+  - room-8-square-12
+- center:
+    X: 450
+    Y: 69
+    Z: 0
+  name: room-8-square-7
+  transitions:
+  - room-8-square-6
+  - room-8-square-8
+  - room-8-square-3
+  - room-8-square-13
+- center:
+    X: 470
+    Y: 69
+    Z: 0
+  name: room-8-square-8
+  transitions:
+  - room-8-square-7
+  - room-8-square-9
+  - room-8-square-4
+  - room-8-square-14
+- center:
+    X: 488
+    Y: 72
+    Z: 0
+  name: room-8-square-9
+  transitions:
+  - room-8-square-8
+  - room-8-square-16
+  - room-8-square-15
+  - room-8-square-4
+- center:
+    X: 130
+    Y: 70
+    Z: 0
+  name: room-1-square-1
+  transitions:
+  - room-1-square-2
+  - room-1-square-4
+  - room-1-square-8
+- center:
+    X: 110
+    Y: 71
+    Z: 0
+  name: room-1-square-4
+  transitions:
+  - room-1-square-1
+  - room-1-square-5
+  - room-1-square-7
+- center:
+    X: 89
+    Y: 72
+    Z: 0
+  name: room-1-square-5
+  transitions:
+  - room-1-square-4
+  - room-1-square-6
+- center:
+    X: 508
+    Y: 90
+    Z: 0
+  name: room-8-square-16
+  transitions:
+  - room-8-square-9
+  - room-8-square-15
+  - room-8-square-25
+  - room-8-square-24
+- center:
+    X: 90
+    Y: 89
+    Z: 0
+  name: room-1-square-6
+  transitions:
+  - room-1-square-7
+  - room-1-square-5
+  - room-1-square-11
+- center:
+    X: 110
+    Y: 89
+    Z: 0
+  name: room-1-square-7
+  transitions:
+  - room-1-square-6
+  - room-1-square-8
+  - room-1-square-4
+  - room-1-square-12
+- center:
+    X: 130
+    Y: 89
+    Z: 0
+  name: room-1-square-8
+  transitions:
+  - room-1-square-7
+  - room-1-square-9
+  - room-1-square-1
+  - room-1-square-13
+- center:
+    X: 150
+    Y: 89
+    Z: 0
+  name: room-1-square-9
+  transitions:
+  - room-1-square-8
+  - room-1-square-10
+  - room-1-square-2
+  - room-1-square-14
+- center:
+    X: 170
+    Y: 89
+    Z: 0
+  name: room-1-square-10
+  transitions:
+  - room-1-square-9
+  - room-1-square-3
+  - room-1-square-15
+- center:
+    X: 191
+    Y: 89
+    Z: 0
+  name: room-5-square-4
+  transitions:
+  - room-5-square-5
+  - room-5-square-1
+  - room-5-square-7
+- center:
+    X: 210
+    Y: 89
+    Z: 0
+  name: room-5-square-5
+  transitions:
+  - room-5-square-4
+  - room-5-square-6
+  - room-5-square-2
+  - room-5-square-8
+- center:
+    X: 230
+    Y: 89
+    Z: 0
+  name: room-5-square-6
+  transitions:
+  - room-5-square-5
+  - room-5-square-3
+  - room-5-square-9
+- center:
+    X: 387
+    Y: 90
+    Z: 0
+  name: room-8-square-10
+  transitions:
+  - room-8-square-11
+  - room-8-square-5
+  - room-8-square-17
+  - room-8-square-18
+- center:
+    X: 410
+    Y: 89
+    Z: 0
+  name: room-8-square-11
+  transitions:
+  - room-8-square-10
+  - room-8-square-12
+  - room-8-square-5
+  - room-8-square-19
+- center:
+    X: 430
+    Y: 89
+    Z: 0
+  name: room-8-square-12
+  transitions:
+  - room-8-square-11
+  - room-8-square-13
+  - room-8-square-6
+  - room-8-square-20
+- center:
+    X: 450
+    Y: 89
+    Z: 0
+  name: room-8-square-13
+  transitions:
+  - room-8-square-12
+  - room-8-square-14
+  - room-8-square-7
+  - room-8-square-21
+- center:
+    X: 470
+    Y: 89
+    Z: 0
+  name: room-8-square-14
+  transitions:
+  - room-8-square-13
+  - room-8-square-15
+  - room-8-square-8
+  - room-8-square-22
+- center:
+    X: 490
+    Y: 89
+    Z: 0
+  name: room-8-square-15
+  transitions:
+  - room-8-square-14
+  - room-8-square-16
+  - room-8-square-9
+  - room-8-square-23
+- center:
+    X: 531
+    Y: 110
+    Z: 0
+  name: room-8-square-25
+  transitions:
+  - room-8-square-16
+  - room-8-square-24
+  - room-8-square-35
+- center:
+    X: 91
+    Y: 109
+    Z: 0
+  name: room-1-square-11
+  transitions:
+  - room-1-square-12
+  - room-1-square-6
+  - room-1-square-16
+- center:
+    X: 110
+    Y: 109
+    Z: 0
+  name: room-1-square-12
+  transitions:
+  - room-1-square-11
+  - room-1-square-13
+  - room-1-square-7
+  - room-1-square-17
+- center:
+    X: 130
+    Y: 109
+    Z: 0
+  name: room-1-square-13
+  transitions:
+  - room-1-square-12
+  - room-1-square-14
+  - room-1-square-8
+  - room-1-square-18
+- center:
+    X: 150
+    Y: 109
+    Z: 0
+  name: room-1-square-14
+  transitions:
+  - room-1-square-13
+  - room-1-square-15
+  - room-1-square-9
+  - room-1-square-19
+- center:
+    X: 171
+    Y: 109
+    Z: 0
+  name: room-1-square-15
+  transitions:
+  - room-1-square-14
+  - room-1-square-10
+  - room-1-square-20
+- center:
+    X: 192
+    Y: 109
+    Z: 0
+  name: room-5-square-7
+  transitions:
+  - room-5-square-8
+  - room-5-square-4
+  - room-5-square-10
+- center:
+    X: 210
+    Y: 109
+    Z: 0
+  name: room-5-square-8
+  transitions:
+  - room-5-square-7
+  - room-5-square-9
+  - room-5-square-5
+  - room-5-square-11
+- center:
+    X: 231
+    Y: 109
+    Z: 0
+  name: room-5-square-9
+  transitions:
+  - room-5-square-8
+  - room-5-square-6
+  - room-5-square-12
+- center:
+    X: 368
+    Y: 110
+    Z: 0
+  name: room-8-square-17
+  transitions:
+  - room-8-square-18
+  - room-8-square-10
+  - room-8-square-26
+  - room-8-square-27
+- center:
+    X: 390
+    Y: 109
+    Z: 0
+  name: room-8-square-18
+  transitions:
+  - room-8-square-17
+  - room-8-square-19
+  - room-8-square-10
+  - room-8-square-28
+- center:
+    X: 410
+    Y: 109
+    Z: 0
+  name: room-8-square-19
+  transitions:
+  - room-8-square-18
+  - room-8-square-20
+  - room-8-square-11
+  - room-8-square-29
+- center:
+    X: 430
+    Y: 109
+    Z: 0
+  name: room-8-square-20
+  transitions:
+  - room-8-square-19
+  - room-8-square-21
+  - room-8-square-12
+  - room-8-square-30
+- center:
+    X: 450
+    Y: 109
+    Z: 0
+  name: room-8-square-21
+  transitions:
+  - room-8-square-20
+  - room-8-square-22
+  - room-8-square-13
+  - room-8-square-31
+- center:
+    X: 470
+    Y: 109
+    Z: 0
+  name: room-8-square-22
+  transitions:
+  - room-8-square-21
+  - room-8-square-23
+  - room-8-square-14
+  - room-8-square-32
+- center:
+    X: 490
+    Y: 109
+    Z: 0
+  name: room-8-square-23
+  transitions:
+  - room-8-square-22
+  - room-8-square-24
+  - room-8-square-15
+  - room-8-square-33
+- center:
+    X: 510
+    Y: 109
+    Z: 0
+  name: room-8-square-24
+  transitions:
+  - room-8-square-23
+  - room-8-square-25
+  - room-8-square-16
+  - room-8-square-34
+- center:
+    X: 276
+    Y: 114
+    Z: 0
+  name: room-6-square-1
+  transitions:
+  - room-6-square-3
+  - room-6-square-4
+  - room-6-square-5
+- center:
+    X: 254
+    Y: 124
+    Z: 0
+  name: room-6-square-3
+  transitions:
+  - room-6-square-1
+  - room-6-square-4
+  - room-6-square-7
+- center:
+    X: 92
+    Y: 129
+    Z: 0
+  name: room-1-square-16
+  transitions:
+  - room-1-square-17
+  - room-1-square-11
+  - room-1-square-21
+- center:
+    X: 110
+    Y: 129
+    Z: 0
+  name: room-1-square-17
+  transitions:
+  - room-1-square-16
+  - room-1-square-18
+  - room-1-square-12
+  - room-1-square-22
+- center:
+    X: 130
+    Y: 129
+    Z: 0
+  name: room-1-square-18
+  transitions:
+  - room-1-square-17
+  - room-1-square-19
+  - room-1-square-13
+  - room-1-square-23
+- center:
+    X: 150
+    Y: 133
+    Z: 0
+  name: room-1-square-19
+  transitions:
+  - room-1-square-18
+  - room-1-square-20
+  - room-1-square-14
+  - room-1-square-23
+- center:
+    X: 172
+    Y: 133
+    Z: 0
+  name: room-1-square-20
+  transitions:
+  - room-1-square-19
+  - room-2-square-2
+  - room-2-square-3
+  - room-1-square-15
+- center:
+    X: 193
+    Y: 131
+    Z: 0
+  name: room-5-square-10
+  transitions:
+  - room-5-square-11
+  - room-5-square-7
+- center:
+    X: 210
+    Y: 130
+    Z: 0
+  name: room-5-square-11
+  transitions:
+  - room-5-square-10
+  - room-5-square-12
+  - room-5-square-8
+- center:
+    X: 232
+    Y: 128
+    Z: 0
+  name: room-5-square-12
+  transitions:
+  - room-5-square-11
+  - room-5-square-9
+  - room-6-square-2
+  - room-5-square-13
+  - room-6-square-6
+- center:
+    X: 270
+    Y: 129
+    Z: 0
+  name: room-6-square-4
+  transitions:
+  - room-6-square-3
+  - room-6-square-5
+  - room-6-square-1
+  - room-6-square-8
+- center:
+    X: 286
+    Y: 129
+    Z: 0
+  name: room-6-square-5
+  transitions:
+  - room-6-square-4
+  - room-6-square-1
+  - room-6-square-9
+- center:
+    X: 351
+    Y: 130
+    Z: 0
+  name: room-8-square-26
+  transitions:
+  - room-8-square-27
+  - room-8-square-17
+  - room-8-square-37
+  - room-8-square-38
+- center:
+    X: 370
+    Y: 129
+    Z: 0
+  name: room-8-square-27
+  transitions:
+  - room-8-square-26
+  - room-8-square-28
+  - room-8-square-17
+  - room-8-square-39
+- center:
+    X: 390
+    Y: 129
+    Z: 0
+  name: room-8-square-28
+  transitions:
+  - room-8-square-27
+  - room-8-square-29
+  - room-8-square-18
+  - room-8-square-40
+- center:
+    X: 410
+    Y: 129
+    Z: 0
+  name: room-8-square-29
+  transitions:
+  - room-8-square-28
+  - room-8-square-30
+  - room-8-square-19
+  - room-8-square-41
+- center:
+    X: 430
+    Y: 129
+    Z: 0
+  name: room-8-square-30
+  transitions:
+  - room-8-square-29
+  - room-8-square-31
+  - room-8-square-20
+  - room-8-square-42
+- center:
+    X: 450
+    Y: 129
+    Z: 0
+  name: room-8-square-31
+  transitions:
+  - room-8-square-30
+  - room-8-square-32
+  - room-8-square-21
+  - room-8-square-43
+- center:
+    X: 470
+    Y: 129
+    Z: 0
+  name: room-8-square-32
+  transitions:
+  - room-8-square-31
+  - room-8-square-33
+  - room-8-square-22
+  - room-8-square-44
+- center:
+    X: 490
+    Y: 129
+    Z: 0
+  name: room-8-square-33
+  transitions:
+  - room-8-square-32
+  - room-8-square-34
+  - room-8-square-23
+  - room-8-square-45
+- center:
+    X: 510
+    Y: 129
+    Z: 0
+  name: room-8-square-34
+  transitions:
+  - room-8-square-33
+  - room-8-square-35
+  - room-8-square-24
+  - room-8-square-46
+- center:
+    X: 535
+    Y: 129
+    Z: 0
+  name: room-8-square-35
+  transitions:
+  - room-8-square-34
+  - room-8-square-25
+  - room-8-square-47
+  - room-8-square-48
+- center:
+    X: 330
+    Y: 152
+    Z: 0
+  name: room-8-square-37
+  transitions:
+  - room-8-square-26
+  - room-8-square-36
+  - room-8-square-38
+  - room-8-square-49
+  - room-8-square-50
+- center:
+    X: 237
+    Y: 137
+    Z: 0
+  name: room-6-square-2
+  transitions:
+  - room-5-square-12
+  - room-6-square-6
+  - room-6-square-7
+- center:
+    X: 317
+    Y: 146
+    Z: 0
+  name: room-8-square-36
+  transitions:
+  - room-8-square-37
+  - room-6-square-10
+  - room-8-square-49
+- center:
+    X: 93
+    Y: 146
+    Z: 0
+  name: room-1-square-21
+  transitions:
+  - room-1-square-22
+  - room-1-square-16
+- center:
+    X: 110
+    Y: 145
+    Z: 0
+  name: room-1-square-22
+  transitions:
+  - room-1-square-21
+  - room-1-square-23
+  - room-1-square-17
+- center:
+    X: 130
+    Y: 144
+    Z: 0
+  name: room-1-square-23
+  transitions:
+  - room-1-square-22
+  - room-1-square-19
+  - room-1-square-18
+- center:
+    X: 222
+    Y: 140
+    Z: 0
+  name: room-5-square-13
+  transitions:
+  - room-5-square-12
+  - room-6-square-6
+- center:
+    X: 230
+    Y: 149
+    Z: 0
+  name: room-6-square-6
+  transitions:
+  - room-5-square-13
+  - room-6-square-7
+  - room-6-square-2
+  - room-2-square-1
+  - room-6-square-11
+  - room-5-square-12
+- center:
+    X: 250
+    Y: 149
+    Z: 0
+  name: room-6-square-7
+  transitions:
+  - room-6-square-6
+  - room-6-square-2
+  - room-6-square-8
+  - room-6-square-3
+  - room-6-square-12
+- center:
+    X: 270
+    Y: 149
+    Z: 0
+  name: room-6-square-8
+  transitions:
+  - room-6-square-7
+  - room-6-square-9
+  - room-6-square-4
+  - room-6-square-13
+- center:
+    X: 290
+    Y: 149
+    Z: 0
+  name: room-6-square-9
+  transitions:
+  - room-6-square-8
+  - room-6-square-5
+  - room-6-square-10
+  - room-6-square-14
+- center:
+    X: 308
+    Y: 150
+    Z: 0
+  name: room-6-square-10
+  transitions:
+  - room-8-square-36
+  - room-6-square-9
+  - room-6-square-15
+- center:
+    X: 350
+    Y: 149
+    Z: 0
+  name: room-8-square-38
+  transitions:
+  - room-8-square-37
+  - room-8-square-39
+  - room-8-square-26
+  - room-8-square-50
+- center:
+    X: 370
+    Y: 149
+    Z: 0
+  name: room-8-square-39
+  transitions:
+  - room-8-square-38
+  - room-8-square-40
+  - room-8-square-27
+  - room-8-square-51
+- center:
+    X: 390
+    Y: 149
+    Z: 0
+  name: room-8-square-40
+  transitions:
+  - room-8-square-39
+  - room-8-square-41
+  - room-8-square-28
+  - room-8-square-52
+- center:
+    X: 410
+    Y: 149
+    Z: 0
+  name: room-8-square-41
+  transitions:
+  - room-8-square-40
+  - room-8-square-42
+  - room-8-square-29
+  - room-8-square-53
+- center:
+    X: 430
+    Y: 149
+    Z: 0
+  name: room-8-square-42
+  transitions:
+  - room-8-square-41
+  - room-8-square-43
+  - room-8-square-30
+  - room-8-square-54
+- center:
+    X: 450
+    Y: 149
+    Z: 0
+  name: room-8-square-43
+  transitions:
+  - room-8-square-42
+  - room-8-square-44
+  - room-8-square-31
+  - room-8-square-55
+- center:
+    X: 470
+    Y: 149
+    Z: 0
+  name: room-8-square-44
+  transitions:
+  - room-8-square-43
+  - room-8-square-45
+  - room-8-square-32
+  - room-8-square-56
+- center:
+    X: 490
+    Y: 149
+    Z: 0
+  name: room-8-square-45
+  transitions:
+  - room-8-square-44
+  - room-8-square-46
+  - room-8-square-33
+  - room-8-square-57
+- center:
+    X: 510
+    Y: 149
+    Z: 0
+  name: room-8-square-46
+  transitions:
+  - room-8-square-45
+  - room-8-square-47
+  - room-8-square-34
+  - room-8-square-58
+- center:
+    X: 530
+    Y: 149
+    Z: 0
+  name: room-8-square-47
+  transitions:
+  - room-8-square-46
+  - room-8-square-48
+  - room-8-square-35
+  - room-8-square-59
+- center:
+    X: 545
+    Y: 148
+    Z: 0
+  name: room-8-square-48
+  transitions:
+  - room-8-square-47
+  - room-8-square-35
+  - room-8-square-59
+- center:
+    X: 210
+    Y: 151
+    Z: 0
+  name: room-2-square-1
+  transitions:
+  - room-6-square-6
+  - room-2-square-2
+  - room-2-square-10
+- center:
+    X: 190
+    Y: 152
+    Z: 0
+  name: room-2-square-2
+  transitions:
+  - room-1-square-20
+  - room-2-square-3
+  - room-2-square-1
+  - room-2-square-9
+- center:
+    X: 170
+    Y: 153
+    Z: 0
+  name: room-2-square-3
+  transitions:
+  - room-1-square-20
+  - room-2-square-2
+  - room-2-square-7
+  - room-2-square-8
+- center:
+    X: 150
+    Y: 168
+    Z: 0
+  name: room-2-square-7
+  transitions:
+  - room-2-square-3
+  - room-2-square-6
+  - room-2-square-8
+- center:
+    X: 130
+    Y: 170
+    Z: 0
+  name: room-2-square-6
+  transitions:
+  - room-2-square-7
+  - room-2-square-5
+  - room-2-square-11
+  - room-3-square-1
+- center:
+    X: 110
+    Y: 166
+    Z: 0
+  name: room-2-square-5
+  transitions:
+  - room-2-square-6
+  - room-2-square-4
+  - room-2-square-11
+- center:
+    X: 94
+    Y: 166
+    Z: 0
+  name: room-2-square-4
+  transitions:
+  - room-2-square-5
+  - room-2-square-11
+- center:
+    X: 170
+    Y: 172
+    Z: 0
+  name: room-2-square-8
+  transitions:
+  - room-2-square-7
+  - room-2-square-9
+  - room-2-square-3
+- center:
+    X: 190
+    Y: 171
+    Z: 0
+  name: room-2-square-9
+  transitions:
+  - room-2-square-8
+  - room-2-square-10
+  - room-2-square-2
+- center:
+    X: 210
+    Y: 170
+    Z: 0
+  name: room-2-square-10
+  transitions:
+  - room-2-square-9
+  - room-6-square-11
+  - room-2-square-1
+  - room-6-square-16
+- center:
+    X: 230
+    Y: 169
+    Z: 0
+  name: room-6-square-11
+  transitions:
+  - room-2-square-10
+  - room-6-square-12
+  - room-6-square-6
+  - room-6-square-16
+- center:
+    X: 250
+    Y: 169
+    Z: 0
+  name: room-6-square-12
+  transitions:
+  - room-6-square-11
+  - room-6-square-13
+  - room-6-square-7
+  - room-6-square-16
+  - room-6-square-17
+- center:
+    X: 270
+    Y: 169
+    Z: 0
+  name: room-6-square-13
+  transitions:
+  - room-6-square-12
+  - room-6-square-14
+  - room-6-square-8
+  - room-6-square-17
+- center:
+    X: 289
+    Y: 168
+    Z: 0
+  name: room-6-square-14
+  transitions:
+  - room-6-square-13
+  - room-6-square-15
+  - room-6-square-9
+  - room-6-square-18
+- center:
+    X: 308
+    Y: 165
+    Z: 0
+  name: room-6-square-15
+  transitions:
+  - room-6-square-14
+  - room-8-square-49
+  - room-6-square-10
+- center:
+    X: 319
+    Y: 165
+    Z: 0
+  name: room-8-square-49
+  transitions:
+  - room-6-square-15
+  - room-8-square-37
+  - room-8-square-36
+- center:
+    X: 351
+    Y: 169
+    Z: 0
+  name: room-8-square-50
+  transitions:
+  - room-8-square-37
+  - room-8-square-51
+  - room-8-square-38
+  - room-8-square-60
+- center:
+    X: 370
+    Y: 169
+    Z: 0
+  name: room-8-square-51
+  transitions:
+  - room-8-square-50
+  - room-8-square-52
+  - room-8-square-39
+  - room-8-square-60
+- center:
+    X: 390
+    Y: 169
+    Z: 0
+  name: room-8-square-52
+  transitions:
+  - room-8-square-51
+  - room-8-square-53
+  - room-8-square-40
+  - room-8-square-61
+- center:
+    X: 410
+    Y: 169
+    Z: 0
+  name: room-8-square-53
+  transitions:
+  - room-8-square-52
+  - room-8-square-54
+  - room-8-square-41
+  - room-8-square-62
+- center:
+    X: 430
+    Y: 169
+    Z: 0
+  name: room-8-square-54
+  transitions:
+  - room-8-square-53
+  - room-8-square-55
+  - room-8-square-42
+  - room-8-square-63
+- center:
+    X: 450
+    Y: 169
+    Z: 0
+  name: room-8-square-55
+  transitions:
+  - room-8-square-54
+  - room-8-square-56
+  - room-8-square-43
+  - room-8-square-64
+- center:
+    X: 470
+    Y: 169
+    Z: 0
+  name: room-8-square-56
+  transitions:
+  - room-8-square-55
+  - room-8-square-57
+  - room-8-square-44
+  - room-8-square-65
+- center:
+    X: 490
+    Y: 169
+    Z: 0
+  name: room-8-square-57
+  transitions:
+  - room-8-square-56
+  - room-8-square-58
+  - room-8-square-45
+  - room-8-square-66
+- center:
+    X: 510
+    Y: 169
+    Z: 0
+  name: room-8-square-58
+  transitions:
+  - room-8-square-57
+  - room-8-square-59
+  - room-8-square-46
+  - room-8-square-67
+- center:
+    X: 529
+    Y: 167
+    Z: 0
+  name: room-8-square-59
+  transitions:
+  - room-8-square-58
+  - room-8-square-48
+  - room-8-square-67
+  - room-8-square-47
+- center:
+    X: 104
+    Y: 185
+    Z: 0
+  name: room-2-square-11
+  transitions:
+  - room-2-square-6
+  - room-2-square-5
+  - room-3-square-2
+  - room-3-square-4
+  - room-2-square-4
+- center:
+    X: 237
+    Y: 188
+    Z: 0
+  name: room-6-square-16
+  transitions:
+  - room-2-square-10
+  - room-6-square-12
+  - room-4-square-1
+  - room-6-square-11
+- center:
+    X: 267
+    Y: 189
+    Z: 0
+  name: room-6-square-17
+  transitions:
+  - room-6-square-18
+  - room-6-square-13
+  - room-6-square-19
+  - room-6-square-12
+- center:
+    X: 288
+    Y: 189
+    Z: 0
+  name: room-6-square-18
+  transitions:
+  - room-6-square-17
+  - room-6-square-14
+  - room-6-square-20
+- center:
+    X: 372
+    Y: 188
+    Z: 0
+  name: room-8-square-60
+  transitions:
+  - room-8-square-50
+  - room-8-square-61
+  - room-8-square-51
+  - room-8-square-68
+- center:
+    X: 390
+    Y: 189
+    Z: 0
+  name: room-8-square-61
+  transitions:
+  - room-8-square-60
+  - room-8-square-62
+  - room-8-square-52
+  - room-8-square-68
+- center:
+    X: 410
+    Y: 189
+    Z: 0
+  name: room-8-square-62
+  transitions:
+  - room-8-square-61
+  - room-8-square-63
+  - room-8-square-53
+  - room-8-square-69
+- center:
+    X: 430
+    Y: 189
+    Z: 0
+  name: room-8-square-63
+  transitions:
+  - room-8-square-62
+  - room-8-square-64
+  - room-8-square-54
+  - room-8-square-70
+- center:
+    X: 450
+    Y: 189
+    Z: 0
+  name: room-8-square-64
+  transitions:
+  - room-8-square-63
+  - room-8-square-65
+  - room-8-square-55
+  - room-8-square-71
+- center:
+    X: 470
+    Y: 189
+    Z: 0
+  name: room-8-square-65
+  transitions:
+  - room-8-square-64
+  - room-8-square-66
+  - room-8-square-56
+  - room-8-square-72
+- center:
+    X: 490
+    Y: 189
+    Z: 0
+  name: room-8-square-66
+  transitions:
+  - room-8-square-65
+  - room-8-square-67
+  - room-8-square-57
+  - room-8-square-73
+- center:
+    X: 510
+    Y: 188
+    Z: 0
+  name: room-8-square-67
+  transitions:
+  - room-8-square-66
+  - room-8-square-59
+  - room-8-square-73
+  - room-8-square-58
+- center:
+    X: 210
+    Y: 191
+    Z: 0
+  name: room-4-square-2
+  transitions:
+  - room-4-square-1
+  - room-4-square-3
+  - room-4-square-8
+- center:
+    X: 227
+    Y: 194
+    Z: 0
+  name: room-4-square-1
+  transitions:
+  - room-4-square-2
+  - room-6-square-16
+  - room-4-square-9
+  - room-4-square-10
+- center:
+    X: 190
+    Y: 192
+    Z: 0
+  name: room-4-square-3
+  transitions:
+  - room-4-square-2
+  - room-4-square-4
+  - room-4-square-7
+- center:
+    X: 170
+    Y: 193
+    Z: 0
+  name: room-4-square-4
+  transitions:
+  - room-4-square-3
+  - room-4-square-5
+  - room-4-square-6
+- center:
+    X: 130
+    Y: 194
+    Z: 0
+  name: room-3-square-1
+  transitions:
+  - room-2-square-6
+  - room-3-square-2
+  - room-3-square-4
+  - room-3-square-5
+- center:
+    X: 152
+    Y: 203
+    Z: 0
+  name: room-4-square-5
+  transitions:
+  - room-4-square-4
+  - room-4-square-6
+  - room-4-square-11
+- center:
+    X: 120
+    Y: 191
+    Z: 0
+  name: room-3-square-2
+  transitions:
+  - room-2-square-11
+  - room-3-square-1
+  - room-3-square-4
+- center:
+    X: 110
+    Y: 206
+    Z: 0
+  name: room-3-square-4
+  transitions:
+  - room-3-square-1
+  - room-3-square-2
+  - room-3-square-3
+  - room-3-square-5
+  - room-3-square-6
+  - room-2-square-11
+- center:
+    X: 96
+    Y: 205
+    Z: 0
+  name: room-3-square-3
+  transitions:
+  - room-3-square-4
+  - room-3-square-6
+- center:
+    X: 132
+    Y: 209
+    Z: 0
+  name: room-3-square-5
+  transitions:
+  - room-3-square-4
+  - room-3-square-7
+  - room-3-square-1
+- center:
+    X: 170
+    Y: 209
+    Z: 0
+  name: room-4-square-6
+  transitions:
+  - room-4-square-5
+  - room-4-square-7
+  - room-4-square-4
+  - room-4-square-12
+- center:
+    X: 190
+    Y: 209
+    Z: 0
+  name: room-4-square-7
+  transitions:
+  - room-4-square-6
+  - room-4-square-8
+  - room-4-square-3
+  - room-4-square-13
+- center:
+    X: 210
+    Y: 209
+    Z: 0
+  name: room-4-square-8
+  transitions:
+  - room-4-square-7
+  - room-4-square-9
+  - room-4-square-2
+  - room-4-square-14
+- center:
+    X: 230
+    Y: 209
+    Z: 0
+  name: room-4-square-9
+  transitions:
+  - room-4-square-8
+  - room-4-square-10
+  - room-4-square-1
+  - room-4-square-15
+- center:
+    X: 246
+    Y: 209
+    Z: 0
+  name: room-4-square-10
+  transitions:
+  - room-4-square-9
+  - room-4-square-1
+  - room-4-square-16
+- center:
+    X: 267
+    Y: 206
+    Z: 0
+  name: room-6-square-19
+  transitions:
+  - room-6-square-20
+  - room-6-square-17
+  - room-7-square-1
+- center:
+    X: 288
+    Y: 206
+    Z: 0
+  name: room-6-square-20
+  transitions:
+  - room-6-square-19
+  - room-6-square-18
+  - room-7-square-2
+- center:
+    X: 392
+    Y: 206
+    Z: 0
+  name: room-8-square-68
+  transitions:
+  - room-8-square-60
+  - room-8-square-69
+  - room-8-square-61
+- center:
+    X: 411
+    Y: 214
+    Z: 0
+  name: room-8-square-69
+  transitions:
+  - room-8-square-68
+  - room-8-square-70
+  - room-8-square-62
+  - room-8-square-74
+- center:
+    X: 430
+    Y: 209
+    Z: 0
+  name: room-8-square-70
+  transitions:
+  - room-8-square-69
+  - room-8-square-71
+  - room-8-square-63
+  - room-8-square-74
+- center:
+    X: 450
+    Y: 209
+    Z: 0
+  name: room-8-square-71
+  transitions:
+  - room-8-square-70
+  - room-8-square-72
+  - room-8-square-64
+  - room-8-square-75
+- center:
+    X: 470
+    Y: 209
+    Z: 0
+  name: room-8-square-72
+  transitions:
+  - room-8-square-71
+  - room-8-square-73
+  - room-8-square-65
+  - room-8-square-76
+- center:
+    X: 492
+    Y: 208
+    Z: 0
+  name: room-8-square-73
+  transitions:
+  - room-8-square-72
+  - room-8-square-67
+  - room-12-square-2
+  - room-12-square-1
+  - room-8-square-76
+  - room-8-square-66
+- center:
+    X: 498
+    Y: 215
+    Z: 0
+  name: room-12-square-1
+  transitions:
+  - room-8-square-73
+  - room-12-square-2
+- center:
+    X: 509
+    Y: 225
+    Z: 0
+  name: room-12-square-2
+  transitions:
+  - room-12-square-1
+  - room-12-square-3
+  - room-8-square-73
+- center:
+    X: 268
+    Y: 227
+    Z: 0
+  name: room-7-square-1
+  transitions:
+  - room-6-square-19
+  - room-7-square-2
+  - room-7-square-4
+- center:
+    X: 290
+    Y: 226
+    Z: 0
+  name: room-7-square-2
+  transitions:
+  - room-6-square-20
+  - room-7-square-1
+  - room-7-square-3
+  - room-7-square-5
+- center:
+    X: 107
+    Y: 229
+    Z: 0
+  name: room-3-square-6
+  transitions:
+  - room-3-square-7
+  - room-3-square-4
+  - room-3-square-8
+  - room-3-square-3
+- center:
+    X: 132
+    Y: 229
+    Z: 0
+  name: room-3-square-7
+  transitions:
+  - room-3-square-6
+  - room-3-square-5
+  - room-3-square-9
+- center:
+    X: 153
+    Y: 229
+    Z: 0
+  name: room-4-square-11
+  transitions:
+  - room-4-square-12
+  - room-4-square-5
+  - room-4-square-17
+- center:
+    X: 170
+    Y: 229
+    Z: 0
+  name: room-4-square-12
+  transitions:
+  - room-4-square-11
+  - room-4-square-13
+  - room-4-square-6
+  - room-4-square-18
+- center:
+    X: 190
+    Y: 229
+    Z: 0
+  name: room-4-square-13
+  transitions:
+  - room-4-square-12
+  - room-4-square-14
+  - room-4-square-7
+  - room-4-square-19
+- center:
+    X: 210
+    Y: 229
+    Z: 0
+  name: room-4-square-14
+  transitions:
+  - room-4-square-13
+  - room-4-square-15
+  - room-4-square-8
+  - room-4-square-20
+- center:
+    X: 230
+    Y: 229
+    Z: 0
+  name: room-4-square-15
+  transitions:
+  - room-4-square-14
+  - room-4-square-16
+  - room-4-square-9
+  - room-4-square-21
+- center:
+    X: 247
+    Y: 229
+    Z: 0
+  name: room-4-square-16
+  transitions:
+  - room-4-square-15
+  - room-4-square-10
+  - room-4-square-22
+- center:
+    X: 309
+    Y: 231
+    Z: 0
+  name: room-7-square-3
+  transitions:
+  - room-7-square-2
+  - room-7-square-7
+  - room-7-square-6
+- center:
+    X: 430
+    Y: 229
+    Z: 0
+  name: room-8-square-74
+  transitions:
+  - room-8-square-69
+  - room-8-square-75
+  - room-8-square-70
+  - room-8-square-77
+- center:
+    X: 450
+    Y: 229
+    Z: 0
+  name: room-8-square-75
+  transitions:
+  - room-8-square-74
+  - room-8-square-76
+  - room-8-square-71
+  - room-8-square-77
+- center:
+    X: 473
+    Y: 228
+    Z: 0
+  name: room-8-square-76
+  transitions:
+  - room-8-square-75
+  - room-8-square-73
+  - room-8-square-77
+  - room-8-square-72
+- center:
+    X: 528
+    Y: 239
+    Z: 0
+  name: room-12-square-3
+  transitions:
+  - room-12-square-2
+- center:
+    X: 329
+    Y: 248
+    Z: 0
+  name: room-7-square-7
+  transitions:
+  - room-7-square-3
+  - room-7-square-6
+  - room-7-square-12
+  - room-7-square-11
+- center:
+    X: 107
+    Y: 249
+    Z: 0
+  name: room-3-square-8
+  transitions:
+  - room-3-square-9
+  - room-3-square-6
+  - room-3-square-10
+- center:
+    X: 133
+    Y: 249
+    Z: 0
+  name: room-3-square-9
+  transitions:
+  - room-3-square-8
+  - room-3-square-7
+  - room-3-square-11
+- center:
+    X: 154
+    Y: 249
+    Z: 0
+  name: room-4-square-17
+  transitions:
+  - room-4-square-18
+  - room-4-square-11
+  - room-4-square-23
+- center:
+    X: 170
+    Y: 249
+    Z: 0
+  name: room-4-square-18
+  transitions:
+  - room-4-square-17
+  - room-4-square-19
+  - room-4-square-12
+  - room-4-square-23
+- center:
+    X: 190
+    Y: 249
+    Z: 0
+  name: room-4-square-19
+  transitions:
+  - room-4-square-18
+  - room-4-square-20
+  - room-4-square-13
+  - room-4-square-24
+- center:
+    X: 210
+    Y: 249
+    Z: 0
+  name: room-4-square-20
+  transitions:
+  - room-4-square-19
+  - room-4-square-21
+  - room-4-square-14
+  - room-4-square-25
+- center:
+    X: 230
+    Y: 249
+    Z: 0
+  name: room-4-square-21
+  transitions:
+  - room-4-square-20
+  - room-4-square-22
+  - room-4-square-15
+  - room-4-square-26
+- center:
+    X: 248
+    Y: 249
+    Z: 0
+  name: room-4-square-22
+  transitions:
+  - room-4-square-21
+  - room-4-square-16
+  - room-4-square-27
+- center:
+    X: 269
+    Y: 249
+    Z: 0
+  name: room-7-square-4
+  transitions:
+  - room-7-square-5
+  - room-7-square-1
+  - room-7-square-8
+- center:
+    X: 290
+    Y: 249
+    Z: 0
+  name: room-7-square-5
+  transitions:
+  - room-7-square-4
+  - room-7-square-6
+  - room-7-square-2
+  - room-7-square-9
+- center:
+    X: 310
+    Y: 249
+    Z: 0
+  name: room-7-square-6
+  transitions:
+  - room-7-square-5
+  - room-7-square-7
+  - room-7-square-3
+  - room-7-square-10
+- center:
+    X: 451
+    Y: 247
+    Z: 0
+  name: room-8-square-77
+  transitions:
+  - room-8-square-74
+  - room-8-square-76
+  - room-11-square-1
+  - room-8-square-78
+  - room-11-square-2
+  - room-8-square-75
+- center:
+    X: 349
+    Y: 267
+    Z: 0
+  name: room-7-square-12
+  transitions:
+  - room-7-square-7
+  - room-7-square-11
+  - room-7-square-17
+  - room-7-square-16
+- center:
+    X: 458
+    Y: 258
+    Z: 0
+  name: room-11-square-1
+  transitions:
+  - room-8-square-77
+  - room-11-square-2
+  - room-11-square-3
+- center:
+    X: 108
+    Y: 270
+    Z: 0
+  name: room-3-square-10
+  transitions:
+  - room-3-square-11
+  - room-3-square-8
+  - room-2-square-12
+- center:
+    X: 134
+    Y: 270
+    Z: 0
+  name: room-3-square-11
+  transitions:
+  - room-3-square-10
+  - room-3-square-9
+- center:
+    X: 165
+    Y: 268
+    Z: 0
+  name: room-4-square-23
+  transitions:
+  - room-4-square-24
+  - room-4-square-18
+  - room-4-square-17
+- center:
+    X: 190
+    Y: 268
+    Z: 0
+  name: room-4-square-24
+  transitions:
+  - room-4-square-23
+  - room-4-square-25
+  - room-4-square-19
+- center:
+    X: 210
+    Y: 267
+    Z: 0
+  name: room-4-square-25
+  transitions:
+  - room-4-square-24
+  - room-4-square-26
+  - room-4-square-20
+- center:
+    X: 230
+    Y: 266
+    Z: 0
+  name: room-4-square-26
+  transitions:
+  - room-4-square-25
+  - room-4-square-27
+  - room-4-square-21
+- center:
+    X: 248
+    Y: 265
+    Z: 0
+  name: room-4-square-27
+  transitions:
+  - room-4-square-26
+  - room-4-square-22
+- center:
+    X: 271
+    Y: 269
+    Z: 0
+  name: room-7-square-8
+  transitions:
+  - room-7-square-9
+  - room-7-square-4
+  - room-7-square-13
+- center:
+    X: 290
+    Y: 269
+    Z: 0
+  name: room-7-square-9
+  transitions:
+  - room-7-square-8
+  - room-7-square-10
+  - room-7-square-5
+  - room-7-square-13
+- center:
+    X: 310
+    Y: 269
+    Z: 0
+  name: room-7-square-10
+  transitions:
+  - room-7-square-9
+  - room-7-square-11
+  - room-7-square-6
+  - room-7-square-14
+- center:
+    X: 330
+    Y: 269
+    Z: 0
+  name: room-7-square-11
+  transitions:
+  - room-7-square-10
+  - room-7-square-12
+  - room-7-square-7
+  - room-7-square-15
+- center:
+    X: 440
+    Y: 260
+    Z: 0
+  name: room-8-square-78
+  transitions:
+  - room-8-square-77
+  - room-11-square-2
+- center:
+    X: 450
+    Y: 269
+    Z: 0
+  name: room-11-square-2
+  transitions:
+  - room-8-square-78
+  - room-11-square-3
+  - room-11-square-1
+  - room-11-square-4
+  - room-8-square-77
+- center:
+    X: 465
+    Y: 269
+    Z: 0
+  name: room-11-square-3
+  transitions:
+  - room-11-square-2
+  - room-11-square-1
+  - room-11-square-4
+- center:
+    X: 369
+    Y: 285
+    Z: 0
+  name: room-7-square-17
+  transitions:
+  - room-7-square-12
+  - room-7-square-16
+  - room-7-square-18
+  - room-7-square-22
+- center:
+    X: 97
+    Y: 280
+    Z: 0
+  name: room-2-square-12
+  transitions:
+  - room-3-square-10
+- center:
+    X: 292
+    Y: 288
+    Z: 0
+  name: room-7-square-13
+  transitions:
+  - room-7-square-8
+  - room-7-square-14
+  - room-7-square-9
+  - room-7-square-19
+- center:
+    X: 310
+    Y: 289
+    Z: 0
+  name: room-7-square-14
+  transitions:
+  - room-7-square-13
+  - room-7-square-15
+  - room-7-square-10
+  - room-7-square-19
+- center:
+    X: 330
+    Y: 289
+    Z: 0
+  name: room-7-square-15
+  transitions:
+  - room-7-square-14
+  - room-7-square-16
+  - room-7-square-11
+  - room-7-square-20
+- center:
+    X: 350
+    Y: 289
+    Z: 0
+  name: room-7-square-16
+  transitions:
+  - room-7-square-15
+  - room-7-square-17
+  - room-7-square-12
+  - room-7-square-21
+- center:
+    X: 456
+    Y: 287
+    Z: 0
+  name: room-11-square-4
+  transitions:
+  - room-10-square-6
+  - room-10-square-5
+  - room-11-square-3
+  - room-11-square-2
+- center:
+    X: 387
+    Y: 293
+    Z: 0
+  name: room-7-square-18
+  transitions:
+  - room-7-square-17
+  - room-10-square-1
+  - room-7-square-24
+  - room-7-square-23
+- center:
+    X: 484
+    Y: 306
+    Z: 0
+  name: room-10-square-7
+  transitions:
+  - room-10-square-6
+  - room-10-square-11
+- center:
+    X: 470
+    Y: 306
+    Z: 0
+  name: room-10-square-6
+  transitions:
+  - room-11-square-4
+  - room-10-square-5
+  - room-10-square-7
+  - room-10-square-11
+- center:
+    X: 450
+    Y: 307
+    Z: 0
+  name: room-10-square-5
+  transitions:
+  - room-11-square-4
+  - room-10-square-4
+  - room-10-square-6
+  - room-10-square-10
+- center:
+    X: 430
+    Y: 308
+    Z: 0
+  name: room-10-square-4
+  transitions:
+  - room-10-square-3
+  - room-10-square-5
+  - room-10-square-9
+- center:
+    X: 410
+    Y: 308
+    Z: 0
+  name: room-10-square-3
+  transitions:
+  - room-10-square-4
+  - room-7-square-24
+  - room-10-square-1
+  - room-7-square-23
+  - room-10-square-2
+  - room-10-square-8
+- center:
+    X: 402
+    Y: 299
+    Z: 0
+  name: room-10-square-1
+  transitions:
+  - room-7-square-18
+  - room-10-square-3
+- center:
+    X: 312
+    Y: 306
+    Z: 0
+  name: room-7-square-19
+  transitions:
+  - room-7-square-13
+  - room-7-square-20
+  - room-7-square-14
+- center:
+    X: 331
+    Y: 314
+    Z: 0
+  name: room-7-square-20
+  transitions:
+  - room-7-square-19
+  - room-7-square-21
+  - room-7-square-15
+  - room-7-square-25
+- center:
+    X: 350
+    Y: 309
+    Z: 0
+  name: room-7-square-21
+  transitions:
+  - room-7-square-20
+  - room-7-square-22
+  - room-7-square-16
+  - room-7-square-25
+- center:
+    X: 370
+    Y: 309
+    Z: 0
+  name: room-7-square-22
+  transitions:
+  - room-7-square-21
+  - room-7-square-23
+  - room-7-square-17
+  - room-7-square-25
+  - room-7-square-26
+- center:
+    X: 390
+    Y: 309
+    Z: 0
+  name: room-7-square-23
+  transitions:
+  - room-7-square-22
+  - room-7-square-24
+  - room-7-square-18
+  - room-10-square-3
+  - room-10-square-2
+  - room-7-square-27
+- center:
+    X: 401
+    Y: 313
+    Z: 0
+  name: room-7-square-24
+  transitions:
+  - room-7-square-23
+  - room-10-square-3
+  - room-7-square-18
+- center:
+    X: 400
+    Y: 308
+    Z: 0
+  name: room-10-square-2
+  transitions:
+  - room-7-square-23
+  - room-10-square-3
+- center:
+    X: 351
+    Y: 329
+    Z: 0
+  name: room-7-square-25
+  transitions:
+  - room-7-square-20
+  - room-7-square-22
+  - room-7-square-21
+- center:
+    X: 370
+    Y: 334
+    Z: 0
+  name: room-7-square-26
+  transitions:
+  - room-7-square-27
+  - room-7-square-22
+- center:
+    X: 391
+    Y: 331
+    Z: 0
+  name: room-7-square-27
+  transitions:
+  - room-7-square-26
+  - room-7-square-24
+  - room-7-square-23
+- center:
+    X: 413
+    Y: 329
+    Z: 0
+  name: room-10-square-8
+  transitions:
+  - room-10-square-3
+  - room-10-square-9
+- center:
+    X: 430
+    Y: 328
+    Z: 0
+  name: room-10-square-9
+  transitions:
+  - room-10-square-8
+  - room-10-square-10
+  - room-10-square-4
+- center:
+    X: 450
+    Y: 329
+    Z: 0
+  name: room-10-square-10
+  transitions:
+  - room-10-square-9
+  - room-10-square-11
+  - room-10-square-5
+  - room-9-square-1
+  - room-9-square-5
+  - room-9-square-4
+- center:
+    X: 474
+    Y: 327
+    Z: 0
+  name: room-10-square-11
+  transitions:
+  - room-10-square-10
+  - room-10-square-7
+  - room-9-square-2
+  - room-9-square-5
+  - room-10-square-6
+- center:
+    X: 567
+    Y: 345
+    Z: 0
+  name: room-9-square-10
+  transitions:
+  - room-9-square-9
+  - room-9-square-22
+- center:
+    X: 550
+    Y: 345
+    Z: 0
+  name: room-9-square-9
+  transitions:
+  - room-9-square-10
+  - room-9-square-8
+  - room-9-square-21
+- center:
+    X: 530
+    Y: 346
+    Z: 0
+  name: room-9-square-8
+  transitions:
+  - room-9-square-9
+  - room-9-square-7
+  - room-9-square-20
+- center:
+    X: 469
+    Y: 335
+    Z: 0
+  name: room-9-square-2
+  transitions:
+  - room-10-square-11
+- center:
+    X: 510
+    Y: 347
+    Z: 0
+  name: room-9-square-7
+  transitions:
+  - room-9-square-8
+  - room-9-square-6
+  - room-9-square-19
+- center:
+    X: 470
+    Y: 348
+    Z: 0
+  name: room-9-square-5
+  transitions:
+  - room-10-square-11
+  - room-10-square-10
+  - room-9-square-1
+  - room-9-square-6
+  - room-9-square-4
+  - room-9-square-17
+- center:
+    X: 494
+    Y: 346
+    Z: 0
+  name: room-9-square-6
+  transitions:
+  - room-9-square-7
+  - room-9-square-5
+  - room-9-square-18
+- center:
+    X: 449
+    Y: 338
+    Z: 0
+  name: room-9-square-1
+  transitions:
+  - room-10-square-10
+  - room-9-square-4
+- center:
+    X: 430
+    Y: 349
+    Z: 0
+  name: room-9-square-3
+  transitions:
+  - room-9-square-4
+  - room-9-square-14
+  - room-9-square-15
+- center:
+    X: 450
+    Y: 349
+    Z: 0
+  name: room-9-square-4
+  transitions:
+  - room-9-square-3
+  - room-9-square-5
+  - room-9-square-1
+  - room-9-square-16
+  - room-10-square-10
+- center:
+    X: 354
+    Y: 363
+    Z: 0
+  name: room-9-square-11
+  transitions:
+  - room-9-square-12
+  - room-9-square-23
+- center:
+    X: 410
+    Y: 368
+    Z: 0
+  name: room-9-square-14
+  transitions:
+  - room-9-square-3
+  - room-9-square-13
+  - room-9-square-15
+  - room-9-square-26
+- center:
+    X: 368
+    Y: 366
+    Z: 0
+  name: room-8-square-79
+  transitions:
+  - room-9-square-12
+- center:
+    X: 390
+    Y: 369
+    Z: 0
+  name: room-9-square-13
+  transitions:
+  - room-9-square-14
+  - room-9-square-12
+  - room-9-square-25
+- center:
+    X: 370
+    Y: 370
+    Z: 0
+  name: room-9-square-12
+  transitions:
+  - room-9-square-11
+  - room-8-square-79
+  - room-9-square-13
+  - room-9-square-24
+- center:
+    X: 430
+    Y: 369
+    Z: 0
+  name: room-9-square-15
+  transitions:
+  - room-9-square-14
+  - room-9-square-16
+  - room-9-square-3
+  - room-9-square-27
+- center:
+    X: 450
+    Y: 369
+    Z: 0
+  name: room-9-square-16
+  transitions:
+  - room-9-square-15
+  - room-9-square-17
+  - room-9-square-4
+  - room-9-square-28
+- center:
+    X: 470
+    Y: 369
+    Z: 0
+  name: room-9-square-17
+  transitions:
+  - room-9-square-16
+  - room-9-square-5
+  - room-9-square-18
+  - room-9-square-29
+- center:
+    X: 491
+    Y: 370
+    Z: 0
+  name: room-9-square-18
+  transitions:
+  - room-9-square-19
+  - room-9-square-6
+  - room-9-square-17
+  - room-9-square-30
+- center:
+    X: 510
+    Y: 369
+    Z: 0
+  name: room-9-square-19
+  transitions:
+  - room-9-square-18
+  - room-9-square-20
+  - room-9-square-7
+  - room-9-square-31
+- center:
+    X: 530
+    Y: 369
+    Z: 0
+  name: room-9-square-20
+  transitions:
+  - room-9-square-19
+  - room-9-square-21
+  - room-9-square-8
+  - room-9-square-32
+- center:
+    X: 550
+    Y: 369
+    Z: 0
+  name: room-9-square-21
+  transitions:
+  - room-9-square-20
+  - room-9-square-22
+  - room-9-square-9
+  - room-9-square-33
+- center:
+    X: 568
+    Y: 369
+    Z: 0
+  name: room-9-square-22
+  transitions:
+  - room-9-square-21
+  - room-9-square-10
+  - room-9-square-34
+- center:
+    X: 355
+    Y: 389
+    Z: 0
+  name: room-9-square-23
+  transitions:
+  - room-9-square-24
+  - room-9-square-11
+  - room-9-square-35
+- center:
+    X: 370
+    Y: 389
+    Z: 0
+  name: room-9-square-24
+  transitions:
+  - room-9-square-23
+  - room-9-square-25
+  - room-9-square-12
+  - room-9-square-35
+- center:
+    X: 390
+    Y: 389
+    Z: 0
+  name: room-9-square-25
+  transitions:
+  - room-9-square-24
+  - room-9-square-26
+  - room-9-square-13
+  - room-9-square-36
+- center:
+    X: 410
+    Y: 389
+    Z: 0
+  name: room-9-square-26
+  transitions:
+  - room-9-square-25
+  - room-9-square-27
+  - room-9-square-14
+  - room-9-square-37
+- center:
+    X: 430
+    Y: 389
+    Z: 0
+  name: room-9-square-27
+  transitions:
+  - room-9-square-26
+  - room-9-square-28
+  - room-9-square-15
+  - room-9-square-38
+- center:
+    X: 450
+    Y: 389
+    Z: 0
+  name: room-9-square-28
+  transitions:
+  - room-9-square-27
+  - room-9-square-29
+  - room-9-square-16
+  - room-9-square-39
+- center:
+    X: 470
+    Y: 389
+    Z: 0
+  name: room-9-square-29
+  transitions:
+  - room-9-square-28
+  - room-9-square-30
+  - room-9-square-17
+  - room-9-square-40
+- center:
+    X: 491
+    Y: 387
+    Z: 0
+  name: room-9-square-30
+  transitions:
+  - room-9-square-29
+  - room-9-square-31
+  - room-9-square-18
+  - room-9-square-41
+- center:
+    X: 510
+    Y: 389
+    Z: 0
+  name: room-9-square-31
+  transitions:
+  - room-9-square-30
+  - room-9-square-32
+  - room-9-square-19
+  - room-9-square-42
+- center:
+    X: 530
+    Y: 389
+    Z: 0
+  name: room-9-square-32
+  transitions:
+  - room-9-square-31
+  - room-9-square-33
+  - room-9-square-20
+  - room-9-square-43
+- center:
+    X: 550
+    Y: 389
+    Z: 0
+  name: room-9-square-33
+  transitions:
+  - room-9-square-32
+  - room-9-square-34
+  - room-9-square-21
+  - room-9-square-44
+- center:
+    X: 569
+    Y: 389
+    Z: 0
+  name: room-9-square-34
+  transitions:
+  - room-9-square-33
+  - room-9-square-22
+  - room-9-square-45
+- center:
+    X: 366
+    Y: 409
+    Z: 0
+  name: room-9-square-35
+  transitions:
+  - room-9-square-36
+  - room-9-square-24
+  - room-9-square-46
+  - room-9-square-23
+- center:
+    X: 390
+    Y: 409
+    Z: 0
+  name: room-9-square-36
+  transitions:
+  - room-9-square-35
+  - room-9-square-37
+  - room-9-square-25
+  - room-9-square-47
+- center:
+    X: 410
+    Y: 409
+    Z: 0
+  name: room-9-square-37
+  transitions:
+  - room-9-square-36
+  - room-9-square-38
+  - room-9-square-26
+  - room-9-square-48
+- center:
+    X: 430
+    Y: 409
+    Z: 0
+  name: room-9-square-38
+  transitions:
+  - room-9-square-37
+  - room-9-square-39
+  - room-9-square-27
+  - room-9-square-49
+- center:
+    X: 450
+    Y: 409
+    Z: 0
+  name: room-9-square-39
+  transitions:
+  - room-9-square-38
+  - room-9-square-40
+  - room-9-square-28
+  - room-9-square-50
+- center:
+    X: 470
+    Y: 409
+    Z: 0
+  name: room-9-square-40
+  transitions:
+  - room-9-square-39
+  - room-9-square-41
+  - room-9-square-29
+  - room-9-square-51
+- center:
+    X: 491
+    Y: 410
+    Z: 0
+  name: room-9-square-41
+  transitions:
+  - room-9-square-40
+  - room-9-square-30
+  - room-9-square-42
+  - room-9-square-52
+- center:
+    X: 510
+    Y: 409
+    Z: 0
+  name: room-9-square-42
+  transitions:
+  - room-9-square-41
+  - room-9-square-43
+  - room-9-square-31
+  - room-9-square-53
+- center:
+    X: 530
+    Y: 409
+    Z: 0
+  name: room-9-square-43
+  transitions:
+  - room-9-square-42
+  - room-9-square-44
+  - room-9-square-32
+  - room-9-square-54
+- center:
+    X: 550
+    Y: 409
+    Z: 0
+  name: room-9-square-44
+  transitions:
+  - room-9-square-43
+  - room-9-square-45
+  - room-9-square-33
+  - room-9-square-55
+- center:
+    X: 569
+    Y: 409
+    Z: 0
+  name: room-9-square-45
+  transitions:
+  - room-9-square-44
+  - room-9-square-34
+  - room-9-square-56
+- center:
+    X: 366
+    Y: 429
+    Z: 0
+  name: room-9-square-46
+  transitions:
+  - room-9-square-47
+  - room-9-square-35
+  - room-9-square-57
+- center:
+    X: 390
+    Y: 429
+    Z: 0
+  name: room-9-square-47
+  transitions:
+  - room-9-square-46
+  - room-9-square-48
+  - room-9-square-36
+  - room-9-square-58
+- center:
+    X: 410
+    Y: 429
+    Z: 0
+  name: room-9-square-48
+  transitions:
+  - room-9-square-47
+  - room-9-square-49
+  - room-9-square-37
+  - room-9-square-59
+- center:
+    X: 430
+    Y: 429
+    Z: 0
+  name: room-9-square-49
+  transitions:
+  - room-9-square-48
+  - room-9-square-50
+  - room-9-square-38
+  - room-9-square-60
+- center:
+    X: 450
+    Y: 429
+    Z: 0
+  name: room-9-square-50
+  transitions:
+  - room-9-square-49
+  - room-9-square-51
+  - room-9-square-39
+  - room-9-square-61
+- center:
+    X: 470
+    Y: 429
+    Z: 0
+  name: room-9-square-51
+  transitions:
+  - room-9-square-50
+  - room-9-square-52
+  - room-9-square-40
+  - room-9-square-62
+- center:
+    X: 490
+    Y: 429
+    Z: 0
+  name: room-9-square-52
+  transitions:
+  - room-9-square-51
+  - room-9-square-41
+  - room-9-square-53
+  - room-9-square-63
+- center:
+    X: 510
+    Y: 429
+    Z: 0
+  name: room-9-square-53
+  transitions:
+  - room-9-square-52
+  - room-9-square-54
+  - room-9-square-42
+  - room-9-square-64
+- center:
+    X: 530
+    Y: 429
+    Z: 0
+  name: room-9-square-54
+  transitions:
+  - room-9-square-53
+  - room-9-square-55
+  - room-9-square-43
+  - room-9-square-65
+- center:
+    X: 550
+    Y: 429
+    Z: 0
+  name: room-9-square-55
+  transitions:
+  - room-9-square-54
+  - room-9-square-56
+  - room-9-square-44
+  - room-9-square-66
+- center:
+    X: 570
+    Y: 429
+    Z: 0
+  name: room-9-square-56
+  transitions:
+  - room-9-square-55
+  - room-9-square-45
+  - room-9-square-67
+- center:
+    X: 367
+    Y: 449
+    Z: 0
+  name: room-9-square-57
+  transitions:
+  - room-9-square-58
+  - room-9-square-46
+  - room-9-square-68
+- center:
+    X: 390
+    Y: 449
+    Z: 0
+  name: room-9-square-58
+  transitions:
+  - room-9-square-57
+  - room-9-square-59
+  - room-9-square-47
+  - room-9-square-69
+- center:
+    X: 410
+    Y: 449
+    Z: 0
+  name: room-9-square-59
+  transitions:
+  - room-9-square-58
+  - room-9-square-60
+  - room-9-square-48
+  - room-9-square-70
+- center:
+    X: 430
+    Y: 449
+    Z: 0
+  name: room-9-square-60
+  transitions:
+  - room-9-square-59
+  - room-9-square-61
+  - room-9-square-49
+  - room-9-square-71
+- center:
+    X: 450
+    Y: 449
+    Z: 0
+  name: room-9-square-61
+  transitions:
+  - room-9-square-60
+  - room-9-square-62
+  - room-9-square-50
+  - room-9-square-72
+- center:
+    X: 470
+    Y: 449
+    Z: 0
+  name: room-9-square-62
+  transitions:
+  - room-9-square-61
+  - room-9-square-63
+  - room-9-square-51
+  - room-9-square-73
+- center:
+    X: 490
+    Y: 449
+    Z: 0
+  name: room-9-square-63
+  transitions:
+  - room-9-square-62
+  - room-9-square-64
+  - room-9-square-52
+  - room-9-square-73
+- center:
+    X: 510
+    Y: 449
+    Z: 0
+  name: room-9-square-64
+  transitions:
+  - room-9-square-63
+  - room-9-square-65
+  - room-9-square-53
+  - room-9-square-74
+- center:
+    X: 530
+    Y: 449
+    Z: 0
+  name: room-9-square-65
+  transitions:
+  - room-9-square-64
+  - room-9-square-66
+  - room-9-square-54
+  - room-9-square-75
+- center:
+    X: 550
+    Y: 449
+    Z: 0
+  name: room-9-square-66
+  transitions:
+  - room-9-square-65
+  - room-9-square-67
+  - room-9-square-55
+  - room-9-square-76
+- center:
+    X: 571
+    Y: 449
+    Z: 0
+  name: room-9-square-67
+  transitions:
+  - room-9-square-66
+  - room-9-square-56
+  - room-9-square-77
+- center:
+    X: 367
+    Y: 469
+    Z: 0
+  name: room-9-square-68
+  transitions:
+  - room-9-square-69
+  - room-9-square-57
+  - room-9-square-78
+- center:
+    X: 390
+    Y: 469
+    Z: 0
+  name: room-9-square-69
+  transitions:
+  - room-9-square-68
+  - room-9-square-70
+  - room-9-square-58
+  - room-9-square-79
+- center:
+    X: 410
+    Y: 469
+    Z: 0
+  name: room-9-square-70
+  transitions:
+  - room-9-square-69
+  - room-9-square-71
+  - room-9-square-59
+  - room-9-square-80
+- center:
+    X: 430
+    Y: 469
+    Z: 0
+  name: room-9-square-71
+  transitions:
+  - room-9-square-70
+  - room-9-square-72
+  - room-9-square-60
+  - room-9-square-81
+- center:
+    X: 450
+    Y: 469
+    Z: 0
+  name: room-9-square-72
+  transitions:
+  - room-9-square-71
+  - room-9-square-73
+  - room-9-square-61
+  - room-9-square-82
+- center:
+    X: 475
+    Y: 469
+    Z: 0
+  name: room-9-square-73
+  transitions:
+  - room-9-square-72
+  - room-9-square-74
+  - room-9-square-63
+  - room-9-square-83
+  - room-9-square-84
+  - room-9-square-62
+- center:
+    X: 510
+    Y: 469
+    Z: 0
+  name: room-9-square-74
+  transitions:
+  - room-9-square-73
+  - room-9-square-75
+  - room-9-square-64
+  - room-9-square-85
+- center:
+    X: 530
+    Y: 469
+    Z: 0
+  name: room-9-square-75
+  transitions:
+  - room-9-square-74
+  - room-9-square-76
+  - room-9-square-65
+  - room-9-square-86
+- center:
+    X: 550
+    Y: 469
+    Z: 0
+  name: room-9-square-76
+  transitions:
+  - room-9-square-75
+  - room-9-square-77
+  - room-9-square-66
+  - room-9-square-87
+- center:
+    X: 571
+    Y: 469
+    Z: 0
+  name: room-9-square-77
+  transitions:
+  - room-9-square-76
+  - room-9-square-67
+  - room-9-square-88
+- center:
+    X: 368
+    Y: 492
+    Z: 0
+  name: room-9-square-78
+  transitions:
+  - room-9-square-68
+  - room-9-square-79
+  - room-8-square-79
+- center:
+    X: 390
+    Y: 491
+    Z: 0
+  name: room-9-square-79
+  transitions:
+  - room-9-square-78
+  - room-9-square-80
+  - room-9-square-69
+- center:
+    X: 410
+    Y: 491
+    Z: 0
+  name: room-9-square-80
+  transitions:
+  - room-9-square-79
+  - room-9-square-81
+  - room-9-square-70
+- center:
+    X: 430
+    Y: 490
+    Z: 0
+  name: room-9-square-81
+  transitions:
+  - room-9-square-80
+  - room-9-square-82
+  - room-9-square-71
+- center:
+    X: 451
+    Y: 490
+    Z: 0
+  name: room-9-square-82
+  transitions:
+  - room-9-square-81
+  - room-9-square-83
+  - room-9-square-72
+  - room-9-square-89
+- center:
+    X: 470
+    Y: 489
+    Z: 0
+  name: room-9-square-83
+  transitions:
+  - room-9-square-82
+  - room-9-square-84
+  - room-9-square-73
+  - room-9-square-89
+- center:
+    X: 488
+    Y: 490
+    Z: 0
+  name: room-9-square-84
+  transitions:
+  - room-9-square-83
+  - room-9-square-73
+  - room-9-square-85
+  - room-9-square-89
+- center:
+    X: 510
+    Y: 487
+    Z: 0
+  name: room-9-square-85
+  transitions:
+  - room-9-square-86
+  - room-9-square-74
+  - room-9-square-84
+- center:
+    X: 530
+    Y: 487
+    Z: 0
+  name: room-9-square-86
+  transitions:
+  - room-9-square-85
+  - room-9-square-87
+  - room-9-square-75
+- center:
+    X: 550
+    Y: 486
+    Z: 0
+  name: room-9-square-87
+  transitions:
+  - room-9-square-86
+  - room-9-square-88
+  - room-9-square-76
+- center:
+    X: 572
+    Y: 485
+    Z: 0
+  name: room-9-square-88
+  transitions:
+  - room-9-square-87
+  - room-9-square-77
+- center:
+    X: 473
+    Y: 506
+    Z: 0
+  name: room-9-square-89
+  transitions:
+  - room-9-square-82
+  - room-9-square-84
+  - room-9-square-83

@@ -1,35 +1,16 @@
 <?xml version="1.0"?>
 <launch>
-
 	<!-- ipa_planning_and_reasoning_system -->
 
 	<!-- ipa_pars -->
 	<group ns = "ipa_pars">
 
-		<!-- ipa_room_segmentation -->
-
-		<!-- send parameters to parameter server -->
-		<rosparam command="load" file="$(find ipa_room_segmentation)/ros/launch/room_segmentation_action_server_params.yaml" />
-		<!-- extern nodes to start -->
-		<node pkg="ipa_room_segmentation" type="room_segmentation_server" name="room_segmentation_server" output="screen" respawn="true" respawn_delay="2" />
-
-
-		<!-- nodes to start -->
-		<node pkg="ipa_pars_main" type="planning_server.py" name="planning_server_spawner" args="$(find ipa_pars_main)/maps/lab_ipa2.png $(find ipa_pars_main)/examples/" respawn="false" output="screen"/>
-		<node pkg="map_analyzer" type="map_analyzer_server.py" name="map_analyzer_server_spawner" respawn="false" output="screen"/>			
-		<node pkg="map_analyzer" type="map_publisher.py" name="map_publisher_spawner" args="$(find map_analyzer)/logs/" respawn="false" output="screen"/>
-		<node pkg="map_analyzer" type="map_tesselation.py" name="map_tesselation_spawner" respawn="false" output="screen" />
-		
-		<node pkg="ipa_pars_main" type="planning_problem.py" name="planning_problem_spawner" args="$(find ipa_pars_main)/examples/" respawn="false" output="screen" />	
-		<node pkg="ipa_pars_main" type="planning_controller.py" name="planning_controller_spawner" respawn="false" output="screen" />
-		<node pkg="ipa_pars_main" type="planning_domain.py" name="planning_domain_spawner" respawn="false" output="screen" />
-
-		<node pkg="ipa_pars_main" type="planning_solver.py" name="planning_solver_spawner" args="$(find ipa_pars_main)/tmp/" respawn="false" output="screen" />
-
-		<node pkg="ipa_pars_main" type="planning_execution.py" name="planning_execution_spawner" respawn="false" output="screen" />
-
-		<node pkg="knowledge_base" type="knowledge_base_server.py" name="knowledge_base_server_spawner" args="$(find knowledge_base)/content/" respawn="false" output="screen" />
-
+	<!-- nodes to start -->
+	<node pkg="ipa_pars_main" type="planning_executor_server.py" args="$(find ipa_pars_main)/execution_tests/" name="planning_executor_server_spawner" respawn="false" output="screen" />
+	<!--<node pkg="ipa_pars_main" type="planning_executor_client.py" name="planning_executor_client_spawner" args="$(find ipa_pars_main)/execution_tests/" respawn="false" output="screen" />-->
+	<node pkg="ipa_pars_main" type="knowledge_parser_server.py" name="knowledge_parser_server_spawner" args="$(find ipa_pars_main)/knowledge/"  respawn="false" output="screen" />
+	<node pkg="ipa_pars_main" type="planning_solver_server.py" name="planning_solver_server_spawner" args="$(find ipa_pars_main)/tmp/" respawn="false" output="screen" />
+	<node pkg="ipa_pars_main" type="planning_server.py" name="planning_server_spawner" args="$(find ipa_pars_main)/examples/ $(find ipa_pars_main)/knowledge/" respawn="false" output="screen" />
+	
 	</group>
-
 </launch>

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<package>
+  <name>adp_planner</name>
+  <version>0.1.0</version>
+  <description>This package wrappes the external adp planner from http://homepages.inf.ed.ac.uk/mcrosby1/ in a ros package, so other packages can execute the planner. It downloads the source code and builds it, corresponding to the webpage of it, using cmake. For further descriptions and tutorials see the Makefile.tarball and http://homepages.inf.ed.ac.uk/ </description>
+
+  <!-- One maintainer tag required, multiple allowed, one person per tag --> 
+  <!-- Example:  -->
+  <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
+  <maintainer email="richard.bormann@ipa.fraunhofer.de">Richard Bormann</maintainer>
+
+
+  <!-- One license tag required, multiple allowed, one license per tag -->
+  <!-- Commonly used license strings: -->
+  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
+  <license>LGPL</license>
+
+
+  <!-- Url tags are optional, but mutiple are allowed, one per tag -->
+  <!-- Optional attribute type can be: website, bugtracker, or repository -->
+  <!-- Example: -->
+  <url type="website">http://homepages.inf.ed.ac.uk/</url>
+
+
+  <!-- Author tags are optional, mutiple are allowed, one per tag -->
+  <!-- Authors do not have to be maintianers, but could be -->
+  <!-- Example: -->
+  <author email="christian.ehrmann@ipa.fraunhofer.de">Christian Ehrmann</author>
+
+
+  <!-- The *_depend tags are used to specify dependencies -->
+  <!-- Dependencies can be catkin packages or system dependencies -->
+  <!-- Examples: -->
+  <!-- Use build_depend for packages you need at compile time: -->
+  <!--   <build_depend>message_generation</build_depend> -->
+  <!-- Use buildtool_depend for build tool packages: -->
+  <!--   <buildtool_depend>catkin</buildtool_depend> -->
+  <!-- Use run_depend for packages you need at runtime: -->
+  <!--   <run_depend>message_runtime</run_depend> -->
+  <!-- Use test_depend for packages you need only for testing: -->
+  <!--   <test_depend>gtest</test_depend> -->
+  <buildtool_depend>catkin</buildtool_depend>
+
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+
+  </export>
+</package>

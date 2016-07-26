@@ -1,0 +1,124 @@
+environment-data:
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-boss
+  location: room-10-square-3
+  properties:
+  - occupied
+  type: user
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: cob4-1
+  location: room-10-square-4
+  properties:
+  - occupied
+  type: robot
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-cake
+  location: room-9-square-13
+  properties:
+  - moveable
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-2
+  location: room-9-square-4
+  properties:
+  - moveable
+  - occupied
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-3
+  location: room-9-square-15
+  properties:
+  - moveable
+  - occupied
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-4
+  location: room-9-square-38
+  properties:
+   - moveable
+   - occupied
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-5
+  location: room-9-square-14
+  properties:
+  - occupied
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-6
+  location: room-9-square-3
+  properties:
+  - occupied
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-7
+  location: room-10-square-6
+  properties:
+  - moveable
+  - occupied
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-8
+  location: room-11-square-4
+  properties:
+  - moveable
+  - occupied
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-9
+  location: room-10-square-11
+  properties:
+  - occupied
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-10
+  location: room-10-square-8
+  properties:
+  - occupied
+  type: phys-obj
+- center:
+    X: 123
+    Y: 234
+    Z: 345
+  name: the-box-11
+  location: room-11-square-4
+  properties:
+  - occupied
+  - moveable
+  type: phys-obj

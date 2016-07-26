@@ -1,0 +1,12 @@
+# Define the goal
+std_msgs/String static_knowledge
+std_msgs/String dynamic_knowledge
+
+---
+# Define a result
+std_msgs/String problem_pddl
+std_msgs/String domain_pddl
+
+---
+# Define a feedback message
+

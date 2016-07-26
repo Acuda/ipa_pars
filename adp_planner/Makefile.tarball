@@ -1,0 +1,26 @@
+all: installed
+
+TARBALL = build/adp.tar.gz
+TARBALL_URL = http://homepages.inf.ed.ac.uk/mcrosby1/code/adp.tar.gz
+SOURCE_DIR = build/adp
+BUILD_DIR = ../../../build/ipa_pars/adp_planner
+UNPACK_CMD = tar xf
+
+include $(shell rospack find mk)/download_unpack_build.mk
+
+installed: $(SOURCE_DIR)/unpacked
+
+	mkdir -p common
+	mkdir -p common/lib
+	mkdir -p common/include
+	
+
+	bash -x $(SOURCE_DIR)/build_all
+
+	#cp build/adp/fast-downward.py $(BUILD_DIR)/fast-downward.py
+	touch installed
+	
+clean:
+	rm -rf common $(SOURCE_DIR) $(TARBALL)
+wipe: clean
+	-rm -rf build
