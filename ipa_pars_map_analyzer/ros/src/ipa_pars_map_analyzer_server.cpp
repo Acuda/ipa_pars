@@ -192,13 +192,12 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 		cv::imshow("segementation", colour_segmented_map);
 
 
-		//send map to ipa_room_segmentation_server
-		sensor_msgs::Image tess_labeling;
+		//send map to ipa_pars_map_tesselation_server
+//		sensor_msgs::Image tess_labeling;
 		cv_bridge::CvImage cv_image_tess;
 		cv_image_tess.encoding = "32SC1";
-		ROS_INFO("flag 1");
 		cv_image_tess.image = segmented_map;
-		cv_image_tess.toImageMsg(tess_labeling);
+		cv_image_tess.toImageMsg(labeling);
 
 		actionlib::SimpleActionClient<ipa_pars_map_analyzer::ParsMapTesselationAction> tess_ac("ipa_pars_map_tesselation_server",true);
 
@@ -207,7 +206,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 		ROS_INFO("Action server started, sending goal.");
 		// send a goal to the action
 		ipa_pars_map_analyzer::ParsMapTesselationGoal tess_goal;
-		tess_goal.input_map = tess_labeling;
+		tess_goal.input_map = labeling;
 		tess_goal.map_origin.position.x = 0;
 		tess_goal.map_origin.position.y = 0;
 		tess_goal.map_resolution = 0.05;
@@ -223,13 +222,20 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 
 			// display
 			cv_bridge::CvImagePtr cv_ptr_obj;
-			ROS_INFO("flag 2");
 			cv_ptr_obj = cv_bridge::toCvCopy(result_tess->tesselated_map, sensor_msgs::image_encodings::TYPE_32SC1);
 
 			cv::Mat tesselated_map = cv_ptr_obj->image;
 			cv::Mat colour_tesselated_map = tesselated_map.clone();
 			colour_tesselated_map.convertTo(colour_tesselated_map, CV_8U);
 			cv::cvtColor(colour_tesselated_map, colour_tesselated_map, CV_GRAY2BGR);
+			ROS_INFO_STREAM("For coloring: Labels.data.size() = " << result_tess->labels.data.size());
+
+//			for (int i = 0; i<result_tess->labels.data.size(); ++i)
+//			{
+//				ROS_INFO_STREAM("label " << i );
+//				ROS_INFO_STREAM("label = " << result_tess->labels.data[i] );
+//			}
+
 			for(size_t i = 1; i <= result_tess->labels.data.size(); ++i)
 			{
 				//choose random color for each room
@@ -242,6 +248,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 					{
 						if(tesselated_map.at<int>(u,v) == i)
 						{
+							//ROS_INFO_STREAM("i is " << i);
 							colour_tesselated_map.at<cv::Vec3b>(u,v)[0] = blue;
 							colour_tesselated_map.at<cv::Vec3b>(u,v)[1] = green;
 							colour_tesselated_map.at<cv::Vec3b>(u,v)[2] = red;
@@ -252,11 +259,11 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 			cv::imshow("tesselation", colour_tesselated_map);
 		}
 	}
-	cv::waitKey();
+
 	ipa_pars_map_analyzer::ParsMapAnalyzerResult map_analyzer_action_result_;
 	map_analyzer_action_result_.static_knowledge.data = "test_output";
 	ipa_pars_map_analyzer_server_.setSucceeded(map_analyzer_action_result_);
-
+	cv::waitKey();
 }
 
 int main(int argc, char** argv)
