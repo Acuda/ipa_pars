@@ -116,7 +116,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 			}
 		}
 	}
-	;
+
 	//erode map
 	cv::Mat erode_img = original_img.clone();
 	int erosion_type = cv::MORPH_RECT;
@@ -127,6 +127,24 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 	cv::erode(original_img,erode_img,element);
 	cv::Mat disp_orig = original_img.clone();
 	cv::Mat disp_erode = erode_img.clone();
+
+//	//make non-white pixels black
+//	for (int y = 0; y < erode_img.rows; y++)
+//	{
+//		for (int x = 0; x < erode_img.cols; x++)
+//		{
+//			//find not reachable regions and make them black
+//			if (erode_img.at<unsigned char>(y, x) < 250)
+//			{
+//				erode_img.at<unsigned char>(y, x) = 0;
+//			}
+//			//else make it white
+//			else
+//			{
+//				erode_img.at<unsigned char>(y, x) = 255;
+//			}
+//		}
+//	}
 
 	cv::imshow("mapanalyzer_orig", disp_orig);
 	cv::imshow("mapanalyzer_erode", disp_erode);
@@ -176,6 +194,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 			int blue = (rand() % 250) + 1;
 			int green = (rand() % 250) + 1;
 			int red = (rand() % 250) + 1;
+			ROS_INFO("Created new color %u %u %u", blue, green, red);
 			for(size_t u = 0; u < segmented_map.rows; ++u)
 			{
 				for(size_t v = 0; v < segmented_map.cols; ++v)
@@ -189,75 +208,138 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 				}
 			}
 		}
-		cv::imshow("segementation", colour_segmented_map);
+		cv::imshow("segmentation", colour_segmented_map);
 
+		ROS_INFO("the important flag 1 --------------------");
+		// map tesselation:
+		cv::Mat map_to_tesselate = erode_img.clone();
+		cv::Mat tesselated_map = map_to_tesselate.clone();
+		tesselated_map.convertTo(tesselated_map, CV_32SC1);
 
-		//send map to ipa_pars_map_tesselation_server
-//		sensor_msgs::Image tess_labeling;
-		cv_bridge::CvImage cv_image_tess;
-		cv_image_tess.encoding = "32SC1";
-		cv_image_tess.image = segmented_map;
-		cv_image_tess.toImageMsg(labeling);
-
-		actionlib::SimpleActionClient<ipa_pars_map_analyzer::ParsMapTesselationAction> tess_ac("ipa_pars_map_tesselation_server",true);
-
-		tess_ac.waitForServer(); //will wait for infinite time
-
-		ROS_INFO("Action server started, sending goal.");
-		// send a goal to the action
-		ipa_pars_map_analyzer::ParsMapTesselationGoal tess_goal;
-		tess_goal.input_map = labeling;
-		tess_goal.map_origin.position.x = 0;
-		tess_goal.map_origin.position.y = 0;
-		tess_goal.map_resolution = 0.05;
-		tess_ac.sendGoal(tess_goal);
-
-		//wait for the action to return
-		bool finished_before_timeout = tess_ac.waitForResult(ros::Duration(300.0));
-
-		if (finished_before_timeout)
+		std::vector<int> labelcounter;
+		int countery = 0;
+		int label = 1;
+		int counterx = 0;
+		int cols = 0;
+		bool firstround = true;
+		labelcounter.push_back(label);
+		for (int y = 0; y < map_to_tesselate.rows; y++)
 		{
-			ROS_INFO("Finished successfully!");
-			ipa_pars_map_analyzer::ParsMapTesselationResultConstPtr result_tess = tess_ac.getResult();
-
-			// display
-			cv_bridge::CvImagePtr cv_ptr_obj;
-			cv_ptr_obj = cv_bridge::toCvCopy(result_tess->tesselated_map, sensor_msgs::image_encodings::TYPE_32SC1);
-
-			cv::Mat tesselated_map = cv_ptr_obj->image;
-			cv::Mat colour_tesselated_map = tesselated_map.clone();
-			colour_tesselated_map.convertTo(colour_tesselated_map, CV_8U);
-			cv::cvtColor(colour_tesselated_map, colour_tesselated_map, CV_GRAY2BGR);
-			ROS_INFO_STREAM("For coloring: Labels.data.size() = " << result_tess->labels.data.size());
-
-//			for (int i = 0; i<result_tess->labels.data.size(); ++i)
-//			{
-//				ROS_INFO_STREAM("label " << i );
-//				ROS_INFO_STREAM("label = " << result_tess->labels.data[i] );
-//			}
-
-			for(size_t i = 1; i <= result_tess->labels.data.size(); ++i)
+			countery++;
+			for (int x = 0; x < map_to_tesselate.cols; x++)
 			{
-				//choose random color for each room
-				int blue = (rand() % 250) + 1;
-				int green = (rand() % 250) + 1;
-				int red = (rand() % 250) + 1;
-				for(size_t u = 0; u < tesselated_map.rows; ++u)
+				counterx++;
+				if (countery > 19)
 				{
-					for(size_t v = 0; v < tesselated_map.cols; ++v)
-					{
-						if(tesselated_map.at<int>(u,v) == i)
-						{
-							//ROS_INFO_STREAM("i is " << i);
-							colour_tesselated_map.at<cv::Vec3b>(u,v)[0] = blue;
-							colour_tesselated_map.at<cv::Vec3b>(u,v)[1] = green;
-							colour_tesselated_map.at<cv::Vec3b>(u,v)[2] = red;
-						}
-					}
+					countery = 0;
+					firstround = true;
+					cols++;
+					label = 1 + cols * 100;
+					labelcounter.push_back(label);
 				}
+
+				if (counterx > 19)
+				{
+					counterx = 0;
+					label++;
+					if (firstround)
+					{
+						labelcounter.push_back(label);
+					}
+
+				}
+
+				// label all pixels that are not black
+				if (map_to_tesselate.at<int>(y,x) != 0)
+				{
+					//ROS_INFO("I just marked a label = %u", label);
+					tesselated_map.at<int>(y,x) = static_cast<int>(label);
+				}
+	//			else
+	//			{
+	//				if (x<400)
+	//				{
+	//					tesselated_map.at<int>(y,x) = static_cast<int>(25595);
+	//				}
+	//
+	//			}
 			}
-			cv::imshow("tesselation", colour_tesselated_map);
+			counterx = 0;
+			firstround = false;
 		}
+		ROS_INFO("the important flag 2 --------------");
+		cv::Mat colour_tesselated_map = tesselated_map.clone();
+		colour_tesselated_map.convertTo(colour_tesselated_map, CV_8U);
+		cv::cvtColor(colour_tesselated_map, colour_tesselated_map, CV_GRAY2BGR);
+		cv::imshow("tesslated_map_to_show", colour_tesselated_map);
+//		//send map to ipa_pars_map_tesselation_server
+////		sensor_msgs::Image tess_labeling;
+//		cv_bridge::CvImage cv_image_tess;
+//		//cv_image_tess.encoding = "32SC1";
+//		cv_image_tess.encoding = "mono8";
+//		cv_image_tess.image = erode_img;
+//		cv_image_tess.toImageMsg(labeling);
+//
+//		actionlib::SimpleActionClient<ipa_pars_map_analyzer::ParsMapTesselationAction> tess_ac("ipa_pars_map_tesselation_server",true);
+//
+//		tess_ac.waitForServer(); //will wait for infinite time
+//
+//		ROS_INFO("Action server started, sending goal.");
+//		// send a goal to the action
+//		ipa_pars_map_analyzer::ParsMapTesselationGoal tess_goal;
+//		tess_goal.input_map = labeling;
+//		tess_goal.map_origin.position.x = 0;
+//		tess_goal.map_origin.position.y = 0;
+//		tess_goal.map_resolution = 0.05;
+//		tess_ac.sendGoal(tess_goal);
+//
+//		//wait for the action to return
+//		bool finished_before_timeout = tess_ac.waitForResult(ros::Duration(300.0));
+//
+//		if (finished_before_timeout)
+//		{
+//			ROS_INFO("Finished successfully!");
+//			ipa_pars_map_analyzer::ParsMapTesselationResultConstPtr result_tess = tess_ac.getResult();
+//
+//			// display
+//			cv_bridge::CvImagePtr cv_ptr_obj2;
+//			cv_ptr_obj2 = cv_bridge::toCvCopy(result_tess->tesselated_map, sensor_msgs::image_encodings::TYPE_32SC1);
+//
+//			cv::Mat tesselated_map = cv_ptr_obj2->image;
+//			cv::Mat colour_tesselated_map = tesselated_map.clone();
+//			colour_tesselated_map.convertTo(colour_tesselated_map, CV_8U);
+//			cv::cvtColor(colour_tesselated_map, colour_tesselated_map, CV_GRAY2BGR);
+//			ROS_INFO_STREAM("For coloring: Labels.data.size() = " << result_tess->labels.data.size());
+//
+////			for (int i = 0; i<result_tess->labels.data.size(); ++i)
+////			{
+////				ROS_INFO_STREAM("label " << i );
+////				ROS_INFO_STREAM("label = " << result_tess->labels.data[i] );
+////			}
+//
+//			for(size_t i = 1; i <= result_tess->labels.data.size(); ++i)
+//			{
+//				//choose random color for each room
+//				int blue = (rand() % 250) + 1;
+//				int green = (rand() % 250) + 1;
+//				int red = (rand() % 250) + 1;
+//				ROS_INFO("Created new color %u %u %u", blue, green, red);
+//				for(size_t u = 0; u < tesselated_map.rows; ++u)
+//				{
+//					for(size_t v = 0; v < tesselated_map.cols; ++v)
+//					{
+//						if(tesselated_map.at<int>(u,v) == i)
+//						{
+//							ROS_INFO_STREAM("i is " << i);
+//							colour_tesselated_map.at<cv::Vec3b>(u,v)[0] = blue;
+//							colour_tesselated_map.at<cv::Vec3b>(u,v)[1] = green;
+//							colour_tesselated_map.at<cv::Vec3b>(u,v)[2] = red;
+//						}
+//					}
+//				}
+//			}
+//			cv::imshow("tesselation", colour_tesselated_map);
+//		}
 	}
 
 	ipa_pars_map_analyzer::ParsMapAnalyzerResult map_analyzer_action_result_;
