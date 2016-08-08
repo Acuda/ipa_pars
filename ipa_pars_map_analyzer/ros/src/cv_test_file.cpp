@@ -45,31 +45,58 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "ipa_pars_cv_test_file");
 	std::string image_filename = ros::package::getPath("ipa_pars_map_analyzer") + "/common/files/test_maps/lab_ipa4.png";
 	cv::Mat map = cv::imread(image_filename.c_str(), 0);
-	cv::Mat new_map = cv::Mat::zeros( map.size() , map.type() );
-	cv::Mat colour_map = cv::Mat::zeros( map.size() , map.type() );
+	cv::Mat new_map = map.clone();
+	cv::Mat colour_map = map.clone();
+	cv::cvtColor(new_map, new_map, CV_GRAY2BGR);
 	cv::cvtColor(colour_map, colour_map, CV_GRAY2BGR);
 
-	//make non-white pixels black
-	int label = 1;
-	int countery = 0;
-	int counterx = 0;
-	int thickness = 10;
-	int linetype = 8;
-	int blue = (rand() % 250) + 1;
-	int green = (rand() % 250) + 1;
-	int red = (rand() % 250) + 1;
-	for (int y = 0; y < new_map.rows-10; y = y + 20)
+	for (int y = 0; y < map.rows; y++)
 	{
-		for (int x = 0; x < new_map.cols-10; x + 20)
+		for (int x = 0; x < map.cols; x++)
 		{
-			cv::line(colour_map,cv::Point(y,x),cv::Point(y,x+30),cv::Scalar(((rand() % 250) + 1),((rand() % 250) + 1), ((rand() % 250) + 1)), thickness, linetype, 0);
-
-			new_map.at<int>(y,x) = label;
-//			colour_map.at<cv::Vec3b>(y,x)[0] = blue;
-//			colour_map.at<cv::Vec3b>(y,x)[1] = green;
-//			colour_map.at<cv::Vec3b>(y,x)[2] = red;
+			//find not reachable regions and make them black
+			if (map.at<unsigned char>(y, x) < 250)
+			{
+				map.at<unsigned char>(y, x) = 0;
+			}
+			//else make it white
+			else
+			{
+				map.at<unsigned char>(y, x) = 255;
+			}
 		}
-		//counterx = 0;
+	}
+	ROS_INFO("image channels= %u", map.channels());
+	//make non-white pixels black
+//	int label = 1;
+//	int countery = 0;
+//	int counterx = 0;
+//	int thickness = 10;
+//	int linetype = 8;
+//	int blue = (rand() % 250) + 1;
+//	int green = (rand() % 250) + 1;
+//	int red = (rand() % 250) + 1;
+	for (int y = 0; y < map.rows-20; y += 20)
+	{
+		for (int x = 0; x < map.cols-20; x += 20)
+		{
+			cv::rectangle(new_map,cv::Point(x,y),cv::Point(x+20,y+20),cv::Scalar(((rand() % 250) + 1),((rand() % 250) + 1), ((rand() % 250) + 1)), -1);
+		}
+	}
+	int b,g,r;
+	for (int y = 0; y < map.rows; y++)
+	{
+		for (int x = 0; x < map.cols; x++)
+		{
+//
+			if (map.at<unsigned char>(y,x) != 0)
+			{
+				b = new_map.at<cv::Vec3b>(y,x)[0];
+				g = new_map.at<cv::Vec3b>(y,x)[1];
+				r = new_map.at<cv::Vec3b>(y,x)[2];
+				colour_map.at<cv::Vec3b>(y,x) = cv::Vec3b(b,g,r);
+			}
+		}
 	}
 
 	cv::imshow("testoutput_map", new_map);
