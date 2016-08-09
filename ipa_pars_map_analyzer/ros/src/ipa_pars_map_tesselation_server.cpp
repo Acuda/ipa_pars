@@ -98,7 +98,7 @@ void ParsMapTesselationServer::execute_map_tesselation_server(const ipa_pars_map
 
 	//converting the map msg in cv format
 	cv_bridge::CvImagePtr cv_ptr_obj;
-	cv_ptr_obj = cv_bridge::toCvCopy(goal->input_map, sensor_msgs::image_encodings::TYPE_32SC1);
+	cv_ptr_obj = cv_bridge::toCvCopy(goal->input_map, sensor_msgs::image_encodings::MONO8);
 	cv::Mat original_img = cv_ptr_obj->image;
 
 	//set the resolution and the limits for the actual goal and the Map origin
@@ -114,7 +114,7 @@ void ParsMapTesselationServer::execute_map_tesselation_server(const ipa_pars_map
 	cv::Mat output_img = original_img.clone();
 	cv::Mat corrected_img = original_img.clone();
 
-	// delete errors
+	 //delete errors
 	for (int y = 0; y < original_img.rows; ++y)
 	{
 		for (int x = 0; x < original_img.cols; ++x)
@@ -131,9 +131,9 @@ void ParsMapTesselationServer::execute_map_tesselation_server(const ipa_pars_map
 
 	//output_img.convertTo(tesselated_img, CV_32SC1, 256, 0);
 	cv::Mat outputt_img;
-	tesselated_img.convertTo(outputt_img, CV_32SC1, 256, 0);
+//	tesselated_img.convertTo(outputt_img, CV_32SC1, 256, 0);
 	//cv_img.image = output_img;
-	cv_img.image = outputt_img;
+	cv_img.image = tesselated_img;
 	//tesselated_img.convertTo(tesselated_img, CV_8U);
 	//cv::cvtColor(tesselated_img, tesselated_img, CV_GRAY2BGR);
 	//cv::imshow("tesselationbefore", tesselated_img);
@@ -157,26 +157,168 @@ void ParsMapTesselationServer::execute_map_tesselation_server(const ipa_pars_map
 
 void ParsMapTesselationServer::tesselate_map(const cv::Mat& map_to_tesselate, cv::Mat& tesselated_map, std::vector<int>& labelcount)
 {
+	// estimate amount of colors needed
+//	int amount = int (ceil(((map_to_tesselate.cols * map_to_tesselate.rows) / (20*20)))); // TODO: gridsize 20!
+//    unsigned int maxcolors = 255*255*255;
+//	unsigned int color = amount; // first color
+
 	int label = 1;
-	std::vector<int> vecOfLabels;
+	std::vector<int> vecOfColors;
 	cv::Mat tesselated_only = map_to_tesselate.clone();
 	tesselated_map = map_to_tesselate.clone();
+	//  divide in rectangles:
 	for (int y = 0; y < map_to_tesselate.rows-20; y += 20)
 	{
 		for (int x = 0; x < map_to_tesselate.cols-20; x += 20)
 		{
-			ROS_INFO("new rectangle printed %u", label);
-			cv::rectangle(tesselated_only, cv::Point(x,y),cv::Point(x+20,y+20),cv::Scalar(label), -1);
-			vecOfLabels.push_back(label);
+//			ROS_INFO("I paint a rectangle with the label %u", label);
+			// for every cell (rectangle)
+			for (unsigned int u = 0; u < 20; u++)
+			{
+				for (unsigned int v = 0; v < 20; v++)
+				{
+					tesselated_only.at<int>(y+u,x+v) = label;
+				}
+			}
+//			unsigned char blue   = (color & 0xff0000) >> 16;
+//			unsigned char green = (color & 0x00ff00) >> 8;
+//			unsigned char red  = (color & 0x0000ff);
+//			ROS_INFO("new rectangle printed %u %u %u", blue, green, red);
+//			cv::rectangle(tesselated_only, cv::Point(x,y),cv::Point(x+20,y+20),cv::Scalar(blue,green,red), -1);
+//			vecOfColors.push_back(label);
 			label++;
+//			color += amount;
+//			if (color > (maxcolors - amount))
+//			{
+//				break;
+//			}
 		}
 	}
 	// just for debug!
-	ROS_INFO("channels of image is = %u", tesselated_map.channels());
-	tesselated_map = tesselated_only.clone();
-	labelcount = vecOfLabels;
+//	ROS_INFO("channels of image is = %u", tesselated_map.channels());
+
+//	labelcount = vecOfColors;
+//	ROS_INFO_STREAM("Labelcount before is = " << labelcount.size());
+	std::vector <int> reallabelcount;
+	for (int y = 0; y < map_to_tesselate.rows; y++)
+	{
+		for ( int x = 0; x< map_to_tesselate.cols; x++)
+		{
+			if (map_to_tesselate.at<int>(y,x) != 0)
+			{
+//				counter++;
+				int label = tesselated_only.at<int>(y,x);
+//				ROS_INFO("label = %u", label);
+				addElementNotInVec(reallabelcount, label);
+//				tesselated_map.at<int>(y,x) = tesselated_only.at<int>(y,x);
+				tesselated_map.at<int>(y,x) = label;
+			}
+//			else
+//			{
+//				tesselated_map.at<int>(y,x) = 0;
+//			}
+		}
+	}
+
+	// count ares and neighbours
+	for (int i = 0; i < reallabelcount.size(); i++)
+	{
+		int pixelcounter = 0;
+		// calculate area size
+		for (int y = 0; y < map_to_tesselate.rows; y++)
+		{
+			for ( int x = 0; x< map_to_tesselate.cols; x++)
+			{
+				if (tesselated_map.at<int>(y,x) == reallabelcount.at(i))
+				{
+					pixelcounter++;
+				}
+			}
+		}
+
+		// if area size is small than half of a normal rectangle:
+		if (pixelcounter < 200)
+		{
+			std::vector<int> neighborcounter;
+			for (int y = 0; y < map_to_tesselate.rows; y++)
+			{
+				for ( int x = 0; x< map_to_tesselate.cols; x++)
+				{
+					if (tesselated_map.at<int>(y,x) == reallabelcount.at(i))
+					{
+						if ((tesselated_map.at<int>(y+1,x) != 0) && ( tesselated_map.at<int>(y+1,x) != tesselated_map.at<int>(y,x)))
+						{
+							neighborcounter.push_back((tesselated_map.at<int>(y+1,x)));
+						}
+						else if ((tesselated_map.at<int>(y-1,x) != 0) && ( tesselated_map.at<int>(y-1,x) != tesselated_map.at<int>(y,x)))
+						{
+							neighborcounter.push_back(tesselated_map.at<int>(y-1,x));
+						}
+						else if ((tesselated_map.at<int>(y,x+1) != 0) && ( tesselated_map.at<int>(y,x+1) != tesselated_map.at<int>(y,x)))
+						{
+							neighborcounter.push_back(tesselated_map.at<int>(y,x+1));
+						}
+						else if ((tesselated_map.at<int>(y,x-1) != 0) && ( tesselated_map.at<int>(y,x-1) != tesselated_map.at<int>(y,x)))
+						{
+							neighborcounter.push_back(tesselated_map.at<int>(y,x-1));
+						}
+					}
+				}
+			}
+		}
 
 
+
+	}
+//	ROS_INFO("counter is = %u", counter);
+//	labelcount = vecOfColors;
+//	labelcount = reallabelcount;
+//	ROS_INFO_STREAM("reallabelcount after = " << labelcount.size());
+//	tesselated_map = tesselated_only;
+
+	std::vector<int> new_labels;
+	int counter = 1;
+	for (int i = 0; i < reallabelcount.size() ; ++i)
+	{
+		new_labels.push_back(counter);
+		counter++;
+	}
+
+	for (int i = 0; i < new_labels.size(); i++)
+	{
+		for (int y = 0; y < map_to_tesselate.rows; y++)
+		{
+			for ( int x = 0; x< map_to_tesselate.cols; x++)
+			{
+				if (tesselated_map.at<int>(y,x) == reallabelcount.at(i))
+				{
+					tesselated_map.at<int>(y,x) = new_labels.at(i);
+				}
+			}
+		}
+
+	}
+
+	labelcount = new_labels;
+
+
+
+
+
+
+}
+
+void ParsMapTesselationServer::addElementNotInVec(std::vector<int> &reallabelcount, int label)
+{
+	if (std::find(reallabelcount.begin(), reallabelcount.end(), label) != reallabelcount.end())
+	{
+
+	}
+	else
+	{
+//		ROS_INFO_STREAM("Adding label =" << label);
+		reallabelcount.push_back(label);
+	}
 }
 
 int main(int argc, char** argv)

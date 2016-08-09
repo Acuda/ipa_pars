@@ -120,7 +120,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 	//erode map
 	cv::Mat erode_img = original_img.clone();
 	int erosion_type = cv::MORPH_RECT;
-	int erosion_size = 8;
+	int erosion_size = 1;
 	cv::Mat element = getStructuringElement( erosion_type,
 	                                       cv::Size( 2*erosion_size + 1, 2*erosion_size+1 ),
 	                                       cv::Point( erosion_size, erosion_size ) );
@@ -146,8 +146,8 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 //		}
 //	}
 
-	cv::imshow("mapanalyzer_orig", disp_orig);
-	cv::imshow("mapanalyzer_erode", disp_erode);
+//	cv::imshow("orig", disp_orig);
+//	cv::imshow("erode", disp_erode);
 
 	//send map to ipa_room_segmentation_server
 	sensor_msgs::Image labeling;
@@ -211,9 +211,9 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 
 		ROS_INFO("the important flag 1 --------------------");
 		// map tesselation:
-		cv::Mat map_to_tesselate = erode_img.clone();
-		cv::Mat tesselated_map = map_to_tesselate.clone();
-		tesselated_map.convertTo(tesselated_map, CV_32SC1);
+//		cv::Mat map_to_tesselate = erode_img.clone();
+//		cv::Mat tesselated_map = map_to_tesselate.clone();
+//		tesselated_map.convertTo(tesselated_map, CV_32SC1);
 
 
 //		//send map to ipa_pars_map_tesselation_server
@@ -222,7 +222,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 		//cv_image_tess.encoding = "32SC1";
 		cv_image_tess.encoding = "mono8";
 		cv_image_tess.image = erode_img;
-		cv_image_tess.toImageMsg(labeling);
+		cv_image_tess.toImageMsg(tess_labeling);
 
 		actionlib::SimpleActionClient<ipa_pars_map_analyzer::ParsMapTesselationAction> tess_ac("ipa_pars_map_tesselation_server",true);
 
@@ -231,7 +231,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 		ROS_INFO("Action server started, sending goal.");
 		// send a goal to the action
 		ipa_pars_map_analyzer::ParsMapTesselationGoal tess_goal;
-		tess_goal.input_map = labeling;
+		tess_goal.input_map = tess_labeling;
 		tess_goal.map_origin.position.x = 0;
 		tess_goal.map_origin.position.y = 0;
 		tess_goal.map_resolution = 0.05;
@@ -253,11 +253,12 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 			cv::Mat colour_tesselated_map = tesselated_map.clone();
 			colour_tesselated_map.convertTo(colour_tesselated_map, CV_8U);
 			cv::cvtColor(colour_tesselated_map, colour_tesselated_map, CV_GRAY2BGR);
-//			cv::imshow("teswithoutcolour", colour_tesselated_map);
-			ROS_INFO_STREAM("For coloring: Labels.data.size() = " << result_tess->labels.data.size());
-			for(int i = 1; i <= result_tess->labels.data.size(); ++i)
+			//cv::imshow("teswithoutcolour", colour_tesselated_map);
+			std::vector<int> labels = result_tess->labels.data;
+//			ROS_INFO_STREAM("For coloring: Labels.data.size() = " << result_tess->labels.data.size());
+			for(size_t i = 1; i <= result_tess->labels.data.size(); ++i)
 			{
-				ROS_INFO("label = %u",i);
+//				ROS_INFO("label = %u",i);
 				//choose random color for each room
 				int blue = (rand() % 250) + 1;
 				int green = (rand() % 250) + 1;
@@ -266,19 +267,54 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 				{
 					for(int v = 0; v < tesselated_map.cols; ++v)
 					{
+//						if(tesselated_map.at<int>(u,v) == result_tess->labels.data.at(i-1))
 						if(tesselated_map.at<int>(u,v) == i)
 						{
 //							ROS_INFO("Coloring label = %u", i);
 							colour_tesselated_map.at<cv::Vec3b>(u,v)[0] = blue;
 							colour_tesselated_map.at<cv::Vec3b>(u,v)[1] = green;
 							colour_tesselated_map.at<cv::Vec3b>(u,v)[2] = red;
+//							labels.erase(std::remove(labels.begin(), labels.end(), i), labels.end());
 						}
+					}
+
+				}
+//				cv::imshow("output", colour_tesselated_map);
+//				cv::waitKey(1);
+//				std::vector<int>& vec = myNumbers; // use shorter name
+
+//				labels.erase(i);
+
+			}
+
+//			ROS_INFO_STREAM("Amount of elements in list (should be zero) = "<<labels.size());
+			cv::imshow("tesselation", colour_tesselated_map);
+//			cv::waitKey(1);
+
+
+			// concatenate tesselated and segmented map
+			cv::Mat concatenated_map = erode_img.clone();
+			// for every room
+			for(size_t i = 1; i <= result_seg->room_information_in_pixel.size(); ++i)
+			{
+				//tesselated_map (32SC1)
+				for (int y = 0; y < erode_img.rows; y++)
+				{
+					for (int x = 0; x < erode_img.cols; x++)
+					{
+						concatenated_map.at<int>(y,x) = segmented_map.at<int>(y,x) * 1000 + tesselated_map.at<int>(y,x);
 					}
 				}
 			}
-			cv::imshow("tesselation", colour_tesselated_map);
 		}
+
+
 	}
+
+
+
+
+
 
 	ipa_pars_map_analyzer::ParsMapAnalyzerResult map_analyzer_action_result_;
 	map_analyzer_action_result_.static_knowledge.data = "test_output";

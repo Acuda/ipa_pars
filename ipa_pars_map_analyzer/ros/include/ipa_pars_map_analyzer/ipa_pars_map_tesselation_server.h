@@ -82,6 +82,7 @@ protected:
 	//Tesselation function
 	void tesselate_map(const cv::Mat& map_to_tesselate, cv::Mat& tesselated_map, std::vector<int>& labelcount);
 
+	void addElementNotInVec(std::vector<int> &reallabelcount, int label);
 	//!!Important!!
 	// define the Nodehandle before the action server, or else the server won't start
 	//
