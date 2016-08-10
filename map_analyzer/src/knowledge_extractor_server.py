@@ -243,7 +243,7 @@ class KnowledgeExtractorServer(object):
         else:
             for (rooms, transitions) in listOfRoomInformations:
                 trans_as_string = []
-                for trans in transitions:
+                for trans in transitions:ROS_INFO("On location %u, %u", balancePoints.at(i).at(0), balancePoints.at(i).at(1));
                     trans_as_string.append("room-"+str(trans))
                 listOfTransAsStrings.append(("room-"+str(rooms), trans_as_string))
         # translate to string:

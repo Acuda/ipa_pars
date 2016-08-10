@@ -77,7 +77,7 @@ protected:
 	//This is the execution function used by action server
 	void execute_map_analyzer_server(const ipa_pars_map_analyzer::ParsMapAnalyzerGoalConstPtr &goal);
 
-
+	void addElementNotInVec(std::vector<int> &reallabelcount, int label);
 	//!!Important!!
 	// define the Nodehandle before the action server, or else the server won't start
 	//

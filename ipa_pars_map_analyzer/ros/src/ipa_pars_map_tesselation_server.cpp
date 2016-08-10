@@ -70,6 +70,8 @@
 #include "highgui.h"
 #include <stdlib.h>
 #include <stdio.h>
+//#include <algorithm> // for std::sort
+//#include <vector>
 
 #include <actionlib/client/simple_action_client.h>
 #include <actionlib/client/terminal_state.h>
@@ -220,62 +222,6 @@ void ParsMapTesselationServer::tesselate_map(const cv::Mat& map_to_tesselate, cv
 		}
 	}
 
-	// count ares and neighbours
-	for (int i = 0; i < reallabelcount.size(); i++)
-	{
-		int pixelcounter = 0;
-		// calculate area size
-		for (int y = 0; y < map_to_tesselate.rows; y++)
-		{
-			for ( int x = 0; x< map_to_tesselate.cols; x++)
-			{
-				if (tesselated_map.at<int>(y,x) == reallabelcount.at(i))
-				{
-					pixelcounter++;
-				}
-			}
-		}
-
-		// if area size is small than half of a normal rectangle:
-		if (pixelcounter < 200)
-		{
-			std::vector<int> neighborcounter;
-			for (int y = 0; y < map_to_tesselate.rows; y++)
-			{
-				for ( int x = 0; x< map_to_tesselate.cols; x++)
-				{
-					if (tesselated_map.at<int>(y,x) == reallabelcount.at(i))
-					{
-						if ((tesselated_map.at<int>(y+1,x) != 0) && ( tesselated_map.at<int>(y+1,x) != tesselated_map.at<int>(y,x)))
-						{
-							neighborcounter.push_back((tesselated_map.at<int>(y+1,x)));
-						}
-						else if ((tesselated_map.at<int>(y-1,x) != 0) && ( tesselated_map.at<int>(y-1,x) != tesselated_map.at<int>(y,x)))
-						{
-							neighborcounter.push_back(tesselated_map.at<int>(y-1,x));
-						}
-						else if ((tesselated_map.at<int>(y,x+1) != 0) && ( tesselated_map.at<int>(y,x+1) != tesselated_map.at<int>(y,x)))
-						{
-							neighborcounter.push_back(tesselated_map.at<int>(y,x+1));
-						}
-						else if ((tesselated_map.at<int>(y,x-1) != 0) && ( tesselated_map.at<int>(y,x-1) != tesselated_map.at<int>(y,x)))
-						{
-							neighborcounter.push_back(tesselated_map.at<int>(y,x-1));
-						}
-					}
-				}
-			}
-		}
-
-
-
-	}
-//	ROS_INFO("counter is = %u", counter);
-//	labelcount = vecOfColors;
-//	labelcount = reallabelcount;
-//	ROS_INFO_STREAM("reallabelcount after = " << labelcount.size());
-//	tesselated_map = tesselated_only;
-
 	std::vector<int> new_labels;
 	int counter = 1;
 	for (int i = 0; i < reallabelcount.size() ; ++i)
@@ -300,6 +246,148 @@ void ParsMapTesselationServer::tesselate_map(const cv::Mat& map_to_tesselate, cv
 	}
 
 	labelcount = new_labels;
+	// count ares and neighbours
+	for (int i = 0; i < new_labels.size(); i++)
+	{
+//		ROS_INFO_STREAM("I am checking label = " << new_labels.at(i));
+		int pixelcounter = 0;
+		// calculate area size
+		for (int y = 0; y < tesselated_map.rows; y++)
+		{
+			for ( int x = 0; x< tesselated_map.cols; x++)
+			{
+//				ROS_INFO("tesselated_map.at<int>(y,x) = %u",tesselated_map.at<int>(y,x));
+//				ROS_INFO("reallabelcount.at(i) = %u", new_labels.at(i));
+				if (tesselated_map.at<int>(y,x) == new_labels.at(i))
+				{
+
+//					ROS_INFO("Pixelcounter = %u", pixelcounter);
+					pixelcounter++;
+				}
+			}
+		}
+
+
+
+		// if area size is small than half of a normal rectangle:
+		if (pixelcounter < 200) // should be 200
+		{
+//			ROS_INFO("Found a area smaller than 200 pixels");
+//			ROS_INFO_STREAM("The area is label = "<< new_labels.at(i));
+			std::vector<int> neighborcounter;
+			for (int y = 0; y < tesselated_map.rows; y++)
+			{
+				for ( int x = 0; x< tesselated_map.cols; x++)
+				{
+					if (tesselated_map.at<int>(y,x) == new_labels.at(i))
+					{
+						if ((tesselated_map.at<int>(y+1,x) != 0) && ( tesselated_map.at<int>(y+1,x) != tesselated_map.at<int>(y,x)))
+						{
+							neighborcounter.push_back((tesselated_map.at<int>(y+1,x)));
+						}
+						else if ((tesselated_map.at<int>(y-1,x) != 0) && ( tesselated_map.at<int>(y-1,x) != tesselated_map.at<int>(y,x)))
+						{
+							neighborcounter.push_back(tesselated_map.at<int>(y-1,x));
+						}
+						else if ((tesselated_map.at<int>(y,x+1) != 0) && ( tesselated_map.at<int>(y,x+1) != tesselated_map.at<int>(y,x)))
+						{
+							neighborcounter.push_back(tesselated_map.at<int>(y,x+1));
+						}
+						else if ((tesselated_map.at<int>(y,x-1) != 0) && ( tesselated_map.at<int>(y,x-1) != tesselated_map.at<int>(y,x)))
+						{
+							neighborcounter.push_back(tesselated_map.at<int>(y,x-1));
+						}
+					}
+				}
+			}
+
+			int max = 0;
+			int most_common = -1;
+			std::map<int,int> m;
+			for (std::vector<int>::iterator vi = neighborcounter.begin(); vi != neighborcounter.end(); vi++) {
+			  m[*vi]++;
+			  if (m[*vi] > max) {
+			    max = m[*vi];
+			    most_common = *vi;
+			  }
+			}
+
+			if (most_common != -1)
+			{
+				for (int y = 0; y < tesselated_map.rows; y++)
+				{
+					for ( int x = 0; x< tesselated_map.cols; x++)
+					{
+						if (tesselated_map.at<int>(y,x) == new_labels.at(i))
+						{
+							tesselated_map.at<int>(y,x) = most_common;
+						}
+
+					}
+				}
+//				ROS_INFO_STREAM("Painted it in ="<< most_common);
+			}
+			neighborcounter.clear();
+		}
+	}
+
+	std::vector <int> endlabelcount;
+	for (int y = 0; y < tesselated_map.rows; y++)
+	{
+		for ( int x = 0; x< tesselated_map.cols; x++)
+		{
+			if (tesselated_map.at<int>(y,x) != 0)
+			{
+//				counter++;
+				int label = tesselated_map.at<int>(y,x);
+//				ROS_INFO("label = %u", label);
+				addElementNotInVec(endlabelcount, label);
+//				tesselated_map.at<int>(y,x) = tesselated_only.at<int>(y,x);
+//				tesselated_map.at<int>(y,x) = label;
+			}
+//			else
+//			{
+//				tesselated_map.at<int>(y,x) = 0;
+//			}
+		}
+	}
+
+	std::vector<int> end_labels;
+	int labelcounter = 1;
+	for (int i = 0; i < endlabelcount.size() ; ++i)
+	{
+		end_labels.push_back(labelcounter);
+		labelcounter++;
+	}
+
+	for (int i = 0; i < end_labels.size(); i++)
+	{
+		for (int y = 0; y < map_to_tesselate.rows; y++)
+		{
+			for ( int x = 0; x< map_to_tesselate.cols; x++)
+			{
+				if (tesselated_map.at<int>(y,x) == endlabelcount.at(i))
+				{
+					tesselated_map.at<int>(y,x) = end_labels.at(i);
+				}
+			}
+		}
+
+	}
+
+	labelcount = end_labels;
+	// for debug
+	for (int i=0 ; i < labelcount.size(); i++)
+	{
+//		ROS_INFO("these labels are here: %u", labelcount.at(i));
+	}
+//	ROS_INFO("counter is = %u", counter);
+//	labelcount = vecOfColors;
+//	labelcount = reallabelcount;
+//	ROS_INFO_STREAM("reallabelcount after = " << labelcount.size());
+//	tesselated_map = tesselated_only;
+
+
 
 
 
