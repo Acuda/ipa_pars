@@ -377,15 +377,32 @@ void ParsMapTesselationServer::tesselate_map(const cv::Mat& map_to_tesselate, cv
 
 	labelcount = end_labels;
 	// for debug
-	for (int i=0 ; i < labelcount.size(); i++)
-	{
-//		ROS_INFO("these labels are here: %u", labelcount.at(i));
-	}
+//	for (int i=0 ; i < labelcount.size(); i++)
+//	{
+////		ROS_INFO("these labels are here: %u", labelcount.at(i));
+//	}
 //	ROS_INFO("counter is = %u", counter);
 //	labelcount = vecOfColors;
 //	labelcount = reallabelcount;
 //	ROS_INFO_STREAM("reallabelcount after = " << labelcount.size());
 //	tesselated_map = tesselated_only;
+
+//	// for debug
+//	for (int i = 0; i < end_labels.size(); i++)
+//	{
+//		int pix_counter = 0;
+//		for (int y = 0; y < tesselated_map.rows; y++)
+//		{
+//			for (int x = 0; x < tesselated_map.cols; x++)
+//			{
+//				if (tesselated_map.at<int>(y,x) == end_labels.at(i))
+//				{
+//					pix_counter++;
+//				}
+//			}
+//		}
+//		ROS_INFO("The label %u has an amount of %u pixels", end_labels.at(i), pix_counter);
+//	}
 
 
 

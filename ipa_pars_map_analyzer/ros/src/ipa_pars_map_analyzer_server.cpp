@@ -75,6 +75,7 @@
 #include <actionlib/client/terminal_state.h>
 #include <ipa_room_segmentation/MapSegmentationAction.h>
 #include <ipa_pars_map_analyzer/ParsMapTesselationAction.h>
+#include <ipa_pars_map_analyzer/ParsMapKnowledgeAction.h>
 
 ParsMapAnalyzerServer::ParsMapAnalyzerServer(ros::NodeHandle nh, std::string name_of_the_action) :
 	node_handle_(nh),
@@ -209,7 +210,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 		}
 		cv::imshow("segmentation", colour_segmented_map);
 
-		ROS_INFO("the important flag 1 --------------------");
+//		ROS_INFO("the important flag 1 --------------------");
 		cv::Mat concatenated_image = erode_img.clone();
 		concatenated_image.convertTo(concatenated_image, CV_32SC1, 256, 0);
 		for (int k = 1; k <= result_seg->room_information_in_pixel.size(); k++)
@@ -384,10 +385,10 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 			int xs = 0;
 			int ys = 0;
 			balancePointXY.clear();
-			ROS_INFO("Calculating balance point for label = %u", reallabelcount.at(i));
-			for (int x = 0; x < concatenated_image.rows; x++)
+//			ROS_INFO("Calculating balance point for label = %u", reallabelcount.at(i));
+			for (int y = 0; y < concatenated_image.rows; y++)
 			{
-				for (int y = 0; y < concatenated_image.cols; y++)
+				for (int x = 0; x < concatenated_image.cols; x++)
 				{
 					if (concatenated_image.at<int>(y,x) == reallabelcount.at(i))
 					{
@@ -410,7 +411,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 		}
 
 		//debug:
-		ROS_INFO("balancePoints.size = %lu", balancePoints.size());
+//		ROS_INFO("balancePoints.size = %lu", balancePoints.size());
 
 
 		// display
@@ -549,10 +550,55 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 //					}
 //				}
 //			}
+
+		std::vector<ipa_pars_map_analyzer::SquareInformation> sqr_info_vec;
+
+		for(int i = 0; i < reallabelcount.size(); ++i)
+		{
+			ipa_pars_map_analyzer::SquareInformation square;
+			square.label = reallabelcount.at(i);
+			square.center.x = balancePoints.at(i).at(0);
+			square.center.y = balancePoints.at(i).at(1);
+			square.center.z = 0.0;
+			sqr_info_vec.push_back(square);
 		}
 
 
+		actionlib::SimpleActionClient<ipa_pars_map_analyzer::ParsMapKnowledgeAction> knowledge_ac("ipa_pars_map_knowledge_extractor_server",true);
 
+		knowledge_ac.waitForServer(); //will wait for infinite time
+
+		ROS_INFO("Action server started, sending goal.");
+		// send a goal to the action
+		ipa_pars_map_analyzer::ParsMapKnowledgeGoal knowledge_extractor_goal;
+		sensor_msgs::Image labeled_map;
+		cv_bridge::CvImage cv_image_concatened;
+		cv_image_concatened.encoding = "32SC1";
+		cv_image_concatened.image = concatenated_image;
+		cv_image_concatened.toImageMsg(labeled_map);
+
+		knowledge_extractor_goal.input_map = cv_image_concatened;
+		knowledge_extractor_goal.map_resolution = 0.05;
+		knowledge_extractor_goal.map_origin.position.x = 0;
+		knowledge_extractor_goal.map_origin.position.y = 0;
+		knowledge_extractor_goal.square_information = sqr_info_vec;
+
+		knowledge_ac.sendGoal(knowledge_extractor_goal);
+
+
+		//wait for the action to return
+		bool finished_before_timeout = knowledge_ac.waitForResult(ros::Duration(300.0));
+
+		if (finished_before_timeout)
+		{
+			ROS_INFO("Finished successfully!");
+			ipa_pars_map_analyzer::ParsMapTesselationResultConstPtr result_single_room_tess = knowledge_ac.getResult();
+			// display
+
+		}
+
+
+	}
 
 
 

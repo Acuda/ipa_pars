@@ -22,7 +22,7 @@ Created on Jan 28, 2016
 # ROS package name: map_analyzer
 #
 # \author
-# Author: Christian Ehrmannproblem_text
+# Author: Christian Ehrmann
 # \author
 # Supervised by: Richard Bormann
 #
@@ -66,7 +66,7 @@ import cv2
 import numpy as np
 import cv
 
-from map_analyzer.msg._MapKnowledgeAction import *
+from ipa_pars_map_analyzer.msg._ParsMapKnowledgeAction import *
 
 from sensor_msgs.msg._Image import Image
 import color_utils_cme
@@ -85,20 +85,18 @@ from geometry_msgs.msg import Pose
 from cv2 import CV_8U
 
 
-class KnowledgeExtractorServer(object):
-    _feedback = map_analyzer.msg.MapKnowledgeFeedback()
-    _result = map_analyzer.msg.MapKnowledgeResult()
-    def __init__(self, path_to_static_knowledge):
-        rospy.loginfo("Initialize KnowledgeExtractorServer ...")
-        self.path_to_static_knowledge = path_to_static_knowledge
-        rospy.loginfo(self.path_to_static_knowledge)
+class ParsKnowledgeExtractorServer(object):
+    _feedback = ipa_pars_map_analyzer.msg.ParsMapKnowledgeFeedback()
+    _result = ipa_pars_map_analyzer.msg.ParsMapKnowledgeResult()
+    def __init__(self):
+        rospy.loginfo("Initialize ParsKnowledgeExtractorServer ...")
         self.bridge = CvBridge()
         
-        self._as = actionlib.SimpleActionServer('knowledge_extractor_server', map_analyzer.msg.MapKnowledgeAction, execute_cb=self.execute_cb, auto_start=False)
+        self._as = actionlib.SimpleActionServer('ipa_pars_knowledge_extractor_server', ipa_pars_map_analyzer.msg.ParsMapKnowledgeAction, execute_cb=self.execute_cb, auto_start=False)
         self._as.start()
         
-        rospy.loginfo("KnowledgeExtractorServer running! Waiting for a new map to analyze ...")
-        rospy.loginfo("KnowledgeExtractorServer initialize finished")
+        rospy.loginfo("ParsKnowledgeExtractorServer running! Waiting for a new map to analyze ...")
+        rospy.loginfo("ParsKnowledgeExtractorServer initialize finished")
         
     def execute_cb(self, goal):
         rospy.loginfo("Extracting knowledge from a new map!")
@@ -176,10 +174,9 @@ class KnowledgeExtractorServer(object):
         print "this is the list of received balance points in knowledge extractor"
         print yaml_content
         if (len(listOfTransitionsAsList) > 20):
-            with open(self.path_to_static_knowledge+"static-knowledge-base.yaml", 'w') as yaml_file:
-                yaml_file.write(yaml_content)
+            self.save_static_knowledge_file(yaml_content)
         else:
-            with open(self.path_to_static_knowledge+"static-knowledge-base-onlyrooms.yaml", 'w') as yaml_file:
+            with open("ipa_pars/knowledge/static-knowledge-base-onlyrooms.yaml", 'w') as yaml_file:
                 yaml_file.write(yaml_content)
             
             
@@ -329,6 +326,18 @@ class KnowledgeExtractorServer(object):
                 
         return (img, pixelcounter, neighborColorList)
     
+    def save_static_knowledge_file(self, yaml_content):
+        print "save static knowledge file"
+        try:
+            if not os.path.isdir("ipa_pars/knowledge/"):
+                os.mkdir("ipa_pars/knowledge")
+            with open("ipa_pars/knowledge/static-knowledge-from-map.yaml", "w") as yaml_file:
+                yaml_file.write(yaml_content)
+            yaml_file.close()
+        except IOError:
+            rospy.loginfo("writing static-knowledge.yaml failed!")
+            
+            
 if __name__ == '__main__':
     rospy.init_node('knowledge_extractor_server_node', anonymous=False)
     kES = KnowledgeExtractorServer(sys.argv[1])
