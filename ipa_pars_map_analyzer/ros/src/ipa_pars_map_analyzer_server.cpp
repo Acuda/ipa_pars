@@ -77,6 +77,13 @@
 #include <ipa_pars_map_analyzer/ParsMapTesselationAction.h>
 #include <ipa_pars_map_analyzer/ParsMapKnowledgeAction.h>
 
+// for vector unique
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string>
+#include <cctype>
+
 ParsMapAnalyzerServer::ParsMapAnalyzerServer(ros::NodeHandle nh, std::string name_of_the_action) :
 	node_handle_(nh),
 	ipa_pars_map_analyzer_server_(node_handle_, name_of_the_action, boost::bind(&ParsMapAnalyzerServer::execute_map_analyzer_server, this, _1), false)
@@ -373,42 +380,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 //			ROS_INFO("these labels are here: %u", reallabelcount.at(i));
 //		}
 
-		//calculate balance points
-		std::vector< std::vector<int> > balancePoints;
-		std::vector<int> balancePointXY;
-		for (int i = 0; i < reallabelcount.size(); i++)
-		{
-			int counterx = 0;
-			int countery = 0;
-			int weightx = 0;
-			int weighty = 0;
-			int xs = 0;
-			int ys = 0;
-			balancePointXY.clear();
-//			ROS_INFO("Calculating balance point for label = %u", reallabelcount.at(i));
-			for (int y = 0; y < concatenated_image.rows; y++)
-			{
-				for (int x = 0; x < concatenated_image.cols; x++)
-				{
-					if (concatenated_image.at<int>(y,x) == reallabelcount.at(i))
-					{
-						weightx += x;
-						weighty += y;
-						counterx++;
-						countery++;
-					}
-				}
-			}
-			if (counterx > 0 && countery > 0)
-			{
-				xs = weightx / counterx;
-				ys = weighty / countery;
 
-			}
-			balancePointXY.push_back(xs);
-			balancePointXY.push_back(ys);
-			balancePoints.push_back(balancePointXY);
-		}
 
 		//debug:
 //		ROS_INFO("balancePoints.size = %lu", balancePoints.size());
@@ -551,17 +523,76 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 //				}
 //			}
 
-		std::vector<ipa_pars_map_analyzer::SquareInformation> sqr_info_vec;
+		// get list of transitions:
 
-		for(int i = 0; i < reallabelcount.size(); ++i)
+		std::vector< std::vector<int> > vec_of_transitions;
+
+		for (int i = 0; i < reallabelcount.size(); i++)
 		{
-			ipa_pars_map_analyzer::SquareInformation square;
-			square.label = reallabelcount.at(i);
-			square.center.x = balancePoints.at(i).at(0);
-			square.center.y = balancePoints.at(i).at(1);
-			square.center.z = 0.0;
-			sqr_info_vec.push_back(square);
+			std::vector<int> transitions;
+			std::vector<int> neighborcounter;
+			for (int y = 0; y < concatenated_image.rows; y++)
+			{
+				for ( int x = 0; x< concatenated_image.cols; x++)
+				{
+					if (concatenated_image.at<int>(y,x) == reallabelcount.at(i))
+					{
+						if ((concatenated_image.at<int>(y+1,x) != 0) && ( concatenated_image.at<int>(y+1,x) != concatenated_image.at<int>(y,x)))
+						{
+							neighborcounter.push_back((concatenated_image.at<int>(y+1,x)));
+						}
+						else if ((concatenated_image.at<int>(y-1,x) != 0) && ( concatenated_image.at<int>(y-1,x) != concatenated_image.at<int>(y,x)))
+						{
+							neighborcounter.push_back(concatenated_image.at<int>(y-1,x));
+						}
+						else if ((concatenated_image.at<int>(y,x+1) != 0) && ( concatenated_image.at<int>(y,x+1) != concatenated_image.at<int>(y,x)))
+						{
+							neighborcounter.push_back(concatenated_image.at<int>(y,x+1));
+						}
+						else if ((concatenated_image.at<int>(y,x-1) != 0) && ( concatenated_image.at<int>(y,x-1) != concatenated_image.at<int>(y,x)))
+						{
+							neighborcounter.push_back(concatenated_image.at<int>(y,x-1));
+						}
+					}
+				}
+			}
+
+			std::sort(neighborcounter.begin(), neighborcounter.end());
+			std::vector<int>::iterator last = std::unique(neighborcounter.begin(), neighborcounter.end());
+			neighborcounter.erase(last, neighborcounter.end());
+			for (int t = 0; t < neighborcounter.size(); t++)
+			{
+				transitions.push_back(neighborcounter.at(t));
+
+			}
+
+			vec_of_transitions.push_back(transitions);
+
+
 		}
+
+
+
+		for (int t = 0; t < vec_of_transitions.size(); t++)
+		{
+			for (int l = 1; l < vec_of_transitions.at(t).size(); l++)
+			{
+				ROS_INFO("Transitions of label %d found are %d", vec_of_transitions.at(t).at(0), vec_of_transitions.at(t).at(l) );
+			}
+		}
+
+		// build SquareInformation Messages
+//		std::vector<ipa_pars_map_analyzer::SquareInformation> sqr_info_vec;
+//		for(int i = 0; i < reallabelcount.size(); ++i)
+//		{
+//			ipa_pars_map_analyzer::SquareInformation square;
+//			square.label.data = reallabelcount.at(i);
+//			square.center.x = balancePoints.at(i).at(0);
+//			square.center.y = balancePoints.at(i).at(1);
+//			square.center.z = 0.0;
+//			square.transitions = vec_of_transitions.at(i);
+//			sqr_info_vec.push_back(square);
+//		}
 
 
 		actionlib::SimpleActionClient<ipa_pars_map_analyzer::ParsMapKnowledgeAction> knowledge_ac("ipa_pars_map_knowledge_extractor_server",true);
@@ -577,11 +608,11 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 		cv_image_concatened.image = concatenated_image;
 		cv_image_concatened.toImageMsg(labeled_map);
 
-		knowledge_extractor_goal.input_map = cv_image_concatened;
+		knowledge_extractor_goal.input_map = labeled_map;
 		knowledge_extractor_goal.map_resolution = 0.05;
 		knowledge_extractor_goal.map_origin.position.x = 0;
 		knowledge_extractor_goal.map_origin.position.y = 0;
-		knowledge_extractor_goal.square_information = sqr_info_vec;
+		knowledge_extractor_goal.labels = reallabelcount;
 
 		knowledge_ac.sendGoal(knowledge_extractor_goal);
 
@@ -592,8 +623,10 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 		if (finished_before_timeout)
 		{
 			ROS_INFO("Finished successfully!");
-			ipa_pars_map_analyzer::ParsMapTesselationResultConstPtr result_single_room_tess = knowledge_ac.getResult();
+			ipa_pars_map_analyzer::ParsMapKnowledgeResultConstPtr result_knowledge_map = knowledge_ac.getResult();
 			// display
+			ROS_INFO("The produced knowledge is:");
+			ROS_INFO("%s", result_knowledge_map->static_knowledge.data.c_str());
 
 		}
 

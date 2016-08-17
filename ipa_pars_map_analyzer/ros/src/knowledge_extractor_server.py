@@ -67,9 +67,7 @@ import numpy as np
 import cv
 
 from ipa_pars_map_analyzer.msg._ParsMapKnowledgeAction import *
-
 from sensor_msgs.msg._Image import Image
-import color_utils_cme
 
 from yaml import load
 import yaml
@@ -92,7 +90,7 @@ class ParsKnowledgeExtractorServer(object):
         rospy.loginfo("Initialize ParsKnowledgeExtractorServer ...")
         self.bridge = CvBridge()
         
-        self._as = actionlib.SimpleActionServer('ipa_pars_knowledge_extractor_server', ipa_pars_map_analyzer.msg.ParsMapKnowledgeAction, execute_cb=self.execute_cb, auto_start=False)
+        self._as = actionlib.SimpleActionServer('ipa_pars_map_knowledge_extractor_server', ipa_pars_map_analyzer.msg.ParsMapKnowledgeAction, execute_cb=self.execute_cb, auto_start=False)
         self._as.start()
         
         rospy.loginfo("ParsKnowledgeExtractorServer running! Waiting for a new map to analyze ...")
@@ -106,9 +104,10 @@ class ParsKnowledgeExtractorServer(object):
         r = rospy.Rate(1)
 
         received_map_as_cvimg = self.bridge.imgmsg_to_cv2(goal.input_map).copy()
+        listOfSquares = goal.square_information
         
-        listOfAreas = self.debugmakeListOfColors(received_map_as_cvimg)
-        listOfBalance = self.calcBalancePoints(received_map_as_cvimg, listOfAreas)
+#         listOfAreas = self.debugmakeListOfColors(received_map_as_cvimg)
+#         listOfBalance = self.calcBalancePoints(received_map_as_cvimg, listOfAreas)
         print "listOfBalancePoints"
         print listOfBalance
         roomBalancePoints = []
@@ -132,10 +131,10 @@ class ParsKnowledgeExtractorServer(object):
         
         if (len(listOfTransitionsAsList)) > 20:
             #print yaml_content
-            with open(self.path_to_static_knowledge+"static-knowledge-base0.yaml", 'w') as yaml_file:
+            with open("ipa_pars/knowledge/static-knowledge-base0.yaml", 'w') as yaml_file:
                 yaml_file.write(yaml_content)
         else:
-            with open(self.path_to_static_knowledge+"static-knowledge-base0-justrooms.yaml", 'w') as yaml_file:
+            with open("ipa_pars/knowledge/static-knowledge-base0-justrooms.yaml", 'w') as yaml_file:
                 yaml_file.write(yaml_content)
         
         
@@ -340,6 +339,6 @@ class ParsKnowledgeExtractorServer(object):
             
 if __name__ == '__main__':
     rospy.init_node('knowledge_extractor_server_node', anonymous=False)
-    kES = KnowledgeExtractorServer(sys.argv[1])
+    parsKES = ParsKnowledgeExtractorServer()
     rospy.spin()
         
