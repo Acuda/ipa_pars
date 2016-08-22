@@ -107,7 +107,11 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 	const float map_resolution = goal->map_resolution;
 	const cv::Point2d map_origin(goal->map_origin.position.x, goal->map_origin.position.y);
 
-
+	std::vector<int> reallabelcount;
+	for (int i = 0; i < goal->labels.size(); i++)
+	{
+		reallabelcount.push_back(goal->labels.at(i).data);
+	}
 	//calculate balance points
 	std::vector< std::vector<int> > balancePoints;
 	std::vector<int> balancePointXY;
@@ -120,7 +124,7 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 		int xs = 0;
 		int ys = 0;
 		balancePointXY.clear();
-//			ROS_INFO("Calculating balance point for label = %u", reallabelcount.at(i));
+		ROS_INFO("Calculating balance point for label = %u", reallabelcount.at(i));
 		for (int y = 0; y < input_img.rows; y++)
 		{
 			for (int x = 0; x < input_img.cols; x++)
@@ -150,45 +154,53 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 
 
 
-// display
-		cv::Mat colour_extracted_map = input_img.clone();
-		colour_extracted_map.convertTo(colour_extracted_map, CV_8U);
-		cv::cvtColor(colour_extracted_map, colour_extracted_map, CV_GRAY2BGR);
-		for(int i = 0; i < reallabelcount.size(); ++i)
+	// display
+	cv::Mat colour_extracted_map = input_img.clone();
+	colour_extracted_map.convertTo(colour_extracted_map, CV_8U);
+	cv::cvtColor(colour_extracted_map, colour_extracted_map, CV_GRAY2BGR);
+
+//	cv::Mat color_img(input_img.rows, input_img.cols, CV_8U);
+////	color_img.convertTo(color_img, color_img, CV_8U);
+//	cv::cvtColor(color_img, color_img, CV_GRAY2BGR);
+
+//	ROS_INFO_STREAM("realllabelcount is =" << reallabelcount.size());
+	for(int i = 0; i < reallabelcount.size(); ++i)
+	{
+	//				ROS_INFO("label = %u",i);
+		//choose random color for each room
+		int blue = (rand() % 250) + 1;
+		int green = (rand() % 250) + 1;
+		int red = (rand() % 250) + 1;
+		for(int u = 0; u < input_img.rows; ++u)
 		{
-//				ROS_INFO("label = %u",i);
-			//choose random color for each room
-			int blue = (rand() % 250) + 1;
-			int green = (rand() % 250) + 1;
-			int red = (rand() % 250) + 1;
-			for(int u = 0; u < input_img.rows; ++u)
+			for(int v = 0; v < input_img.cols; ++v)
 			{
-				for(int v = 0; v < input_img.cols; ++v)
+	//						if(tesselated_map.at<int>(u,v) == result_tess->labels.data.at(i-1))
+				if(input_img.at<int>(u,v) == reallabelcount.at(i))
 				{
-//						if(tesselated_map.at<int>(u,v) == result_tess->labels.data.at(i-1))
-					if(input_img.at<int>(u,v) == reallabelcount.at(i))
-					{
-//							ROS_INFO("Coloring label = %u", i);
-						colour_extracted_map.at<cv::Vec3b>(u,v)[0] = blue;
-						colour_extracted_map.at<cv::Vec3b>(u,v)[1] = green;
-						colour_extracted_map.at<cv::Vec3b>(u,v)[2] = red;
-//							labels.erase(std::remove(labels.begin(), labels.end(), i), labels.end());
-					}
+//					ROS_INFO("Coloring label = %u", i);
+					colour_extracted_map.at<cv::Vec3b>(u,v)[0] = blue;
+					colour_extracted_map.at<cv::Vec3b>(u,v)[1] = green;
+					colour_extracted_map.at<cv::Vec3b>(u,v)[2] = red;
+	//							labels.erase(std::remove(labels.begin(), labels.end(), i), labels.end());
 				}
-
 			}
-//			ROS_INFO("Drawing balance point for label %u", i);
-//			ROS_INFO("On location %u, %u", balancePoints.at(i).at(0), balancePoints.at(i).at(1));
-//			ROS_INFO("On location %u, %u", balancePoints.at(5).at(0), balancePoints.at(5).at(1));
-			colour_extracted_map.at<cv::Vec3b>(balancePoints.at(i).at(1), balancePoints.at(i).at(0)) = cv::Vec3b(255,255,255);
-//				cv::imshow("output", colour_tesselated_map);
-//				cv::waitKey(1);
-//				std::vector<int>& vec = myNumbers; // use shorter name
-
-//				labels.erase(i);
 
 		}
-		cv::imshow("ready", colour_extracted_map);
+	//			ROS_INFO("Drawing balance point for label %u", i);
+	//			ROS_INFO("On location %u, %u", balancePoints.at(i).at(0), balancePoints.at(i).at(1));
+	//			ROS_INFO("On location %u, %u", balancePoints.at(5).at(0), balancePoints.at(5).at(1));
+		colour_extracted_map.at<cv::Vec3b>(balancePoints.at(i).at(1), balancePoints.at(i).at(0)) = cv::Vec3b(255,255,255);
+	//				cv::imshow("output", colour_tesselated_map);
+	//				cv::waitKey(1);
+	//				std::vector<int>& vec = myNumbers; // use shorter name
+
+	//				labels.erase(i);
+
+	}
+	ROS_INFO("Trying to show the image");
+	cv::imshow("ready", colour_extracted_map);
+	cv::waitKey();
 
 
 

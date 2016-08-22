@@ -70,7 +70,7 @@
 #include <sensor_msgs/image_encodings.h>
 #include <actionlib/server/simple_action_server.h>
 
-#include <ipa_pars_map_analyzer/ParsMapTesselationAction.h>
+#include <ipa_pars_map_analyzer/ParsMapKnowledgeAction.h>
 
 class ParsMapKnowledgeExtractorServer
 {

@@ -162,6 +162,17 @@ add_dependencies(ipa_pars_map_tesselation_server
 	${catkin_EXPORTED_TARGETS}
 	${${PROJECT_NAME}_EXPORTED_TARGETS})
 
+## map_knowledge_extractor_server
+add_executable(ipa_pars_map_knowledge_extractor_server
+	ros/src/ipa_pars_map_knowledge_extractor_server.cpp)
+
+target_link_libraries(ipa_pars_map_knowledge_extractor_server
+	${catkin_LIBRARIES}
+	${OpenCV_LIBRARIES})
+add_dependencies(ipa_pars_map_knowledge_extractor_server
+	${catkin_EXPORTED_TARGETS}
+	${${PROJECT_NAME}_EXPORTED_TARGETS})
+	
 ### client for testing purpose
 add_executable(ipa_pars_map_analyzer_client ros/src/ipa_pars_map_analyzer_client.cpp)
 target_link_libraries(ipa_pars_map_analyzer_client

@@ -416,7 +416,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 //			ROS_INFO("Drawing balance point for label %u", i);
 //			ROS_INFO("On location %u, %u", balancePoints.at(i).at(0), balancePoints.at(i).at(1));
 //			ROS_INFO("On location %u, %u", balancePoints.at(5).at(0), balancePoints.at(5).at(1));
-			colour_tesselated_map.at<cv::Vec3b>(balancePoints.at(i).at(1), balancePoints.at(i).at(0)) = cv::Vec3b(255,255,255);
+//			colour_tesselated_map.at<cv::Vec3b>(balancePoints.at(i).at(1), balancePoints.at(i).at(0)) = cv::Vec3b(255,255,255);
 //				cv::imshow("output", colour_tesselated_map);
 //				cv::waitKey(1);
 //				std::vector<int>& vec = myNumbers; // use shorter name
@@ -608,11 +608,19 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 		cv_image_concatened.image = concatenated_image;
 		cv_image_concatened.toImageMsg(labeled_map);
 
+		std::vector<std_msgs::Int32> list_of_labels;
+
+		for (int i = 0; i < reallabelcount.size(); i++)
+		{
+			std_msgs::Int32 label;
+			label.data = reallabelcount.at(i);
+			list_of_labels.push_back(label);
+		}
 		knowledge_extractor_goal.input_map = labeled_map;
 		knowledge_extractor_goal.map_resolution = 0.05;
 		knowledge_extractor_goal.map_origin.position.x = 0;
 		knowledge_extractor_goal.map_origin.position.y = 0;
-		knowledge_extractor_goal.labels = reallabelcount;
+		knowledge_extractor_goal.labels = list_of_labels;
 
 		knowledge_ac.sendGoal(knowledge_extractor_goal);
 
