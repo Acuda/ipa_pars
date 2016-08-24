@@ -80,7 +80,7 @@
 #include "std_msgs/Int32MultiArray.h"
 
 #include <sstream>
-
+//#include <ipa_room_segmentation/meanshift2d.h>
 
 
 ParsMapKnowledgeExtractorServer::ParsMapKnowledgeExtractorServer(ros::NodeHandle nh, std::string name_of_the_action) :
@@ -108,10 +108,21 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 	const cv::Point2d map_origin(goal->map_origin.position.x, goal->map_origin.position.y);
 
 	std::vector<int> reallabelcount;
-	for (int i = 0; i < goal->labels.size(); i++)
+	for (int r = 0; r < input_img.rows; ++r)
 	{
-		reallabelcount.push_back(goal->labels.at(i).data);
+		for ( int c = 0; c < input_img.cols; ++c)
+		{
+			if (input_img.at<int>(r,c) != 0)
+			{
+				int label = input_img.at<int>(r,c);
+				addElementNotInVec(reallabelcount, label);
+			}
+		}
 	}
+//	for (int i = 0; i < goal->labels.size(); i++)
+//	{
+//		reallabelcount.push_back(goal->labels.at(i).data);
+//	}
 	//calculate balance points
 	std::vector< std::vector<int> > balancePoints;
 	std::vector<int> balancePointXY;
@@ -149,8 +160,76 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 		balancePoints.push_back(balancePointXY);
 	}
 
+	for (int i = 0; i < reallabelcount.size(); i++)
+	{
+		for (int r = 0; r < input_img.rows; ++r)
+		{
+			for (int c; c < input_img.cols; ++c)
+			{
+
+			}
+		}
+	}
+
+//	MeanShift2D ms;
+//	cv::Vec2d room_center = ms.findRoomCenter(input_img, room_cells, map_resolution);
+	// get list of transitions:
+
+	std::vector< std::vector<int> > vec_of_transitions;
+
+	for (int i = 0; i < reallabelcount.size(); i++)
+	{
+		std::vector<int> transitions;
+		std::vector<int> neighborcounter;
+		for (int y = 0; y < input_img.rows; y++)
+		{
+			for ( int x = 0; x< input_img.cols; x++)
+			{
+				if (input_img.at<int>(y,x) == reallabelcount.at(i))
+				{
+					if ((input_img.at<int>(y+1,x) != 0) && ( input_img.at<int>(y+1,x) != input_img.at<int>(y,x)))
+					{
+						neighborcounter.push_back((input_img.at<int>(y+1,x)));
+					}
+					else if ((input_img.at<int>(y-1,x) != 0) && ( input_img.at<int>(y-1,x) != input_img.at<int>(y,x)))
+					{
+						neighborcounter.push_back(input_img.at<int>(y-1,x));
+					}
+					else if ((input_img.at<int>(y,x+1) != 0) && ( input_img.at<int>(y,x+1) != input_img.at<int>(y,x)))
+					{
+						neighborcounter.push_back(input_img.at<int>(y,x+1));
+					}
+					else if ((input_img.at<int>(y,x-1) != 0) && ( input_img.at<int>(y,x-1) != input_img.at<int>(y,x)))
+					{
+						neighborcounter.push_back(input_img.at<int>(y,x-1));
+					}
+				}
+			}
+		}
+
+		std::sort(neighborcounter.begin(), neighborcounter.end());
+		std::vector<int>::iterator last = std::unique(neighborcounter.begin(), neighborcounter.end());
+		neighborcounter.erase(last, neighborcounter.end());
+		for (int t = 0; t < neighborcounter.size(); t++)
+		{
+			transitions.push_back(neighborcounter.at(t));
+
+		}
+
+		vec_of_transitions.push_back(transitions);
 
 
+	}
+
+
+
+	for (int t = 0; t < vec_of_transitions.size(); t++)
+	{
+		for (int l = 1; l < vec_of_transitions.at(t).size(); l++)
+		{
+			ROS_INFO("Transitions of label %d found are %d", vec_of_transitions.at(t).at(0), vec_of_transitions.at(t).at(l) );
+		}
+	}
 
 
 
@@ -164,43 +243,43 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 //	cv::cvtColor(color_img, color_img, CV_GRAY2BGR);
 
 //	ROS_INFO_STREAM("realllabelcount is =" << reallabelcount.size());
-	for(int i = 0; i < reallabelcount.size(); ++i)
-	{
-	//				ROS_INFO("label = %u",i);
-		//choose random color for each room
-		int blue = (rand() % 250) + 1;
-		int green = (rand() % 250) + 1;
-		int red = (rand() % 250) + 1;
-		for(int u = 0; u < input_img.rows; ++u)
-		{
-			for(int v = 0; v < input_img.cols; ++v)
-			{
-	//						if(tesselated_map.at<int>(u,v) == result_tess->labels.data.at(i-1))
-				if(input_img.at<int>(u,v) == reallabelcount.at(i))
-				{
-//					ROS_INFO("Coloring label = %u", i);
-					colour_extracted_map.at<cv::Vec3b>(u,v)[0] = blue;
-					colour_extracted_map.at<cv::Vec3b>(u,v)[1] = green;
-					colour_extracted_map.at<cv::Vec3b>(u,v)[2] = red;
-	//							labels.erase(std::remove(labels.begin(), labels.end(), i), labels.end());
-				}
-			}
-
-		}
-	//			ROS_INFO("Drawing balance point for label %u", i);
-	//			ROS_INFO("On location %u, %u", balancePoints.at(i).at(0), balancePoints.at(i).at(1));
-	//			ROS_INFO("On location %u, %u", balancePoints.at(5).at(0), balancePoints.at(5).at(1));
-		colour_extracted_map.at<cv::Vec3b>(balancePoints.at(i).at(1), balancePoints.at(i).at(0)) = cv::Vec3b(255,255,255);
-	//				cv::imshow("output", colour_tesselated_map);
-	//				cv::waitKey(1);
-	//				std::vector<int>& vec = myNumbers; // use shorter name
-
-	//				labels.erase(i);
-
-	}
-	ROS_INFO("Trying to show the image");
-	cv::imshow("ready", colour_extracted_map);
-	cv::waitKey();
+//	for(int i = 0; i < reallabelcount.size(); ++i)
+//	{
+//	//				ROS_INFO("label = %u",i);
+//		//choose random color for each room
+//		int blue = (rand() % 250) + 1;
+//		int green = (rand() % 250) + 1;
+//		int red = (rand() % 250) + 1;
+//		for(int u = 0; u < input_img.rows; ++u)
+//		{
+//			for(int v = 0; v < input_img.cols; ++v)
+//			{
+//	//						if(tesselated_map.at<int>(u,v) == result_tess->labels.data.at(i-1))
+//				if(input_img.at<int>(u,v) == reallabelcount.at(i))
+//				{
+////					ROS_INFO("Coloring label = %u", i);
+//					colour_extracted_map.at<cv::Vec3b>(u,v)[0] = blue;
+//					colour_extracted_map.at<cv::Vec3b>(u,v)[1] = green;
+//					colour_extracted_map.at<cv::Vec3b>(u,v)[2] = red;
+//	//							labels.erase(std::remove(labels.begin(), labels.end(), i), labels.end());
+//				}
+//			}
+//
+//		}
+//	//			ROS_INFO("Drawing balance point for label %u", i);
+//	//			ROS_INFO("On location %u, %u", balancePoints.at(i).at(0), balancePoints.at(i).at(1));
+//	//			ROS_INFO("On location %u, %u", balancePoints.at(5).at(0), balancePoints.at(5).at(1));
+//		colour_extracted_map.at<cv::Vec3b>(balancePoints.at(i).at(1), balancePoints.at(i).at(0)) = cv::Vec3b(255,255,255);
+//	//				cv::imshow("output", colour_tesselated_map);
+//	//				cv::waitKey(1);
+//	//				std::vector<int>& vec = myNumbers; // use shorter name
+//
+//	//				labels.erase(i);
+//
+//	}
+//	ROS_INFO("Trying to show the image");
+//	cv::imshow("ready", colour_extracted_map);
+//	cv::waitKey();
 
 
 
@@ -223,13 +302,25 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 	// output
 	ipa_pars_map_analyzer::ParsMapKnowledgeResult map_knowledge_extractor_action_result_;
 
-	map_knowledge_extractor_action_result_.static_knowledge.data = "testoutput";
+//	map_knowledge_extractor_action_result_.square_information.name = "testoutput";
 
 
 	ipa_pars_map_knowledge_extractor_server_.setSucceeded(map_knowledge_extractor_action_result_);
 
 }
 
+void ParsMapKnowledgeExtractorServer::addElementNotInVec(std::vector<int> &reallabelcount, int label)
+{
+	if (std::find(reallabelcount.begin(), reallabelcount.end(), label) != reallabelcount.end())
+	{
+
+	}
+	else
+	{
+//		ROS_INFO_STREAM("Adding label =" << label);
+		reallabelcount.push_back(label);
+	}
+}
 
 int main(int argc, char** argv)
 {

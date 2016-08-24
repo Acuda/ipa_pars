@@ -199,8 +199,8 @@ void ParsMapTesselationServer::tesselate_map(const cv::Mat& map_to_tesselate, cv
 	// just for debug!
 //	ROS_INFO("channels of image is = %u", tesselated_map.channels());
 
-//	labelcount = vecOfColors;
-//	ROS_INFO_STREAM("Labelcount before is = " << labelcount.size());
+	labelcount = vecOfColors;
+	ROS_INFO_STREAM("Labelcount before is = " << labelcount.size());
 	std::vector <int> reallabelcount;
 	for (int y = 0; y < map_to_tesselate.rows; y++)
 	{
@@ -209,11 +209,13 @@ void ParsMapTesselationServer::tesselate_map(const cv::Mat& map_to_tesselate, cv
 			if (map_to_tesselate.at<int>(y,x) != 0)
 			{
 //				counter++;
-				int label = tesselated_only.at<int>(y,x);
+				int newlabel = tesselated_only.at<int>(y,x);
+//				int labelleft = map_to_tesselate.at<int>(y,x-1); //
+//				int labelabove = map_to_tesselate.at<int>(y-1,x); //
 //				ROS_INFO("label = %u", label);
-				addElementNotInVec(reallabelcount, label);
+				addElementNotInVec(reallabelcount, newlabel);
 //				tesselated_map.at<int>(y,x) = tesselated_only.at<int>(y,x);
-				tesselated_map.at<int>(y,x) = label;
+				tesselated_map.at<int>(y,x) = newlabel;
 			}
 //			else
 //			{
@@ -221,6 +223,43 @@ void ParsMapTesselationServer::tesselate_map(const cv::Mat& map_to_tesselate, cv
 //			}
 		}
 	}
+
+//	std::vector <int> reallabelcount;
+//	std::vector< std::vector<int> > label_map_correction;
+//	bool wallmarker = false;
+//	for (int y = 0; y < map_to_tesselate.rows; y++)
+//	{
+//		for ( int x = 0; x< map_to_tesselate.cols; x++)
+//		{
+//			if (map_to_tesselate.at<int>(y,x) != 0)
+//			{
+////				counter++;
+//				int newlabel = tesselated_only.at<int>(y,x);
+//				int labelright = map_to_tesselate.at<int>(y,x+1);
+//				int labelleft = map_to_tesselate.at<int>(y,x-1); //
+//				int labelabove = map_to_tesselate.at<int>(y-1,x); //
+////				ROS_INFO("label = %u", label);
+//
+////				tesselated_map.at<int>(y,x) = tesselated_only.at<int>(y,x);
+//				if (labelright == 0)
+//				{
+//					wallmarker = true;
+//				}
+//
+//				if (wallmarker == true && labelleft == 0)
+//				{
+//					label++;
+//				}
+//				addElementNotInVec(reallabelcount, newlabel);
+//				tesselated_map.at<int>(y,x) = newlabel;
+//			}
+////			else
+////			{
+////				tesselated_map.at<int>(y,x) = 0;
+////			}
+//		}
+//		wallmarker = false;
+//	}
 
 	std::vector<int> new_labels;
 	int counter = 1;

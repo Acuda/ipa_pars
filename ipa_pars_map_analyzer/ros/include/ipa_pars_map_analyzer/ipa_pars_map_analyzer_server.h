@@ -77,7 +77,16 @@ protected:
 	//This is the execution function used by action server
 	void execute_map_analyzer_server(const ipa_pars_map_analyzer::ParsMapAnalyzerGoalConstPtr &goal);
 
+	// add labels to labelcounter
 	void addElementNotInVec(std::vector<int> &reallabelcount, int label);
+
+	// creates 125 colors for display of room square segmentation
+	void createRoomColors(std::vector<cv::Vec3b> &room_colors);
+
+	// display segmented or tesselated map
+	void displayMapAsImage(cv::Mat &map, std::vector<cv::Vec3b> &room_colors);
+
+
 	//!!Important!!
 	// define the Nodehandle before the action server, or else the server won't start
 	//

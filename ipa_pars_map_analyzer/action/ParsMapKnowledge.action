@@ -5,14 +5,13 @@
 sensor_msgs/Image input_map
 float32 map_resolution
 geometry_msgs/Pose map_origin
-std_msgs/Int32[] labels
 #ipa_pars_map_analyzer/SquareInformation[] square_information
 
 ---
 
 #result definition
 
-std_msgs/String static_knowledge
+ipa_pars_map_analyzer/SquareInformation[] square_information
 
 ---
 #feedback definition

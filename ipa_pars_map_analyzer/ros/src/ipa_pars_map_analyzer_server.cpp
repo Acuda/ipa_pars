@@ -98,6 +98,11 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 	ROS_INFO("*****ParsMapAnalyzer action server*****");
 	ROS_INFO("map resolution is : %f", goal->map_resolution);
 
+	// todo send this to initialize:
+	ROS_INFO("Create room square colors");
+	std::vector<cv::Vec3b> room_colors;
+	ParsMapAnalyzerServer::createRoomColors(room_colors);
+
 	//converting the map msg in cv format
 	cv_bridge::CvImagePtr cv_ptr_obj;
 	cv_ptr_obj = cv_bridge::toCvCopy(goal->input_map, sensor_msgs::image_encodings::MONO8);
@@ -135,7 +140,8 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 	cv::erode(original_img,erode_img,element);
 	cv::Mat disp_orig = original_img.clone();
 	cv::Mat disp_erode = erode_img.clone();
-
+	disp_orig.convertTo(disp_orig, CV_8U);
+	displayMapAsImage(disp_erode, room_colors);
 //	//make non-white pixels black
 //	for (int y = 0; y < erode_img.rows; y++)
 //	{
@@ -189,33 +195,35 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 		ROS_INFO("Finished successfully!");
 		ipa_room_segmentation::MapSegmentationResultConstPtr result_seg = seg_ac.getResult();
 
-		// display
+//		// display
 		cv_bridge::CvImagePtr cv_ptr_obj;
 		cv_ptr_obj = cv_bridge::toCvCopy(result_seg->segmented_map, sensor_msgs::image_encodings::TYPE_32SC1);
 		cv::Mat segmented_map = cv_ptr_obj->image;
-		cv::Mat colour_segmented_map = segmented_map.clone();
-		colour_segmented_map.convertTo(colour_segmented_map, CV_8U);
-		cv::cvtColor(colour_segmented_map, colour_segmented_map, CV_GRAY2BGR);
-		for(int i = 1; i <= result_seg->room_information_in_pixel.size(); ++i)
-		{
-			//choose random color for each room
-			int blue = (rand() % 250) + 1;
-			int green = (rand() % 250) + 1;
-			int red = (rand() % 250) + 1;
-			for(size_t u = 0; u < segmented_map.rows; ++u)
-			{
-				for(size_t v = 0; v < segmented_map.cols; ++v)
-				{
-					if(segmented_map.at<int>(u,v) == i)
-					{
-						colour_segmented_map.at<cv::Vec3b>(u,v)[0] = blue;
-						colour_segmented_map.at<cv::Vec3b>(u,v)[1] = green;
-						colour_segmented_map.at<cv::Vec3b>(u,v)[2] = red;
-					}
-				}
-			}
-		}
-		cv::imshow("segmentation", colour_segmented_map);
+//		cv::Mat colour_segmented_map = segmented_map.clone();
+//		colour_segmented_map.convertTo(colour_segmented_map, CV_8U);
+//		cv::cvtColor(colour_segmented_map, colour_segmented_map, CV_GRAY2BGR);
+//		for(int i = 1; i <= result_seg->room_information_in_pixel.size(); ++i)
+//		{
+//			//choose random color for each room
+//			int blue = (rand() % 250) + 1;
+//			int green = (rand() % 250) + 1;
+//			int red = (rand() % 250) + 1;
+//			for(size_t u = 0; u < segmented_map.rows; ++u)
+//			{
+//				for(size_t v = 0; v < segmented_map.cols; ++v)
+//				{
+//					if(segmented_map.at<int>(u,v) == i)
+//					{
+//						colour_segmented_map.at<cv::Vec3b>(u,v)[0] = blue;
+//						colour_segmented_map.at<cv::Vec3b>(u,v)[1] = green;
+//						colour_segmented_map.at<cv::Vec3b>(u,v)[2] = red;
+//					}
+//				}
+//			}
+//		}
+//		cv::imshow("segmentation", colour_segmented_map);
+		//display new
+		displayMapAsImage(segmented_map, room_colors);
 
 //		ROS_INFO("the important flag 1 --------------------");
 		cv::Mat concatenated_image = erode_img.clone();
@@ -387,44 +395,52 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 
 
 		// display
-		cv::Mat colour_tesselated_map = concatenated_image.clone();
-		colour_tesselated_map.convertTo(colour_tesselated_map, CV_8U);
-		cv::cvtColor(colour_tesselated_map, colour_tesselated_map, CV_GRAY2BGR);
-		for(int i = 0; i < reallabelcount.size(); ++i)
-		{
-//				ROS_INFO("label = %u",i);
-			//choose random color for each room
-			int blue = (rand() % 250) + 1;
-			int green = (rand() % 250) + 1;
-			int red = (rand() % 250) + 1;
-			for(int u = 0; u < concatenated_image.rows; ++u)
-			{
-				for(int v = 0; v < concatenated_image.cols; ++v)
-				{
-//						if(tesselated_map.at<int>(u,v) == result_tess->labels.data.at(i-1))
-					if(concatenated_image.at<int>(u,v) == reallabelcount.at(i))
-					{
-//							ROS_INFO("Coloring label = %u", i);
-						colour_tesselated_map.at<cv::Vec3b>(u,v)[0] = blue;
-						colour_tesselated_map.at<cv::Vec3b>(u,v)[1] = green;
-						colour_tesselated_map.at<cv::Vec3b>(u,v)[2] = red;
-//							labels.erase(std::remove(labels.begin(), labels.end(), i), labels.end());
-					}
-				}
+//		cv::Mat colour_tesselated_map = concatenated_image.clone();
+//		colour_tesselated_map.convertTo(colour_tesselated_map, CV_8U);
+//		cv::cvtColor(colour_tesselated_map, colour_tesselated_map, CV_GRAY2BGR);
+//		for(int i = 0; i < reallabelcount.size(); ++i)
+//		{
+////				ROS_INFO("label = %u",i);
+//			//choose random color for each room
+//			int blue = (rand() % 250) + 1;
+//			int green = (rand() % 250) + 1;
+//			int red = (rand() % 250) + 1;
+//
+//
+//			for(int u = 0; u < concatenated_image.rows; ++u)
+//			{
+//				for(int v = 0; v < concatenated_image.cols; ++v)
+//				{
+////						if(tesselated_map.at<int>(u,v) == result_tess->labels.data.at(i-1))
+//					if(concatenated_image.at<int>(u,v) == reallabelcount.at(i))
+//					{
+////							ROS_INFO("Coloring label = %u", i);
+//						colour_tesselated_map.at<cv::Vec3b>(u,v)[0] = blue;
+//						colour_tesselated_map.at<cv::Vec3b>(u,v)[1] = green;
+//						colour_tesselated_map.at<cv::Vec3b>(u,v)[2] = red;
+//
+////						colour_tesselated_map.at<cv::Vec3b>(u,v)[0] = room_colors.at(i)[0];
+////						colour_tesselated_map.at<cv::Vec3b>(u,v)[1] = room_colors.at(i)[1];
+////						colour_tesselated_map.at<cv::Vec3b>(u,v)[2] = room_colors.at(i)[2];
+////							labels.erase(std::remove(labels.begin(), labels.end(), i), labels.end());
+//					}
+//				}
+//
+//			}
+////			ROS_INFO("Drawing balance point for label %u", i);
+////			ROS_INFO("On location %u, %u", balancePoints.at(i).at(0), balancePoints.at(i).at(1));
+////			ROS_INFO("On location %u, %u", balancePoints.at(5).at(0), balancePoints.at(5).at(1));
+////			colour_tesselated_map.at<cv::Vec3b>(balancePoints.at(i).at(1), balancePoints.at(i).at(0)) = cv::Vec3b(255,255,255);
+////				cv::imshow("output", colour_tesselated_map);
+////				cv::waitKey(1);
+////				std::vector<int>& vec = myNumbers; // use shorter name
+//
+////				labels.erase(i);
+//
+//		}
+//		cv::imshow("tesselation", colour_tesselated_map);
 
-			}
-//			ROS_INFO("Drawing balance point for label %u", i);
-//			ROS_INFO("On location %u, %u", balancePoints.at(i).at(0), balancePoints.at(i).at(1));
-//			ROS_INFO("On location %u, %u", balancePoints.at(5).at(0), balancePoints.at(5).at(1));
-//			colour_tesselated_map.at<cv::Vec3b>(balancePoints.at(i).at(1), balancePoints.at(i).at(0)) = cv::Vec3b(255,255,255);
-//				cv::imshow("output", colour_tesselated_map);
-//				cv::waitKey(1);
-//				std::vector<int>& vec = myNumbers; // use shorter name
-
-//				labels.erase(i);
-
-		}
-		cv::imshow("tesselation", colour_tesselated_map);
+		displayMapAsImage(concatenated_image, room_colors);
 		// map tesselation:
 //		cv::Mat map_to_tesselate = erode_img.clone();
 //		cv::Mat tesselated_map = map_to_tesselate.clone();
@@ -435,7 +451,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 //		sensor_msgs::Image tess_labeling;
 //		cv_bridge::CvImage cv_image_tess;
 //		//cv_image_tess.encoding = "32SC1";
-//		cv_image_tess.encoding = "mono8";
+//		cv_image_tess.encoding = "mono8";ROS_INFO("--------------------------------------------------------");
 //		cv_image_tess.image = erode_img;
 //		cv_image_tess.toImageMsg(tess_labeling);
 //
@@ -523,63 +539,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 //				}
 //			}
 
-		// get list of transitions:
 
-		std::vector< std::vector<int> > vec_of_transitions;
-
-		for (int i = 0; i < reallabelcount.size(); i++)
-		{
-			std::vector<int> transitions;
-			std::vector<int> neighborcounter;
-			for (int y = 0; y < concatenated_image.rows; y++)
-			{
-				for ( int x = 0; x< concatenated_image.cols; x++)
-				{
-					if (concatenated_image.at<int>(y,x) == reallabelcount.at(i))
-					{
-						if ((concatenated_image.at<int>(y+1,x) != 0) && ( concatenated_image.at<int>(y+1,x) != concatenated_image.at<int>(y,x)))
-						{
-							neighborcounter.push_back((concatenated_image.at<int>(y+1,x)));
-						}
-						else if ((concatenated_image.at<int>(y-1,x) != 0) && ( concatenated_image.at<int>(y-1,x) != concatenated_image.at<int>(y,x)))
-						{
-							neighborcounter.push_back(concatenated_image.at<int>(y-1,x));
-						}
-						else if ((concatenated_image.at<int>(y,x+1) != 0) && ( concatenated_image.at<int>(y,x+1) != concatenated_image.at<int>(y,x)))
-						{
-							neighborcounter.push_back(concatenated_image.at<int>(y,x+1));
-						}
-						else if ((concatenated_image.at<int>(y,x-1) != 0) && ( concatenated_image.at<int>(y,x-1) != concatenated_image.at<int>(y,x)))
-						{
-							neighborcounter.push_back(concatenated_image.at<int>(y,x-1));
-						}
-					}
-				}
-			}
-
-			std::sort(neighborcounter.begin(), neighborcounter.end());
-			std::vector<int>::iterator last = std::unique(neighborcounter.begin(), neighborcounter.end());
-			neighborcounter.erase(last, neighborcounter.end());
-			for (int t = 0; t < neighborcounter.size(); t++)
-			{
-				transitions.push_back(neighborcounter.at(t));
-
-			}
-
-			vec_of_transitions.push_back(transitions);
-
-
-		}
-
-
-
-		for (int t = 0; t < vec_of_transitions.size(); t++)
-		{
-			for (int l = 1; l < vec_of_transitions.at(t).size(); l++)
-			{
-				ROS_INFO("Transitions of label %d found are %d", vec_of_transitions.at(t).at(0), vec_of_transitions.at(t).at(l) );
-			}
-		}
 
 		// build SquareInformation Messages
 //		std::vector<ipa_pars_map_analyzer::SquareInformation> sqr_info_vec;
@@ -592,7 +552,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 //			square.center.z = 0.0;
 //			square.transitions = vec_of_transitions.at(i);
 //			sqr_info_vec.push_back(square);
-//		}
+//		}ROS_INFO("--------------------------------------------------------");
 
 
 		actionlib::SimpleActionClient<ipa_pars_map_analyzer::ParsMapKnowledgeAction> knowledge_ac("ipa_pars_map_knowledge_extractor_server",true);
@@ -616,27 +576,27 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 			label.data = reallabelcount.at(i);
 			list_of_labels.push_back(label);
 		}
-		knowledge_extractor_goal.input_map = labeled_map;
-		knowledge_extractor_goal.map_resolution = 0.05;
-		knowledge_extractor_goal.map_origin.position.x = 0;
-		knowledge_extractor_goal.map_origin.position.y = 0;
-		knowledge_extractor_goal.labels = list_of_labels;
-
-		knowledge_ac.sendGoal(knowledge_extractor_goal);
-
-
-		//wait for the action to return
-		bool finished_before_timeout = knowledge_ac.waitForResult(ros::Duration(300.0));
-
-		if (finished_before_timeout)
-		{
-			ROS_INFO("Finished successfully!");
-			ipa_pars_map_analyzer::ParsMapKnowledgeResultConstPtr result_knowledge_map = knowledge_ac.getResult();
-			// display
-			ROS_INFO("The produced knowledge is:");
-			ROS_INFO("%s", result_knowledge_map->static_knowledge.data.c_str());
-
-		}
+//		knowledge_extractor_goal.input_map = labeled_map;
+//		knowledge_extractor_goal.map_resolution = 0.05;
+//		knowledge_extractor_goal.map_origin.position.x = 0;
+//		knowledge_extractor_goal.map_origin.position.y = 0;
+//		knowledge_extractor_goal.labels = list_of_labels;
+//
+//		knowledge_ac.sendGoal(knowledge_extractor_goal);
+//
+//
+//		//wait for the action to return
+//		bool finished_before_timeout = knowledge_ac.waitForResult(ros::Duration(300.0));
+//
+//		if (finished_before_timeout)
+//		{
+//			ROS_INFO("Finished successfully!");
+//			ipa_pars_map_analyzer::ParsMapKnowledgeResultConstPtr result_knowledge_map = knowledge_ac.getResult();
+//			// display
+//			ROS_INFO("The produced knowledge is:");
+//			ROS_INFO("%s", result_knowledge_map->static_knowledge.data.c_str());
+//
+//		}
 
 
 	}
@@ -663,6 +623,200 @@ void ParsMapAnalyzerServer::addElementNotInVec(std::vector<int> &reallabelcount,
 //		ROS_INFO_STREAM("Adding label =" << label);
 		reallabelcount.push_back(label);
 	}
+}
+
+
+void ParsMapAnalyzerServer::createRoomColors(std::vector<cv::Vec3b> &room_colors)
+{
+	for (int blue = 50; blue < 255; blue += 50)
+	{
+		for (int green = 50; green < 255; green += 50)
+		{
+			for (int red = 50; red < 255; red += 50)
+			{
+				cv::Vec3b color;
+				color[0] = blue;
+				color[1] = green;
+				color[2] = red;
+				room_colors.push_back(color);
+			}
+		}
+	}
+
+	ROS_INFO("Created %d colors for room squares segmenation", (int)room_colors.size());
+}
+
+void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, std::vector<cv::Vec3b> &room_colors)
+{
+	std::vector<int> labels;
+	int image_type = map.type();
+	ROS_INFO("This is the Image Type you try to paint %u ", image_type);
+	if (map.type() == 0)
+	{
+		for (int r = 0; r < map.rows; ++r)
+		{
+			for ( int c = 0; c < map.cols; ++c)
+			{
+				if (map.at<unsigned char>(r,c) != 0)
+				{
+					int label = map.at<unsigned char>(r,c);
+					addElementNotInVec(labels, label);
+				}
+			}
+		}
+	}
+	else
+	{
+		for (int r = 0; r < map.rows; ++r)
+		{
+			for ( int c = 0; c < map.cols; ++c)
+			{
+				if (map.at<int>(r,c) != 0)
+				{
+					int label = map.at<int>(r,c);
+					addElementNotInVec(labels, label);
+				}
+			}
+		}
+	}
+
+
+
+	ROS_INFO("--------------------------------------------------------");
+	ROS_INFO_STREAM("THE LABELS.size() is "<< labels.size());
+	ROS_INFO("--------------------------------------------------------");
+
+	cv::Mat colored_map = map.clone();
+	colored_map.convertTo(colored_map, CV_8U);
+	cv::cvtColor(colored_map, colored_map, CV_GRAY2BGR);
+	if (labels.size() < 2 && map.type() == 0) // unlabeled map
+	{
+		for (int r = 0; r < colored_map.rows; ++r)
+		{
+			for (int c = 0; c < colored_map.cols; ++c)
+			{
+				if (map.at<unsigned char>(r,c) == 0)
+				{
+					colored_map.at<cv::Vec3b>(r,c)[0] = 0;
+					colored_map.at<cv::Vec3b>(r,c)[1] = 0;
+					colored_map.at<cv::Vec3b>(r,c)[2] = 0;
+				}
+				else
+				{
+					colored_map.at<cv::Vec3b>(r,c)[0] = 255;
+					colored_map.at<cv::Vec3b>(r,c)[1] = 255;
+					colored_map.at<cv::Vec3b>(r,c)[2] = 255;
+				}
+			}
+		}
+		cv::imshow("input_map_as_image", colored_map);
+	}
+	else if (labels.size() < 125 && map.type() == 4) // segmented map
+	{
+		for (int i = 0; i < labels.size(); ++i)
+		{
+			for (int r = 0; r < colored_map.rows; ++r)
+			{
+				for (int c = 0; c < colored_map.cols; ++c)
+				{
+					if (map.at<int>(r,c) == i)
+					{
+						cv::Vec3b color = room_colors.at(i);
+						colored_map.at<cv::Vec3b>(r,c)[0] = color[0];
+						colored_map.at<cv::Vec3b>(r,c)[1] = color[1];
+						colored_map.at<cv::Vec3b>(r,c)[2] = color[2];
+					}
+
+				}
+			}
+		}
+		for (int r = 0; r < colored_map.rows; ++r)
+		{
+			for (int c = 0; c < colored_map.cols; ++c)
+			{
+				if (map.at<int>(r,c) == 0)
+				{
+					colored_map.at<cv::Vec3b>(r,c)[0] = 0;
+					colored_map.at<cv::Vec3b>(r,c)[1] = 0;
+					colored_map.at<cv::Vec3b>(r,c)[2] = 0;
+				}
+
+			}
+		}
+		cv::imshow("segmented_map_as_image", colored_map);
+	}
+	else if (labels.size() > 125 && map.type() == 4) // tesselated_map
+	{
+		// extract rooms:
+		std::vector<int> room_labels;
+		for (int i = 0; i < labels.size(); ++i)
+		{
+			addElementNotInVec(room_labels, labels.at(i));
+		}
+
+		// color rooms:
+		for (int j = 0; j < room_labels.size(); ++j)
+		{
+			for (int r = 0; r < colored_map.rows; ++r)
+			{
+				for (int c = 0; c < colored_map.cols; ++c)
+				{
+					if ((int)(map.at<int>(r,c) / 1000) == j)
+					{
+						cv::Vec3b color = room_colors.at(j);
+						colored_map.at<cv::Vec3b>(r,c)[0] = color[0];
+						colored_map.at<cv::Vec3b>(r,c)[1] = color[1];
+						colored_map.at<cv::Vec3b>(r,c)[2] = color[2];
+					}
+				}
+			}
+		}
+
+		for (int r = 0; r < colored_map.rows; ++r)
+		{
+			for (int c = 0; c < colored_map.cols; ++c)
+			{
+				if (map.at<int>(r,c) == 0)
+				{
+					colored_map.at<cv::Vec3b>(r,c)[0] = 0;
+					colored_map.at<cv::Vec3b>(r,c)[1] = 0;
+					colored_map.at<cv::Vec3b>(r,c)[2] = 0;
+				}
+
+			}
+		}
+
+		// color square edges
+		for (int r = 0; r < colored_map.rows; ++r)
+		{
+			for (int c = 0; c < colored_map.cols; ++c)
+			{
+				if (map.at<int>(r,c) != 0)
+				{
+					if ((map.at<int>(r,c) != map.at<int>(r,c+1)) && (map.at<int>(r,c+1) != 0))
+					{
+						colored_map.at<cv::Vec3b>(r,c)[0] = 255;
+						colored_map.at<cv::Vec3b>(r,c)[1] = 255;
+						colored_map.at<cv::Vec3b>(r,c)[2] = 255;
+					}
+					else if ((map.at<int>(r,c) != map.at<int>(r+1,c)) && (map.at<int>(r+1,c) != 0))
+					{
+						colored_map.at<cv::Vec3b>(r,c)[0] = 255;
+						colored_map.at<cv::Vec3b>(r,c)[1] = 255;
+						colored_map.at<cv::Vec3b>(r,c)[2] = 255;
+					}
+				}
+			}
+		}
+		cv::imshow("tesselated_map_as_image", colored_map);
+	}
+	else
+	{
+		ROS_ERROR("The map you try to display has a wrong format or to many rooms!");
+		ROS_ERROR("Format should be of cv::type 0 or 4; amount of rooms possible 1-65");
+	}
+
+
 }
 
 int main(int argc, char** argv)
