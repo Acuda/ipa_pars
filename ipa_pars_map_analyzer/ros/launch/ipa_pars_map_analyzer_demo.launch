@@ -14,6 +14,7 @@
 		<node pkg="ipa_pars_map_analyzer" type="ipa_pars_map_analyzer_server" name="ipa_pars_map_analyzer_server" respawn="false" output="screen" />
 		<node pkg="ipa_pars_map_analyzer" type="ipa_pars_map_tesselation_server" name="ipa_pars_map_tesselation_server" respawn="false" output="screen" />
 		<node pkg="ipa_pars_map_analyzer" type="ipa_pars_map_knowledge_extractor_server" name="ipa_pars_map_knowledge_extractor_server" respawn="false" output="screen" />
+		<node pkg="ipa_pars_map_analyzer" type="knowledge_to_yaml.py" name="ipa_pars_map_knowledge_to_yaml" respawn="false" output="screen" />
 
 		<!--<node pkg="map_analyzer" type="map_publisher.py" name="map_publisher_spawner" args="$(find map_analyzer)/logs/" respawn="false" output="screen"/>
 		<node pkg="map_analyzer" type="knowledge_extractor_server.py" name="knowledge_extractor_server_spawner" args="$(find map_analyzer)/knowledge/" respawn="false" output="screen" />

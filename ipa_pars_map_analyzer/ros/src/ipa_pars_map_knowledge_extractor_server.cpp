@@ -124,16 +124,16 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 //		reallabelcount.push_back(goal->labels.at(i).data);
 //	}
 	//calculate balance points
-	std::vector< std::vector<int> > balancePoints;
-	std::vector<int> balancePointXY;
+	std::vector< std::vector<double> > balancePoints;
+	std::vector<double> balancePointXY;
 	for (int i = 0; i < reallabelcount.size(); i++)
 	{
 		int counterx = 0;
 		int countery = 0;
 		int weightx = 0;
 		int weighty = 0;
-		int xs = 0;
-		int ys = 0;
+		double xs = 0;
+		double ys = 0;
 		balancePointXY.clear();
 		ROS_INFO("Calculating balance point for label = %u", reallabelcount.at(i));
 		for (int y = 0; y < input_img.rows; y++)
@@ -215,10 +215,7 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 			transitions.push_back(neighborcounter.at(t));
 
 		}
-
 		vec_of_transitions.push_back(transitions);
-
-
 	}
 
 
@@ -231,12 +228,31 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 		}
 	}
 
+	std::vector<ipa_pars_map_analyzer::SquareInformation> vec_square_info;
+	for (int t = 0; t < vec_of_transitions.size(); t++)
+	{
+		ipa_pars_map_analyzer::SquareInformation square_info;
+		square_info.label.data = vec_of_transitions.at(t).at(0);
+		for (int l = 1; l < vec_of_transitions.at(t).size(); l++)
+		{
+			std_msgs::Int32 trans;
+			trans.data = vec_of_transitions.at(t).at(l);
+			square_info.transitions.push_back(trans);
+		}
+		//todo: umrechnen in meter statt pixel!
+		square_info.center.x = balancePoints.at(t).at(0);
+		square_info.center.y = balancePoints.at(t).at(1);
+		square_info.center.z = 0.0;
+		vec_square_info.push_back(square_info);
+	}
+
+
 
 
 	// display
-	cv::Mat colour_extracted_map = input_img.clone();
-	colour_extracted_map.convertTo(colour_extracted_map, CV_8U);
-	cv::cvtColor(colour_extracted_map, colour_extracted_map, CV_GRAY2BGR);
+//	cv::Mat colour_extracted_map = input_img.clone();
+//	colour_extracted_map.convertTo(colour_extracted_map, CV_8U);
+//	cv::cvtColor(colour_extracted_map, colour_extracted_map, CV_GRAY2BGR);
 
 //	cv::Mat color_img(input_img.rows, input_img.cols, CV_8U);
 ////	color_img.convertTo(color_img, color_img, CV_8U);
@@ -301,10 +317,7 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 
 	// output
 	ipa_pars_map_analyzer::ParsMapKnowledgeResult map_knowledge_extractor_action_result_;
-
-//	map_knowledge_extractor_action_result_.square_information.name = "testoutput";
-
-
+	map_knowledge_extractor_action_result_.square_information = vec_square_info;
 	ipa_pars_map_knowledge_extractor_server_.setSucceeded(map_knowledge_extractor_action_result_);
 
 }

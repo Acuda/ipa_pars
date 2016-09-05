@@ -77,6 +77,8 @@
 #include <ipa_pars_map_analyzer/ParsMapTesselationAction.h>
 #include <ipa_pars_map_analyzer/ParsMapKnowledgeAction.h>
 
+#include <ipa_pars_map_analyzer/KnowledgeToYaml.h>
+
 // for vector unique
 #include <iostream>
 #include <algorithm>
@@ -90,6 +92,7 @@ ParsMapAnalyzerServer::ParsMapAnalyzerServer(ros::NodeHandle nh, std::string nam
 {
 	//Start action server
 	ipa_pars_map_analyzer_server_.start();
+	knowledgeToYamlClient = node_handle_.serviceClient<ipa_pars_map_analyzer::KnowledgeToYaml>("ipa_pars_map_knowledge_to_yaml");
 }
 
 void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analyzer::ParsMapAnalyzerGoalConstPtr &goal)
@@ -576,27 +579,44 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 			label.data = reallabelcount.at(i);
 			list_of_labels.push_back(label);
 		}
-//		knowledge_extractor_goal.input_map = labeled_map;
-//		knowledge_extractor_goal.map_resolution = 0.05;
-//		knowledge_extractor_goal.map_origin.position.x = 0;
-//		knowledge_extractor_goal.map_origin.position.y = 0;
+		knowledge_extractor_goal.input_map = labeled_map;
+		knowledge_extractor_goal.map_resolution = 0.05;
+		knowledge_extractor_goal.map_origin.position.x = 0;
+		knowledge_extractor_goal.map_origin.position.y = 0;
 //		knowledge_extractor_goal.labels = list_of_labels;
-//
-//		knowledge_ac.sendGoal(knowledge_extractor_goal);
-//
-//
-//		//wait for the action to return
-//		bool finished_before_timeout = knowledge_ac.waitForResult(ros::Duration(300.0));
-//
-//		if (finished_before_timeout)
-//		{
-//			ROS_INFO("Finished successfully!");
-//			ipa_pars_map_analyzer::ParsMapKnowledgeResultConstPtr result_knowledge_map = knowledge_ac.getResult();
-//			// display
-//			ROS_INFO("The produced knowledge is:");
-//			ROS_INFO("%s", result_knowledge_map->static_knowledge.data.c_str());
-//
-//		}
+
+		knowledge_ac.sendGoal(knowledge_extractor_goal);
+
+
+		//wait for the action to return
+		bool finished_before_timeout = knowledge_ac.waitForResult(ros::Duration(300.0));
+
+		if (finished_before_timeout)
+		{
+			ROS_INFO("Finished successfully!");
+			ipa_pars_map_analyzer::ParsMapKnowledgeResultConstPtr result_knowledge = knowledge_ac.getResult();
+			// display
+			ROS_INFO("The produced square information is:");
+			std::vector<ipa_pars_map_analyzer::SquareInformation> sqr_info = result_knowledge->square_information;
+			ROS_INFO_STREAM("The size of the given square information vector is" << sqr_info.size());
+
+			// sending to yaml dumper
+			ipa_pars_map_analyzer::KnowledgeToYaml knowledge_srv;
+			knowledge_srv.request.square_information = sqr_info;
+//			ipa_pars_map_analyzer::KnowledgeToYamlResponse resp;
+			knowledgeToYamlClient.waitForExistence();
+			knowledgeToYamlClient.call(knowledge_srv);
+
+			if (knowledge_srv.response.success)
+			{
+				ROS_INFO("The answer is true");
+			}
+			else
+			{
+				ROS_INFO("The answer is false");
+			}
+
+		}
 
 
 	}

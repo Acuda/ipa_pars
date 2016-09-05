@@ -69,6 +69,7 @@
 #include <actionlib/server/simple_action_server.h>
 
 #include <ipa_pars_map_analyzer/ParsMapAnalyzerAction.h>
+#include <ipa_pars_map_analyzer/KnowledgeToYaml.h>
 
 class ParsMapAnalyzerServer
 {
@@ -92,6 +93,8 @@ protected:
 	//
 	ros::NodeHandle node_handle_;
 	actionlib::SimpleActionServer<ipa_pars_map_analyzer::ParsMapAnalyzerAction> ipa_pars_map_analyzer_server_;
+	ros::ServiceClient knowledgeToYamlClient;
+
 
 public:
 	//initialize the action-server
