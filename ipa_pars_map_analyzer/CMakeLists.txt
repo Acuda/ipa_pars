@@ -189,6 +189,15 @@ target_link_libraries(cv_test_file
 add_dependencies(cv_test_file
 	${catkin_EXPORTED_TARGETS}
 	${${PROJECT_NAME}_EXPORTED_TARGETS})
+
+### cv_test_file2
+add_executable(cv_test_file2 ros/src/cv_test_file2.cpp)
+target_link_libraries(cv_test_file2
+	${catkin_LIBRARIES} 
+	${OpenCV_LIBRARIES})
+add_dependencies(cv_test_file2
+	${catkin_EXPORTED_TARGETS}
+	${${PROJECT_NAME}_EXPORTED_TARGETS})
 #############
 ## Install ##
 #############

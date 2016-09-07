@@ -241,6 +241,8 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 		concatenated_image.convertTo(concatenated_image, CV_32SC1, 256, 0);
 		for (int k = 1; k <= result_seg->room_information_in_pixel.size(); k++)
 		{
+
+
 			cv::Mat segmented_map_each_room = original_img.clone();
 			segmented_map_each_room.convertTo(segmented_map_each_room, CV_8U);
 //			cv::cvtColor(segmented_map_each_room, segmented_map_each_room, CV_8U2GRAY);
