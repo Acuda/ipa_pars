@@ -92,7 +92,15 @@ ParsMapAnalyzerServer::ParsMapAnalyzerServer(ros::NodeHandle nh, std::string nam
 {
 	//Start action server
 	ipa_pars_map_analyzer_server_.start();
-	knowledgeToYamlClient = node_handle_.serviceClient<ipa_pars_map_analyzer::KnowledgeToYaml>("ipa_pars_map_knowledge_to_yaml");
+
+}
+
+bool ParsMapAnalyzerServer::initialize()
+{
+	knowledgeToYamlClient_ = node_handle_.serviceClient<ipa_pars_map_analyzer::KnowledgeToYaml>("knowledge_to_yaml_service");
+	knowledgeToYamlClient_.waitForExistence(); //infinte time
+	ROS_INFO("/map_analyzer_server ... initialized");
+	return true;
 }
 
 void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analyzer::ParsMapAnalyzerGoalConstPtr &goal)
@@ -604,8 +612,8 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 			ipa_pars_map_analyzer::KnowledgeToYaml knowledge_srv;
 			knowledge_srv.request.square_information = sqr_info;
 //			ipa_pars_map_analyzer::KnowledgeToYamlResponse resp;
-			knowledgeToYamlClient.waitForExistence();
-			knowledgeToYamlClient.call(knowledge_srv);
+//			knowledgeToYamlClient.waitForExistence();
+			knowledgeToYamlClient_.call(knowledge_srv);
 
 			if (knowledge_srv.response.success)
 			{
@@ -846,7 +854,16 @@ int main(int argc, char** argv)
 	ros::NodeHandle nh;
 
 	ParsMapAnalyzerServer analyzerAlgorithmObj(nh, ros::this_node::getName());
-	ROS_INFO("Action Server for map_analyzer has been initialized......");
+	if (!analyzerAlgorithmObj.initialize())
+	{
+		ROS_ERROR("Failed to inizialize map_analyzer");
+		return -1;
+	}
+	else
+	{
+		ROS_INFO("Action Server for map_analyzer has been initialized......");
+	}
+
 	ros::spin();
 
 	return 0;

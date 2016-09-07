@@ -70,20 +70,41 @@ import yaml
 
 from cob_srvs.srv import SetString
 
+import ipa_pars_map_analyzer
+from ipa_pars_map_analyzer.srv import KnowledgeToYaml
+from ipa_pars_map_analyzer.srv._KnowledgeToYaml import KnowledgeToYamlRequest, KnowledgeToYamlResponse
 
-class KnowledgeToYaml(object):
+
+class KnowledgeToYamlNode(object):
     def __init__(self):
         rospy.loginfo("Initialize KnowledgeToYaml ...")
-        knowledge_to_yaml_service = rospy.Service('ipa_pars_map_knowledge_to_yaml', SetString, self.knowledge_dump)
+        knowledge_to_yaml_service = rospy.Service('knowledge_to_yaml_service', KnowledgeToYaml, self.create_knowledge_yaml_structure)
         rospy.loginfo("KnowledgeToYamlService initialize finished")
     
-    def knowledge_dump(self, msg):
-        print "I am the yaml dumper and I received this"
-        print msg.data
-        self.save_static_knowledge_file(msg.data)
+    def create_knowledge_yaml_structure(self, srv_msg):
+        #print srv_msg
+        location_data = []
+        for sqr in srv_msg.square_information:
+            x_center = sqr.center.x
+            y_center = sqr.center.y
+            z_center = sqr.center.z
+            dict_of_center = {'X': x_center, 'Y': y_center, 'Z': z_center}
+            name = "room-"+str(sqr.label.data/1000)+"-square-"+str(sqr.label.data%1000)
+            list_of_transitions = []
+            for trans in sqr.transitions:
+                list_of_transitions.append("room-"+str(trans.data/1000)+"-square-"+str(trans.data%1000))
+            dict_of_loc = {'name': name, 'transitions': list_of_transitions, 'center': dict_of_center}
+            location_data.append(dict_of_loc)
+        dict_of_locations = {'location-data': location_data}
+        yaml_content = yaml.dump(dict_of_locations, default_flow_style=False)
+        print yaml_content
+        self.save_static_knowledge_file(yaml_content)
+        response = KnowledgeToYamlResponse()
+        response.success = True;
+        return response
 
     def save_static_knowledge_file(self, yaml_content):
-        print "save static knowledge file"
+        print "save static knowledge file ..."
         try:
             if not os.path.isdir("ipa_pars/knowledge/"):
                 os.mkdir("ipa_pars/knowledge")
@@ -96,6 +117,6 @@ class KnowledgeToYaml(object):
             
 if __name__ == '__main__':
     rospy.init_node('knowledge_to_yaml_node', anonymous=False)
-    kTY = KnowledgeToYaml()
+    kTY = KnowledgeToYamlNode()
     rospy.spin()
         

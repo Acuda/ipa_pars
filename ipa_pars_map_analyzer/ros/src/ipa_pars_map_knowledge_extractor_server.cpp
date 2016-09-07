@@ -342,8 +342,9 @@ int main(int argc, char** argv)
 	ros::NodeHandle nh;
 
 	ParsMapKnowledgeExtractorServer knowledgeExtractorAlgorithmObj(nh, ros::this_node::getName());
-	ROS_INFO("Action Server for map_knowledge_extractor has been initialized......");
-	ros::spin();
 
+	ROS_INFO("Action Server for map_knowledge_extractor has been initialized......");
+
+	ros::spin();
 	return 0;
 }

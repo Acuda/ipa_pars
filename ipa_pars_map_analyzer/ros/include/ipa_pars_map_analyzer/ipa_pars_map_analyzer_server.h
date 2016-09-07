@@ -93,7 +93,7 @@ protected:
 	//
 	ros::NodeHandle node_handle_;
 	actionlib::SimpleActionServer<ipa_pars_map_analyzer::ParsMapAnalyzerAction> ipa_pars_map_analyzer_server_;
-	ros::ServiceClient knowledgeToYamlClient;
+	ros::ServiceClient knowledgeToYamlClient_;
 
 
 public:
@@ -104,6 +104,9 @@ public:
 	~ParsMapAnalyzerServer(void)
 	{
 	}
+
+	bool initialize();
+
 };
 
 #endif /* IPA_PARS_IPA_PARS_MAP_ANALYZER_ROS_INCLUDE_IPA_PARS_MAP_ANALYZER_IPA_PARS_MAP_ANALYZER_SERVER_H_ */
