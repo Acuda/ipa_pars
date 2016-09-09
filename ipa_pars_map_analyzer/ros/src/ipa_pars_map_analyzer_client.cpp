@@ -64,8 +64,9 @@ int main(int argc, char **argv)
 	// send a goal to the action
 	ipa_pars_map_analyzer::ParsMapAnalyzerGoal goal;
 	goal.input_map = output_img;
-	goal.map_origin.position.x = 0;
-	goal.map_origin.position.y = 0;
+	//todo: read this from lab-ipa4.yaml
+	goal.map_origin.position.x = 19.2;
+	goal.map_origin.position.y = 19.2;
 	goal.map_resolution = 0.05;
 	ac.sendGoal(goal);
 

@@ -78,7 +78,7 @@
 #include <ipa_pars_map_analyzer/ParsMapKnowledgeAction.h>
 
 #include "std_msgs/Int32MultiArray.h"
-
+// round
 #include <sstream>
 //#include <ipa_room_segmentation/meanshift2d.h>
 
@@ -97,6 +97,7 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 	ros::Rate looping_rate(1);
 	ROS_INFO("*****ParsMapKnowledgeExtractor action server*****");
 	ROS_INFO("map resolution is : %f", goal->map_resolution);
+
 
 	//converting the map msg in cv format
 	cv_bridge::CvImagePtr cv_ptr_obj;
@@ -239,9 +240,11 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 			trans.data = vec_of_transitions.at(t).at(l);
 			square_info.transitions.push_back(trans);
 		}
-		//todo: umrechnen in meter statt pixel!
-		square_info.center.x = balancePoints.at(t).at(0);
-		square_info.center.y = balancePoints.at(t).at(1);
+		// map origin
+		double converted_center_x = round ( 100 * (balancePoints.at(t).at(0) * goal->map_resolution - goal->map_origin.position.x)) / 100;
+		double converted_center_y = round (100 * (balancePoints.at(t).at(1) * goal->map_resolution - goal->map_origin.position.y)) / 100;
+		square_info.center.x = converted_center_x;
+		square_info.center.y = converted_center_y;
 		square_info.center.z = 0.0;
 		vec_square_info.push_back(square_info);
 	}
