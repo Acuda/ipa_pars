@@ -65,63 +65,159 @@ int main(int argc, char **argv)
 	ROS_INFO("Image rows x cols = %u x %u", erode_map.rows, erode_map.cols);
 	int grid_size = 100;
 	ROS_INFO("grid_size = %u", grid_size);
-	for (int r = 0; r < erode_map.rows; r+=grid_size)
-	{
-		for (int c = 0; c < erode_map.cols; c+=grid_size)
-		{
-			int width = grid_size;
-			int hight = grid_size;
+	int label = 0;
+//	for (int r = 0; r < erode_map.rows; r+=grid_size)
+//	{
+//		for (int c = 0; c < erode_map.cols; c+=grid_size)
+//		{
 
-			if (c+grid_size >= erode_map.cols)
+	for (int r = 100; r < 200; r+=grid_size)
+		{
+			for (int c = 100; c < 200; c+=grid_size)
 			{
-				width = erode_map.cols-1 - c;
+			int width = grid_size;
+			int height = grid_size;
+
+			if (c+grid_size > erode_map.cols)
+			{
+				width = erode_map.cols - c;
 			}
-			if (r+grid_size >= erode_map.rows)
+			if (r+grid_size > erode_map.rows)
 			{
-				hight = erode_map.rows-1 -r;
+				height = erode_map.rows - r;
 			}
 
 			// select square as region of interest (roi)
-			cv::Rect roi_square = cv::Rect(c,r,width,hight);
+//			ROS_INFO("ROI is Rect (%u,%u,%u,%u)",c,r,width,height);
+			cv::Rect roi_square = cv::Rect(c,r,width,height);
 			cv::Mat map_roi = erode_map(roi_square);
-//			cv::Mat map_roi_copy = map_roi.clone();
+//			ROS_INFO("ROI size is rows %u x cols %u ", map_roi.rows, map_roi.cols);
 
-			//todo make borders around OR think of not checking the first lines of the image?!?
-			cv::Mat map_roi_copy(map_roi.rows+2, map_roi.cols+2, map_roi);
-			cv::copyMakeBorder( map_roi, map_roi_copy, 2, 2, 2, 2, cv::BORDER_CONSTANT, 0 );
-			cv::imshow("map_roi_copy",map_roi_copy);
+			cv::Mat map_roi_borders = map_roi.clone();
+
+//			cv::imshow("map_roi_bordersbefore",map_roi_borders);
+			//make black border with offset around roi
+			int bordercolour = 65534;
+			int xoffset = 10;
+			int yoffset = 10;
+			cv::Mat map_roi_offset(map_roi_borders.rows+2*xoffset, map_roi_borders.cols+2*yoffset, map_roi_borders.type(), bordercolour);
+			cv::Mat roi_tmp(map_roi_offset(cvRect(xoffset, yoffset,map_roi_borders.cols, map_roi_borders.rows)));
+			map_roi_borders.copyTo(roi_tmp);
+			map_roi_borders = map_roi_offset.clone();
+
+//			cv::copyMakeBorder( map_roi, map_roi_copy, 2, 2, 2, 2, cv::BORDER_CONSTANT, 0 );
+
+//			cv::imshow("map_roi_borders", map_roi_borders);
+//			cv::waitKey(500);
+//			label++;
 //			cv::Mat mask;
 //			cv::inRange(map_roi, 65535, 65535, mask);
 //			map_roi.setTo(label, mask);
-			int label = 0;
-			std::map<int,int> lookup_label_map;
-			for (int x = 0; x < map_roi.rows; x++)
+//		    cv::imshow("roi_with_offset", map_roi);
+//		    cv::waitKey(1);
+
+//			for (int x = 0; x < map_roi.rows; x++)
+//			{
+//				for (int y = 0; y < map_roi.cols; y++)
+//				{
+//					ROS_INFO("working on row %u, col %u", x, y);
+//					// todo warum falsch rum?
+//					map_roi.at<int>(x,y) = label;
+//				}
+//			}
+
+//			int label = 0;
+			std::multimap<int,int> lookup_label_map;
+			for (int x = xoffset; x < (map_roi_borders.rows-xoffset); x++)
 			{
-				label++;
-				for (int y = 0; y < map_roi.cols; y++)
+//				ROS_INFO("label is = %u", label);
+//				label++;
+				for (int y = yoffset; y < (map_roi_borders.cols-yoffset); y++)
 				{
-					// label left
-					if (map_roi.at<int>(y-1,x) == 0)
+//					// label left
+					if (map_roi_borders.at<int>(x-1,y) == 0)
 					{
 						label++;
 					}
-					map_roi_copy.at<int>(y,x) = label;
+//					ROS_INFO("Trying to change a pixel in map_roi_borders at cols %u, rows %u", y,x);
+//					ROS_INFO("Which is at position col %u, row %u in map_roi", y-yoffset,x-xoffset);
+//					ROS_INFO("label is = %u", label);
+					if (map_roi_borders.at<int>(x,y) != 0 && map_roi_borders.at<int>(x,y) != 65534)
+					{
+//						ROS_INFO("Trying to change a pixel in map_roi at %u %u", y-yoffset,x-xoffset);
+						map_roi_borders.at<int>(x,y) = label;
+					}
+//					if (map_roi_borders.at<int>(x,y) != 0)
+//					{
+////						ROS_INFO("Trying to change a pixel in map_roi at %u %u", y-yoffset,x-xoffset);
+//						map_roi_borders.at<int>(x,y) = label;
+//					}
 
 					//label above
-					if (map_roi.at<int>(y,x-1) != 0 && map_roi.at<int>(y-1,x) < label)
+					if (map_roi_borders.at<int>(x,y-1) != 0 && map_roi_borders.at<int>(x,y-1) < label)
 					{
 						// if label doesnt exist in map
-						if (lookup_label_map.find(label) != lookup_label_map.end())
-						{
-							lookup_label_map.at(label) = map_roi.at<int>(y-1,x);
-						}
+						// insert label to value expression if its not there
+						lookup_label_map.insert ( std::pair<int,int>( label, map_roi_borders.at<int> (x,y-1)));
+						ROS_INFO("Added connection %u --> %u", label, map_roi_borders.at<int> (x,y-1));
+//						if (lookup_label_map.find(label) != lookup_label_map.end())
+//						{
+//							lookup_label_map.at(label) = map_roi_borders.at<int>(x,y);
+//						}
 
 					}
 				}
 			}
+
+			int oldlabel_key = 25;
+			int newlabel = 1;
+			while( !lookup_label_map.empty())
+			{
+				// get highest keyvalue (label)
+				oldlabel_key = lookup_label_map.rbegin()->first;
+				newlabel = lookup_label_map[oldlabel_key];
+				// todo als multimap oder als map aus int und vector of int!
+				// *++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
+				cv::Mat mask;
+				cv::inRange(map_roi_borders, oldlabel_key, oldlabel_key, mask);
+				map_roi_borders.setTo(newlabel, mask);
+				lookup_label_map.erase(oldlabel_key);
+				ROS_INFO("replaced %u --> %u", oldlabel_key, newlabel);
+			}
+
+//			// get highest keyvalue (label)
+//			ROS_INFO("Flag 2");
+//			oldlabel = lookup_label_map.rbegin()->first;
+//			ROS_INFO("Flag 3");
+//			newlabel = lookup_label_map[oldlabel];
+//			ROS_INFO("Flag 4");
+//			cv::Mat mask;
+//			ROS_INFO("Flag 5");
+//			cv::inRange(map_roi_borders, oldlabel, oldlabel, mask);
+//			ROS_INFO("Flag 6");
+//			map_roi_borders.setTo(newlabel, mask);
+//			ROS_INFO("Flag 7");
+//			lookup_label_map.erase(oldlabel);
+//			ROS_INFO("replaced %u --> %u", oldlabel, newlabel);
+
+
+
+			// roi back:
+			cv::Rect roi_square_back = cv::Rect(xoffset,yoffset,width,height);
+			cv::Mat roi_back = map_roi_borders(roi_square_back);
+//			cv::imshow("roi_bacK",roi_back);
+			roi_back.copyTo(map_roi);
+
+//			ROS_INFO("content of lookup_label_map = ");
+//			for (const auto &p : lookup_label_map) {
+//			    std::cout << "m[" << p.first << "] = " << p.second << '\n';
+//			}
+//			cv::imshow("roi_with_offset", map_roi);
+//			cv::waitKey();
 		}
 	}
 
+	ROS_INFO("Flag 1");
 	cv::Mat output = erode_map.clone();
 
 //	int erosion_type = cv::MORPH_RECT;
