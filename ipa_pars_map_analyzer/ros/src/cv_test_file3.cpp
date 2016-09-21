@@ -63,17 +63,18 @@ int main(int argc, char **argv)
 //	map_roi.setTo(40000, mask);
 //	cv::imshow("map_roi", map_roi);
 	ROS_INFO("Image rows x cols = %u x %u", erode_map.rows, erode_map.cols);
-	int grid_size = 100;
+	int grid_size = 20;
 	ROS_INFO("grid_size = %u", grid_size);
-	int label = 0;
+	int global_label_count = 0;
+
 //	for (int r = 0; r < erode_map.rows; r+=grid_size)
 //	{
 //		for (int c = 0; c < erode_map.cols; c+=grid_size)
 //		{
 
-	for (int r = 100; r < 200; r+=grid_size)
+	for (int r = 0; r < erode_map.rows; r+=grid_size)
 		{
-			for (int c = 100; c < 200; c+=grid_size)
+			for (int c = 0; c < erode_map.cols; c+=grid_size)
 			{
 			int width = grid_size;
 			int height = grid_size;
@@ -86,7 +87,7 @@ int main(int argc, char **argv)
 			{
 				height = erode_map.rows - r;
 			}
-
+			int label = global_label_count;
 			// select square as region of interest (roi)
 //			ROS_INFO("ROI is Rect (%u,%u,%u,%u)",c,r,width,height);
 			cv::Rect roi_square = cv::Rect(c,r,width,height);
@@ -94,6 +95,7 @@ int main(int argc, char **argv)
 //			ROS_INFO("ROI size is rows %u x cols %u ", map_roi.rows, map_roi.cols);
 
 			cv::Mat map_roi_borders = map_roi.clone();
+			global_label_count++;
 
 //			cv::imshow("map_roi_bordersbefore",map_roi_borders);
 			//make black border with offset around roi
@@ -127,7 +129,9 @@ int main(int argc, char **argv)
 //			}
 
 //			int label = 0;
-			std::multimap<int,int> lookup_label_map;
+			std::map<int, std::vector<int> > lookup_label_map;
+			std::map<int, std::vector<int> >::iterator it;
+
 			for (int x = xoffset; x < (map_roi_borders.rows-xoffset); x++)
 			{
 //				ROS_INFO("label is = %u", label);
@@ -135,7 +139,7 @@ int main(int argc, char **argv)
 				for (int y = yoffset; y < (map_roi_borders.cols-yoffset); y++)
 				{
 //					// label left
-					if (map_roi_borders.at<int>(x-1,y) == 0)
+					if (map_roi_borders.at<int>(x,y-1) == 0 || map_roi_borders.at<int>(x,y-1) == 65534 || map_roi_borders.at<int>(x,y-1) == 65535)
 					{
 						label++;
 					}
@@ -146,25 +150,41 @@ int main(int argc, char **argv)
 					{
 //						ROS_INFO("Trying to change a pixel in map_roi at %u %u", y-yoffset,x-xoffset);
 						map_roi_borders.at<int>(x,y) = label;
-					}
-//					if (map_roi_borders.at<int>(x,y) != 0)
-//					{
-////						ROS_INFO("Trying to change a pixel in map_roi at %u %u", y-yoffset,x-xoffset);
-//						map_roi_borders.at<int>(x,y) = label;
-//					}
 
-					//label above
-					if (map_roi_borders.at<int>(x,y-1) != 0 && map_roi_borders.at<int>(x,y-1) < label)
-					{
-						// if label doesnt exist in map
-						// insert label to value expression if its not there
-						lookup_label_map.insert ( std::pair<int,int>( label, map_roi_borders.at<int> (x,y-1)));
-						ROS_INFO("Added connection %u --> %u", label, map_roi_borders.at<int> (x,y-1));
-//						if (lookup_label_map.find(label) != lookup_label_map.end())
-//						{
-//							lookup_label_map.at(label) = map_roi_borders.at<int>(x,y);
-//						}
+						//label above
+						if (map_roi_borders.at<int>(x-1,y) != 0 && map_roi_borders.at<int>(x-1,y) < label)
+						{
+//							ROS_INFO("The label above (%u) is smaller then this label %u", map_roi_borders.at<int>(x-1,y), label);
+							std::vector<int> label_expression;
+//							map_roi_borders.at<int>(x,y) = map_roi_borders.at<int>(x,y-1);
+							// if label doesnt exist in map
 
+							it = lookup_label_map.find(label);
+							if (it != lookup_label_map.end())
+							{
+//								ROS_INFO("They key_label %u is already in the map", label);
+								// key is in the map, add label to vector
+								label_expression = lookup_label_map.at(label);
+								if (std::find(label_expression.begin(), label_expression.end(), map_roi_borders.at<int> (x-1,y)) != label_expression.end())
+								{
+
+								}
+								else
+								{
+//									ROS_INFO("Adding new label to list = %u", map_roi_borders.at<int> (x-1,y));
+									label_expression.push_back(map_roi_borders.at<int> (x-1,y));
+									lookup_label_map.at(label) = label_expression;
+								}
+
+							}
+							else
+							{
+								// key is not in the map
+//								ROS_INFO("The key is not in the map: %u adding it now", label);
+								label_expression.push_back(map_roi_borders.at<int> (x-1,y));
+								lookup_label_map.insert ( std::pair<int,std::vector<int> >( label, label_expression ));
+							}
+						}
 					}
 				}
 			}
@@ -175,16 +195,118 @@ int main(int argc, char **argv)
 			{
 				// get highest keyvalue (label)
 				oldlabel_key = lookup_label_map.rbegin()->first;
-				newlabel = lookup_label_map[oldlabel_key];
-				// todo als multimap oder als map aus int und vector of int!
-				// *++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
+				std::vector<int> newkey_vec = lookup_label_map[oldlabel_key];
+//				ROS_INFO("Working on map_key %u = ",oldlabel_key);
+				newlabel = newkey_vec.at(0);
 				cv::Mat mask;
 				cv::inRange(map_roi_borders, oldlabel_key, oldlabel_key, mask);
 				map_roi_borders.setTo(newlabel, mask);
+				if (newkey_vec.size() > 1)
+				{
+//					ROS_INFO("this message should be there only twice!");
+					for (int i = 1; i < newkey_vec.size(); i++)
+					{
+						cv::Mat mask;
+						cv::inRange(map_roi_borders, newkey_vec.at(i), newkey_vec.at(i), mask);
+						map_roi_borders.setTo(newlabel, mask);
+						std::vector<int> new_vec_pointer;
+						std::vector<int> label_vec;
+						// point to new label!
+						if (lookup_label_map.find(newkey_vec.at(i)) == lookup_label_map.end())
+						{
+							//not found
+							break;
+						}
+						else
+						{
+							new_vec_pointer = lookup_label_map[newkey_vec.at(i)];
+						}
+
+						if (lookup_label_map.find(newlabel) == lookup_label_map.end())
+						{
+							//not found
+							break;
+						}
+						else
+						{
+							label_vec = lookup_label_map[newlabel];
+						}
+
+						// get vec to change
+						//transfer all elements to new key_label
+						if (new_vec_pointer.size() > 0)
+						{
+//							ROS_INFO_STREAM("new_vec pointer size = " << new_vec_pointer.size());
+//							ROS_INFO("new vec pointer.at(0) = %u", new_vec_pointer.at(0));
+							for (int p = 0; p < new_vec_pointer.size(); p++)
+							{
+//								label_vec.push_back(new_vec_pointer.at(p));
+								if (std::find(label_vec.begin(), label_vec.end(), new_vec_pointer.at(p)) != label_vec.end())
+								{
+
+								}
+								else
+								{
+									label_vec.push_back(new_vec_pointer.at(p));
+								}
+
+							}
+//							ROS_INFO(" changed point from %u --> %u", label_vec.at(0), newlabel);
+							lookup_label_map[newlabel] = label_vec;
+
+//							ROS_INFO("changed pointer from %u --> %u", new_vec_pointer.at(p), newlabel);
+						}
+
+					}
+				}
+
+
 				lookup_label_map.erase(oldlabel_key);
-				ROS_INFO("replaced %u --> %u", oldlabel_key, newlabel);
+//				newlabel = lookup_label_map[oldlabel_key];
+//				 todo als multimap oder als map aus int und vector of int!
+//				 *++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
+
 			}
 
+
+			// find list of labels:
+			std::vector<int> list_of_labels;
+			for (int r = 0; r<map_roi_borders.rows; r++)
+			{
+				for (int c = 0; c<map_roi_borders.cols; c++)
+				{
+					int label = map_roi_borders.at<int>(r,c);
+					if (std::find(list_of_labels.begin(), list_of_labels.end(), label) != list_of_labels.end())
+					{
+
+					}
+					else
+					{
+						list_of_labels.push_back(label);
+					}
+				}
+			}
+
+			std::map<int,int> renew_labels;
+			for (int i = 0; i < list_of_labels.size(); i++)
+			{
+				int lab = list_of_labels.at(i);
+				if (lab != 0 && lab != 65535 && lab != 65534)
+				{
+					renew_labels.insert( std::pair<int,int> ( lab, global_label_count));
+					global_label_count++;
+				}
+			}
+
+			// change labels to global counter:
+			while( !renew_labels.empty())
+			{
+				int first_key = renew_labels.begin()->first;
+				cv::Mat mask;
+				cv::inRange(map_roi_borders, first_key, first_key, mask);
+				map_roi_borders.setTo(renew_labels[first_key], mask);
+				renew_labels.erase(first_key);
+			}
 //			// get highest keyvalue (label)
 //			ROS_INFO("Flag 2");
 //			oldlabel = lookup_label_map.rbegin()->first;
@@ -217,7 +339,6 @@ int main(int argc, char **argv)
 		}
 	}
 
-	ROS_INFO("Flag 1");
 	cv::Mat output = erode_map.clone();
 
 //	int erosion_type = cv::MORPH_RECT;

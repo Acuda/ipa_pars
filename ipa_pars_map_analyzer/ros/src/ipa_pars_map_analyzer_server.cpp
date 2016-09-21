@@ -683,6 +683,12 @@ void ParsMapAnalyzerServer::createRoomColors(std::vector<cv::Vec3b> &room_colors
 
 void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, std::vector<cv::Vec3b> &room_colors,  std::vector<ipa_pars_map_analyzer::SquareInformation> &sqr_info)
 {
+	// for writing debug images:
+	std::vector<int> compression_params;
+	compression_params.push_back(CV_IMWRITE_JPEG_QUALITY);
+	compression_params.push_back(100);
+
+
 	std::vector<int> labels;
 	int image_type = map.type();
 	ROS_INFO("This is the Image Type you try to paint %u ", image_type);
@@ -742,6 +748,7 @@ void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, std::vector<cv::Vec3
 			}
 		}
 		cv::imshow("input_map_as_image", colored_map);
+		cv::imwrite("ipa_pars/log/input_map_as_image.jpeg", colored_map, compression_params);
 	}
 	else if (labels.size() < 125 && map.type() == 4 && sqr_info.size() == 0) // segmented map
 	{
@@ -776,6 +783,7 @@ void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, std::vector<cv::Vec3
 			}
 		}
 		cv::imshow("segmented_map_as_image", colored_map);
+		cv::imwrite("ipa_pars/log/segmented_map_as_image.jpeg", colored_map, compression_params);
 	}
 	else if (labels.size() > 125 && map.type() == 4 && sqr_info.size() == 0) // tesselated_map
 	{
@@ -841,6 +849,7 @@ void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, std::vector<cv::Vec3
 			}
 		}
 		cv::imshow("tesselated_map_as_image", colored_map);
+		cv::imwrite("ipa_pars/log/tesselated_map_as_image.jpeg", colored_map, compression_params);
 	}
 	else if (sqr_info.size() > 0)
 	{
@@ -919,6 +928,7 @@ void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, std::vector<cv::Vec3
 			colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[2] = 51;
 		}
 		cv::imshow("map_with_square_info_as_image", colored_map);
+		cv::imwrite("ipa_pars/log/map_with_square_info_as_image.jpeg", colored_map, compression_params);
 	}
 	else
 	{
