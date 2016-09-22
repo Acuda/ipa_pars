@@ -93,11 +93,14 @@ class KnowledgeToYamlNode(object):
             list_of_transitions = []
             for trans in sqr.transitions:
                 list_of_transitions.append("room-"+str(trans.data/1000)+"-square-"+str(trans.data%1000))
-            dict_of_loc = {'name': name, 'transitions': list_of_transitions, 'center': dict_of_center}
+            list_of_properties = []
+            if sqr.navigable.data:
+                list_of_properties.append("navigable")
+            dict_of_loc = {'name': name, 'transitions': list_of_transitions, 'center': dict_of_center, 'properties': list_of_properties}
             location_data.append(dict_of_loc)
         dict_of_locations = {'location-data': location_data}
         yaml_content = yaml.dump(dict_of_locations, default_flow_style=False)
-        print yaml_content
+        #print yaml_content
         self.save_static_knowledge_file(yaml_content)
         response = KnowledgeToYamlResponse()
         response.success = True;

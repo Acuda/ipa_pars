@@ -71,6 +71,8 @@
 #include <ipa_pars_map_analyzer/ParsMapAnalyzerAction.h>
 #include <ipa_pars_map_analyzer/KnowledgeToYaml.h>
 
+#include <ipa_pars_map_analyzer/SquareInformation.h>
+
 class ParsMapAnalyzerServer
 {
 protected:
@@ -85,7 +87,7 @@ protected:
 	void createRoomColors(std::vector<cv::Vec3b> &room_colors);
 
 	// display segmented or tesselated map
-	void displayMapAsImage(cv::Mat &map, std::vector<cv::Vec3b> &room_colors, std::vector<ipa_pars_map_analyzer::SquareInformation> &sqr_info);
+	void displayMapAsImage(cv::Mat &map, cv::Mat &map_with_rob_rad, std::vector<cv::Vec3b> &room_colors, std::vector<ipa_pars_map_analyzer::SquareInformation> &sqr_info, int printtype);
 
 	//!!Important!!
 	// define the Nodehandle before the action server, or else the server won't start

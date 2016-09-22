@@ -79,6 +79,9 @@
 
 #include <ipa_pars_map_analyzer/KnowledgeToYaml.h>
 
+#include <ipa_pars_map_analyzer/SquareInformation.h>
+#include <std_msgs/Bool.h>
+
 // for vector unique
 #include <iostream>
 #include <algorithm>
@@ -107,7 +110,6 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 {
 	ros::Rate looping_rate(1);
 	ROS_INFO("*****ParsMapAnalyzer action server*****");
-	ROS_INFO("map resolution is : %f", goal->map_resolution);
 
 	// empty till segmentation is over:
 	std::vector<ipa_pars_map_analyzer::SquareInformation> sqr_info;
@@ -125,6 +127,8 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 	//set the resolution and the limits for the actual goal and the Map origin
 	const float map_resolution = goal->map_resolution;
 	const cv::Point2d map_origin(goal->map_origin.position.x, goal->map_origin.position.y);
+	const float yaw = goal->map_origin.position.z;
+	const float robot_radius = goal->robot_radius.data;
 
 	//make non-white pixels black
 	for (int y = 0; y < original_img.rows; y++)
@@ -144,7 +148,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 		}
 	}
 
-	//erode map
+	//erode map for error elimination
 	cv::Mat erode_img = original_img.clone();
 	int erosion_type = cv::MORPH_RECT;
 	int erosion_size = 1;
@@ -155,7 +159,34 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 	cv::Mat disp_orig = original_img.clone();
 	cv::Mat disp_erode = erode_img.clone();
 	disp_orig.convertTo(disp_orig, CV_8U);
-	displayMapAsImage(disp_erode, room_colors, sqr_info);
+	displayMapAsImage(disp_erode, disp_erode, room_colors, sqr_info, 0);
+
+
+	// erode map to offset with robot radius:
+	cv::Mat offset_img = erode_img.clone();
+	int offset_erosion_type = cv::MORPH_ELLIPSE;
+	int offset_size = (int) 2*robot_radius / 0.05;
+	cv::Mat offset_element = getStructuringElement( offset_erosion_type,
+											cv::Size(offset_size, offset_size),
+											cv::Point(-1, -1));
+	cv::erode(erode_img, offset_img, offset_element);
+//	cv::Mat displ_offset = offset_img.clone();
+	cv::Mat intersection = erode_img.clone();
+	for (int r = 0; r < offset_img.rows; r++)
+	{
+		for (int c = 0; c < offset_img.cols; c++)
+		{
+			if (offset_img.at<unsigned char>(r,c) != erode_img.at<unsigned char>(r,c))
+			{
+				intersection.at<unsigned char>(r,c) = 1;
+			}
+		}
+	}
+//	displ_offset.convertTo(offset_img, CV_8U);
+	displayMapAsImage(intersection,intersection, room_colors, sqr_info, 1);
+
+
+
 //	//make non-white pixels black
 //	for (int y = 0; y < erode_img.rows; y++)
 //	{
@@ -194,11 +225,12 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 	seg_goal.input_map = labeling;
 	seg_goal.map_origin.position.x = goal->map_origin.position.x;
 	seg_goal.map_origin.position.y = goal->map_origin.position.y;
+	seg_goal.map_origin.position.z = goal->map_origin.position.z;
 	seg_goal.map_resolution = goal->map_resolution;
+	seg_goal.robot_radius = goal->robot_radius.data;
 	seg_goal.return_format_in_meter = false;
 	seg_goal.return_format_in_pixel = true;
 	seg_goal.room_segmentation_algorithm = 2; //Distance Segmentation
-	seg_goal.robot_radius = 0.3;
 	seg_ac.sendGoal(seg_goal);
 
 	//wait for the action to return
@@ -237,7 +269,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 //		}
 //		cv::imshow("segmentation", colour_segmented_map);
 		//display new
-		displayMapAsImage(segmented_map, room_colors, sqr_info);
+		displayMapAsImage(segmented_map, intersection,room_colors, sqr_info,0);
 
 //		ROS_INFO("the important flag 1 --------------------");
 		cv::Mat concatenated_image = erode_img.clone();
@@ -282,6 +314,8 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 			single_tess_goal.input_map = singleRoomTesselation;
 			single_tess_goal.map_origin.position.x = goal->map_origin.position.x;
 			single_tess_goal.map_origin.position.y = goal->map_origin.position.y;
+			single_tess_goal.map_origin.position.z = goal->map_origin.position.z;
+			single_tess_goal.robot_radius.data = goal->robot_radius.data;
 			single_tess_goal.map_resolution = goal->map_resolution;
 			single_room_tess_ac.sendGoal(single_tess_goal);
 
@@ -354,7 +388,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 						{
 							concatenated_image.at<int>(u,v) = (k * 1000 + tesselated_map.at<int>(u,v));
 
-//							if ((k*100 + tesselated_map.at<int>(u,v) < 50000) && (k*100 + tesselated_map.at<int>(u,v) > 900)) //TODO:
+//							if ((k*100 + tesselated_map.at<int>(u,v) < 50000) && (k*100 + tesselated_map.at<int>(u,v) > 900))
 //							{
 //								concatenated_image.at<int>(u,v) = (k * 1000 + tesselated_map.at<int>(u,v));
 //							}
@@ -456,7 +490,22 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 //		}
 //		cv::imshow("tesselation", colour_tesselated_map);
 
-		displayMapAsImage(concatenated_image, room_colors, sqr_info);
+		displayMapAsImage(concatenated_image,intersection, room_colors, sqr_info,0);
+
+		//concat mit robot_radius
+//		cv::Mat concat_with_rad = concatenated_image.clone();
+//		for (int r = 0; r < concat_with_rad.rows; r++)
+//		{
+//			for (int c = 0; c < concat_with_rad.cols; c++)
+//			{
+//				if (concat_with_rad.at<int>(r,c) != 0 && concat_with_rad.at<int>(r,c) != 65535 && concat_with_rad<int> (r,c) != 65534 && intersection.at<int>(r,c) == 1)
+//				{
+//					concat_with_rad.at<int>(r,c) = 65532;
+//				}
+//
+//			}
+//		}
+
 		// map tesselation:
 //		cv::Mat map_to_tesselate = erode_img.clone();
 //		cv::Mat tesselated_map = map_to_tesselate.clone();
@@ -596,8 +645,8 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 		knowledge_extractor_goal.map_resolution = goal->map_resolution;
 		knowledge_extractor_goal.map_origin.position.x = goal->map_origin.position.x;
 		knowledge_extractor_goal.map_origin.position.y = goal->map_origin.position.y;
-//		knowledge_extractor_goal.labels = list_of_labels;
-
+		knowledge_extractor_goal.map_origin.position.z = goal->map_origin.position.z;
+		knowledge_extractor_goal.robot_radius.data = goal->robot_radius.data;
 		knowledge_ac.sendGoal(knowledge_extractor_goal);
 
 
@@ -614,7 +663,22 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 			ROS_INFO_STREAM("The size of the given square information vector is" << sqr_info.size());
 
 			// display with names and balancePoints
-			displayMapAsImage(concatenated_image, room_colors, sqr_info);
+			displayMapAsImage(concatenated_image, intersection, room_colors, sqr_info,0);
+
+			// display balance points, intersection and transitions but no names:
+			displayMapAsImage(concatenated_image, intersection, room_colors, sqr_info,1);
+
+			//add properties navigable to square_information!
+			for (int i = 0; i < sqr_info.size(); i++)
+			{
+				int row = (sqr_info.at(i).center.y + goal->map_origin.position.y) / goal->map_resolution;
+				int col = (sqr_info.at(i).center.x + goal->map_origin.position.x) / goal->map_resolution;
+				if (intersection.at<unsigned char>(row,col) != 0 && intersection.at<unsigned char>(row,col) != 1)
+				{
+					sqr_info.at(i).navigable.data = true;
+				}
+			}
+
 			// sending to yaml dumper
 			ipa_pars_map_analyzer::KnowledgeToYaml knowledge_srv;
 			knowledge_srv.request.square_information = sqr_info;
@@ -678,10 +742,10 @@ void ParsMapAnalyzerServer::createRoomColors(std::vector<cv::Vec3b> &room_colors
 		}
 	}
 
-	ROS_INFO("Created %d colors for room squares segmenation", (int)room_colors.size());
+//	ROS_INFO("Created %d colors for room squares segmenation", (int)room_colors.size());
 }
 
-void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, std::vector<cv::Vec3b> &room_colors,  std::vector<ipa_pars_map_analyzer::SquareInformation> &sqr_info)
+void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, cv::Mat &map_with_rob_rad, std::vector<cv::Vec3b> &room_colors,  std::vector<ipa_pars_map_analyzer::SquareInformation> &sqr_info, int printtype)
 {
 	// for writing debug images:
 	std::vector<int> compression_params;
@@ -720,35 +784,71 @@ void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, std::vector<cv::Vec3
 			}
 		}
 	}
-	ROS_INFO("--------------------------------------------------------");
-	ROS_INFO_STREAM("THE LABELS.size() is "<< labels.size());
-	ROS_INFO("--------------------------------------------------------");
+//	ROS_INFO("--------------------------------------------------------");
+//	ROS_INFO_STREAM("THE LABELS.size() is "<< labels.size());
+//	ROS_INFO("--------------------------------------------------------");
 
 	cv::Mat colored_map = map.clone();
 	colored_map.convertTo(colored_map, CV_8U);
 	cv::cvtColor(colored_map, colored_map, CV_GRAY2BGR);
-	if (labels.size() < 2 && map.type() == 0 && sqr_info.size() == 0) // unlabeled map
+	if (labels.size() < 3 && map.type() == 0 && sqr_info.size() == 0) // unlabeled map
 	{
-		for (int r = 0; r < colored_map.rows; ++r)
+		ROS_INFO("Printing with printtype %u", printtype);
+		if (printtype == 0)
 		{
-			for (int c = 0; c < colored_map.cols; ++c)
+			for (int r = 0; r < colored_map.rows; ++r)
 			{
-				if (map.at<unsigned char>(r,c) == 0)
+				for (int c = 0; c < colored_map.cols; ++c)
 				{
-					colored_map.at<cv::Vec3b>(r,c)[0] = 0;
-					colored_map.at<cv::Vec3b>(r,c)[1] = 0;
-					colored_map.at<cv::Vec3b>(r,c)[2] = 0;
-				}
-				else
-				{
-					colored_map.at<cv::Vec3b>(r,c)[0] = 255;
-					colored_map.at<cv::Vec3b>(r,c)[1] = 255;
-					colored_map.at<cv::Vec3b>(r,c)[2] = 255;
+					if (map.at<unsigned char>(r,c) == 0)
+					{
+						colored_map.at<cv::Vec3b>(r,c)[0] = 0;
+						colored_map.at<cv::Vec3b>(r,c)[1] = 0;
+						colored_map.at<cv::Vec3b>(r,c)[2] = 0;
+					}
+					else
+					{
+						colored_map.at<cv::Vec3b>(r,c)[0] = 255;
+						colored_map.at<cv::Vec3b>(r,c)[1] = 255;
+						colored_map.at<cv::Vec3b>(r,c)[2] = 255;
+					}
 				}
 			}
+			cv::imshow("input_map_as_image", colored_map);
+			cv::imwrite("ipa_pars/log/input_map_as_image.jpeg", colored_map, compression_params);
 		}
-		cv::imshow("input_map_as_image", colored_map);
-		cv::imwrite("ipa_pars/log/input_map_as_image.jpeg", colored_map, compression_params);
+		else if (printtype == 1)
+		{
+			for (int r = 0; r < colored_map.rows; ++r)
+			{
+				for (int c = 0; c < colored_map.cols; ++c)
+				{
+					if (map.at<unsigned char>(r,c) == 0)
+					{
+						colored_map.at<cv::Vec3b>(r,c)[0] = 0;
+						colored_map.at<cv::Vec3b>(r,c)[1] = 0;
+						colored_map.at<cv::Vec3b>(r,c)[2] = 0;
+					}
+					else if (map.at<unsigned char>(r,c) == 1)
+					{
+						colored_map.at<cv::Vec3b>(r,c)[0] = 255;
+						colored_map.at<cv::Vec3b>(r,c)[1] = 0;
+						colored_map.at<cv::Vec3b>(r,c)[2] = 0;
+					}
+					else
+					{
+						colored_map.at<cv::Vec3b>(r,c)[0] = 255;
+						colored_map.at<cv::Vec3b>(r,c)[1] = 255;
+						colored_map.at<cv::Vec3b>(r,c)[2] = 255;
+					}
+				}
+			}
+			cv::imshow("intersection_map_as_image", colored_map);
+			cv::imwrite("ipa_pars/log/intersection_map_as_image.jpeg", colored_map, compression_params);
+		}
+
+
+
 	}
 	else if (labels.size() < 125 && map.type() == 4 && sqr_info.size() == 0) // segmented map
 	{
@@ -853,89 +953,211 @@ void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, std::vector<cv::Vec3
 	}
 	else if (sqr_info.size() > 0)
 	{
-		// extract rooms:
-		std::vector<int> room_labels;
-		for (int i = 0; i < labels.size(); ++i)
+		if (printtype == 0)
 		{
-			addElementNotInVec(room_labels, labels.at(i));
-		}
+			// extract rooms:
+					std::vector<int> room_labels;
+					for (int i = 0; i < labels.size(); ++i)
+					{
+						addElementNotInVec(room_labels, labels.at(i));
+					}
 
-		// color rooms:
-		for (int j = 0; j < room_labels.size(); ++j)
+					// color rooms:
+					for (int j = 0; j < room_labels.size(); ++j)
+					{
+						for (int r = 0; r < colored_map.rows; ++r)
+						{
+							for (int c = 0; c < colored_map.cols; ++c)
+							{
+								if ((int)(map.at<int>(r,c) / 1000) == j)
+								{
+									cv::Vec3b color = room_colors.at(j);
+									colored_map.at<cv::Vec3b>(r,c)[0] = color[0];
+									colored_map.at<cv::Vec3b>(r,c)[1] = color[1];
+									colored_map.at<cv::Vec3b>(r,c)[2] = color[2];
+								}
+							}
+						}
+					}
+
+					for (int r = 0; r < colored_map.rows; ++r)
+					{
+						for (int c = 0; c < colored_map.cols; ++c)
+						{
+							if (map.at<int>(r,c) == 0)
+							{
+								colored_map.at<cv::Vec3b>(r,c)[0] = 0;
+								colored_map.at<cv::Vec3b>(r,c)[1] = 0;
+								colored_map.at<cv::Vec3b>(r,c)[2] = 0;
+							}
+
+						}
+					}
+
+					// color square edges
+					for (int r = 0; r < colored_map.rows; ++r)
+					{
+						for (int c = 0; c < colored_map.cols; ++c)
+						{
+							if (map.at<int>(r,c) != 0)
+							{
+								if ((map.at<int>(r,c) != map.at<int>(r,c+1)) && (map.at<int>(r,c+1) != 0))
+								{
+									colored_map.at<cv::Vec3b>(r,c)[0] = 255;
+									colored_map.at<cv::Vec3b>(r,c)[1] = 255;
+									colored_map.at<cv::Vec3b>(r,c)[2] = 255;
+								}
+								else if ((map.at<int>(r,c) != map.at<int>(r+1,c)) && (map.at<int>(r+1,c) != 0))
+								{
+									colored_map.at<cv::Vec3b>(r,c)[0] = 255;
+									colored_map.at<cv::Vec3b>(r,c)[1] = 255;
+									colored_map.at<cv::Vec3b>(r,c)[2] = 255;
+								}
+							}
+						}
+					}
+
+
+
+					// put SquareNumbers on BalancePoint Spots
+					for (int c = 0; c < sqr_info.size(); c++)
+					{
+						std::string room_number = boost::lexical_cast<std::string>( (int)sqr_info.at(c).label.data / 1000);
+						std::string square_number = boost::lexical_cast<std::string>( (int) sqr_info.at(c).label.data % 1000);
+						std::string sqr_numb = room_number+"-"+square_number;
+						cv::putText(colored_map, sqr_numb , cv::Point( (int) ((sqr_info.at(c).center.x + 19.2) / 0.05 ) -10, (int) ((sqr_info.at(c).center.y+19.2) / 0.05)+10 ), CV_FONT_HERSHEY_SIMPLEX, 0.2f,
+						        cv::Scalar(255, 255, 255), 0.1, 8, false);
+						colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[0] = 255;
+						colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[1] = 255;
+						colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[2] = 51;
+					}
+
+					//put map Origin and axis
+					//y - axis
+					cv::line(colored_map, cv::Point(384,384),cv::Point(384,344),cv::Scalar(255,0,0),1,CV_AA,0);
+					cv::line(colored_map, cv::Point(384,344),cv::Point(387,348),cv::Scalar(255,0,0),1,CV_AA,0);
+					cv::line(colored_map, cv::Point(384,344),cv::Point(381,348),cv::Scalar(255,0,0),1,CV_AA,0);
+					// x
+					cv::line(colored_map, cv::Point(384,384),cv::Point(424,384),cv::Scalar(255,0,0),1,CV_AA,0);
+					cv::line(colored_map, cv::Point(424,384),cv::Point(420,387),cv::Scalar(255,0,0),1,CV_AA,0);
+					cv::line(colored_map, cv::Point(424,384),cv::Point(420,381),cv::Scalar(255,0,0),1,CV_AA,0);
+
+					cv::imshow("map_with_square_info_as_image", colored_map);
+					cv::imwrite("ipa_pars/log/map_with_square_info_as_image.jpeg", colored_map, compression_params);
+		}
+		else if (printtype == 1)
 		{
+			// extract rooms:
+			std::vector<int> room_labels;
+			for (int i = 0; i < labels.size(); ++i)
+			{
+				addElementNotInVec(room_labels, labels.at(i));
+			}
+
+			// color rooms:
+			for (int j = 0; j < room_labels.size(); ++j)
+			{
+				for (int r = 0; r < colored_map.rows; ++r)
+				{
+					for (int c = 0; c < colored_map.cols; ++c)
+					{
+						if ((int)(map.at<int>(r,c) / 1000) == j)
+						{
+							cv::Vec3b color = room_colors.at(j);
+							colored_map.at<cv::Vec3b>(r,c)[0] = color[0];
+							colored_map.at<cv::Vec3b>(r,c)[1] = color[1];
+							colored_map.at<cv::Vec3b>(r,c)[2] = color[2];
+						}
+					}
+				}
+			}
+
 			for (int r = 0; r < colored_map.rows; ++r)
 			{
 				for (int c = 0; c < colored_map.cols; ++c)
 				{
-					if ((int)(map.at<int>(r,c) / 1000) == j)
+					if (map.at<int>(r,c) == 0)
 					{
-						cv::Vec3b color = room_colors.at(j);
-						colored_map.at<cv::Vec3b>(r,c)[0] = color[0];
-						colored_map.at<cv::Vec3b>(r,c)[1] = color[1];
-						colored_map.at<cv::Vec3b>(r,c)[2] = color[2];
+						colored_map.at<cv::Vec3b>(r,c)[0] = 0;
+						colored_map.at<cv::Vec3b>(r,c)[1] = 0;
+						colored_map.at<cv::Vec3b>(r,c)[2] = 0;
 					}
+
 				}
 			}
-		}
 
-		for (int r = 0; r < colored_map.rows; ++r)
-		{
-			for (int c = 0; c < colored_map.cols; ++c)
+			// color robo radius
+			for (int r = 0; r < colored_map.rows; ++r)
 			{
-				if (map.at<int>(r,c) == 0)
+				for (int c = 0; c < colored_map.cols; ++c)
 				{
-					colored_map.at<cv::Vec3b>(r,c)[0] = 0;
-					colored_map.at<cv::Vec3b>(r,c)[1] = 0;
-					colored_map.at<cv::Vec3b>(r,c)[2] = 0;
-				}
-
-			}
-		}
-
-		// color square edges
-		for (int r = 0; r < colored_map.rows; ++r)
-		{
-			for (int c = 0; c < colored_map.cols; ++c)
-			{
-				if (map.at<int>(r,c) != 0)
-				{
-					if ((map.at<int>(r,c) != map.at<int>(r,c+1)) && (map.at<int>(r,c+1) != 0))
+					if (map_with_rob_rad.at<unsigned char>(r,c) == 1)
 					{
 						colored_map.at<cv::Vec3b>(r,c)[0] = 255;
-						colored_map.at<cv::Vec3b>(r,c)[1] = 255;
-						colored_map.at<cv::Vec3b>(r,c)[2] = 255;
-					}
-					else if ((map.at<int>(r,c) != map.at<int>(r+1,c)) && (map.at<int>(r+1,c) != 0))
-					{
-						colored_map.at<cv::Vec3b>(r,c)[0] = 255;
-						colored_map.at<cv::Vec3b>(r,c)[1] = 255;
-						colored_map.at<cv::Vec3b>(r,c)[2] = 255;
+						colored_map.at<cv::Vec3b>(r,c)[1] = 0;
+						colored_map.at<cv::Vec3b>(r,c)[2] = 0;
 					}
 				}
 			}
+
+			// color square edges
+			for (int r = 0; r < colored_map.rows; ++r)
+			{
+				for (int c = 0; c < colored_map.cols; ++c)
+				{
+					if (map.at<int>(r,c) != 0)
+					{
+						if ((map.at<int>(r,c) != map.at<int>(r,c+1)) && (map.at<int>(r,c+1) != 0))
+						{
+							colored_map.at<cv::Vec3b>(r,c)[0] = 255;
+							colored_map.at<cv::Vec3b>(r,c)[1] = 255;
+							colored_map.at<cv::Vec3b>(r,c)[2] = 255;
+						}
+						else if ((map.at<int>(r,c) != map.at<int>(r+1,c)) && (map.at<int>(r+1,c) != 0))
+						{
+							colored_map.at<cv::Vec3b>(r,c)[0] = 255;
+							colored_map.at<cv::Vec3b>(r,c)[1] = 255;
+							colored_map.at<cv::Vec3b>(r,c)[2] = 255;
+						}
+					}
+				}
+			}
+
+
+
+//			// put SquareNumbers on BalancePoint Spots
+			for (int c = 0; c < sqr_info.size(); c++)
+			{
+//				std::string room_number = boost::lexical_cast<std::string>( (int)sqr_info.at(c).label.data / 1000);
+//				std::string square_number = boost::lexical_cast<std::string>( (int) sqr_info.at(c).label.data % 1000);
+//				std::string sqr_numb = room_number+"-"+square_number;
+//				cv::putText(colored_map, sqr_numb , cv::Point( (int) ((sqr_info.at(c).center.x + 19.2) / 0.05 ) -10, (int) ((sqr_info.at(c).center.y+19.2) / 0.05)+10 ), CV_FONT_HERSHEY_SIMPLEX, 0.2f,
+//						cv::Scalar(255, 255, 255), 0.1, 8, false);
+				colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[0] = 255;
+				colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[1] = 255;
+				colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[2] = 51;
+			}
+//
+//			//put map Origin and axis
+//			//y - axis
+//			cv::line(colored_map, cv::Point(384,384),cv::Point(384,344),cv::Scalar(255,0,0),1,CV_AA,0);
+//			cv::line(colored_map, cv::Point(384,344),cv::Point(387,348),cv::Scalar(255,0,0),1,CV_AA,0);
+//			cv::line(colored_map, cv::Point(384,344),cv::Point(381,348),cv::Scalar(255,0,0),1,CV_AA,0);
+//			// x
+//			cv::line(colored_map, cv::Point(384,384),cv::Point(424,384),cv::Scalar(255,0,0),1,CV_AA,0);
+//			cv::line(colored_map, cv::Point(424,384),cv::Point(420,387),cv::Scalar(255,0,0),1,CV_AA,0);
+//			cv::line(colored_map, cv::Point(424,384),cv::Point(420,381),cv::Scalar(255,0,0),1,CV_AA,0);
+
+			cv::imshow("map_with_squares_and_robo_radius_as_image", colored_map);
+			cv::imwrite("ipa_pars/log/map_with_squares_and_robo_radius_as_image.jpeg", colored_map, compression_params);
 		}
 
-		// put SquareNumbers on BalancePoint Spots
-		for (int c = 0; c < sqr_info.size(); c++)
-		{
-			std::string room_number = boost::lexical_cast<std::string>( (int)sqr_info.at(c).label.data / 1000);
-			std::string square_number = boost::lexical_cast<std::string>( (int) sqr_info.at(c).label.data % 1000);
-			std::string sqr_numb = room_number+"-"+square_number;
-			cv::putText(colored_map, sqr_numb , cv::Point( (int) ((sqr_info.at(c).center.x + 19.2) / 0.05 ) -10, (int) ((sqr_info.at(c).center.y+19.2) / 0.05)+10 ), CV_FONT_HERSHEY_SIMPLEX, 0.2f,
-			        cv::Scalar(255, 255, 255), 0.1, 8, false);
-			colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[0] = 255;
-			colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[1] = 255;
-			colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[2] = 51;
-		}
-		cv::imshow("map_with_square_info_as_image", colored_map);
-		cv::imwrite("ipa_pars/log/map_with_square_info_as_image.jpeg", colored_map, compression_params);
 	}
 	else
 	{
 		ROS_ERROR("The map you try to display has a wrong format or to many rooms!");
 		ROS_ERROR("Format should be of cv::type 0 or 4; amount of rooms possible 1-65");
 	}
-
 
 }
 

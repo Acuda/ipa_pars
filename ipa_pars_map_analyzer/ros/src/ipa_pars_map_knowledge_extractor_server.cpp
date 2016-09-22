@@ -77,7 +77,8 @@
 #include <actionlib/client/terminal_state.h>
 #include <ipa_pars_map_analyzer/ParsMapKnowledgeAction.h>
 
-#include "std_msgs/Int32MultiArray.h"
+#include <ipa_pars_map_analyzer/SquareInformation.h>
+
 // round
 #include <sstream>
 //#include <ipa_room_segmentation/meanshift2d.h>
@@ -96,7 +97,7 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 {
 	ros::Rate looping_rate(1);
 	ROS_INFO("*****ParsMapKnowledgeExtractor action server*****");
-	ROS_INFO("map resolution is : %f", goal->map_resolution);
+//	ROS_INFO("map resolution is : %f", goal->map_resolution);
 
 
 	//converting the map msg in cv format
@@ -107,6 +108,8 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 	//set the resolution and the limits for the actual goal and the Map origin
 	const float map_resolution = goal->map_resolution;
 	const cv::Point2d map_origin(goal->map_origin.position.x, goal->map_origin.position.y);
+	const float yaw = goal->map_origin.position.z;
+	const float robot_radius = goal->robot_radius.data;
 
 	std::vector<int> reallabelcount;
 	for (int r = 0; r < input_img.rows; ++r)
@@ -120,11 +123,11 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 			}
 		}
 	}
-//	for (int i = 0; i < goal->labels.size(); i++)
-//	{
-//		reallabelcount.push_back(goal->labels.at(i).data);
-//	}
-	//calculate balance points
+
+	// TODO:
+	// change calculation of balance points to right coordinate system!
+	// rotaton from lower-left corner to upper left corner (here) because of x,y in for loop.
+
 	std::vector< std::vector<double> > balancePoints;
 	std::vector<double> balancePointXY;
 	for (int i = 0; i < reallabelcount.size(); i++)
@@ -136,7 +139,7 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 		double xs = 0;
 		double ys = 0;
 		balancePointXY.clear();
-		ROS_INFO("Calculating balance point for label = %u", reallabelcount.at(i));
+//		ROS_INFO("Calculating balance point for label = %u", reallabelcount.at(i));
 		for (int y = 0; y < input_img.rows; y++)
 		{
 			for (int x = 0; x < input_img.cols; x++)
@@ -182,6 +185,7 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 	{
 		std::vector<int> transitions;
 		std::vector<int> neighborcounter;
+		transitions.push_back(reallabelcount.at(i));
 		for (int y = 0; y < input_img.rows; y++)
 		{
 			for ( int x = 0; x< input_img.cols; x++)
@@ -225,7 +229,7 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 	{
 		for (int l = 1; l < vec_of_transitions.at(t).size(); l++)
 		{
-			ROS_INFO("Transitions of label %d found are %d", vec_of_transitions.at(t).at(0), vec_of_transitions.at(t).at(l) );
+//			ROS_INFO("Transitions of label %d found are %d", vec_of_transitions.at(t).at(0), vec_of_transitions.at(t).at(l) );
 		}
 	}
 
@@ -248,6 +252,7 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 		square_info.center.z = 0.0;
 		vec_square_info.push_back(square_info);
 	}
+
 
 
 

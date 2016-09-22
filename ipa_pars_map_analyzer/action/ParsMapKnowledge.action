@@ -5,6 +5,7 @@
 sensor_msgs/Image input_map
 float32 map_resolution
 geometry_msgs/Pose map_origin
+std_msgs/Float32 robot_radius
 #ipa_pars_map_analyzer/SquareInformation[] square_information
 
 ---

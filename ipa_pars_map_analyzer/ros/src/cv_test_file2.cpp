@@ -71,12 +71,24 @@ int main(int argc, char **argv)
 	int erosion_type = cv::MORPH_RECT;
 	int erosion_size = 1;
 	cv::Mat element = getStructuringElement( erosion_type,
-										   cv::Size( 2*erosion_size + 1, 2*erosion_size+1 ),
-										   cv::Point( erosion_size, erosion_size ) );
+										   cv::Size( 2*erosion_size+1, 2*erosion_size+1 ),
+										   cv::Point( erosion_size, erosion_size) );
 	cv::erode(original_img,new_map,element);
 
 	ROS_INFO("image channels= %u", new_map.channels());
 	cv::Mat new_map_vert = new_map.clone();
+
+	// erode map to offset with robot radius:
+	double robot_radius = 0.4;
+	cv::Mat offset_img = new_map.clone();
+	int offset_erosion_type = cv::MORPH_ELLIPSE;
+	int offset_size = (int) 2*robot_radius / 0.05;
+	cv::Mat offset_element = getStructuringElement( offset_erosion_type,
+												cv::Size(offset_size, offset_size),
+												cv::Point(-1,-1));
+	cv::erode(new_map, new_map, offset_element);
+
+
 	std::vector<unsigned char> list_of_labels;
 
 	unsigned char label = 1;

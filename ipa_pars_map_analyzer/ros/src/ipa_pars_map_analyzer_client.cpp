@@ -46,7 +46,8 @@
 int main(int argc, char **argv)
 {
 	ros::init(argc, argv, "ipa_pars_map_analyzer_client");
-	std::string image_filename = ros::package::getPath("ipa_pars_map_analyzer") + "/common/files/test_maps/lab_ipa4.png";
+//	std::string image_filename = ros::package::getPath("ipa_pars_map_analyzer") + "/common/files/test_maps/lab_ipa4.png";
+	std::string image_filename = ros::package::getPath("ipa_pars_map_analyzer") + "/common/files/test_maps/office_c.png";
 	cv::Mat map = cv::imread(image_filename.c_str(), 0);
 	sensor_msgs::Image output_img;
 	cv_bridge::CvImage cv_image;
@@ -64,10 +65,16 @@ int main(int argc, char **argv)
 	// send a goal to the action
 	ipa_pars_map_analyzer::ParsMapAnalyzerGoal goal;
 	goal.input_map = output_img;
-	//todo: read this from lab-ipa4.yaml
+
+	// origin : The 2-D pose of the lower-left pixel in the map, as (x, y, yaw)
+	// with yaw as counterclockwise rotation (yaw=0 means no rotation).
+	// Transformation from
+	// TODO: this data is from ipa-lab map. Read this from a map.yaml!
 	goal.map_origin.position.x = 19.2;
 	goal.map_origin.position.y = 19.2;
+	goal.map_origin.position.z = 0.0;
 	goal.map_resolution = 0.05;
+	goal.robot_radius.data = 0.4;
 	ac.sendGoal(goal);
 
 	//wait for the action to return
