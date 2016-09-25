@@ -125,10 +125,15 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 	cv::Mat original_img = cv_ptr_obj->image;
 
 	//set the resolution and the limits for the actual goal and the Map origin
-	const float map_resolution = goal->map_resolution;
-	const cv::Point2d map_origin(goal->map_origin.position.x, goal->map_origin.position.y);
-	const float yaw = goal->map_origin.position.z;
-	const float robot_radius = goal->robot_radius.data;
+	const double map_resolution = goal->map_resolution;
+//	const cv::Point2d map_origin(goal->map_origin.position.x, goal->map_origin.position.y);
+//	const float yaw = goal->map_origin.position.z;
+	const double robot_radius = goal->robot_radius.data;
+	std::vector<double> map_origin;
+	map_origin.push_back(goal->map_origin.position.x);
+	map_origin.push_back(goal->map_origin.position.y);
+	map_origin.push_back(goal->map_origin.position.z);
+
 
 	//make non-white pixels black
 	for (int y = 0; y < original_img.rows; y++)
@@ -159,7 +164,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 	cv::Mat disp_orig = original_img.clone();
 	cv::Mat disp_erode = erode_img.clone();
 	disp_orig.convertTo(disp_orig, CV_8U);
-	displayMapAsImage(disp_erode, disp_erode, room_colors, sqr_info, 0);
+	displayMapAsImage(disp_erode, disp_erode, room_colors, sqr_info, 0, map_resolution, map_origin);
 
 
 	// erode map to offset with robot radius:
@@ -183,7 +188,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 		}
 	}
 //	displ_offset.convertTo(offset_img, CV_8U);
-	displayMapAsImage(intersection,intersection, room_colors, sqr_info, 1);
+	displayMapAsImage(intersection,intersection, room_colors, sqr_info, 1, map_resolution, map_origin);
 
 
 
@@ -270,7 +275,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 //		}
 //		cv::imshow("segmentation", colour_segmented_map);
 		//display new
-		displayMapAsImage(segmented_map, intersection,room_colors, sqr_info,0);
+		displayMapAsImage(segmented_map, intersection,room_colors, sqr_info,0, map_resolution, map_origin);
 
 //		ROS_INFO("the important flag 1 --------------------");
 		cv::Mat concatenated_image = erode_img.clone();
@@ -491,7 +496,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 //		}
 //		cv::imshow("tesselation", colour_tesselated_map);
 
-		displayMapAsImage(concatenated_image,intersection, room_colors, sqr_info,0);
+		displayMapAsImage(concatenated_image,intersection, room_colors, sqr_info,0, map_resolution, map_origin);
 
 		//concat mit robot_radius
 //		cv::Mat concat_with_rad = concatenated_image.clone();
@@ -664,16 +669,16 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 			ROS_INFO_STREAM("The size of the given square information vector is" << sqr_info.size());
 
 			// display with names and balancePoints
-			displayMapAsImage(concatenated_image, intersection, room_colors, sqr_info,0);
+			displayMapAsImage(concatenated_image, intersection, room_colors, sqr_info, 0, map_resolution, map_origin);
 
 			// display balance points, intersection and transitions but no names:
-			displayMapAsImage(concatenated_image, intersection, room_colors, sqr_info,1);
+			displayMapAsImage(concatenated_image, intersection, room_colors, sqr_info, 1, map_resolution, map_origin);
 
 			//add properties navigable to square_information!
 			for (int i = 0; i < sqr_info.size(); i++)
 			{
-				int row = (sqr_info.at(i).center.y + goal->map_origin.position.y) / goal->map_resolution;
-				int col = (sqr_info.at(i).center.x + goal->map_origin.position.x) / goal->map_resolution;
+				int row = (intersection.rows - ((sqr_info.at(i).center.y + goal->map_origin.position.y)) / map_resolution);
+				int col = (sqr_info.at(i).center.x + goal->map_origin.position.x) / map_resolution;
 				if (intersection.at<unsigned char>(row,col) != 0 && intersection.at<unsigned char>(row,col) != 1)
 				{
 					sqr_info.at(i).navigable.data = true;
@@ -746,7 +751,7 @@ void ParsMapAnalyzerServer::createRoomColors(std::vector<cv::Vec3b> &room_colors
 //	ROS_INFO("Created %d colors for room squares segmenation", (int)room_colors.size());
 }
 
-void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, cv::Mat &map_with_rob_rad, std::vector<cv::Vec3b> &room_colors,  std::vector<ipa_pars_map_analyzer::SquareInformation> &sqr_info, int printtype)
+void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, cv::Mat &map_with_rob_rad, std::vector<cv::Vec3b> &room_colors,  std::vector<ipa_pars_map_analyzer::SquareInformation> &sqr_info, int printtype, double map_resolution, std::vector<double> map_origin)
 {
 	// for writing debug images:
 	std::vector<int> compression_params;
@@ -1026,22 +1031,28 @@ void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, cv::Mat &map_with_ro
 						std::string room_number = boost::lexical_cast<std::string>( (int)sqr_info.at(c).label.data / 1000);
 						std::string square_number = boost::lexical_cast<std::string>( (int) sqr_info.at(c).label.data % 1000);
 						std::string sqr_numb = room_number+"-"+square_number;
-						cv::putText(colored_map, sqr_numb , cv::Point( (int) ((sqr_info.at(c).center.x + 19.2) / 0.05 ) -10, (int) ((sqr_info.at(c).center.y+19.2) / 0.05)+10 ), CV_FONT_HERSHEY_SIMPLEX, 0.2f,
+						cv::putText(colored_map, sqr_numb , cv::Point( (int) ((sqr_info.at(c).center.x + map_origin.at(0)) / map_resolution ) -10, (int) colored_map.rows - ((sqr_info.at(c).center.y+ map_origin.at(1)) / map_resolution)+10 ), CV_FONT_HERSHEY_SIMPLEX, 0.2f,
 						        cv::Scalar(255, 255, 255), 0.1, 8, false);
-						colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[0] = 255;
-						colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[1] = 255;
-						colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[2] = 51;
+//						ROS_INFO("komische rechnung kommt raus = %d", (int)(colored_map.rows - (sqr_info.at(c).center.y + map_origin.at(1)) / map_resolution  ));
+						colored_map.at<cv::Vec3b>((int)(colored_map.rows - (sqr_info.at(c).center.y + map_origin.at(1)) / map_resolution), ((sqr_info.at(c).center.x + map_origin.at(0)) / map_resolution ))[0] = 255;
+						colored_map.at<cv::Vec3b>((int)(colored_map.rows - ( sqr_info.at(c).center.y + map_origin.at(1)) / map_resolution), ((sqr_info.at(c).center.x + map_origin.at(0)) / map_resolution ))[1] = 255;
+						colored_map.at<cv::Vec3b>((int)(colored_map.rows - ( sqr_info.at(c).center.y + map_origin.at(1)) / map_resolution), ((sqr_info.at(c).center.x + map_origin.at(0)) / map_resolution))[2] = 51;
+//						colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[0] = 255;
+//						colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[1] = 255;
+//						colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05))[2] = 51;
 					}
 
 					//put map Origin and axis
 					//y - axis
-					cv::line(colored_map, cv::Point(384,384),cv::Point(384,344),cv::Scalar(255,0,0),1,CV_AA,0);
-					cv::line(colored_map, cv::Point(384,344),cv::Point(387,348),cv::Scalar(255,0,0),1,CV_AA,0);
-					cv::line(colored_map, cv::Point(384,344),cv::Point(381,348),cv::Scalar(255,0,0),1,CV_AA,0);
-					// x
-					cv::line(colored_map, cv::Point(384,384),cv::Point(424,384),cv::Scalar(255,0,0),1,CV_AA,0);
-					cv::line(colored_map, cv::Point(424,384),cv::Point(420,387),cv::Scalar(255,0,0),1,CV_AA,0);
-					cv::line(colored_map, cv::Point(424,384),cv::Point(420,381),cv::Scalar(255,0,0),1,CV_AA,0);
+					int x_origin_in_px = map_origin.at(0) / map_resolution;
+					int y_origin_in_px = colored_map.rows - (map_origin.at(1) / map_resolution);
+					cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px),cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
+					cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Point(x_origin_in_px + (0.15 / map_resolution ),y_origin_in_px - (2/map_resolution) + (0.2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
+					cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Point(x_origin_in_px - (0.15 / map_resolution ),y_origin_in_px - (2/map_resolution) + (0.2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
+//					// x
+					cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px),cv::Point(424,y_origin_in_px),cv::Scalar(255,0,0),1,CV_AA,0);
+					cv::line(colored_map, cv::Point(x_origin_in_px + (2/map_resolution),y_origin_in_px),cv::Point(x_origin_in_px + (2/map_resolution) - (0.2/map_resolution),y_origin_in_px + (0.15 / map_resolution )),cv::Scalar(255,0,0),1,CV_AA,0);
+					cv::line(colored_map, cv::Point(x_origin_in_px + (2/map_resolution),y_origin_in_px),cv::Point(x_origin_in_px + (2/map_resolution) - (0.2/map_resolution),y_origin_in_px - (0.15 / map_resolution )),cv::Scalar(255,0,0),1,CV_AA,0);
 
 					cv::imshow("map_with_square_info_as_image", colored_map);
 					cv::imwrite("ipa_pars/log/map_with_square_info_as_image.jpeg", colored_map, compression_params);
@@ -1134,13 +1145,22 @@ void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, cv::Mat &map_with_ro
 //				std::string sqr_numb = room_number+"-"+square_number;
 //				cv::putText(colored_map, sqr_numb , cv::Point( (int) ((sqr_info.at(c).center.x + 19.2) / 0.05 ) -10, (int) ((sqr_info.at(c).center.y+19.2) / 0.05)+10 ), CV_FONT_HERSHEY_SIMPLEX, 0.2f,
 //						cv::Scalar(255, 255, 255), 0.1, 8, false);
-				colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[0] = 255;
-				colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[1] = 255;
-				colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[2] = 51;
+				colored_map.at<cv::Vec3b>((int)(colored_map.rows - (sqr_info.at(c).center.y + map_origin.at(1)) / map_resolution), ((sqr_info.at(c).center.x + map_origin.at(0)) / map_resolution ))[0] = 255;
+				colored_map.at<cv::Vec3b>((int)(colored_map.rows - ( sqr_info.at(c).center.y + map_origin.at(1)) / map_resolution), ((sqr_info.at(c).center.x + map_origin.at(0)) / map_resolution ))[1] = 255;
+				colored_map.at<cv::Vec3b>((int)(colored_map.rows - ( sqr_info.at(c).center.y + map_origin.at(1)) / map_resolution), ((sqr_info.at(c).center.x + map_origin.at(0)) / map_resolution))[2] = 51;
 			}
 //
-//			//put map Origin and axis
-//			//y - axis
+			//put map Origin and axis
+			//y - axis
+			int x_origin_in_px = map_origin.at(0) / map_resolution;
+			int y_origin_in_px = colored_map.rows - (map_origin.at(1) / map_resolution);
+			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px),cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
+			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Point(x_origin_in_px + (0.15 / map_resolution ),y_origin_in_px - (2/map_resolution) + (0.2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
+			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Point(x_origin_in_px - (0.15 / map_resolution ),y_origin_in_px - (2/map_resolution) + (0.2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
+//			// x
+			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px),cv::Point(424,y_origin_in_px),cv::Scalar(255,0,0),1,CV_AA,0);
+			cv::line(colored_map, cv::Point(x_origin_in_px + (2/map_resolution),y_origin_in_px),cv::Point(x_origin_in_px + (2/map_resolution) - (0.2/map_resolution),y_origin_in_px + (0.15 / map_resolution )),cv::Scalar(255,0,0),1,CV_AA,0);
+			cv::line(colored_map, cv::Point(x_origin_in_px + (2/map_resolution),y_origin_in_px),cv::Point(x_origin_in_px + (2/map_resolution) - (0.2/map_resolution),y_origin_in_px - (0.15 / map_resolution )),cv::Scalar(255,0,0),1,CV_AA,0);
 //			cv::line(colored_map, cv::Point(384,384),cv::Point(384,344),cv::Scalar(255,0,0),1,CV_AA,0);
 //			cv::line(colored_map, cv::Point(384,344),cv::Point(387,348),cv::Scalar(255,0,0),1,CV_AA,0);
 //			cv::line(colored_map, cv::Point(384,344),cv::Point(381,348),cv::Scalar(255,0,0),1,CV_AA,0);

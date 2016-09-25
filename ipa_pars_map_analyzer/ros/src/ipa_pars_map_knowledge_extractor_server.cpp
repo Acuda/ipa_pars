@@ -126,7 +126,7 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 
 	// rotaton from lower-left corner to upper left corner (here) because of x,y in for loop.
 	// origin is given from the lower-left corner of the map.
-
+	// so x -> x ; y -> map.rows - y
 
 	std::vector< std::vector<double> > balancePoints;
 	std::vector<double> balancePointXY;
@@ -159,8 +159,7 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 
 		}
 		balancePointXY.push_back(xs);
-		// give origin from lower left corner must transform from x --> x and y --> -y!
-		balancePointXY.push_back(-ys);
+		balancePointXY.push_back(ys);
 		balancePoints.push_back(balancePointXY);
 	}
 
@@ -246,10 +245,10 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 		}
 		// map origin
 		double converted_center_x = round ( 100 * (balancePoints.at(t).at(0) * goal->map_resolution - goal->map_origin.position.x)) / 100;
-		double converted_center_y = round (100 * (balancePoints.at(t).at(1) * goal->map_resolution - goal->map_origin.position.y)) / 100;
+		double converted_center_y = round (100 * ((input_img.rows - balancePoints.at(t).at(1)) * goal->map_resolution - goal->map_origin.position.y)) / 100;
 		square_info.center.x = converted_center_x;
 		square_info.center.y = converted_center_y;
-		square_info.center.z = 0.0;
+		square_info.center.z = 0.0; // now without rotation in lower left corner (0|0);
 		vec_square_info.push_back(square_info);
 	}
 

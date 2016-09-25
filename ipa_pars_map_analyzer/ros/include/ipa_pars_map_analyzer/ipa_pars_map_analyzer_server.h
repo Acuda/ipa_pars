@@ -87,7 +87,7 @@ protected:
 	void createRoomColors(std::vector<cv::Vec3b> &room_colors);
 
 	// display segmented or tesselated map
-	void displayMapAsImage(cv::Mat &map, cv::Mat &map_with_rob_rad, std::vector<cv::Vec3b> &room_colors, std::vector<ipa_pars_map_analyzer::SquareInformation> &sqr_info, int printtype);
+	void displayMapAsImage(cv::Mat &map, cv::Mat &map_with_rob_rad, std::vector<cv::Vec3b> &room_colors, std::vector<ipa_pars_map_analyzer::SquareInformation> &sqr_info, int printtype, double map_resolution, std::vector<double> map_origin);
 
 	//!!Important!!
 	// define the Nodehandle before the action server, or else the server won't start

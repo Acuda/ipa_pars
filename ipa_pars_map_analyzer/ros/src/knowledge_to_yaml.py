@@ -86,7 +86,7 @@ class KnowledgeToYamlNode(object):
         location_data = []
         for sqr in srv_msg.square_information:
             x_center = sqr.center.x
-            y_center = - sqr.center.y
+            y_center = sqr.center.y
             z_center = sqr.center.z
             dict_of_center = {'X': x_center, 'Y': y_center, 'Z': z_center}
             name = "room-"+str(sqr.label.data/1000)+"-square-"+str(sqr.label.data%1000)
