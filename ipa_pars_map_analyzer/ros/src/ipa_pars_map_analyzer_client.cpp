@@ -46,8 +46,8 @@
 int main(int argc, char **argv)
 {
 	ros::init(argc, argv, "ipa_pars_map_analyzer_client");
-//	std::string image_filename = ros::package::getPath("ipa_pars_map_analyzer") + "/common/files/test_maps/lab_ipa4.png";
-	std::string image_filename = ros::package::getPath("ipa_pars_map_analyzer") + "/common/files/test_maps/office_c.png";
+	std::string image_filename = ros::package::getPath("ipa_pars_map_analyzer") + "/common/files/test_maps/lab_ipa4.png";
+//	std::string image_filename = ros::package::getPath("ipa_pars_map_analyzer") + "/common/files/test_maps/office_c.png";
 	cv::Mat map = cv::imread(image_filename.c_str(), 0);
 	sensor_msgs::Image output_img;
 	cv_bridge::CvImage cv_image;

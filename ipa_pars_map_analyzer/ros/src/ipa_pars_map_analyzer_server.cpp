@@ -73,7 +73,7 @@
 
 #include <actionlib/client/simple_action_client.h>
 #include <actionlib/client/terminal_state.h>
-#include <ipa_room_segmentation/MapSegmentationAction.h>
+#include <ipa_building_msgs/MapSegmentationAction.h>
 #include <ipa_pars_map_analyzer/ParsMapTesselationAction.h>
 #include <ipa_pars_map_analyzer/ParsMapKnowledgeAction.h>
 
@@ -215,13 +215,14 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 	cv_image.image = erode_img;
 	cv_image.toImageMsg(labeling);
 
-	actionlib::SimpleActionClient<ipa_room_segmentation::MapSegmentationAction> seg_ac("room_segmentation_server",true);
+	actionlib::SimpleActionClient<ipa_building_msgs::MapSegmentationAction> seg_ac("room_segmentation_server",true);
 
 	seg_ac.waitForServer(); //will wait for infinite time
 
 	ROS_INFO("Action server started, sending goal.");
 	// send a goal to the action
-	ipa_room_segmentation::MapSegmentationGoal seg_goal;
+//	ipa_room_segmentation::MapSegmentationGoal seg_goal;
+	ipa_building_msgs::MapSegmentationGoal seg_goal;
 	seg_goal.input_map = labeling;
 	seg_goal.map_origin.position.x = goal->map_origin.position.x;
 	seg_goal.map_origin.position.y = goal->map_origin.position.y;
@@ -230,7 +231,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 	seg_goal.robot_radius = goal->robot_radius.data;
 	seg_goal.return_format_in_meter = false;
 	seg_goal.return_format_in_pixel = true;
-	seg_goal.room_segmentation_algorithm = 2; //Distance Segmentation
+//	seg_goal.room_segmentation_algorithm = 2; //Distance Segmentation
 	seg_ac.sendGoal(seg_goal);
 
 	//wait for the action to return
@@ -239,7 +240,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 	if (finished_before_timeout)
 	{
 		ROS_INFO("Finished successfully!");
-		ipa_room_segmentation::MapSegmentationResultConstPtr result_seg = seg_ac.getResult();
+		ipa_building_msgs::MapSegmentationResultConstPtr result_seg = seg_ac.getResult();
 
 //		// display
 		cv_bridge::CvImagePtr cv_ptr_obj;

@@ -124,9 +124,9 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 		}
 	}
 
-	// TODO:
-	// change calculation of balance points to right coordinate system!
 	// rotaton from lower-left corner to upper left corner (here) because of x,y in for loop.
+	// origin is given from the lower-left corner of the map.
+
 
 	std::vector< std::vector<double> > balancePoints;
 	std::vector<double> balancePointXY;
@@ -139,7 +139,6 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 		double xs = 0;
 		double ys = 0;
 		balancePointXY.clear();
-//		ROS_INFO("Calculating balance point for label = %u", reallabelcount.at(i));
 		for (int y = 0; y < input_img.rows; y++)
 		{
 			for (int x = 0; x < input_img.cols; x++)
@@ -160,20 +159,21 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 
 		}
 		balancePointXY.push_back(xs);
-		balancePointXY.push_back(ys);
+		// give origin from lower left corner must transform from x --> x and y --> -y!
+		balancePointXY.push_back(-ys);
 		balancePoints.push_back(balancePointXY);
 	}
 
-	for (int i = 0; i < reallabelcount.size(); i++)
-	{
-		for (int r = 0; r < input_img.rows; ++r)
-		{
-			for (int c; c < input_img.cols; ++c)
-			{
-
-			}
-		}
-	}
+//	for (int i = 0; i < reallabelcount.size(); i++)
+//	{
+//		for (int r = 0; r < input_img.rows; ++r)
+//		{
+//			for (int c; c < input_img.cols; ++c)
+//			{
+//
+//			}
+//		}
+//	}
 
 //	MeanShift2D ms;
 //	cv::Vec2d room_center = ms.findRoomCenter(input_img, room_cells, map_resolution);
