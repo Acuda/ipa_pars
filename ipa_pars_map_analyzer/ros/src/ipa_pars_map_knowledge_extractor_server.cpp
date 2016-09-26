@@ -243,12 +243,24 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 			trans.data = vec_of_transitions.at(t).at(l);
 			square_info.transitions.push_back(trans);
 		}
+		// 3-layers transformation to new coordinates:
+		// 1. transform from upper-left corner downwards (traversal of the for loops) to lower-left corner upwards in meter;
+		double lower_left_KS_x = (balancePoints.at(t).at(0) * goal->map_resolution);
+		double lower_left_KS_y = ((input_img.rows - balancePoints.at(t).at(1)) * goal->map_resolution);
+		// 2. transform kartesian ks from lower-left corner to x,y origin of map origin:
+		double kartesian_KS_x = lower_left_KS_x - goal->map_origin.position.x;
+		double kartesian_KS_y = lower_left_KS_y - goal->map_origin.position.y;
+		// 3. transform rotation of KS around z-axis:
+		double yaw = goal->map_origin.position.z;
+		double transform_KS_x = kartesian_KS_x * cos(yaw) + kartesian_KS_y * sin(yaw);
+		double transform_KS_y = -kartesian_KS_x * sin(yaw) + kartesian_KS_y * cos(yaw);
+		ROS_INFO("The Koordinate calculated and rotated is ( %f | %f ) ", transform_KS_x, transform_KS_y );
 		// map origin
-		double converted_center_x = round ( 100 * (balancePoints.at(t).at(0) * goal->map_resolution - goal->map_origin.position.x)) / 100;
-		double converted_center_y = round (100 * ((input_img.rows - balancePoints.at(t).at(1)) * goal->map_resolution - goal->map_origin.position.y)) / 100;
-		square_info.center.x = converted_center_x;
-		square_info.center.y = converted_center_y;
-		square_info.center.z = 0.0; // now without rotation in lower left corner (0|0);
+//		double converted_center_x = round ( 100 * (balancePoints.at(t).at(0) * goal->map_resolution - goal->map_origin.position.x)) / 100;
+//		double converted_center_y = round (100 * ((input_img.rows - balancePoints.at(t).at(1)) * goal->map_resolution - goal->map_origin.position.y)) / 100;
+		square_info.center.x = transform_KS_x;
+		square_info.center.y = transform_KS_y;
+		square_info.center.z = 0.0; // always zero as long as map is 2D!
 		vec_square_info.push_back(square_info);
 	}
 

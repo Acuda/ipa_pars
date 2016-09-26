@@ -1152,22 +1152,32 @@ void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, cv::Mat &map_with_ro
 //
 			//put map Origin and axis
 			//y - axis
+			// transform origin translation
 			int x_origin_in_px = map_origin.at(0) / map_resolution;
 			int y_origin_in_px = colored_map.rows - (map_origin.at(1) / map_resolution);
-			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px),cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
+			double yaw = map_origin.at(2);
+			// transform rotation:
+//			cv::Point point_before_rot;
+//			point_before_rot = (x_origin_in_px,y_origin_in_px);
+//			cv::Point point_after_rot;
+
+			//todo: drawKS Function. origin(x,y,yaw) + map_resolution
+
+			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px), cv::Point(x_origin_in_px * cos(-yaw) + (y_origin_in_px - (2/map_resolution)) * sin(-yaw), -x_origin_in_px * sin(-yaw) + (y_origin_in_px - (2/map_resolution)) * cos(-yaw)), cv::Scalar(255,0,0),1,CV_AA,0);
 			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Point(x_origin_in_px + (0.15 / map_resolution ),y_origin_in_px - (2/map_resolution) + (0.2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
 			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Point(x_origin_in_px - (0.15 / map_resolution ),y_origin_in_px - (2/map_resolution) + (0.2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
 //			// x
 			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px),cv::Point(424,y_origin_in_px),cv::Scalar(255,0,0),1,CV_AA,0);
 			cv::line(colored_map, cv::Point(x_origin_in_px + (2/map_resolution),y_origin_in_px),cv::Point(x_origin_in_px + (2/map_resolution) - (0.2/map_resolution),y_origin_in_px + (0.15 / map_resolution )),cv::Scalar(255,0,0),1,CV_AA,0);
 			cv::line(colored_map, cv::Point(x_origin_in_px + (2/map_resolution),y_origin_in_px),cv::Point(x_origin_in_px + (2/map_resolution) - (0.2/map_resolution),y_origin_in_px - (0.15 / map_resolution )),cv::Scalar(255,0,0),1,CV_AA,0);
-//			cv::line(colored_map, cv::Point(384,384),cv::Point(384,344),cv::Scalar(255,0,0),1,CV_AA,0);
-//			cv::line(colored_map, cv::Point(384,344),cv::Point(387,348),cv::Scalar(255,0,0),1,CV_AA,0);
-//			cv::line(colored_map, cv::Point(384,344),cv::Point(381,348),cv::Scalar(255,0,0),1,CV_AA,0);
-//			// x
-//			cv::line(colored_map, cv::Point(384,384),cv::Point(424,384),cv::Scalar(255,0,0),1,CV_AA,0);
-//			cv::line(colored_map, cv::Point(424,384),cv::Point(420,387),cv::Scalar(255,0,0),1,CV_AA,0);
-//			cv::line(colored_map, cv::Point(424,384),cv::Point(420,381),cv::Scalar(255,0,0),1,CV_AA,0);
+
+//			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px),cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
+//			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Point(x_origin_in_px + (0.15 / map_resolution ),y_origin_in_px - (2/map_resolution) + (0.2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
+//			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Point(x_origin_in_px - (0.15 / map_resolution ),y_origin_in_px - (2/map_resolution) + (0.2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
+////			// x
+//			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px),cv::Point(424,y_origin_in_px),cv::Scalar(255,0,0),1,CV_AA,0);
+//			cv::line(colored_map, cv::Point(x_origin_in_px + (2/map_resolution),y_origin_in_px),cv::Point(x_origin_in_px + (2/map_resolution) - (0.2/map_resolution),y_origin_in_px + (0.15 / map_resolution )),cv::Scalar(255,0,0),1,CV_AA,0);
+//			cv::line(colored_map, cv::Point(x_origin_in_px + (2/map_resolution),y_origin_in_px),cv::Point(x_origin_in_px + (2/map_resolution) - (0.2/map_resolution),y_origin_in_px - (0.15 / map_resolution )),cv::Scalar(255,0,0),1,CV_AA,0);
 
 			cv::imshow("map_with_squares_and_robo_radius_as_image", colored_map);
 			cv::imwrite("ipa_pars/log/map_with_squares_and_robo_radius_as_image.jpeg", colored_map, compression_params);

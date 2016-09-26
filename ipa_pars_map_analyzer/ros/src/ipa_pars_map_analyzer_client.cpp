@@ -46,11 +46,21 @@
 int main(int argc, char **argv)
 {
 	ros::init(argc, argv, "ipa_pars_map_analyzer_client");
-	std::string image_filename = ros::package::getPath("ipa_pars_map_analyzer") + "/common/files/test_maps/lab_ipa4.png";
-//	std::string image_filename = ros::package::getPath("ipa_pars_map_analyzer") + "/common/files/test_maps/office_c.png";
-	cv::Mat map = cv::imread(image_filename.c_str(), 0);
+	ros::NodeHandle nh_;
+	std::string map_name;
+	double map_resolution;
+	double robot_radius;
+	std::vector<double> map_origin;
+	nh_.getParam("map_name", map_name);
+	nh_.getParam("map_resolution", map_resolution);
+	nh_.getParam("robot_radius", robot_radius);
+	nh_.getParam("map_origin", map_origin);
+	std::string image_filename = ros::package::getPath("ipa_pars_map_analyzer") + "/common/files/test_maps/" + map_name;
+	cv::Mat map = cv::imread(image_filename.c_str(), CV_LOAD_IMAGE_GRAYSCALE);
 	sensor_msgs::Image output_img;
 	cv_bridge::CvImage cv_image;
+	ROS_INFO("img.type() = %u", map.type());
+	ROS_INFO("img.channels() = %u",map.channels());
 	//	cv_image.header.stamp = ros::Time::now();
 	cv_image.encoding = "mono8";
 	cv_image.image = map;
@@ -68,13 +78,11 @@ int main(int argc, char **argv)
 
 	// origin : The 2-D pose of the lower-left pixel in the map, as (x, y, yaw)
 	// with yaw as counterclockwise rotation (yaw=0 means no rotation).
-	// Transformation from
-	// TODO: this data is from ipa-lab map. Read this from a map.yaml!
-	goal.map_origin.position.x = 19.2;
-	goal.map_origin.position.y = 19.2;
-	goal.map_origin.position.z = 0.0;
-	goal.map_resolution = 0.05;
-	goal.robot_radius.data = 0.4;
+	goal.map_origin.position.x = map_origin.at(0);
+	goal.map_origin.position.y = map_origin.at(1);
+	goal.map_origin.position.z = map_origin.at(2);
+	goal.map_resolution = map_resolution;
+	goal.robot_radius.data = robot_radius;
 	ac.sendGoal(goal);
 
 	//wait for the action to return

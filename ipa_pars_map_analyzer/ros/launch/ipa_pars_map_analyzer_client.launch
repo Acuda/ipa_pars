@@ -4,7 +4,7 @@
 		
 		<!-- nodes to start -->
 		<node pkg="ipa_pars_map_analyzer" type="ipa_pars_map_analyzer_client" name="ipa_pars_map_analyzer_client" respawn="false" output="screen"/>
-
+		<rosparam command="load" file="$(find ipa_pars_map_analyzer)/ros/launch/ipa_pars_map_analyzer_server_params.yaml"/>
 	</group>
 </launch>
 

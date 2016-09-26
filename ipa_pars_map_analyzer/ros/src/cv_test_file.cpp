@@ -68,38 +68,53 @@ int main(int argc, char **argv)
 	}
 	ROS_INFO("image channels= %u", map.channels());
 	//make non-white pixels black
-//	int label = 1;
-//	int countery = 0;
-//	int counterx = 0;
-//	int thickness = 10;
-//	int linetype = 8;
-//	int blue = (rand() % 250) + 1;
-//	int green = (rand() % 250) + 1;
-//	int red = (rand() % 250) + 1;
-	for (int y = 0; y < map.rows-20; y += 20)
-	{
-		for (int x = 0; x < map.cols-20; x += 20)
-		{
-			cv::rectangle(new_map,cv::Point(x,y),cv::Point(x+20,y+20),cv::Scalar(((rand() % 250) + 1),((rand() % 250) + 1), ((rand() % 250) + 1)), -1);
-		}
-	}
-	int b,g,r;
-	for (int y = 0; y < map.rows; y++)
-	{
-		for (int x = 0; x < map.cols; x++)
-		{
-//
-			if (map.at<unsigned char>(y,x) != 0)
-			{
-				b = new_map.at<cv::Vec3b>(y,x)[0];
-				g = new_map.at<cv::Vec3b>(y,x)[1];
-				r = new_map.at<cv::Vec3b>(y,x)[2];
-				colour_map.at<cv::Vec3b>(y,x) = cv::Vec3b(b,g,r);
-			}
-		}
-	}
 
-	cv::imshow("testoutput_map", new_map);
+//	for (int y = 0; y < map.rows-20; y += 20)
+//	{
+//		for (int x = 0; x < map.cols-20; x += 20)
+//		{
+//			cv::rectangle(new_map,cv::Point(x,y),cv::Point(x+20,y+20),cv::Scalar(((rand() % 250) + 1),((rand() % 250) + 1), ((rand() % 250) + 1)), -1);
+//		}
+//	}
+//	int b,g,r;
+//	for (int y = 0; y < map.rows; y++)
+//	{
+//		for (int x = 0; x < map.cols; x++)
+//		{
+////
+//			if (map.at<unsigned char>(y,x) != 0)
+//			{
+//				b = new_map.at<cv::Vec3b>(y,x)[0];
+//				g = new_map.at<cv::Vec3b>(y,x)[1];
+//				r = new_map.at<cv::Vec3b>(y,x)[2];
+//				colour_map.at<cv::Vec3b>(y,x) = cv::Vec3b(b,g,r);
+//			}
+//		}
+//	}
+
+	double map_resolution = 0.05;
+	double origin_x = 19.2;
+	double origin_y = 19.2;
+	double yaw = 1.57;
+
+
+	// drawArrow:
+	double length = 2 / map_resolution; //40 px in general
+	double arrowLength = 0.1 * length;
+	double arrowAngle = 0.52; // 30 degrees as arrow angle;
+	double input_x = origin_x / map_resolution;
+	double input_y = colour_map.rows - (origin_y / map_resolution);
+	cv::line(colour_map, cv::Point(input_x,input_y), cv::Point(input_x+length, input_y),cv::Scalar(255,0,0),1,CV_AA,0);
+	ROS_INFO("input_y = %f", input_y);
+	ROS_INFO("arrowLength = %f", arrowLength);
+	ROS_INFO("sin(yaw) = %f", sin(yaw));
+	ROS_INFO("cos(yaw) = %f", cos(yaw));
+	ROS_INFO("my calculation = %f ", input_y + arrowLength * (tan(yaw)));
+	cv::line(colour_map, cv::Point(input_x+ length,input_y), cv::Point(input_x+length - arrowLength, input_y + arrowLength * (tan(yaw))),cv::Scalar(255,0,0),1,CV_AA,0);
+//	cv::line(colour_map, cv::Point(input_x+length,input_y), cv::Point((input_x + 0.1 * length) * cos(yaw) , (input_y + 0.1 * length) * -1 *  sin(yaw) ),cv::Scalar(255,0,0),1,CV_AA,0);
+//	cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px), cv::Point(x_origin_in_px * cos(-yaw) + (y_origin_in_px - (2/map_resolution)) * sin(-yaw), -x_origin_in_px * sin(-yaw) + (y_origin_in_px - (2/map_resolution)) * cos(-yaw)), cv::Scalar(255,0,0),1,CV_AA,0);
+
+//	cv::imshow("testoutput_map", new_map);
 	cv::imshow("testoutput_color", colour_map);
 	cv::waitKey();
 	//exit
