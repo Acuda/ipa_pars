@@ -97,20 +97,59 @@ int main(int argc, char **argv)
 	double origin_y = 19.2;
 	double yaw = 1.57;
 
+	int origin_p1x = 386;
+	int origin_p1y = 386;
 
+	int origin_p2x = 426;
+	int origin_p2y = 406;
+
+	double delta_x = origin_p1x - origin_p2x;
+	double delta_y = origin_p1y - origin_p2y;
+
+	ROS_INFO("delta_x = %f delta_y = %f", delta_x, delta_y);
+
+	double slope = delta_y / delta_x;
+	ROS_INFO("slope = %f", slope);
+	int c = origin_p1y - slope * origin_p1x;
+	for (int x = origin_p1x; x < origin_p2x; x++)
+	{
+		int y = (int)  x * slope + c;
+		ROS_INFO(" Point ( %u | %u )", x , y);
+		colour_map.at<cv::Vec3b>(y,x)[0] = 255;
+		colour_map.at<cv::Vec3b>(y,x)[1] = 0;
+		colour_map.at<cv::Vec3b>(y,x)[2] = 0;
+	}
+
+//	cv::line(colour_map, cv::Point(origin_p1x, origin_p1y), cv::Point(origin_p2x , origin_p2y),cv::Scalar(0,255,0),1,CV_AA,0);
+
+
+//	ROS_INFO("sin(yaw) = %u", (int) (sin(yaw) * length));
+//	ROS_INFO("cos(yaw) = %u ", (int) (cos(yaw) * length));
+	//	ROS_INFO("input_y = %f", input_y);
+	//	ROS_INFO("arrowLength = %f", arrowLength);
+	//	ROS_INFO("sin(yaw) = %f", sin(yaw));
+	//	ROS_INFO("cos(yaw) = %f", cos(yaw));
+	//	ROS_INFO("my calculation = %f ", input_y + arrowLength * (tan(yaw)));
 	// drawArrow:
-	double length = 2 / map_resolution; //40 px in general
-	double arrowLength = 0.1 * length;
-	double arrowAngle = 0.52; // 30 degrees as arrow angle;
-	double input_x = origin_x / map_resolution;
-	double input_y = colour_map.rows - (origin_y / map_resolution);
-	cv::line(colour_map, cv::Point(input_x,input_y), cv::Point(input_x+length, input_y),cv::Scalar(255,0,0),1,CV_AA,0);
-	ROS_INFO("input_y = %f", input_y);
-	ROS_INFO("arrowLength = %f", arrowLength);
-	ROS_INFO("sin(yaw) = %f", sin(yaw));
-	ROS_INFO("cos(yaw) = %f", cos(yaw));
-	ROS_INFO("my calculation = %f ", input_y + arrowLength * (tan(yaw)));
-	cv::line(colour_map, cv::Point(input_x+ length,input_y), cv::Point(input_x+length - arrowLength, input_y + arrowLength * (tan(yaw))),cv::Scalar(255,0,0),1,CV_AA,0);
+//	double length = 2 / map_resolution; //40 px in general
+//	double arrowLength = 0.25 * length;
+//	double arrowAngle = 2.62; // 30 degrees as arrow angle;
+//	double zero_x = origin_x / map_resolution;
+//	double zero_y = colour_map.rows - (origin_y / map_resolution);
+//	// x axis:
+//	cv::line(colour_map, cv::Point(zero_x,zero_y), cv::Point(zero_x + (int) (cos(yaw)*length), zero_y - (int) (sin(yaw) * length)),cv::Scalar(255,0,0),1,CV_AA,0);
+//	cv::line(colour_map, cv::Point(zero_x + (int) (cos(yaw)*length), zero_y - (int) (sin(yaw) * length)), cv::Point(zero_x + (int) (cos(yaw)*length) + (int) (cos(yaw + arrowAngle) * arrowLength) , zero_y - (int) (sin(yaw) * length) - (int) (sin(yaw+arrowAngle) * arrowLength)),cv::Scalar(255,0,0),1,CV_AA,0);
+//	cv::line(colour_map, cv::Point(zero_x + (int) (cos(yaw)*length), zero_y - (int) (sin(yaw) * length)), cv::Point(zero_x + (int) (cos(yaw)*length) + (int) (cos(yaw - arrowAngle) * arrowLength) , zero_y - (int) (sin(yaw) * length) - (int) (sin(yaw-arrowAngle) * arrowLength)),cv::Scalar(255,0,0),1,CV_AA,0);
+//	// y axis
+//	yaw = yaw + 1.57;
+//	cv::line(colour_map, cv::Point(zero_x,zero_y), cv::Point(zero_x + (int) (cos(yaw)*length), zero_y - (int) (sin(yaw) * length)),cv::Scalar(255,0,0),1,CV_AA,0);
+//	cv::line(colour_map, cv::Point(zero_x + (int) (cos(yaw)*length), zero_y - (int) (sin(yaw) * length)), cv::Point(zero_x + (int) (cos(yaw)*length) + (int) (cos(yaw + arrowAngle) * arrowLength) , zero_y - (int) (sin(yaw) * length) - (int) (sin(yaw+arrowAngle) * arrowLength)),cv::Scalar(255,0,0),1,CV_AA,0);
+//	cv::line(colour_map, cv::Point(zero_x + (int) (cos(yaw)*length), zero_y - (int) (sin(yaw) * length)), cv::Point(zero_x + (int) (cos(yaw)*length) + (int) (cos(yaw - arrowAngle) * arrowLength) , zero_y - (int) (sin(yaw) * length) - (int) (sin(yaw-arrowAngle) * arrowLength)),cv::Scalar(255,0,0),1,CV_AA,0);
+
+//	cv::line(colour_map, cv::Point(input_x,input_y), cv::Point(input_x + (int) (cos(yaw)*length), input_y - (int) (sin(yaw) * length)),cv::Scalar(255,0,0),1,CV_AA,0);
+//	cv::line(colour_map, cv::Point(input_x + (int) (cos(yaw)*length), input_y - (int) (sin(yaw) * length)), cv::Point(input_x + (int) (cos(yaw)*length) + (int) (cos(yaw + arrowAngle) * arrowLength) , input_y - (int) (sin(yaw) * length) - (int) (sin(yaw+arrowAngle) * arrowLength)),cv::Scalar(255,0,0),1,CV_AA,0);
+//	cv::line(colour_map, cv::Point(input_x + (int) (cos(yaw)*length), input_y - (int) (sin(yaw) * length)), cv::Point(input_x + (int) (cos(yaw)*length) + (int) (cos(yaw - arrowAngle) * arrowLength) , input_y - (int) (sin(yaw) * length) - (int) (sin(yaw-arrowAngle) * arrowLength)),cv::Scalar(255,0,0),1,CV_AA,0);
+	//	cv::line(colour_map, cv::Point(input_x + (int) (cos(yaw)*length), input_y - (int) (sin(yaw) * length)), cv::Point(input_x + (int) (cos(yaw)*length) + arrowLength, input_y - (int) (sin(yaw) * length) + arrowLength * (tan(arrowAngle))),cv::Scalar(255,0,0),1,CV_AA,0);
 //	cv::line(colour_map, cv::Point(input_x+length,input_y), cv::Point((input_x + 0.1 * length) * cos(yaw) , (input_y + 0.1 * length) * -1 *  sin(yaw) ),cv::Scalar(255,0,0),1,CV_AA,0);
 //	cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px), cv::Point(x_origin_in_px * cos(-yaw) + (y_origin_in_px - (2/map_resolution)) * sin(-yaw), -x_origin_in_px * sin(-yaw) + (y_origin_in_px - (2/map_resolution)) * cos(-yaw)), cv::Scalar(255,0,0),1,CV_AA,0);
 

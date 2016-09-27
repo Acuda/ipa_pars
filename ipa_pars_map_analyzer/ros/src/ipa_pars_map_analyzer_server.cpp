@@ -1031,28 +1031,58 @@ void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, cv::Mat &map_with_ro
 						std::string room_number = boost::lexical_cast<std::string>( (int)sqr_info.at(c).label.data / 1000);
 						std::string square_number = boost::lexical_cast<std::string>( (int) sqr_info.at(c).label.data % 1000);
 						std::string sqr_numb = room_number+"-"+square_number;
-						cv::putText(colored_map, sqr_numb , cv::Point( (int) ((sqr_info.at(c).center.x + map_origin.at(0)) / map_resolution ) -10, (int) colored_map.rows - ((sqr_info.at(c).center.y+ map_origin.at(1)) / map_resolution)+10 ), CV_FONT_HERSHEY_SIMPLEX, 0.2f,
-						        cv::Scalar(255, 255, 255), 0.1, 8, false);
-//						ROS_INFO("komische rechnung kommt raus = %d", (int)(colored_map.rows - (sqr_info.at(c).center.y + map_origin.at(1)) / map_resolution  ));
-						colored_map.at<cv::Vec3b>((int)(colored_map.rows - (sqr_info.at(c).center.y + map_origin.at(1)) / map_resolution), ((sqr_info.at(c).center.x + map_origin.at(0)) / map_resolution ))[0] = 255;
-						colored_map.at<cv::Vec3b>((int)(colored_map.rows - ( sqr_info.at(c).center.y + map_origin.at(1)) / map_resolution), ((sqr_info.at(c).center.x + map_origin.at(0)) / map_resolution ))[1] = 255;
-						colored_map.at<cv::Vec3b>((int)(colored_map.rows - ( sqr_info.at(c).center.y + map_origin.at(1)) / map_resolution), ((sqr_info.at(c).center.x + map_origin.at(0)) / map_resolution))[2] = 51;
-//						colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[0] = 255;
-//						colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05 ))[1] = 255;
-//						colored_map.at<cv::Vec3b>(((sqr_info.at(c).center.y + 19.2) / 0.05 ), ((sqr_info.at(c).center.x + 19.2) / 0.05))[2] = 51;
+//						cv::putText(colored_map, sqr_numb , cv::Point( (int) ((sqr_info.at(c).center.x + map_origin.at(0)) / map_resolution ) -10, (int) colored_map.rows - ((sqr_info.at(c).center.y+ map_origin.at(1)) / map_resolution)+10 ), CV_FONT_HERSHEY_SIMPLEX, 0.2f,
+//						        cv::Scalar(255, 255, 255), 0.1, 8, false);
+						//  and transformation in pixels
+						int balance_x = (int) ((sqr_info.at(c).center.x ) / map_resolution);
+						int balance_y = (int) ((sqr_info.at(c).center.y ) / map_resolution);
+						// transformed with
+						double yaw = map_origin.at(2);
+						//transform back meins clowise!
+						yaw = -yaw;
+						// x y changed because transformation invers!
+						int trans_x = balance_x * cos(yaw) + balance_y * sin(yaw);
+						int trans_y = (-1) * balance_x * sin(yaw) + balance_y * cos(yaw);
+						// transform to upper left corner (x = cols; y = rows!);
+						int translat_x = trans_x + map_origin.at(0)/map_resolution;
+						int translat_y = trans_y + map_origin.at(1)/map_resolution;
+						int corn_x = translat_x;
+						int corn_y = colored_map.rows - translat_y;
+						colored_map.at<cv::Vec3b>(corn_y,corn_x)[0] = 255;
+						colored_map.at<cv::Vec3b>(corn_y, corn_x)[1] = 255;
+						colored_map.at<cv::Vec3b>(corn_y, corn_x)[2] = 51;
+
+						cv::putText(colored_map, sqr_numb , cv::Point( corn_x - 8, corn_y + 5), CV_FONT_HERSHEY_SIMPLEX, 0.2f,cv::Scalar(255, 255, 255), 0.1, 8, false);
 					}
 
-					//put map Origin and axis
-					//y - axis
-					int x_origin_in_px = map_origin.at(0) / map_resolution;
-					int y_origin_in_px = colored_map.rows - (map_origin.at(1) / map_resolution);
-					cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px),cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
-					cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Point(x_origin_in_px + (0.15 / map_resolution ),y_origin_in_px - (2/map_resolution) + (0.2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
-					cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Point(x_origin_in_px - (0.15 / map_resolution ),y_origin_in_px - (2/map_resolution) + (0.2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
-//					// x
-					cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px),cv::Point(424,y_origin_in_px),cv::Scalar(255,0,0),1,CV_AA,0);
-					cv::line(colored_map, cv::Point(x_origin_in_px + (2/map_resolution),y_origin_in_px),cv::Point(x_origin_in_px + (2/map_resolution) - (0.2/map_resolution),y_origin_in_px + (0.15 / map_resolution )),cv::Scalar(255,0,0),1,CV_AA,0);
-					cv::line(colored_map, cv::Point(x_origin_in_px + (2/map_resolution),y_origin_in_px),cv::Point(x_origin_in_px + (2/map_resolution) - (0.2/map_resolution),y_origin_in_px - (0.15 / map_resolution )),cv::Scalar(255,0,0),1,CV_AA,0);
+					// drawArrow:
+					double length = 2 / map_resolution; //40 px in general
+					double arrowLength = 0.25 * length;
+					double arrowAngle = 2.62; // 30 degrees as arrow angle;
+					double zero_x = map_origin.at(0) / map_resolution;
+					double zero_y = colored_map.rows - (map_origin.at(1) / map_resolution);
+					double yaw = map_origin.at(2);
+					// x axis:
+					cv::line(colored_map, cv::Point(zero_x,zero_y), cv::Point(zero_x + (int) (cos(yaw)*length), zero_y - (int) (sin(yaw) * length)),cv::Scalar(255,0,0),1,CV_AA,0);
+					cv::line(colored_map, cv::Point(zero_x + (int) (cos(yaw)*length), zero_y - (int) (sin(yaw) * length)), cv::Point(zero_x + (int) (cos(yaw)*length) + (int) (cos(yaw + arrowAngle) * arrowLength) , zero_y - (int) (sin(yaw) * length) - (int) (sin(yaw+arrowAngle) * arrowLength)),cv::Scalar(255,0,0),1,CV_AA,0);
+					cv::line(colored_map, cv::Point(zero_x + (int) (cos(yaw)*length), zero_y - (int) (sin(yaw) * length)), cv::Point(zero_x + (int) (cos(yaw)*length) + (int) (cos(yaw - arrowAngle) * arrowLength) , zero_y - (int) (sin(yaw) * length) - (int) (sin(yaw-arrowAngle) * arrowLength)),cv::Scalar(255,0,0),1,CV_AA,0);
+					// y axis
+					yaw = yaw + 1.57;
+					cv::line(colored_map, cv::Point(zero_x,zero_y), cv::Point(zero_x + (int) (cos(yaw)*length), zero_y - (int) (sin(yaw) * length)),cv::Scalar(255,0,0),1,CV_AA,0);
+					cv::line(colored_map, cv::Point(zero_x + (int) (cos(yaw)*length), zero_y - (int) (sin(yaw) * length)), cv::Point(zero_x + (int) (cos(yaw)*length) + (int) (cos(yaw + arrowAngle) * arrowLength) , zero_y - (int) (sin(yaw) * length) - (int) (sin(yaw+arrowAngle) * arrowLength)),cv::Scalar(255,0,0),1,CV_AA,0);
+					cv::line(colored_map, cv::Point(zero_x + (int) (cos(yaw)*length), zero_y - (int) (sin(yaw) * length)), cv::Point(zero_x + (int) (cos(yaw)*length) + (int) (cos(yaw - arrowAngle) * arrowLength) , zero_y - (int) (sin(yaw) * length) - (int) (sin(yaw-arrowAngle) * arrowLength)),cv::Scalar(255,0,0),1,CV_AA,0);
+
+//					//put map Origin and axis
+//					//y - axis
+//					int x_origin_in_px = map_origin.at(0) / map_resolution;
+//					int y_origin_in_px = colored_map.rows - (map_origin.at(1) / map_resolution);
+//					cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px),cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
+//					cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Point(x_origin_in_px + (0.15 / map_resolution ),y_origin_in_px - (2/map_resolution) + (0.2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
+//					cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Point(x_origin_in_px - (0.15 / map_resolution ),y_origin_in_px - (2/map_resolution) + (0.2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
+////					// x
+//					cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px),cv::Point(424,y_origin_in_px),cv::Scalar(255,0,0),1,CV_AA,0);
+//					cv::line(colored_map, cv::Point(x_origin_in_px + (2/map_resolution),y_origin_in_px),cv::Point(x_origin_in_px + (2/map_resolution) - (0.2/map_resolution),y_origin_in_px + (0.15 / map_resolution )),cv::Scalar(255,0,0),1,CV_AA,0);
+//					cv::line(colored_map, cv::Point(x_origin_in_px + (2/map_resolution),y_origin_in_px),cv::Point(x_origin_in_px + (2/map_resolution) - (0.2/map_resolution),y_origin_in_px - (0.15 / map_resolution )),cv::Scalar(255,0,0),1,CV_AA,0);
 
 					cv::imshow("map_with_square_info_as_image", colored_map);
 					cv::imwrite("ipa_pars/log/map_with_square_info_as_image.jpeg", colored_map, compression_params);
@@ -1140,22 +1170,31 @@ void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, cv::Mat &map_with_ro
 //			// put SquareNumbers on BalancePoint Spots
 			for (int c = 0; c < sqr_info.size(); c++)
 			{
-//				std::string room_number = boost::lexical_cast<std::string>( (int)sqr_info.at(c).label.data / 1000);
-//				std::string square_number = boost::lexical_cast<std::string>( (int) sqr_info.at(c).label.data % 1000);
-//				std::string sqr_numb = room_number+"-"+square_number;
-//				cv::putText(colored_map, sqr_numb , cv::Point( (int) ((sqr_info.at(c).center.x + 19.2) / 0.05 ) -10, (int) ((sqr_info.at(c).center.y+19.2) / 0.05)+10 ), CV_FONT_HERSHEY_SIMPLEX, 0.2f,
-//						cv::Scalar(255, 255, 255), 0.1, 8, false);
-				colored_map.at<cv::Vec3b>((int)(colored_map.rows - (sqr_info.at(c).center.y + map_origin.at(1)) / map_resolution), ((sqr_info.at(c).center.x + map_origin.at(0)) / map_resolution ))[0] = 255;
-				colored_map.at<cv::Vec3b>((int)(colored_map.rows - ( sqr_info.at(c).center.y + map_origin.at(1)) / map_resolution), ((sqr_info.at(c).center.x + map_origin.at(0)) / map_resolution ))[1] = 255;
-				colored_map.at<cv::Vec3b>((int)(colored_map.rows - ( sqr_info.at(c).center.y + map_origin.at(1)) / map_resolution), ((sqr_info.at(c).center.x + map_origin.at(0)) / map_resolution))[2] = 51;
+				int balance_x = (int) ((sqr_info.at(c).center.x ) / map_resolution);
+				int balance_y = (int) ((sqr_info.at(c).center.y ) / map_resolution);
+				// transformed with
+				double yaw = map_origin.at(2);
+				//transform back meins clowise!
+				yaw = -yaw;
+				// x y changed because transformation invers!
+				int trans_x = balance_x * cos(yaw) + balance_y * sin(yaw);
+				int trans_y = (-1) * balance_x * sin(yaw) + balance_y * cos(yaw);
+				// transform to upper left corner (x = cols; y = rows!);
+				int translat_x = trans_x + map_origin.at(0)/map_resolution;
+				int translat_y = trans_y + map_origin.at(1)/map_resolution;
+				int corn_x = translat_x;
+				int corn_y = colored_map.rows - translat_y;
+				colored_map.at<cv::Vec3b>(corn_y,corn_x)[0] = 255;
+				colored_map.at<cv::Vec3b>(corn_y, corn_x)[1] = 255;
+				colored_map.at<cv::Vec3b>(corn_y, corn_x)[2] = 51;
 			}
 //
 			//put map Origin and axis
 			//y - axis
 			// transform origin translation
-			int x_origin_in_px = map_origin.at(0) / map_resolution;
-			int y_origin_in_px = colored_map.rows - (map_origin.at(1) / map_resolution);
-			double yaw = map_origin.at(2);
+//			int x_origin_in_px = map_origin.at(0) / map_resolution;
+//			int y_origin_in_px = colored_map.rows - (map_origin.at(1) / map_resolution);
+
 			// transform rotation:
 //			cv::Point point_before_rot;
 //			point_before_rot = (x_origin_in_px,y_origin_in_px);
@@ -1163,13 +1202,30 @@ void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, cv::Mat &map_with_ro
 
 			//todo: drawKS Function. origin(x,y,yaw) + map_resolution
 
-			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px), cv::Point(x_origin_in_px * cos(-yaw) + (y_origin_in_px - (2/map_resolution)) * sin(-yaw), -x_origin_in_px * sin(-yaw) + (y_origin_in_px - (2/map_resolution)) * cos(-yaw)), cv::Scalar(255,0,0),1,CV_AA,0);
-			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Point(x_origin_in_px + (0.15 / map_resolution ),y_origin_in_px - (2/map_resolution) + (0.2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
-			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Point(x_origin_in_px - (0.15 / map_resolution ),y_origin_in_px - (2/map_resolution) + (0.2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
-//			// x
-			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px),cv::Point(424,y_origin_in_px),cv::Scalar(255,0,0),1,CV_AA,0);
-			cv::line(colored_map, cv::Point(x_origin_in_px + (2/map_resolution),y_origin_in_px),cv::Point(x_origin_in_px + (2/map_resolution) - (0.2/map_resolution),y_origin_in_px + (0.15 / map_resolution )),cv::Scalar(255,0,0),1,CV_AA,0);
-			cv::line(colored_map, cv::Point(x_origin_in_px + (2/map_resolution),y_origin_in_px),cv::Point(x_origin_in_px + (2/map_resolution) - (0.2/map_resolution),y_origin_in_px - (0.15 / map_resolution )),cv::Scalar(255,0,0),1,CV_AA,0);
+			// drawArrow:
+			double length = 2 / map_resolution; //40 px in general
+			double arrowLength = 0.25 * length;
+			double arrowAngle = 2.62; // 30 degrees as arrow angle;
+			double zero_x = map_origin.at(0) / map_resolution;
+			double zero_y = colored_map.rows - (map_origin.at(1) / map_resolution);
+			double yaw = map_origin.at(2);
+			// x axis:
+			cv::line(colored_map, cv::Point(zero_x,zero_y), cv::Point(zero_x + (int) (cos(yaw)*length), zero_y - (int) (sin(yaw) * length)),cv::Scalar(255,0,0),1,CV_AA,0);
+			cv::line(colored_map, cv::Point(zero_x + (int) (cos(yaw)*length), zero_y - (int) (sin(yaw) * length)), cv::Point(zero_x + (int) (cos(yaw)*length) + (int) (cos(yaw + arrowAngle) * arrowLength) , zero_y - (int) (sin(yaw) * length) - (int) (sin(yaw+arrowAngle) * arrowLength)),cv::Scalar(255,0,0),1,CV_AA,0);
+			cv::line(colored_map, cv::Point(zero_x + (int) (cos(yaw)*length), zero_y - (int) (sin(yaw) * length)), cv::Point(zero_x + (int) (cos(yaw)*length) + (int) (cos(yaw - arrowAngle) * arrowLength) , zero_y - (int) (sin(yaw) * length) - (int) (sin(yaw-arrowAngle) * arrowLength)),cv::Scalar(255,0,0),1,CV_AA,0);
+			// y axis
+			yaw = yaw + 1.57;
+			cv::line(colored_map, cv::Point(zero_x,zero_y), cv::Point(zero_x + (int) (cos(yaw)*length), zero_y - (int) (sin(yaw) * length)),cv::Scalar(255,0,0),1,CV_AA,0);
+			cv::line(colored_map, cv::Point(zero_x + (int) (cos(yaw)*length), zero_y - (int) (sin(yaw) * length)), cv::Point(zero_x + (int) (cos(yaw)*length) + (int) (cos(yaw + arrowAngle) * arrowLength) , zero_y - (int) (sin(yaw) * length) - (int) (sin(yaw+arrowAngle) * arrowLength)),cv::Scalar(255,0,0),1,CV_AA,0);
+			cv::line(colored_map, cv::Point(zero_x + (int) (cos(yaw)*length), zero_y - (int) (sin(yaw) * length)), cv::Point(zero_x + (int) (cos(yaw)*length) + (int) (cos(yaw - arrowAngle) * arrowLength) , zero_y - (int) (sin(yaw) * length) - (int) (sin(yaw-arrowAngle) * arrowLength)),cv::Scalar(255,0,0),1,CV_AA,0);
+
+//			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px), cv::Point(x_origin_in_px * cos(-yaw) + (y_origin_in_px - (2/map_resolution)) * sin(-yaw), -x_origin_in_px * sin(-yaw) + (y_origin_in_px - (2/map_resolution)) * cos(-yaw)), cv::Scalar(255,0,0),1,CV_AA,0);
+//			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Point(x_origin_in_px + (0.15 / map_resolution ),y_origin_in_px - (2/map_resolution) + (0.2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
+//			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Point(x_origin_in_px - (0.15 / map_resolution ),y_origin_in_px - (2/map_resolution) + (0.2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
+////			// x
+//			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px),cv::Point(424,y_origin_in_px),cv::Scalar(255,0,0),1,CV_AA,0);
+//			cv::line(colored_map, cv::Point(x_origin_in_px + (2/map_resolution),y_origin_in_px),cv::Point(x_origin_in_px + (2/map_resolution) - (0.2/map_resolution),y_origin_in_px + (0.15 / map_resolution )),cv::Scalar(255,0,0),1,CV_AA,0);
+//			cv::line(colored_map, cv::Point(x_origin_in_px + (2/map_resolution),y_origin_in_px),cv::Point(x_origin_in_px + (2/map_resolution) - (0.2/map_resolution),y_origin_in_px - (0.15 / map_resolution )),cv::Scalar(255,0,0),1,CV_AA,0);
 
 //			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px),cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);
 //			cv::line(colored_map, cv::Point(x_origin_in_px,y_origin_in_px - (2/map_resolution)),cv::Point(x_origin_in_px + (0.15 / map_resolution ),y_origin_in_px - (2/map_resolution) + (0.2/map_resolution)),cv::Scalar(255,0,0),1,CV_AA,0);

@@ -85,14 +85,22 @@ class KnowledgeToYamlNode(object):
         #print srv_msg
         location_data = []
         for sqr in srv_msg.square_information:
-            x_center = sqr.center.x
-            y_center = sqr.center.y
-            z_center = sqr.center.z
+            x_center = "%.2f" % sqr.center.x
+            y_center = "%.2f" % sqr.center.y
+            z_center = "%.2f" % sqr.center.z
             dict_of_center = {'X': x_center, 'Y': y_center, 'Z': z_center}
             name = "room-"+str(sqr.label.data/1000)+"-square-"+str(sqr.label.data%1000)
             list_of_transitions = []
             for trans in sqr.transitions:
-                list_of_transitions.append("room-"+str(trans.data/1000)+"-square-"+str(trans.data%1000))
+                transition_name = "room-"+str(trans.data/1000)+"-square-"+str(trans.data%1000)
+                i = sqr.transitions.index(trans)
+                try:
+                    intervisibility_count = sqr.intervisibility[i]
+                    intervisibility_bool = True;
+                except ValueError:
+                    intervisibility_bool = False;
+                dict_of_transition = {'name': transition_name, 'intervisibility': intervisibility_bool}
+                list_of_transitions.append(dict_of_transition)
             list_of_properties = []
             if sqr.navigable.data:
                 list_of_properties.append("navigable")
