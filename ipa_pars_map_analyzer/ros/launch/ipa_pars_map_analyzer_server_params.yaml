@@ -5,7 +5,7 @@ map_name: lab_ipa4.png
 # map resolution
 map_resolution: 0.05
 # map origin as X,Y from lower left corner and Z as counter-clockwise rotation (yaw)
-map_origin: [19.2, 19.2, 0.73]
+map_origin: [19.2, 19.2, 0.0]
 # robot_radius
 robot_radius: 0.4
 

@@ -120,6 +120,10 @@ int main(int argc, char **argv)
 		colour_map.at<cv::Vec3b>(y,x)[2] = 0;
 	}
 
+	int origin_p3x = 550;
+	int origin_p3y = 550;
+	cv::line(colour_map, cv::Point(origin_p1x, origin_p1y), cv::Point(origin_p3x, origin_p3y),cv::Scalar(255,0,0),2,CV_AA,0);
+
 //	cv::line(colour_map, cv::Point(origin_p1x, origin_p1y), cv::Point(origin_p2x , origin_p2y),cv::Scalar(0,255,0),1,CV_AA,0);
 
 

@@ -83,23 +83,29 @@ class KnowledgeToYamlNode(object):
     
     def create_knowledge_yaml_structure(self, srv_msg):
         #print srv_msg
+        
         location_data = []
         for sqr in srv_msg.square_information:
-            x_center = "%.2f" % sqr.center.x
-            y_center = "%.2f" % sqr.center.y
-            z_center = "%.2f" % sqr.center.z
+            x_center = float ("%.2f" % sqr.center.x)
+            y_center = float ("%.2f" % sqr.center.y)
+            z_center = float ("%.2f" % sqr.center.z)
             dict_of_center = {'X': x_center, 'Y': y_center, 'Z': z_center}
             name = "room-"+str(sqr.label.data/1000)+"-square-"+str(sqr.label.data%1000)
             list_of_transitions = []
             for trans in sqr.transitions:
                 transition_name = "room-"+str(trans.data/1000)+"-square-"+str(trans.data%1000)
-                i = sqr.transitions.index(trans)
-                try:
-                    intervisibility_count = sqr.intervisibility[i]
-                    intervisibility_bool = True;
-                except ValueError:
-                    intervisibility_bool = False;
-                dict_of_transition = {'name': transition_name, 'intervisibility': intervisibility_bool}
+                # optional new feature intervisibility
+                #i = sqr.transitions.index(trans)
+                #try:
+                #    # for debuggin:
+                #    print "intervis_list_element"
+                #    print sqr.intervisibility
+                #    intervisibility_count = sqr.intervisibility[i]
+                #    intervisibility_bool = True;
+                #except ValueError:
+                #    intervisibility_bool = False;
+                #dict_of_transition = {'name': transition_name, 'intervisibility': intervisibility_bool}
+                dict_of_transition = {'name' : transition_name}
                 list_of_transitions.append(dict_of_transition)
             list_of_properties = []
             if sqr.navigable.data:
