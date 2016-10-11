@@ -82,8 +82,6 @@ class KnowledgeToYamlNode(object):
         rospy.loginfo("KnowledgeToYamlService initialize finished")
     
     def create_knowledge_yaml_structure(self, srv_msg):
-        #print srv_msg
-        
         location_data = []
         for sqr in srv_msg.square_information:
             x_center = float ("%.2f" % sqr.center.x)
@@ -94,18 +92,13 @@ class KnowledgeToYamlNode(object):
             list_of_transitions = []
             for trans in sqr.transitions:
                 transition_name = "room-"+str(trans.data/1000)+"-square-"+str(trans.data%1000)
-                # optional new feature intervisibility
-                #i = sqr.transitions.index(trans)
-                #try:
-                #    # for debuggin:
-                #    print "intervis_list_element"
-                #    print sqr.intervisibility
-                #    intervisibility_count = sqr.intervisibility[i]
-                #    intervisibility_bool = True;
-                #except ValueError:
-                #    intervisibility_bool = False;
-                #dict_of_transition = {'name': transition_name, 'intervisibility': intervisibility_bool}
-                dict_of_transition = {'name' : transition_name}
+                intervisibility_bool = False
+                for intervis in sqr.intervisibility:
+                    if trans.data == intervis.data:
+                        intervisibility_bool = True
+                    else:
+                        intervisiblity_bool = False
+                dict_of_transition = {'name': transition_name, 'intervisibility': intervisibility_bool}
                 list_of_transitions.append(dict_of_transition)
             list_of_properties = []
             if sqr.navigable.data:
@@ -114,7 +107,6 @@ class KnowledgeToYamlNode(object):
             location_data.append(dict_of_loc)
         dict_of_locations = {'location-data': location_data}
         yaml_content = yaml.dump(dict_of_locations, default_flow_style=False)
-        #print yaml_content
         self.save_static_knowledge_file(yaml_content)
         response = KnowledgeToYamlResponse()
         response.success = True;

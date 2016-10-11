@@ -222,85 +222,107 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 		vec_of_transitions.push_back(transitions);
 	}
 
+//	ROS_INFO("Print Transitions:");
+//	for (int i = 0; i < vec_of_transitions.size(); i++ )
+//	{
+//		for (int j = 1; j < vec_of_transitions.at(i).size(); j++)
+//		{
+//			ROS_INFO("Transition found from: ( %u --> %u )", vec_of_transitions.at(i).at(0), vec_of_transitions.at(i).at(j));
+//		}
+//	}
+
 
 //	ROS_INFO("flag before intervisibility calc");
-//	std::vector< std::vector< int > > vec_of_intervisibility;
-//	for (int t = 0; t < vec_of_transitions.size(); t++)
-//	{
-//		std::vector<int> intervisibility;
-//		intervisibility.push_back(vec_of_transitions.at(t).at(0));
-//		for (int l = 1; l < vec_of_transitions.at(t).size(); l++)
-//		{
-//			// todo: !!!!!!!!!!!!!!!!!!!!!!!!!!!
-//			bool inter_bool = true;
-//			// label balancePoint
-//			int bPx = balancePoints.at(t).at(0);
-//			int bPy = balancePoints.at(t).at(1);
-//			// neighborLabel balancePoint
+	std::vector< std::vector< int > > vec_of_intervisibility;
+	for (int t = 0; t < vec_of_transitions.size(); t++)
+	{
+		std::vector<int> intervisibility;
+		intervisibility.push_back(vec_of_transitions.at(t).at(0));
+		for (int l = 1; l < vec_of_transitions.at(t).size(); l++)
+		{
+
+
+			bool inter_bool = true;
+			// label balancePoint
+			int bPx = balancePoints.at(t).at(0);
+			int bPy = balancePoints.at(t).at(1);
+			// neighborLabel balancePoint
+			// search the label in reallabelcount:
+			int label = vec_of_transitions.at(t).at(l);
+			int pos = std::find(reallabelcount.begin(), reallabelcount.end(), label) - reallabelcount.begin();
 //			ROS_INFO("balancePoint index = %u",vec_of_transitions.at(t).at(l));
 //			ROS_INFO("thats label index = %u",vec_of_transitions.at(t).at(l) % 1000);
-//			int bPx2 = balancePoints.at(vec_of_transitions.at(t).at(l) % 1000).at(0);
-//			int bPy2 = balancePoints.at(vec_of_transitions.at(t).at(l) % 1000).at(1);
-//			ROS_INFO("Cals intervis between label = %u --> %u ", vec_of_transitions.at(t).at(0) % 1000, vec_of_transitions.at(t).at(l) % 1000);
+			int bPx2 = balancePoints.at(pos).at(0);
+			int bPy2 = balancePoints.at(pos).at(1);
+//			ROS_INFO("Cals intervis between label = %u --> %u ", vec_of_transitions.at(t).at(0), vec_of_transitions.at(t).at(l));
 //			ROS_INFO("Calc intervis between ( %u | %u ) --> ( %u | %u ) ", bPx, bPy, bPx2, bPy2);
-//			// draw imagine line between them
-////			double m = (bPy - bPy2) / (bPx - bPx2);
-////			int c = bPx - m * bPy;
-////			for (int x = bPx; x < bPx2; x++)
-////			{
-////				int y = (int) m * x + c;
-////				if (input_img.at<int>(y,x) == 0)
-////				{
-////					ROS_INFO("found a NOT intervisible Transition");
-////					inter_bool = false;
-////					break;
-////
-////				}
-////			}
-//			cv::Mat test_img_intervis = input_img.clone();
-//			cv::line(test_img_intervis, cv::Point(bPx, bPy), cv::Point(bPx2, bPy2), 65531,2,CV_AA,0);
-//
-//			// check for intervisibility:
-//			for (int r = 0; r< test_img_intervis.rows; r++)
+			// draw imagine line between them
+//			double m = (bPy - bPy2) / (bPx - bPx2);
+//			int c = bPx - m * bPy;
+//			for (int x = bPx; x < bPx2; x++)
 //			{
-//				for (int c = 0; c < test_img_intervis.cols; c++)
+//				int y = (int) m * x + c;
+//				if (input_img.at<int>(y,x) == 0)
 //				{
-//					if (test_img_intervis.at<int>(r,c) == 65531)
-//					{
-//						if (test_img_intervis.at<int>(r+1,c) == 0)
-//						{
-//							inter_bool = false;
-//							break;
-//						}
-//						else if (test_img_intervis.at<int>(r-1,c) == 0)
-//						{
-//							inter_bool = false;
-//							break;
-//						}
-//						else if (test_img_intervis.at<int>(r,c+1) == 0)
-//						{
-//							inter_bool = false;
-//							break;
-//						}
-//						else if (test_img_intervis.at<int>(r,c-1) == 0)
-//						{
-//							inter_bool = false;
-//							break;
-//						}
-//					}
+//					ROS_INFO("found a NOT intervisible Transition");
+//					inter_bool = false;
+//					break;
+//
 //				}
 //			}
-//
-//			if (inter_bool)
-//			{
+			cv::Mat test_img_intervis = input_img.clone();
+			cv::line(test_img_intervis, cv::Point(bPx, bPy), cv::Point(bPx2, bPy2), 65531,2,CV_AA,0);
+
+			// check for intervisibility:
+			for (int r = 0; r< test_img_intervis.rows; r++)
+			{
+				for (int c = 0; c < test_img_intervis.cols; c++)
+				{
+					if (test_img_intervis.at<int>(r,c) == 65531)
+					{
+						if (test_img_intervis.at<int>(r+1,c) == 0)
+						{
+							inter_bool = false;
+							break;
+						}
+						else if (test_img_intervis.at<int>(r-1,c) == 0)
+						{
+							inter_bool = false;
+							break;
+						}
+						else if (test_img_intervis.at<int>(r,c+1) == 0)
+						{
+							inter_bool = false;
+							break;
+						}
+						else if (test_img_intervis.at<int>(r,c-1) == 0)
+						{
+							inter_bool = false;
+							break;
+						}
+					}
+				}
+			}
+
+			if (inter_bool)
+			{
 //				ROS_INFO("pushed a intervis with value true");
-//				intervisibility.push_back(vec_of_transitions.at(t).at(l));
-//			}
-//		}
-//		vec_of_intervisibility.push_back(intervisibility);
-//	}
-//
+				intervisibility.push_back(vec_of_transitions.at(t).at(l));
+			}
+		}
+		vec_of_intervisibility.push_back(intervisibility);
+	}
+
 //	ROS_INFO("flag after intervis");
+//	ROS_INFO("Print what intervis algo found:");
+//	for (int i = 0; i < vec_of_intervisibility.size(); i++)
+//	{
+//		ROS_INFO("intervis transitions from label %u", vec_of_intervisibility.at(i).at(0));
+//		for (int j = 1; j < vec_of_intervisibility.at(i).size(); j++)
+//		{
+//			ROS_INFO("content %u", vec_of_intervisibility.at(i).at(j));
+//		}
+//	}
 
 	std::vector<ipa_pars_map_analyzer::SquareInformation> vec_square_info;
 	for (int t = 0; t < vec_of_transitions.size(); t++)
@@ -313,12 +335,12 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 			trans.data = vec_of_transitions.at(t).at(l);
 			square_info.transitions.push_back(trans);
 		}
-//		for (int k = 1; k < vec_of_intervisibility.at(t).size(); k++)
-//		{
-//			std_msgs::Int32 vis;
-//			vis.data = vec_of_intervisibility.at(t).at(k);
-//			square_info.intervisibility.push_back(vis);
-//		}
+		for (int k = 1; k < vec_of_intervisibility.at(t).size(); k++)
+		{
+			std_msgs::Int32 vis;
+			vis.data = vec_of_intervisibility.at(t).at(k);
+			square_info.intervisibility.push_back(vis);
+		}
 		// 3-layers transformation to new coordinates:
 		// 1. transform from upper-left corner downwards (traversal of the for loops) to lower-left corner upwards in meter;
 		double lower_left_KS_x = (balancePoints.at(t).at(0) * goal->map_resolution);
