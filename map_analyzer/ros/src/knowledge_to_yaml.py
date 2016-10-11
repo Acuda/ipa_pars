@@ -19,7 +19,7 @@ Created on Sept 05, 2016
 # \note
 # ROS stack name: ipa_pars
 # \note
-# ROS package name: ipa_pars_map_analyzer
+# ROS package name: map_analyzer
 #
 # \author
 # Author: Christian Ehrmann
@@ -71,8 +71,8 @@ import yaml
 from cob_srvs.srv import SetString
 
 import ipa_pars_map_analyzer
-from ipa_pars_map_analyzer.srv import KnowledgeToYaml
-from ipa_pars_map_analyzer.srv._KnowledgeToYaml import KnowledgeToYamlRequest, KnowledgeToYamlResponse
+from map_analyzer.srv import KnowledgeToYaml
+from map_analyzer.srv._KnowledgeToYaml import KnowledgeToYamlRequest, KnowledgeToYamlResponse
 
 
 class KnowledgeToYamlNode(object):

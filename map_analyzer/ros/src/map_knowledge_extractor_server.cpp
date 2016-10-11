@@ -14,7 +14,7 @@
  * \note
  * ROS stack name: ipa_pars
  * \note
- * ROS package name: ipa_pars_map_analyzer
+ * ROS package name: map_analyzer
  *
  * \author
  * Author: Christian Ehrmann
@@ -57,7 +57,7 @@
  *
  ****************************************************************/
 
-#include <ipa_pars_map_analyzer/ipa_pars_map_knowledge_extractor_server.h>
+#include <map_analyzer/map_knowledge_extractor_server.h>
 #include <ros/ros.h>
 #include <ros/package.h>
 
@@ -75,9 +75,9 @@
 
 #include <actionlib/client/simple_action_client.h>
 #include <actionlib/client/terminal_state.h>
-#include <ipa_pars_map_analyzer/ParsMapKnowledgeAction.h>
+#include <map_analyzer/ParsMapKnowledgeAction.h>
 
-#include <ipa_pars_map_analyzer/SquareInformation.h>
+#include <map_analyzer/SquareInformation.h>
 
 // round
 #include <sstream>
@@ -86,14 +86,14 @@
 
 ParsMapKnowledgeExtractorServer::ParsMapKnowledgeExtractorServer(ros::NodeHandle nh, std::string name_of_the_action) :
 	node_handle_(nh),
-	ipa_pars_map_knowledge_extractor_server_(node_handle_, name_of_the_action, boost::bind(&ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server, this, _1), false)
+	map_knowledge_extractor_server_(node_handle_, name_of_the_action, boost::bind(&ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server, this, _1), false)
 {
 	//Start action server
-	ipa_pars_map_knowledge_extractor_server_.start();
+	map_knowledge_extractor_server_.start();
 }
 
 
-void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(const ipa_pars_map_analyzer::ParsMapKnowledgeGoalConstPtr &goal)
+void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(const map_analyzer::ParsMapKnowledgeGoalConstPtr &goal)
 {
 	ros::Rate looping_rate(1);
 	ROS_INFO("*****ParsMapKnowledgeExtractor action server*****");
@@ -435,9 +435,9 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 
 
 	// output
-	ipa_pars_map_analyzer::ParsMapKnowledgeResult map_knowledge_extractor_action_result_;
+	map_analyzer::ParsMapKnowledgeResult map_knowledge_extractor_action_result_;
 	map_knowledge_extractor_action_result_.square_information = vec_square_info;
-	ipa_pars_map_knowledge_extractor_server_.setSucceeded(map_knowledge_extractor_action_result_);
+	map_knowledge_extractor_server_.setSucceeded(map_knowledge_extractor_action_result_);
 
 }
 
@@ -456,7 +456,7 @@ void ParsMapKnowledgeExtractorServer::addElementNotInVec(std::vector<int> &reall
 
 int main(int argc, char** argv)
 {
-	ros::init(argc, argv, "ipa_pars_map_knowledge_extractor_server");
+	ros::init(argc, argv, "map_knowledge_extractor_server");
 
 	ros::NodeHandle nh;
 

@@ -14,7 +14,7 @@
  * \note
  * ROS stack name: ipa_pars
  * \note
- * ROS package name: ipa_pars_map_analyzer
+ * ROS package name: map_analyzer
  *
  * \author
  * Author: Christian Ehrmann
@@ -57,7 +57,7 @@
  *
  ****************************************************************/
 
-#include <ipa_pars_map_analyzer/ipa_pars_map_analyzer_server.h>
+#include <map_analyzer/map_analyzer_server.h>
 #include <ros/ros.h>
 #include <ros/package.h>
 
@@ -74,12 +74,12 @@
 #include <actionlib/client/simple_action_client.h>
 #include <actionlib/client/terminal_state.h>
 #include <ipa_building_msgs/MapSegmentationAction.h>
-#include <ipa_pars_map_analyzer/ParsMapTesselationAction.h>
-#include <ipa_pars_map_analyzer/ParsMapKnowledgeAction.h>
+#include <map_analyzer/ParsMapTesselationAction.h>
+#include <map_analyzer/ParsMapKnowledgeAction.h>
 
-#include <ipa_pars_map_analyzer/KnowledgeToYaml.h>
+#include <map_analyzer/KnowledgeToYaml.h>
 
-#include <ipa_pars_map_analyzer/SquareInformation.h>
+#include <map_analyzer/SquareInformation.h>
 #include <std_msgs/Bool.h>
 
 // for vector unique
@@ -91,28 +91,28 @@
 
 ParsMapAnalyzerServer::ParsMapAnalyzerServer(ros::NodeHandle nh, std::string name_of_the_action) :
 	node_handle_(nh),
-	ipa_pars_map_analyzer_server_(node_handle_, name_of_the_action, boost::bind(&ParsMapAnalyzerServer::execute_map_analyzer_server, this, _1), false)
+	map_analyzer_server_(node_handle_, name_of_the_action, boost::bind(&ParsMapAnalyzerServer::execute_map_analyzer_server, this, _1), false)
 {
 	//Start action server
-	ipa_pars_map_analyzer_server_.start();
+	map_analyzer_server_.start();
 
 }
 
 bool ParsMapAnalyzerServer::initialize()
 {
-	knowledgeToYamlClient_ = node_handle_.serviceClient<ipa_pars_map_analyzer::KnowledgeToYaml>("knowledge_to_yaml_service");
+	knowledgeToYamlClient_ = node_handle_.serviceClient<map_analyzer::KnowledgeToYaml>("knowledge_to_yaml_service");
 	knowledgeToYamlClient_.waitForExistence(); //infinte time
 	ROS_INFO("/map_analyzer_server ... initialized");
 	return true;
 }
 
-void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analyzer::ParsMapAnalyzerGoalConstPtr &goal)
+void ParsMapAnalyzerServer::execute_map_analyzer_server(const map_analyzer::ParsMapAnalyzerGoalConstPtr &goal)
 {
 	ros::Rate looping_rate(1);
 	ROS_INFO("*****ParsMapAnalyzer action server*****");
 
 	// empty till segmentation is over:
-	std::vector<ipa_pars_map_analyzer::SquareInformation> sqr_info;
+	std::vector<map_analyzer::SquareInformation> sqr_info;
 
 	// todo send this to initialize:
 	ROS_INFO("Create room square colors");
@@ -310,13 +310,13 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 			cv_image_singleRoom.encoding = "mono8";
 			cv_image_singleRoom.image = segmented_map_each_room;
 			cv_image_singleRoom.toImageMsg(singleRoomTesselation);
-			actionlib::SimpleActionClient<ipa_pars_map_analyzer::ParsMapTesselationAction> single_room_tess_ac("ipa_pars_map_tesselation_server",true);
+			actionlib::SimpleActionClient<map_analyzer::ParsMapTesselationAction> single_room_tess_ac("map_tesselation_server",true);
 
 			single_room_tess_ac.waitForServer(); //will wait for infinite time
 
 			ROS_INFO("Action server started, sending goal.");
 			// send a goal to the action
-			ipa_pars_map_analyzer::ParsMapTesselationGoal single_tess_goal;
+			map_analyzer::ParsMapTesselationGoal single_tess_goal;
 			single_tess_goal.input_map = singleRoomTesselation;
 			single_tess_goal.map_origin.position.x = goal->map_origin.position.x;
 			single_tess_goal.map_origin.position.y = goal->map_origin.position.y;
@@ -332,7 +332,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 			if (finished_before_timeout)
 			{
 				ROS_INFO("Finished successfully!");
-				ipa_pars_map_analyzer::ParsMapTesselationResultConstPtr result_single_room_tess = single_room_tess_ac.getResult();
+				map_analyzer::ParsMapTesselationResultConstPtr result_single_room_tess = single_room_tess_ac.getResult();
 				// display
 				cv_bridge::CvImagePtr cv_ptr_obj2;
 				cv_ptr_obj2 = cv_bridge::toCvCopy(result_single_room_tess->tesselated_map, sensor_msgs::image_encodings::TYPE_32SC1);
@@ -626,13 +626,13 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 //		}ROS_INFO("--------------------------------------------------------");
 
 
-		actionlib::SimpleActionClient<ipa_pars_map_analyzer::ParsMapKnowledgeAction> knowledge_ac("ipa_pars_map_knowledge_extractor_server",true);
+		actionlib::SimpleActionClient<map_analyzer::ParsMapKnowledgeAction> knowledge_ac("map_knowledge_extractor_server",true);
 
 		knowledge_ac.waitForServer(); //will wait for infinite time
 
 		ROS_INFO("Action server started, sending goal.");
 		// send a goal to the action
-		ipa_pars_map_analyzer::ParsMapKnowledgeGoal knowledge_extractor_goal;
+		map_analyzer::ParsMapKnowledgeGoal knowledge_extractor_goal;
 		sensor_msgs::Image labeled_map;
 		cv_bridge::CvImage cv_image_concatened;
 		cv_image_concatened.encoding = "32SC1";
@@ -662,10 +662,10 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 		if (finished_before_timeout)
 		{
 			ROS_INFO("Finished successfully!");
-			ipa_pars_map_analyzer::ParsMapKnowledgeResultConstPtr result_knowledge = knowledge_ac.getResult();
+			map_analyzer::ParsMapKnowledgeResultConstPtr result_knowledge = knowledge_ac.getResult();
 			// display
 			ROS_INFO("The produced square information is:");
-			std::vector<ipa_pars_map_analyzer::SquareInformation> sqr_info = result_knowledge->square_information;
+			std::vector<map_analyzer::SquareInformation> sqr_info = result_knowledge->square_information;
 			ROS_INFO_STREAM("The size of the given square information vector is" << sqr_info.size());
 
 			// display with names and balancePoints
@@ -686,7 +686,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 			}
 
 			// sending to yaml dumper
-			ipa_pars_map_analyzer::KnowledgeToYaml knowledge_srv;
+			map_analyzer::KnowledgeToYaml knowledge_srv;
 			knowledge_srv.request.square_information = sqr_info;
 //			ipa_pars_map_analyzer::KnowledgeToYamlResponse resp;
 //			knowledgeToYamlClient.waitForExistence();
@@ -711,9 +711,9 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const ipa_pars_map_analy
 
 
 
-	ipa_pars_map_analyzer::ParsMapAnalyzerResult map_analyzer_action_result_;
+	map_analyzer::ParsMapAnalyzerResult map_analyzer_action_result_;
 	map_analyzer_action_result_.static_knowledge.data = "test_output";
-	ipa_pars_map_analyzer_server_.setSucceeded(map_analyzer_action_result_);
+	map_analyzer_server_.setSucceeded(map_analyzer_action_result_);
 	cv::waitKey();
 }
 
@@ -751,7 +751,7 @@ void ParsMapAnalyzerServer::createRoomColors(std::vector<cv::Vec3b> &room_colors
 //	ROS_INFO("Created %d colors for room squares segmenation", (int)room_colors.size());
 }
 
-void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, cv::Mat &map_with_rob_rad, std::vector<cv::Vec3b> &room_colors,  std::vector<ipa_pars_map_analyzer::SquareInformation> &sqr_info, int printtype, double map_resolution, std::vector<double> map_origin)
+void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, cv::Mat &map_with_rob_rad, std::vector<cv::Vec3b> &room_colors,  std::vector<map_analyzer::SquareInformation> &sqr_info, int printtype, double map_resolution, std::vector<double> map_origin)
 {
 	// for writing debug images:
 	std::vector<int> compression_params;
@@ -1250,7 +1250,7 @@ void ParsMapAnalyzerServer::displayMapAsImage(cv::Mat &map, cv::Mat &map_with_ro
 
 int main(int argc, char** argv)
 {
-	ros::init(argc, argv, "ipa_pars_map_analyzer_server");
+	ros::init(argc, argv, "map_analyzer_server");
 
 	ros::NodeHandle nh;
 

@@ -14,7 +14,7 @@
  * \note
  *   ROS stack name: ipa_pars
  * \note
- *   ROS package name: ipa_pars_map_analyzer
+ *   ROS package name: map_analyzer
  *
  * \author
  *   Author: Christian Ehrmann, email: Christian.Ehrmann@ipa.fraunhofer.de
@@ -40,12 +40,12 @@
 #include <actionlib/client/simple_action_client.h>
 #include <actionlib/client/terminal_state.h>
 
-#include <ipa_pars_map_analyzer/ParsMapAnalyzerAction.h>
+#include <map_analyzer/ParsMapAnalyzerAction.h>
 
 
 int main(int argc, char **argv)
 {
-	ros::init(argc, argv, "ipa_pars_map_analyzer_client");
+	ros::init(argc, argv, "map_analyzer_client");
 	ros::NodeHandle nh_;
 	std::string map_name;
 	double map_resolution;
@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 	nh_.getParam("map_resolution", map_resolution);
 	nh_.getParam("robot_radius", robot_radius);
 	nh_.getParam("map_origin", map_origin);
-	std::string image_filename = ros::package::getPath("ipa_pars_map_analyzer") + "/common/files/test_maps/" + map_name;
+	std::string image_filename = ros::package::getPath("map_analyzer") + "/common/files/test_maps/" + map_name;
 	cv::Mat map = cv::imread(image_filename.c_str(), CV_LOAD_IMAGE_GRAYSCALE);
 	sensor_msgs::Image output_img;
 	cv_bridge::CvImage cv_image;
@@ -67,13 +67,13 @@ int main(int argc, char **argv)
 	cv_image.toImageMsg(output_img);
 	// create the action client
 	// true causes the client to spin its own thread
-	actionlib::SimpleActionClient<ipa_pars_map_analyzer::ParsMapAnalyzerAction> ac("ipa_pars_map_analyzer_server", true);
+	actionlib::SimpleActionClient<map_analyzer::ParsMapAnalyzerAction> ac("map_analyzer_server", true);
 	ROS_INFO("Waiting for action server to start.");
 	// wait for the action server to start
 	ac.waitForServer(); //will wait for infinite time
 	ROS_INFO("Action server started, sending goal.");
 	// send a goal to the action
-	ipa_pars_map_analyzer::ParsMapAnalyzerGoal goal;
+	map_analyzer::ParsMapAnalyzerGoal goal;
 	goal.input_map = output_img;
 
 	// origin : The 2-D pose of the lower-left pixel in the map, as (x, y, yaw)
@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 	if (finished_before_timeout)
 	{
 		ROS_INFO("Finished successfully!");
-		ipa_pars_map_analyzer::ParsMapAnalyzerResultConstPtr result_knowledge = ac.getResult();
+		map_analyzer::ParsMapAnalyzerResultConstPtr result_knowledge = ac.getResult();
 		// display
 		ROS_INFO("%s", result_knowledge->static_knowledge.data.c_str());
 	}

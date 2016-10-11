@@ -14,14 +14,14 @@
  * \note
  * ROS stack name: ipa_pars
  * \note
- * ROS package name: ipa_pars_map_analyzer
+ * ROS package name: map_analyzer
  *
  * \author
  * Author: Christian Ehrmann
  * \author
  * Supervised by: Richard Bormann
  *
- * \date Date of creation: 08.2016
+ * \date Date of creation: 07.2016
  *
  * \brief
  *
@@ -56,10 +56,8 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  ****************************************************************/
-
-#ifndef IPA_PARS_IPA_PARS_MAP_ANALYZER_ROS_INCLUDE_IPA_PARS_MAP_ANALYZER_IPA_PARS_MAP_KNOWLEDGE_EXTRACTOR_SERVER_H_
-#define IPA_PARS_IPA_PARS_MAP_ANALYZER_ROS_INCLUDE_IPA_PARS_MAP_ANALYZER_IPA_PARS_MAP_KNOWLEDGE_EXTRACTOR_SERVER_H_
-
+#ifndef IPA_PARS_MAP_ANALYZER_ROS_INCLUDE_MAP_ANALYZER_MAP_ANALYZER_SERVER_H_
+#define IPA_PARS_ROS_INCLUDE_MAP_ANALYZER_MAP_ANALYZER_SERVER_H_
 
 #include "ros/ros.h"
 
@@ -70,33 +68,46 @@
 #include <sensor_msgs/image_encodings.h>
 #include <actionlib/server/simple_action_server.h>
 
-#include <ipa_pars_map_analyzer/ParsMapKnowledgeAction.h>
+#include <map_analyzer/ParsMapAnalyzerAction.h>
+#include <map_analyzer/KnowledgeToYaml.h>
 
-class ParsMapKnowledgeExtractorServer
+#include <map_analyzer/SquareInformation.h>
+
+class ParsMapAnalyzerServer
 {
 protected:
 
 	//This is the execution function used by action server
-	void execute_map_knowledge_extractor_server(const ipa_pars_map_analyzer::ParsMapKnowledgeGoalConstPtr &goal);
+	void execute_map_analyzer_server(const map_analyzer::ParsMapAnalyzerGoalConstPtr &goal);
 
+	// add labels to labelcounter
 	void addElementNotInVec(std::vector<int> &reallabelcount, int label);
+
+	// creates 125 colors for display of room square segmentation
+	void createRoomColors(std::vector<cv::Vec3b> &room_colors);
+
+	// display segmented or tesselated map
+	void displayMapAsImage(cv::Mat &map, cv::Mat &map_with_rob_rad, std::vector<cv::Vec3b> &room_colors, std::vector<map_analyzer::SquareInformation> &sqr_info, int printtype, double map_resolution, std::vector<double> map_origin);
 
 	//!!Important!!
 	// define the Nodehandle before the action server, or else the server won't start
 	//
 	ros::NodeHandle node_handle_;
-	actionlib::SimpleActionServer<ipa_pars_map_analyzer::ParsMapKnowledgeAction> ipa_pars_map_knowledge_extractor_server_;
+	actionlib::SimpleActionServer<map_analyzer::ParsMapAnalyzerAction> map_analyzer_server_;
+	ros::ServiceClient knowledgeToYamlClient_;
+
 
 public:
 	//initialize the action-server
-	ParsMapKnowledgeExtractorServer(ros::NodeHandle nh, std::string name_of_the_action);
+	ParsMapAnalyzerServer(ros::NodeHandle nh, std::string name_of_the_action);
 
 	//Default destructor for the class
-	~ParsMapKnowledgeExtractorServer(void)
+	~ParsMapAnalyzerServer(void)
 	{
 	}
+
+	bool initialize();
+
 };
 
-
-
-#endif /* IPA_PARS_IPA_PARS_MAP_ANALYZER_ROS_INCLUDE_IPA_PARS_MAP_ANALYZER_IPA_PARS_MAP_KNOWLEDGE_EXTRACTOR_SERVER_H_ */
+#endif /* IPA_PARS_MAP_ANALYZER_ROS_INCLUDE_MAP_ANALYZER_MAP_ANALYZER_SERVER_H_ */

@@ -14,7 +14,7 @@
  * \note
  * ROS stack name: ipa_pars
  * \note
- * ROS package name: ipa_pars_map_analyzer
+ * ROS package name: map_analyzer
  *
  * \author
  * Author: Christian Ehrmann
@@ -57,7 +57,7 @@
  *
  ****************************************************************/
 
-#include <ipa_pars_map_analyzer/ipa_pars_map_tesselation_server.h>
+#include <map_analyzer/map_tesselation_server.h>
 #include <ros/ros.h>
 #include <ros/package.h>
 
@@ -75,7 +75,7 @@
 
 #include <actionlib/client/simple_action_client.h>
 #include <actionlib/client/terminal_state.h>
-#include <ipa_pars_map_analyzer/ParsMapTesselationAction.h>
+#include <map_analyzer/ParsMapTesselationAction.h>
 
 #include "std_msgs/Int32MultiArray.h"
 
@@ -85,14 +85,14 @@
 
 ParsMapTesselationServer::ParsMapTesselationServer(ros::NodeHandle nh, std::string name_of_the_action) :
 	node_handle_(nh),
-	ipa_pars_map_tesselation_server_(node_handle_, name_of_the_action, boost::bind(&ParsMapTesselationServer::execute_map_tesselation_server, this, _1), false)
+	map_tesselation_server_(node_handle_, name_of_the_action, boost::bind(&ParsMapTesselationServer::execute_map_tesselation_server, this, _1), false)
 {
 	//Start action server
-	ipa_pars_map_tesselation_server_.start();
+	map_tesselation_server_.start();
 }
 
 
-void ParsMapTesselationServer::execute_map_tesselation_server(const ipa_pars_map_analyzer::ParsMapTesselationGoalConstPtr &goal)
+void ParsMapTesselationServer::execute_map_tesselation_server(const map_analyzer::ParsMapTesselationGoalConstPtr &goal)
 {
 	ros::Rate looping_rate(1);
 	ROS_INFO("*****ParsMapTesselation action server*****");
@@ -108,7 +108,7 @@ void ParsMapTesselationServer::execute_map_tesselation_server(const ipa_pars_map
 	const cv::Point2d map_origin(goal->map_origin.position.x, goal->map_origin.position.y);
 
 	// output
-	ipa_pars_map_analyzer::ParsMapTesselationResult map_tesselation_action_result_;
+	map_analyzer::ParsMapTesselationResult map_tesselation_action_result_;
 	//cv::Mat tesselated_map;
 	cv_bridge::CvImage  cv_img;
 	cv_img.header.stamp = ros::Time::now();
@@ -151,7 +151,7 @@ void ParsMapTesselationServer::execute_map_tesselation_server(const ipa_pars_map
 //	}
 	map_tesselation_action_result_.labels.data = labelcount;
 	ROS_INFO_STREAM("labels.data = " << map_tesselation_action_result_.labels.data.size());
-	ipa_pars_map_tesselation_server_.setSucceeded(map_tesselation_action_result_);
+	map_tesselation_server_.setSucceeded(map_tesselation_action_result_);
 
 }
 
@@ -729,7 +729,7 @@ void ParsMapTesselationServer::addElementNotInVec(std::vector<int> &reallabelcou
 
 int main(int argc, char** argv)
 {
-	ros::init(argc, argv, "ipa_pars_map_analyzer_server");
+	ros::init(argc, argv, "map_analyzer_server");
 
 	ros::NodeHandle nh;
 

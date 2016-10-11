@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(ipa_pars_map_analyzer)
+project(map_analyzer)
 
 set(catkin_RUN_PACKAGES
 	roscpp
@@ -81,7 +81,7 @@ generate_messages(
    geometry_msgs
    sensor_msgs
    std_msgs
-   ipa_pars_map_analyzer
+   map_analyzer
 )
 
 ################################################
@@ -117,7 +117,7 @@ catkin_package(
   INCLUDE_DIRS 
 	common/include
 	ros/include
-  LIBRARIES #ipa_pars_map_analyzer_server
+  LIBRARIES #map_analyzer_server
   CATKIN_DEPENDS ${catkin_RUN_PACKAGES} actionlib_msgs message_runtime
   DEPENDS
 	OpenCV
@@ -140,44 +140,44 @@ include_directories(
 )
 
 ## map analyzer main server
-add_executable(ipa_pars_map_analyzer_server
-	ros/src/ipa_pars_map_analyzer_server.cpp)
+add_executable(map_analyzer_server
+	ros/src/map_analyzer_server.cpp)
 
-target_link_libraries(ipa_pars_map_analyzer_server
+target_link_libraries(map_analyzer_server
 	${catkin_LIBRARIES} 
 	${OpenCV_LIBRARIES})
-add_dependencies(ipa_pars_map_analyzer_server
+add_dependencies(map_analyzer_server
 	${catkin_EXPORTED_TARGETS}
 	${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 ## map tesselation server
-add_executable(ipa_pars_map_tesselation_server
-	ros/src/ipa_pars_map_tesselation_server.cpp)
+add_executable(map_tesselation_server
+	ros/src/map_tesselation_server.cpp)
 
-target_link_libraries(ipa_pars_map_tesselation_server
+target_link_libraries(map_tesselation_server
 	${catkin_LIBRARIES}
 	${OpenCV_LIBRARIES})
-add_dependencies(ipa_pars_map_tesselation_server
+add_dependencies(map_tesselation_server
 	${catkin_EXPORTED_TARGETS}
 	${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 ## map_knowledge_extractor_server
-add_executable(ipa_pars_map_knowledge_extractor_server
-	ros/src/ipa_pars_map_knowledge_extractor_server.cpp)
+add_executable(map_knowledge_extractor_server
+	ros/src/map_knowledge_extractor_server.cpp)
 
-target_link_libraries(ipa_pars_map_knowledge_extractor_server
+target_link_libraries(map_knowledge_extractor_server
 	${catkin_LIBRARIES}
 	${OpenCV_LIBRARIES})
-add_dependencies(ipa_pars_map_knowledge_extractor_server
+add_dependencies(map_knowledge_extractor_server
 	${catkin_EXPORTED_TARGETS}
 	${${PROJECT_NAME}_EXPORTED_TARGETS})
 	
 ### client for testing purpose
-add_executable(ipa_pars_map_analyzer_client ros/src/ipa_pars_map_analyzer_client.cpp)
-target_link_libraries(ipa_pars_map_analyzer_client
+add_executable(map_analyzer_client ros/src/map_analyzer_client.cpp)
+target_link_libraries(map_analyzer_client
 	${catkin_LIBRARIES} 
 	${OpenCV_LIBRARIES})
-add_dependencies(ipa_pars_map_analyzer_client
+add_dependencies(map_analyzer_client
 	${catkin_EXPORTED_TARGETS}
 	${${PROJECT_NAME}_EXPORTED_TARGETS})
 
@@ -212,7 +212,7 @@ add_dependencies(cv_test_file3
 ## Install ##
 #############
 ## Mark executables and/or libraries for installation
-install(TARGETS ipa_pars_map_analyzer_client #ipa_pars_map_analyzer_server
+install(TARGETS map_analyzer_client
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

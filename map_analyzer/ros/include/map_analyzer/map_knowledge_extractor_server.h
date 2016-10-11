@@ -14,14 +14,14 @@
  * \note
  * ROS stack name: ipa_pars
  * \note
- * ROS package name: ipa_pars_map_analyzer
+ * ROS package name: map_analyzer
  *
  * \author
  * Author: Christian Ehrmann
  * \author
  * Supervised by: Richard Bormann
  *
- * \date Date of creation: 07.2016
+ * \date Date of creation: 08.2016
  *
  * \brief
  *
@@ -57,8 +57,8 @@
  *
  ****************************************************************/
 
-#ifndef IPA_PARS_IPA_PARS_MAP_ANALYZER_ROS_INCLUDE_IPA_PARS_MAP_ANALYZER_IPA_PARS_MAP_TESSELATION_SERVER_H_
-#define IPA_PARS_IPA_PARS_MAP_ANALYZER_ROS_INCLUDE_IPA_PARS_MAP_ANALYZER_IPA_PARS_MAP_TESSELATION_SERVER_H_
+#ifndef IPA_PARS_MAP_ANALYZER_ROS_INCLUDE_MAP_ANALYZER_MAP_KNOWLEDGE_EXTRACTOR_SERVER_H_
+#define IPA_PARS_MAP_ANALYZER_ROS_INCLUDE_MAP_ANALYZER_MAP_KNOWLEDGE_EXTRACTOR_SERVER_H_
 
 
 #include "ros/ros.h"
@@ -70,35 +70,33 @@
 #include <sensor_msgs/image_encodings.h>
 #include <actionlib/server/simple_action_server.h>
 
-#include <ipa_pars_map_analyzer/ParsMapTesselationAction.h>
+#include <map_analyzer/ParsMapKnowledgeAction.h>
 
-class ParsMapTesselationServer
+class ParsMapKnowledgeExtractorServer
 {
 protected:
 
 	//This is the execution function used by action server
-	void execute_map_tesselation_server(const ipa_pars_map_analyzer::ParsMapTesselationGoalConstPtr &goal);
-
-	//Tesselation function
-	void tesselate_map(const cv::Mat& map_to_tesselate, cv::Mat& tesselated_map, std::vector<int>& labelcount);
+	void execute_map_knowledge_extractor_server(const map_analyzer::ParsMapKnowledgeGoalConstPtr &goal);
 
 	void addElementNotInVec(std::vector<int> &reallabelcount, int label);
+
 	//!!Important!!
 	// define the Nodehandle before the action server, or else the server won't start
 	//
 	ros::NodeHandle node_handle_;
-	actionlib::SimpleActionServer<ipa_pars_map_analyzer::ParsMapTesselationAction> ipa_pars_map_tesselation_server_;
+	actionlib::SimpleActionServer<map_analyzer::ParsMapKnowledgeAction> map_knowledge_extractor_server_;
 
 public:
 	//initialize the action-server
-	ParsMapTesselationServer(ros::NodeHandle nh, std::string name_of_the_action);
+	ParsMapKnowledgeExtractorServer(ros::NodeHandle nh, std::string name_of_the_action);
 
 	//Default destructor for the class
-	~ParsMapTesselationServer(void)
+	~ParsMapKnowledgeExtractorServer(void)
 	{
 	}
 };
 
 
 
-#endif /* IPA_PARS_IPA_PARS_MAP_ANALYZER_ROS_INCLUDE_IPA_PARS_MAP_ANALYZER_IPA_PARS_MAP_TESSELATION_SERVER_H_ */
+#endif /* IPA_PARS_MAP_ANALYZER_ROS_INCLUDE_MAP_ANALYZER_MAP_KNOWLEDGE_EXTRACTOR_SERVER_H_ */
