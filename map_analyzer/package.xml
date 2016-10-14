@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>ipa_pars_map_analyzer</name>
+  <name>map_analyzer</name>
   <version>0.1.0</version>
-  <description>The ipa_pars_map_analyzer package</description>
+  <description>The map_analyzer package</description>
 
   <author email="rmbce@ipa.fhg.de">Christian Ehrmann</author>
   <maintainer email="richard.bormann@ipa.fraunhofer.de">Richard Bormann</maintainer>

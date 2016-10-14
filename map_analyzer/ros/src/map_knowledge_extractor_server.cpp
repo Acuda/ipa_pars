@@ -324,10 +324,10 @@ void ParsMapKnowledgeExtractorServer::execute_map_knowledge_extractor_server(con
 //		}
 //	}
 
-	std::vector<ipa_pars_map_analyzer::SquareInformation> vec_square_info;
+	std::vector<map_analyzer::SquareInformation> vec_square_info;
 	for (int t = 0; t < vec_of_transitions.size(); t++)
 	{
-		ipa_pars_map_analyzer::SquareInformation square_info;
+		map_analyzer::SquareInformation square_info;
 		square_info.label.data = vec_of_transitions.at(t).at(0);
 		for (int l = 1; l < vec_of_transitions.at(t).size(); l++)
 		{

@@ -1,4 +1,4 @@
-ipa_pars_map_analyzer/SquareInformation[] square_information
+map_analyzer/SquareInformation[] square_information
 ---
 bool success
 std_msgs/String errorMessage

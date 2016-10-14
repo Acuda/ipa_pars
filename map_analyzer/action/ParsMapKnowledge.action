@@ -12,7 +12,7 @@ std_msgs/Float32 robot_radius
 
 #result definition
 
-ipa_pars_map_analyzer/SquareInformation[] square_information
+map_analyzer/SquareInformation[] square_information
 
 ---
 #feedback definition

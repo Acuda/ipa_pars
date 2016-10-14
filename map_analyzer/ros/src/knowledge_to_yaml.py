@@ -70,7 +70,7 @@ import yaml
 
 from cob_srvs.srv import SetString
 
-import ipa_pars_map_analyzer
+#import ipa_pars_map_analyzer
 from map_analyzer.srv import KnowledgeToYaml
 from map_analyzer.srv._KnowledgeToYaml import KnowledgeToYamlRequest, KnowledgeToYamlResponse
 

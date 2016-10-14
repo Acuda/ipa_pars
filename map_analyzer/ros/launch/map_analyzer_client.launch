@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+	<group ns = "map_analyzer">
+		
+		<!-- nodes to start -->
+		<node pkg="map_analyzer" type="map_analyzer_client" name="map_analyzer_client" respawn="false" output="screen"/>
+		<rosparam command="load" file="$(find map_analyzer)/ros/launch/map_analyzer_params.yaml"/>
+	</group>
+</launch>
+
+
+
+		

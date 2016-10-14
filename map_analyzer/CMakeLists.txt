@@ -182,31 +182,31 @@ add_dependencies(map_analyzer_client
 	${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 ### cv_test_file
-add_executable(cv_test_file ros/src/cv_test_file.cpp)
-target_link_libraries(cv_test_file
-	${catkin_LIBRARIES} 
-	${OpenCV_LIBRARIES})
-add_dependencies(cv_test_file
-	${catkin_EXPORTED_TARGETS}
-	${${PROJECT_NAME}_EXPORTED_TARGETS})
+#add_executable(cv_test_file ros/src/cv_test_file.cpp)
+#target_link_libraries(cv_test_file
+#	${catkin_LIBRARIES} 
+#	${OpenCV_LIBRARIES})
+#add_dependencies(cv_test_file
+#	${catkin_EXPORTED_TARGETS}
+#	${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 ### cv_test_file2
-add_executable(cv_test_file2 ros/src/cv_test_file2.cpp)
-target_link_libraries(cv_test_file2
-	${catkin_LIBRARIES} 
-	${OpenCV_LIBRARIES})
-add_dependencies(cv_test_file2
-	${catkin_EXPORTED_TARGETS}
-	${${PROJECT_NAME}_EXPORTED_TARGETS})
+#add_executable(cv_test_file2 ros/src/cv_test_file2.cpp)
+#target_link_libraries(cv_test_file2
+#	${catkin_LIBRARIES} 
+#	${OpenCV_LIBRARIES})
+#add_dependencies(cv_test_file2
+#	${catkin_EXPORTED_TARGETS}
+#	${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 ### cv_test_file3
-add_executable(cv_test_file3 ros/src/cv_test_file3.cpp)
-target_link_libraries(cv_test_file3
-	${catkin_LIBRARIES} 
-	${OpenCV_LIBRARIES})
-add_dependencies(cv_test_file3
-	${catkin_EXPORTED_TARGETS}
-	${${PROJECT_NAME}_EXPORTED_TARGETS})
+#add_executable(cv_test_file3 ros/src/cv_test_file3.cpp)
+#target_link_libraries(cv_test_file3
+#	${catkin_LIBRARIES} 
+#	${OpenCV_LIBRARIES})
+#add_dependencies(cv_test_file3
+#	${catkin_EXPORTED_TARGETS}
+#	${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 #############
 ## Install ##

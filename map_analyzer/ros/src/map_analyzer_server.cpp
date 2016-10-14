@@ -526,13 +526,13 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const map_analyzer::Pars
 //		cv_image_tess.image = erode_img;
 //		cv_image_tess.toImageMsg(tess_labeling);
 //
-//		actionlib::SimpleActionClient<ipa_pars_map_analyzer::ParsMapTesselationAction> tess_ac("ipa_pars_map_tesselation_server",true);
+//		actionlib::SimpleActionClient<map_analyzer::ParsMapTesselationAction> tess_ac("map_tesselation_server",true);
 //
 //		tess_ac.waitForServer(); //will wait for infinite time
 //
 //		ROS_INFO("Action server started, sending goal.");
 //		// send a goal to the action
-//		ipa_pars_map_analyzer::ParsMapTesselationGoal tess_goal;
+//		map_analyzer::ParsMapTesselationGoal tess_goal;
 //		tess_goal.input_map = tess_labeling;
 //		tess_goal.map_origin.position.x = 0;
 //		tess_goal.map_origin.position.y = 0;
@@ -545,7 +545,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const map_analyzer::Pars
 //		if (finished_before_timeout2)
 //		{
 //			ROS_INFO("Finished successfully!");
-//			ipa_pars_map_analyzer::ParsMapTesselationResultConstPtr result_tess = tess_ac.getResult();
+//			map_analyzer::ParsMapTesselationResultConstPtr result_tess = tess_ac.getResult();
 //
 //			// display
 //			cv_bridge::CvImagePtr cv_ptr_obj2;
@@ -613,10 +613,10 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const map_analyzer::Pars
 
 
 		// build SquareInformation Messages
-//		std::vector<ipa_pars_map_analyzer::SquareInformation> sqr_info_vec;
+//		std::vector<map_analyzer::SquareInformation> sqr_info_vec;
 //		for(int i = 0; i < reallabelcount.size(); ++i)
 //		{
-//			ipa_pars_map_analyzer::SquareInformation square;
+//			map_analyzer::SquareInformation square;
 //			square.label.data = reallabelcount.at(i);
 //			square.center.x = balancePoints.at(i).at(0);
 //			square.center.y = balancePoints.at(i).at(1);
@@ -688,7 +688,7 @@ void ParsMapAnalyzerServer::execute_map_analyzer_server(const map_analyzer::Pars
 			// sending to yaml dumper
 			map_analyzer::KnowledgeToYaml knowledge_srv;
 			knowledge_srv.request.square_information = sqr_info;
-//			ipa_pars_map_analyzer::KnowledgeToYamlResponse resp;
+//			map_analyzer::KnowledgeToYamlResponse resp;
 //			knowledgeToYamlClient.waitForExistence();
 			knowledgeToYamlClient_.call(knowledge_srv);
 
