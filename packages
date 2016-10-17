@@ -2,4 +2,9 @@ autopnp
 cob_command_tools
 cob_navigation
 cob_perception_common
+touch CATKIN_IGNORE in the following packages!:
+autopnp_dirt_detection
+autopnp_scenario
+autopnp_tool_change
+ipa_room_exploration
 
